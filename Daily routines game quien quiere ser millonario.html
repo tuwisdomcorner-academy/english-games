@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>50x15: Rutinas Diarias en Inglés</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, #0a1338 0%, #030616 70%, #000208 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .studio-glow {
+      box-shadow: 0 0 45px rgba(23, 74, 182, 0.45);
+    }
+
+    .metallic-border {
+      position: relative;
+      background: linear-gradient(135deg, #0b1c4d, #071131);
+      border: 2px solid #5b87e6;
+      box-shadow: inset 0 0 15px rgba(0, 153, 255, 0.25), 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .metallic-border:before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* Diamond notch button effect */
+    .option-btn {
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+      clip-path: polygon(14px 0%, calc(100% - 14px) 0%, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0% 50%);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: scale(1.015);
+      filter: brightness(1.25);
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .option-selected {
+      background: linear-gradient(90deg, #b45309, #f59e0b, #b45309) !important;
+      border-color: #fef08a !important;
+      color: #000 !important;
+      font-weight: 800 !important;
+      animation: pulse-gold 0.8s infinite alternate ease-in-out;
+    }
+
+    .option-correct {
+      background: linear-gradient(90deg, #15803d, #22c55e, #15803d) !important;
+      border-color: #bbf7d0 !important;
+      color: #fff !important;
+      animation: flash-correct 0.6s infinite alternate;
+    }
+
+    .option-wrong {
+      background: linear-gradient(90deg, #991b1b, #ef4444, #991b1b) !important;
+      border-color: #fecaca !important;
+      color: #fff !important;
+    }
+
+    .tree-ladder-active {
+      background: linear-gradient(90deg, rgba(234, 179, 8, 0.3), rgba(234, 179, 8, 0.6));
+      border: 1px solid #facc15;
+      color: #fef08a;
+      font-weight: bold;
+      transform: translateX(-4px);
+    }
+
+    .milestone-row {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    @keyframes pulse-gold {
+      from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+      to { box-shadow: 0 0 25px rgba(245, 158, 11, 0.9); }
+    }
+
+    @keyframes flash-correct {
+      from { opacity: 0.9; }
+      to { opacity: 1; filter: drop-shadow(0 0 10px #22c55e); }
+    }
+
+    /* Lifeline buttons */
+    .lifeline-btn {
+      transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+    }
+    .lifeline-btn:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 18px rgba(59, 130, 246, 0.8);
+    }
+    .lifeline-used {
+      filter: grayscale(100%) brightness(0.4);
+      cursor: not-allowed !important;
+      border-color: #4b5563 !important;
+      text-decoration: line-through;
+    }
+
+    /* Custom scrollbar for small mobile ladder */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e3a8a;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen p-2 sm:p-4 selection:bg-blue-600 selection:text-white">
+
+  <header class="max-w-7xl mx-auto w-full flex flex-wrap items-center justify-between gap-3 mb-2 px-2">
+    <div class="flex items-center space-x-3">
+      <div class="w-12 h-12 rounded-full border-2 border-yellow-400 flex items-center justify-center bg-blue-950 shadow-[0_0_15px_rgba(250,204,21,0.5)]">
+        <span class="text-yellow-400 font-extrabold text-xl font-['Cinzel']">50</span>
+      </div>
+      <div>
+        <h1 class="text-xl sm:text-2xl font-black tracking-wider uppercase text-yellow-400 drop-shadow-[0_2px_8px_rgba(250,204,21,0.4)]">
+          50 x 15 <span class="text-sm font-light text-slate-300 block sm:inline">| Vocabulario Rutinas</span>
+        </h1>
+        <p class="text-xs text-blue-300 font-medium">Daily Routines in English</p>
+      </div>
+    </div>
+
+    <!-- Lifelines group -->
+    <div class="flex items-center space-x-2 sm:space-x-3">
+      <!-- Lifeline 50:50 -->
+      <button id="lifeline-5050" onclick="useLifeline5050()" title="Comodín del 50:50 (Elimina 2 respuestas erróneas)"
+        class="lifeline-btn flex flex-col items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-amber-400 bg-slate-950/80 text-amber-300 font-extrabold text-xs sm:text-sm shadow-md">
+        <span>50:50</span>
+      </button>
+
+      <!-- Lifeline Phone -->
+      <button id="lifeline-phone" onclick="useLifelinePhone()" title="Llamada a un amigo"
+        class="lifeline-btn flex flex-col items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-cyan-400 bg-slate-950/80 text-cyan-300 shadow-md">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+      </button>
+
+      <!-- Lifeline Public -->
+      <button id="lifeline-public" onclick="useLifelinePublic()" title="Comodín del público"
+        class="lifeline-btn flex flex-col items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-purple-400 bg-slate-950/80 text-purple-300 shadow-md">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+        </svg>
+      </button>
+
+      <!-- Sound toggle -->
+      <button id="sound-btn" onclick="toggleAudio()" title="Activar/Silenciar sonido"
+        class="w-10 h-10 rounded-full border border-blue-500 bg-blue-950/80 flex items-center justify-center text-blue-300 hover:bg-blue-900 transition">
+        <svg id="sound-icon-on" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+        <svg id="sound-icon-off" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1 items-stretch mb-2">
+    
+    <!-- Arena: Question and 4 answers (takes 3 columns on large screens) -->
+    <section class="lg:col-span-3 flex flex-col justify-between metallic-border rounded-2xl p-4 sm:p-6 studio-glow backdrop-blur-md relative overflow-hidden min-h-[480px]">
+      
+      <!-- Top info bar inside question stage -->
+      <div class="flex items-center justify-between border-b border-blue-800/80 pb-3 mb-4">
+        <div class="flex items-center space-x-2">
+          <span class="text-xs sm:text-sm font-semibold text-blue-300 uppercase tracking-wider">Pregunta actual:</span>
+          <span id="display-question-num" class="text-base sm:text-lg font-black text-amber-400">1 de 15</span>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div class="text-right">
+            <span class="text-xs text-slate-400 block leading-tight">Bote en juego</span>
+            <span id="display-current-prize" class="text-lg sm:text-2xl font-black text-yellow-400 font-['Cinzel'] tracking-wide">100 €</span>
+          </div>
+          <button id="btn-walkaway" onclick="walkAwayPrompt()" class="text-xs uppercase tracking-wider font-bold bg-amber-950/70 hover:bg-amber-800 text-amber-300 border border-amber-500/80 px-3 py-1.5 rounded-lg transition shadow">
+            Plantarse
+          </button>
+        </div>
+      </div>
+
+      <!-- Center question presentation box -->
+      <div class="my-auto py-4 sm:py-8 px-3">
+        <div class="relative max-w-2xl mx-auto text-center">
+          <div class="inline-block px-4 py-1 mb-3 rounded-full text-xs font-bold tracking-widest uppercase bg-blue-900/60 text-cyan-300 border border-cyan-500/30">
+            Vocabulario: Rutinas Diarias
+          </div>
+          <h2 id="question-text" class="text-lg sm:text-2xl md:text-3xl font-bold leading-relaxed text-slate-100 drop-shadow-md">
+            Cargando la pregunta...
+          </h2>
+        </div>
+      </div>
+
+      <!-- Answer options A, B, C, D in 2x2 grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mt-4">
+        <!-- Option A -->
+        <button id="opt-0" onclick="handleSelectAnswer(0)" class="option-btn metallic-border py-3.5 px-6 rounded-xl flex items-center text-left group">
+          <span class="font-extrabold text-amber-400 mr-3 text-lg sm:text-xl font-['Cinzel'] group-hover:text-yellow-300">A:</span>
+          <span id="opt-text-0" class="text-sm sm:text-base font-semibold text-slate-200">Opción A</span>
+        </button>
+
+        <!-- Option B -->
+        <button id="opt-1" onclick="handleSelectAnswer(1)" class="option-btn metallic-border py-3.5 px-6 rounded-xl flex items-center text-left group">
+          <span class="font-extrabold text-amber-400 mr-3 text-lg sm:text-xl font-['Cinzel'] group-hover:text-yellow-300">B:</span>
+          <span id="opt-text-1" class="text-sm sm:text-base font-semibold text-slate-200">Opción B</span>
+        </button>
+
+        <!-- Option C -->
+        <button id="opt-2" onclick="handleSelectAnswer(2)" class="option-btn metallic-border py-3.5 px-6 rounded-xl flex items-center text-left group">
+          <span class="font-extrabold text-amber-400 mr-3 text-lg sm:text-xl font-['Cinzel'] group-hover:text-yellow-300">C:</span>
+          <span id="opt-text-2" class="text-sm sm:text-base font-semibold text-slate-200">Opción C</span>
+        </button>
+
+        <!-- Option D -->
+        <button id="opt-3" onclick="handleSelectAnswer(3)" class="option-btn metallic-border py-3.5 px-6 rounded-xl flex items-center text-left group">
+          <span class="font-extrabold text-amber-400 mr-3 text-lg sm:text-xl font-['Cinzel'] group-hover:text-yellow-300">D:</span>
+          <span id="opt-text-3" class="text-sm sm:text-base font-semibold text-slate-200">Opción D</span>
+        </button>
+      </div>
+
+      <!-- Live status notification under options -->
+      <div id="status-bar" class="text-center text-xs sm:text-sm text-blue-300 mt-4 min-h-[1.5rem] font-medium tracking-wide">
+        Elige tu respuesta definitiva. Tienes 3 comodines a tu disposición.
+      </div>
+    </section>
+
+    <aside class="metallic-border rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+      <div class="text-center pb-2 border-b border-blue-800">
+        <span class="text-xs uppercase tracking-widest text-slate-400 font-bold">Escala de Premios</span>
+      </div>
+
+      <!-- List of 15 prizes (descending 15 down to 1) -->
+      <div id="prize-ladder" class="flex flex-col space-y-1 my-2 overflow-y-auto max-h-[380px] lg:max-h-none text-xs sm:text-sm">
+        <!-- Will be dynamically populated or formatted -->
+      </div>
+
+      <!-- Safe haven insurance info -->
+      <div class="bg-blue-950/60 rounded-lg p-2.5 text-center border border-blue-800/60 text-[11px] text-blue-200">
+        <div class="flex items-center justify-between text-yellow-300 font-semibold mb-1">
+          <span>Seguro 1: 1.000 €</span>
+          <span>Seguro 2: 32.000 €</span>
+        </div>
+        <span class="text-slate-400">Si fallas, vuelves al último seguro alcanzado.</span>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Generic Lifeline Dialogue Modal (Friend call / Public graph) -->
+  <div id="lifeline-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="metallic-border bg-slate-900 max-w-md w-full rounded-2xl p-6 studio-glow border-yellow-500/50">
+      <div class="flex items-center space-x-3 mb-4 border-b border-blue-800 pb-3">
+        <div id="modal-icon-container" class="w-10 h-10 rounded-full bg-blue-900 border border-yellow-400 flex items-center justify-center text-yellow-400">
+          <!-- Icon injected dynamically -->
+        </div>
+        <div>
+          <h3 id="modal-title" class="font-extrabold text-lg text-yellow-400 uppercase tracking-wide">Comodín</h3>
+          <p id="modal-subtitle" class="text-xs text-blue-300">Asistencia técnica</p>
+        </div>
+      </div>
+
+      <div id="modal-content" class="text-slate-200 text-sm leading-relaxed mb-6">
+        <!-- Message or graph inserted here -->
+      </div>
+
+      <button onclick="closeLifelineModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-blue-700 to-blue-900 hover:from-blue-600 hover:to-blue-800 text-white font-bold rounded-xl border border-blue-400 tracking-wider text-sm shadow-md transition">
+        Continuar el juego
+      </button>
+    </div>
+  </div>
+
+  <!-- End Game / Game Over Modal -->
+  <div id="gameover-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="metallic-border bg-slate-900 max-w-lg w-full rounded-2xl p-6 sm:p-8 studio-glow text-center border-yellow-500/70">
+      <div id="gameover-badge" class="w-20 h-20 rounded-full mx-auto mb-4 border-4 border-yellow-400 flex items-center justify-center bg-blue-950 shadow-[0_0_25px_rgba(250,204,21,0.6)]">
+        <span id="gameover-emoji" class="text-3xl">👏</span>
+      </div>
+      <h2 id="gameover-title" class="text-2xl sm:text-3xl font-black text-yellow-400 uppercase tracking-wider mb-2 font-['Cinzel']">
+        ¡Juego Terminado!
+      </h2>
+      <p id="gameover-desc" class="text-slate-300 text-sm sm:text-base mb-6">
+        Has completado tu participación en el programa.
+      </p>
+
+      <div class="bg-blue-950/80 border border-yellow-500/40 rounded-xl p-4 mb-6">
+        <div class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Premio Obtenido</div>
+        <div id="gameover-prize" class="text-3xl sm:text-4xl font-extrabold text-yellow-400 font-['Cinzel']">
+          0 €
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button onclick="restartGame()" class="flex-1 py-3 px-6 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black rounded-xl border border-yellow-300 tracking-wider text-sm shadow-lg transition">
+          Jugar de Nuevo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Audio synthesizer using standard Web Audio API */
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-icon-on').classList.toggle('hidden', !soundEnabled);
+      document.getElementById('sound-icon-off').classList.toggle('hidden', soundEnabled);
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.2, gainLevel = 0.2) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(gainLevel, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {
+        console.warn('Audio note error:', e);
+      }
+    }
+
+    function playSuspenseSound() {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 1.5);
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 1.6);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.6);
+      } catch (e) {}
+    }
+
+    function playCorrectSound() {
+      if (!soundEnabled) return;
+      // Arpeggio victory chord
+      setTimeout(() => playTone(523.25, 'triangle', 0.25, 0.25), 0); // C5
+      setTimeout(() => playTone(659.25, 'triangle', 0.25, 0.25), 100); // E5
+      setTimeout(() => playTone(783.99, 'triangle', 0.35, 0.25), 200); // G5
+      setTimeout(() => playTone(1046.50, 'triangle', 0.55, 0.3), 320); // C6
+    }
+
+    function playWrongSound() {
+      if (!soundEnabled) return;
+      setTimeout(() => playTone(160, 'sawtooth', 0.35, 0.3), 0);
+      setTimeout(() => playTone(110, 'sawtooth', 0.6, 0.4), 200);
+    }
+
+    function playLifelineSound() {
+      playTone(880, 'sine', 0.15, 0.15);
+      setTimeout(() => playTone(1174.66, 'sine', 0.3, 0.15), 120);
+    }
+
+    function playSelectSound() {
+      playTone(440, 'sine', 0.12, 0.2);
+    }
+  </script>
+
+  <script>
+    /* 
+     * Vocabulary table terms applied:
+     * brush my hair, clean my teeth, do homework, do sports/free-time activities, 
+     * finish school, get dressed, get up, go home, go to bed, go to sleep, 
+     * go to school, have a shower, have breakfast, have dinner, have lunch, 
+     * make my bed, pack my bag, start school, wake up.
+     */
+    const PRIZES = [
+      { level: 1, amount: 100, formatted: "100 €", safe: false },
+      { level: 2, amount: 200, formatted: "200 €", safe: false },
+      { level: 3, amount: 300, formatted: "300 €", safe: false },
+      { level: 4, amount: 500, formatted: "500 €", safe: false },
+      { level: 5, amount: 1000, formatted: "1.000 €", safe: true }, // Milestone 1
+      { level: 6, amount: 2000, formatted: "2.000 €", safe: false },
+      { level: 7, amount: 4000, formatted: "4.000 €", safe: false },
+      { level: 8, amount: 8000, formatted: "8.000 €", safe: false },
+      { level: 9, amount: 16000, formatted: "16.000 €", safe: false },
+      { level: 10, amount: 32000, formatted: "32.000 €", safe: true }, // Milestone 2
+      { level: 11, amount: 64000, formatted: "64.000 €", safe: false },
+      { level: 12, amount: 125000, formatted: "125.000 €", safe: false },
+      { level: 13, amount: 250000, formatted: "250.000 €", safe: false },
+      { level: 14, amount: 500000, formatted: "500.000 €", safe: false },
+      { level: 15, amount: 1000000, formatted: "1.000.000 €", safe: true } // Millonario
+    ];
+
+    const ALL_QUESTIONS = [
+      {
+        question: "¿Qué significa en español la rutina 'have breakfast'?",
+        options: ["Cenar", "Comer / Almorzar", "Desayunar", "Tomar una ducha"],
+        correct: 2,
+        tip: "Ocurre por la mañana, después de despertarte y levantarte."
+      },
+      {
+        question: "¿Cómo se dice en inglés 'lavarme / cepillarme los dientes'?",
+        options: ["brush my hair", "clean my teeth", "pack my bag", "make my bed"],
+        correct: 1,
+        tip: "'Teeth' significa dientes y 'clean' es limpiar o cepillar."
+      },
+      {
+        question: "Cuando por la mañana abres los ojos y dejas de dormir, estás haciendo:",
+        options: ["wake up", "go to sleep", "finish school", "have dinner"],
+        correct: 0,
+        tip: "Abrir los ojos al despertar es 'wake up'; luego te levantas ('get up')."
+      },
+      {
+        question: "¿Cuál es el significado de la expresión 'make my bed'?",
+        options: ["Irse a la cama", "Hacer mi cama", "Dormirme", "Comprar una cama"],
+        correct: 1,
+        tip: "Dejar la cama ordenada al levantarte: 'make my bed'."
+      },
+      {
+        question: "¿Cómo se traduce al inglés la acción de 'ponerse la ropa' o 'vestirse'?",
+        options: ["get dressed", "get up", "have a shower", "clean my teeth"],
+        correct: 0,
+        tip: "'Dress' guarda relación con la vestimenta o vestidos."
+      },
+      {
+        question: "Si sales de tu habitación hacia la cocina para 'comer / almorzar' a mediodía, dices:",
+        options: ["have breakfast", "have dinner", "have lunch", "do homework"],
+        correct: 2,
+        tip: "La comida del mediodía en inglés es 'lunch'."
+      },
+      {
+        question: "¿Qué acción realizas cuando metes los libros y estuche antes de ir a clase?",
+        options: ["pack my bag", "brush my hair", "finish school", "get up"],
+        correct: 0,
+        tip: "'Bag' es mochila/bolso y 'pack' es empacar o preparar."
+      },
+      {
+        question: "¿Cuál es la diferencia entre 'wake up' y 'get up'?",
+        options: [
+          "'Wake up' es ducharse y 'get up' vestirse",
+          "'Wake up' es despertarse y 'get up' levantarse de la cama",
+          "'Wake up' es irse a dormir y 'get up' desayunar",
+          "Son exactamente lo mismo sin ninguna diferencia"
+        ],
+        correct: 1,
+        tip: "Primero te despiertas ('wake up') y luego sales de la cama física ('get up')."
+      },
+      {
+        question: "¿Cómo se dice 'hacer deporte o actividades de tiempo libre' en inglés?",
+        options: [
+          "do homework",
+          "finish school",
+          "do sports/free-time activities",
+          "go to school"
+        ],
+        correct: 2,
+        tip: "La frase contiene las palabras exactas 'sports' y 'free-time'."
+      },
+      {
+        question: "Por la noche, la última comida que tomas con tu familia ('cenar') es:",
+        options: ["have lunch", "have dinner", "have a shower", "have breakfast"],
+        correct: 1,
+        tip: "'Dinner' es la cena por la noche."
+      },
+      {
+        question: "¿Qué significa la frase 'finish school'?",
+        options: [
+          "Empezar las clases",
+          "Terminar las clases / el colegio",
+          "Hacer los deberes escolares",
+          "Ir caminando a la escuela"
+        ],
+        correct: 1,
+        tip: "El verbo 'finish' significa finalizar o acabar."
+      },
+      {
+        question: "Completa la frase: 'After school, I sit at my desk to ________' (hacer los deberes).",
+        options: ["do sports", "clean my teeth", "do homework", "start school"],
+        correct: 2,
+        tip: "Los deberes escolares se denominan 'homework'."
+      },
+      {
+        question: "¿Qué expresión empleas para decir 'peinarme o cepillarme el pelo'?",
+        options: ["clean my teeth", "brush my hair", "make my bed", "have a shower"],
+        correct: 1,
+        tip: "'Hair' es pelo y 'brush' es cepillar."
+      },
+      {
+        question: "Al final del día, cuando vas hacia el dormitorio para acostarte ('irse a la cama'):",
+        options: ["go to bed", "go home", "go to school", "get dressed"],
+        correct: 0,
+        tip: "'Bed' es cama; la frase literal es 'go to bed'."
+      },
+      {
+        question: "¡Pregunta del Millón! Si un estudiante dice: 'I finish school, then I go home, have dinner and finally go to sleep', ¿qué hace exactamente al final?",
+        options: [
+          "Se despierta por la mañana",
+          "Se queda dormido / va a dormir",
+          "Prepara su mochila para el día siguiente",
+          "Se da una ducha relajante"
+        ],
+        correct: 1,
+        tip: "'Go to sleep' se refiere al acto de conciliar el sueño y dormirse."
+      }
+    ];
+
+    let currentQuestionIdx = 0;
+    let isAnsweringLocked = false;
+    let usedLifelines = {
+      fifty: false,
+      phone: false,
+      public: false
+    };
+
+    // Render Prize Ladder into the DOM
+    function renderLadder() {
+      const container = document.getElementById('prize-ladder');
+      container.innerHTML = '';
+      
+      // Render in descending order: level 15 on top, level 1 on bottom
+      for (let i = PRIZES.length - 1; i >= 0; i--) {
+        const item = PRIZES[i];
+        const row = document.createElement('div');
+        row.id = `ladder-level-${item.level}`;
+        
+        let safeBadge = item.safe ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-700/60 text-yellow-300 font-bold ml-1">SEGURO</span>` : '';
+        
+        row.className = `flex items-center justify-between px-2.5 py-1 rounded transition-all duration-200 ${
+          item.safe ? 'milestone-row' : 'text-slate-400'
+        }`;
+        
+        row.innerHTML = `
+          <div class="flex items-center">
+            <span class="w-6 font-mono font-bold text-slate-400">${item.level}</span>
+            <span class="ml-1">${safeBadge}</span>
+          </div>
+          <span class="font-bold tracking-wider font-['Cinzel'] ${item.safe ? 'text-yellow-400' : 'text-slate-300'}">${item.formatted}</span>
+        `;
+        container.appendChild(row);
+      }
+      highlightLadder(currentQuestionIdx + 1);
+    }
+
+    function highlightLadder(level) {
+      // Remove active from all
+      for (let i = 1; i <= 15; i++) {
+        const row = document.getElementById(`ladder-level-${i}`);
+        if (row) {
+          row.classList.remove('tree-ladder-active');
+        }
+      }
+      const activeRow = document.getElementById(`ladder-level-${level}`);
+      if (activeRow) {
+        activeRow.classList.add('tree-ladder-active');
+        activeRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Load current question to UI
+    function loadQuestion(index) {
+      if (index >= ALL_QUESTIONS.length) {
+        triggerVictory();
+        return;
+      }
+
+      isAnsweringLocked = false;
+      const q = ALL_QUESTIONS[index];
+      const prize = PRIZES[index];
+
+      document.getElementById('display-question-num').innerText = `${index + 1} de 15`;
+      document.getElementById('display-current-prize').innerText = prize.formatted;
+      document.getElementById('question-text').innerText = q.question;
+      document.getElementById('status-bar').innerText = "Elige tu respuesta definitiva con atención.";
+
+      // Reset options styling
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`opt-${i}`);
+        const textSpan = document.getElementById(`opt-text-${i}`);
+        btn.disabled = false;
+        btn.style.visibility = 'visible';
+        btn.className = "option-btn metallic-border py-3.5 px-6 rounded-xl flex items-center text-left group";
+        textSpan.innerText = q.options[i];
+      }
+
+      highlightLadder(index + 1);
+    }
+
+    function handleSelectAnswer(chosenIdx) {
+      if (isAnsweringLocked) return;
+      isAnsweringLocked = true;
+      initAudio();
+      playSelectSound();
+      playSuspenseSound();
+
+      const btn = document.getElementById(`opt-${chosenIdx}`);
+      btn.classList.add('option-selected');
+      document.getElementById('status-bar').innerText = "Comprobando respuesta...";
+
+      // Disable all other buttons during evaluation
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`opt-${i}`).disabled = true;
+      }
+
+      // Suspense delay (1.8 seconds)
+      setTimeout(() => {
+        const q = ALL_QUESTIONS[currentQuestionIdx];
+        const correctIdx = q.correct;
+
+        if (chosenIdx === correctIdx) {
+          // Correct!
+          btn.classList.remove('option-selected');
+          btn.classList.add('option-correct');
+          playCorrectSound();
+          document.getElementById('status-bar').innerText = "¡CORRECTO! Excelente respuesta.";
+
+          setTimeout(() => {
+            currentQuestionIdx++;
+            if (currentQuestionIdx >= 15) {
+              triggerVictory();
+            } else {
+              loadQuestion(currentQuestionIdx);
+            }
+          }, 1600);
+        } else {
+          // Wrong!
+          btn.classList.remove('option-selected');
+          btn.classList.add('option-wrong');
+          // Highlight correct one
+          document.getElementById(`opt-${correctIdx}`).classList.add('option-correct');
+          playWrongSound();
+          document.getElementById('status-bar').innerText = "¡INCORRECTO! Respuesta equivocada.";
+
+          setTimeout(() => {
+            triggerGameOver(false);
+          }, 2000);
+        }
+      }, 1800);
+    }
+
+    // 1. 50:50 Lifeline
+    function useLifeline5050() {
+      if (usedLifelines.fifty || isAnsweringLocked) return;
+      usedLifelines.fifty = true;
+      playLifelineSound();
+
+      const btn = document.getElementById('lifeline-5050');
+      btn.classList.add('lifeline-used');
+      btn.disabled = true;
+
+      const q = ALL_QUESTIONS[currentQuestionIdx];
+      const correctIdx = q.correct;
+      const incorrectIndices = [0, 1, 2, 3].filter(idx => idx !== correctIdx);
+      
+      // Randomly pick 2 incorrect indices to remove
+      incorrectIndices.sort(() => Math.random() - 0.5);
+      const toRemove = incorrectIndices.slice(0, 2);
+
+      toRemove.forEach(idx => {
+        const optBtn = document.getElementById(`opt-${idx}`);
+        optBtn.style.visibility = 'hidden';
+      });
+
+      document.getElementById('status-bar').innerText = "Comodín 50:50 aplicado: 2 opciones descartadas.";
+    }
+
+    // 2. Phone a Friend Lifeline
+    function useLifelinePhone() {
+      if (usedLifelines.phone || isAnsweringLocked) return;
+      usedLifelines.phone = true;
+      playLifelineSound();
+
+      const btn = document.getElementById('lifeline-phone');
+      btn.classList.add('lifeline-used');
+      btn.disabled = true;
+
+      const q = ALL_QUESTIONS[currentQuestionIdx];
+      const correctLetter = ['A', 'B', 'C', 'D'][q.correct];
+      const correctText = q.options[q.correct];
+
+      // Simulated realistic friend response
+      const modalIcon = document.getElementById('modal-icon-container');
+      modalIcon.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+      document.getElementById('modal-title').innerText = "Llamada a tu profesor de inglés";
+      document.getElementById('modal-subtitle').innerText = "Conexión telefónica en directo (30 segundos)";
+
+      document.getElementById('modal-content').innerHTML = `
+        <div class="bg-blue-950/70 p-4 rounded-xl border border-cyan-500/40 text-slate-200">
+          <p class="italic text-cyan-300 mb-2">"¡Hola! Sí, te escucho con claridad. A ver... respecto a esa rutina diaria..."</p>
+          <p class="font-medium mb-3">"Estoy bastante seguro de que la opción correcta es la <strong class="text-yellow-400 font-bold text-base">${correctLetter}: ${correctText}</strong>."</p>
+          <div class="text-xs text-slate-400 border-t border-blue-800/80 pt-2 flex items-center gap-1">
+            <span class="text-yellow-400">💡 Pista de apoyo:</span> ${q.tip}
+          </div>
+        </div>
+      `;
+
+      showModal();
+    }
+
+    // 3. Public Audience Poll Lifeline
+    function useLifelinePublic() {
+      if (usedLifelines.public || isAnsweringLocked) return;
+      usedLifelines.public = true;
+      playLifelineSound();
+
+      const btn = document.getElementById('lifeline-public');
+      btn.classList.add('lifeline-used');
+      btn.disabled = true;
+
+      const q = ALL_QUESTIONS[currentQuestionIdx];
+      const correctIdx = q.correct;
+
+      // Calculate plausible percentages with audience favoring the correct answer
+      let pCorrect = Math.floor(Math.random() * 20) + 65; // 65% to 84%
+      let remaining = 100 - pCorrect;
+      let wrong1 = Math.floor(Math.random() * (remaining - 4)) + 2;
+      remaining -= wrong1;
+      let wrong2 = Math.floor(Math.random() * (remaining - 2)) + 1;
+      let wrong3 = remaining - wrong2;
+
+      let percentages = [0, 0, 0, 0];
+      percentages[correctIdx] = pCorrect;
+      let wrongP = [wrong1, wrong2, wrong3];
+      let wIdx = 0;
+      for (let i = 0; i < 4; i++) {
+        if (i !== correctIdx) {
+          percentages[i] = wrongP[wIdx++];
+        }
+      }
+
+      const modalIcon = document.getElementById('modal-icon-container');
+      modalIcon.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
+      document.getElementById('modal-title').innerText = "Votación del Público del Plató";
+      document.getElementById('modal-subtitle').innerText = "Resultados emitidos en tiempo real por los 100 asistentes";
+
+      let barsHtml = `
+        <div class="space-y-2.5 bg-blue-950/70 p-4 rounded-xl border border-purple-500/40">
+          <p class="text-xs text-slate-300 mb-3">Distribución de los votos de la audiencia:</p>
+      `;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      for (let i = 0; i < 4; i++) {
+        const isOptCorrect = (i === correctIdx);
+        barsHtml += `
+          <div>
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span class="${isOptCorrect ? 'text-yellow-400' : 'text-slate-300'}">${letters[i]}: ${q.options[i]}</span>
+              <span class="${isOptCorrect ? 'text-yellow-300' : 'text-slate-400'}">${percentages[i]}%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-blue-900">
+              <div class="h-full rounded-full ${isOptCorrect ? 'bg-gradient-to-r from-yellow-500 to-amber-400 shadow-[0_0_8px_#f59e0b]' : 'bg-gradient-to-r from-blue-600 to-cyan-500'}" style="width: ${percentages[i]}%"></div>
+            </div>
+          </div>
+        `;
+      }
+      barsHtml += `</div>`;
+
+      document.getElementById('modal-content').innerHTML = barsHtml;
+      showModal();
+    }
+
+    function showModal() {
+      document.getElementById('lifeline-modal').classList.remove('hidden');
+    }
+
+    function closeLifelineModal() {
+      document.getElementById('lifeline-modal').classList.add('hidden');
+    }
+
+    function calculateGuaranteedPrize() {
+      // Safe havens at question 5 (1.000€) and question 10 (32.000€)
+      if (currentQuestionIdx >= 10) {
+        return "32.000 €";
+      } else if (currentQuestionIdx >= 5) {
+        return "1.000 €";
+      } else {
+        return "0 €";
+      }
+    }
+
+    function walkAwayPrompt() {
+      if (isAnsweringLocked) return;
+      const prizeAcquired = currentQuestionIdx === 0 ? "0 €" : PRIZES[currentQuestionIdx - 1].formatted;
+      
+      const modalIcon = document.getElementById('modal-icon-container');
+      modalIcon.innerHTML = `💰`;
+      document.getElementById('modal-title').innerText = "¿Deseas Plantarte?";
+      document.getElementById('modal-subtitle').innerText = "Retirada voluntaria con el premio asegurado";
+
+      document.getElementById('modal-content').innerHTML = `
+        <div class="text-center p-2">
+          <p class="text-slate-200 text-sm mb-4">Si decides no arriesgarte en esta pregunta, te marcharás a casa con el dinero acumulado hasta el momento:</p>
+          <div class="text-3xl font-extrabold text-yellow-400 font-['Cinzel'] mb-5">${prizeAcquired}</div>
+          <div class="flex gap-3">
+            <button onclick="confirmWalkAway('${prizeAcquired}')" class="flex-1 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold rounded-xl text-sm transition">
+              Sí, me planto
+            </button>
+            <button onclick="closeLifelineModal()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-sm transition border border-slate-600">
+              Seguir jugando
+            </button>
+          </div>
+        </div>
+      `;
+      showModal();
+    }
+
+    function confirmWalkAway(amount) {
+      closeLifelineModal();
+      triggerGameOver(true, amount);
+    }
+
+    function triggerGameOver(walkedAway = false, customAmount = null) {
+      const modal = document.getElementById('gameover-modal');
+      const badge = document.getElementById('gameover-badge');
+      const emoji = document.getElementById('gameover-emoji');
+      const title = document.getElementById('gameover-title');
+      const desc = document.getElementById('gameover-desc');
+      const prizeEl = document.getElementById('gameover-prize');
+
+      let finalPrize = "0 €";
+
+      if (walkedAway) {
+        finalPrize = customAmount || "0 €";
+        emoji.innerText = "💼";
+        title.innerText = "¡Te has plantado!";
+        desc.innerText = "Decisión estratégica y muy inteligente. Has dominado gran parte del vocabulario de rutinas en inglés.";
+      } else {
+        finalPrize = calculateGuaranteedPrize();
+        emoji.innerText = "❌";
+        title.innerText = "¡Oh, has fallado!";
+        desc.innerText = `Has fallado la pregunta ${currentQuestionIdx + 1}. Te llevas el premio del último seguro garantizado alcanzado.`;
+      }
+
+      prizeEl.innerText = finalPrize;
+      modal.classList.remove('hidden');
+    }
+
+    function triggerVictory() {
+      playCorrectSound();
+      const modal = document.getElementById('gameover-modal');
+      document.getElementById('gameover-badge').classList.add('border-yellow-300', 'bg-yellow-500/20');
+      document.getElementById('gameover-emoji').innerText = "🏆";
+      document.getElementById('gameover-title').innerText = "¡ERES MILLONARIO!";
+      document.getElementById('gameover-desc').innerText = "¡Enhorabuena! Has respondido a las 15 preguntas correctamente. Dominas a la perfección todas las rutinas diarias en inglés.";
+      document.getElementById('gameover-prize').innerText = "1.000.000 €";
+
+      modal.classList.remove('hidden');
+
+      // Shoot festive confetti
+      try {
+        confetti({
+          particleCount: 160,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+        setTimeout(() => {
+          confetti({
+            particleCount: 200,
+            spread: 120,
+            origin: { y: 0.5 }
+          });
+        }, 500);
+      } catch(e) {}
+    }
+
+    function restartGame() {
+      currentQuestionIdx = 0;
+      isAnsweringLocked = false;
+      usedLifelines = { fifty: false, phone: false, public: false };
+
+      // Reset Lifelines UI
+      ['lifeline-5050', 'lifeline-phone', 'lifeline-public'].forEach(id => {
+        const btn = document.getElementById(id);
+        btn.classList.remove('lifeline-used');
+        btn.disabled = false;
+      });
+
+      document.getElementById('gameover-modal').classList.add('hidden');
+      document.getElementById('lifeline-modal').classList.add('hidden');
+
+      renderLadder();
+      loadQuestion(0);
+    }
+
+    // Initialize application on window ready
+    window.onload = function() {
+      renderLadder();
+      loadQuestion(0);
+    };
+  </script>
+</body>
+</html>
