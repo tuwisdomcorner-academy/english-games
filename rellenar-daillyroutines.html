@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fill in the Blanks - Daily Routines</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f0f9ff;
+      color: #0f172a;
+    }
+
+    /* Estilos para el espacio vacío donde irá la palabra */
+    .blank-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 160px;
+      min-height: 38px;
+      margin: 0 4px;
+      padding: 0 4px;
+      border-bottom: 3px dashed #94a3b8;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 6px 6px 0 0;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .blank-slot:hover {
+      background-color: #e2e8f0;
+      border-color: #64748b;
+    }
+
+    .blank-slot.has-chip {
+      border-bottom: none;
+      background-color: transparent;
+      min-width: auto;
+    }
+
+    /* Estilos para las palabras (fichas) */
+    .word-chip {
+      display: inline-block;
+      padding: 6px 14px;
+      background-color: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 9999px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      font-size: 0.95rem;
+    }
+
+    .word-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border-color: #94a3b8;
+    }
+
+    /* Estado de palabra seleccionada */
+    .word-chip.selected {
+      background-color: #dbeafe;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+      transform: scale(1.05);
+    }
+
+    /* Estado de palabra colocada en el texto */
+    .word-chip.placed {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+      color: #0f172a;
+      box-shadow: none;
+      margin: -4px 0; /* Ajuste para alinear con el texto */
+    }
+
+    .word-chip.placed:hover {
+      background-color: #e2e8f0;
+      border-color: #ef4444; /* Rojo al pasar el ratón para indicar que se puede quitar */
+    }
+
+    /* Corrección visual al validar */
+    .word-chip.correct {
+      background-color: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #166534 !important;
+      pointer-events: none;
+    }
+
+    .word-chip.incorrect {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+    }
+
+    /* Animación de entrada */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sticky word bank at bottom */
+    .word-bank-container {
+      position: sticky;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+      z-index: 50;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-40"> <!-- pb-40 ensures space for sticky footer -->
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-sky-100">
+    <div class="max-w-4xl mx-auto px-4 py-6 text-center">
+      <h1 class="text-3xl font-extrabold text-sky-900 tracking-tight">Daily Routines Story</h1>
+      <p class="text-slate-500 mt-2 font-medium">Fill in the blanks with the correct vocabulary.</p>
+    </div>
+  </header>
+
+  <!-- Main Content (Sentences) -->
+  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 fade-in">
+    
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-8 shadow-sm">
+      <h3 class="font-bold text-blue-800 flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Instrucciones:
+      </h3>
+      <p class="text-blue-700 text-sm mt-1 ml-7">
+        <strong>1.</strong> Toca o haz clic en una palabra del panel inferior (se pondrá azul).<br>
+        <strong>2.</strong> Toca el espacio vacío donde quieras colocarla.<br>
+        <strong>3.</strong> Si quieres quitar una palabra, simplemente tócala de nuevo en el texto.
+      </p>
+    </div>
+
+    <!-- Story container -->
+    <div class="bg-white rounded-2xl shadow-md p-6 sm:p-10 text-lg leading-relaxed text-slate-700 space-y-6">
+      
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">1.</span>
+        <p>When my alarm rings at 7:00 a.m., the first thing I do is <span class="blank-slot" data-correct="wake up" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">2.</span>
+        <p>Five minutes later, I leave the bed and <span class="blank-slot" data-correct="get up" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">3.</span>
+        <p>I arrange my pillows and blankets because I always <span class="blank-slot" data-correct="make my bed" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">4.</span>
+        <p>I go to the bathroom with a towel to <span class="blank-slot" data-correct="have a shower" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">5.</span>
+        <p>Next, I open my wardrobe to <span class="blank-slot" data-correct="get dressed" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">6.</span>
+        <p>I use a comb in front of the mirror to <span class="blank-slot" data-correct="brush my hair" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">7.</span>
+        <p>I go to the kitchen to <span class="blank-slot" data-correct="have breakfast" onclick="handleBlankClick(this)"></span> with cereal and milk.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">8.</span>
+        <p>Afterwards, I use my toothbrush and toothpaste to <span class="blank-slot" data-correct="clean my teeth" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">9.</span>
+        <p>I put my books and pencils inside my backpack when I <span class="blank-slot" data-correct="pack my bag" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">10.</span>
+        <p>I leave the house and take the bus to <span class="blank-slot" data-correct="go to school" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">11.</span>
+        <p>The bell rings at 8:30 a.m. when we <span class="blank-slot" data-correct="start school" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">12.</span>
+        <p>At 1:00 p.m., my friends and I go to the cafeteria to <span class="blank-slot" data-correct="have lunch" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">13.</span>
+        <p>At 3:00 p.m., the lessons are over and we <span class="blank-slot" data-correct="finish school" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">14.</span>
+        <p>After classes, I take the bus to <span class="blank-slot" data-correct="go home" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">15.</span>
+        <p>In my bedroom, I sit at my desk to <span class="blank-slot" data-correct="do homework" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">16.</span>
+        <p>Later, I play football or ride my bike to <span class="blank-slot" data-correct="do sports/free-time activities" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">17.</span>
+        <p>At 8:30 p.m., I sit with my family in the dining room to <span class="blank-slot" data-correct="have dinner" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">18.</span>
+        <p>When I am tired, I put on my pajamas and <span class="blank-slot" data-correct="go to bed" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+      <div class="flex items-start">
+        <span class="font-bold text-sky-400 mr-3 mt-1">19.</span>
+        <p>I read a book for a few minutes and finally <span class="blank-slot" data-correct="go to sleep" onclick="handleBlankClick(this)"></span>.</p>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+      <button onclick="checkAnswers()" class="px-8 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl shadow-lg transform transition hover:-translate-y-1 text-lg w-full sm:w-auto">
+        Comprobar Respuestas
+      </button>
+      <button onclick="resetGame()" class="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl shadow transition text-lg w-full sm:w-auto">
+        Reiniciar
+      </button>
+    </div>
+
+    <div id="result-message" class="mt-6 text-center text-xl font-bold hidden">
+      <!-- Score appears here -->
+    </div>
+
+  </main>
+
+  <!-- Word Bank (Sticky Footer) -->
+  <div class="word-bank-container p-4 w-full">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-xs uppercase font-bold tracking-widest text-slate-400 mb-3 text-center">Banco de Palabras</div>
+      <div id="word-bank" class="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <!-- Words injected via JS to shuffle them initially -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const vocabulary = [
+      "brush my hair", "clean my teeth", "do homework", "do sports/free-time activities", 
+      "finish school", "get dressed", "get up", "go home", "go to bed", "go to sleep", 
+      "go to school", "have a shower", "have breakfast", "have dinner", "have lunch", 
+      "make my bed", "pack my bag", "start school", "wake up"
+    ];
+
+    let activeChip = null;
+
+    // Initialize the game
+    function initGame() {
+      const bank = document.getElementById('word-bank');
+      bank.innerHTML = '';
+      
+      // Shuffle vocabulary array
+      const shuffled = [...vocabulary].sort(() => Math.random() - 0.5);
+      
+      shuffled.forEach(word => {
+        const chip = document.createElement('div');
+        chip.className = 'word-chip';
+        chip.innerText = word;
+        chip.onclick = () => handleChipClick(chip);
+        bank.appendChild(chip);
+      });
+
+      // Clear all blanks
+      document.querySelectorAll('.blank-slot').forEach(blank => {
+        blank.innerHTML = '';
+        blank.classList.remove('has-chip');
+      });
+
+      // Hide results
+      const resMsg = document.getElementById('result-message');
+      resMsg.classList.add('hidden');
+      resMsg.className = 'mt-6 text-center text-xl font-bold hidden';
+      
+      activeChip = null;
+    }
+
+    // Handle clicking a word chip
+    function handleChipClick(chip) {
+      // If the game is over/checked, prevent moving correct chips
+      if (chip.classList.contains('correct')) return;
+
+      // If chip is in the word bank
+      if (chip.parentElement.id === 'word-bank') {
+        if (activeChip) {
+          activeChip.classList.remove('selected');
+        }
+        // Deselect if clicking the same chip
+        if (activeChip === chip) {
+          activeChip = null;
+          return;
+        }
+        activeChip = chip;
+        activeChip.classList.add('selected');
+      } 
+      // If chip is inside a blank slot (return it to the bank)
+      else {
+        const bank = document.getElementById('word-bank');
+        bank.appendChild(chip);
+        chip.classList.remove('placed', 'incorrect');
+        
+        // Remove class from the parent blank slot
+        chip.parentElement.classList.remove('has-chip');
+        
+        if(activeChip) activeChip.classList.remove('selected');
+        activeChip = null;
+      }
+    }
+
+    // Handle clicking a blank space
+    function handleBlankClick(blank) {
+      if (activeChip) {
+        // If the blank already has a word, return the old word to the bank first
+        if (blank.children.length > 0) {
+          const existingChip = blank.children[0];
+          if(existingChip.classList.contains('correct')) return; // don't replace correct answers after checking
+          
+          document.getElementById('word-bank').appendChild(existingChip);
+          existingChip.classList.remove('placed', 'incorrect');
+        }
+        
+        // Move the active chip into the blank
+        blank.appendChild(activeChip);
+        blank.classList.add('has-chip');
+        
+        // Style the chip to look placed
+        activeChip.classList.remove('selected', 'incorrect');
+        activeChip.classList.add('placed');
+        activeChip = null;
+      } 
+      // If blank is clicked and has a child, but no active chip, return child to bank
+      else if (blank.children.length > 0) {
+        const existingChip = blank.children[0];
+        if(!existingChip.classList.contains('correct')) {
+          document.getElementById('word-bank').appendChild(existingChip);
+          existingChip.classList.remove('placed', 'incorrect');
+          blank.classList.remove('has-chip');
+        }
+      }
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      let total = vocabulary.length;
+      const blanks = document.querySelectorAll('.blank-slot');
+
+      blanks.forEach(blank => {
+        if (blank.children.length > 0) {
+          const chip = blank.children[0];
+          const correctWord = blank.getAttribute('data-correct');
+          
+          if (chip.innerText.trim() === correctWord) {
+            chip.classList.remove('placed', 'incorrect');
+            chip.classList.add('correct');
+            score++;
+          } else {
+            chip.classList.remove('placed');
+            chip.classList.add('incorrect');
+          }
+        }
+      });
+
+      const resMsg = document.getElementById('result-message');
+      resMsg.classList.remove('hidden');
+
+      if (score === total) {
+        resMsg.innerHTML = `<span class="text-green-600">¡Perfecto! Has acertado ${score}/${total}. ¡Enhorabuena! 🥳</span>`;
+        shootConfetti();
+      } else if (score > 10) {
+        resMsg.innerHTML = `<span class="text-sky-600">¡Muy bien! Tienes ${score}/${total} aciertos. Revisa las rojas e inténtalo de nuevo.</span>`;
+      } else {
+        resMsg.innerHTML = `<span class="text-orange-500">Has conseguido ${score}/${total}. ¡Sigue practicando, tú puedes! 💪</span>`;
+      }
+    }
+
+    function resetGame() {
+      initGame();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function shootConfetti() {
+      var duration = 3 * 1000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#38bdf8', '#fbbf24', '#34d399']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#38bdf8', '#fbbf24', '#34d399']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    // Start game on load
+    window.onload = initGame;
+  </script>
+</body>
+</html>
