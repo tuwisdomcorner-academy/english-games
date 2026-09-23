@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test - Daily Routines | Wisdom Corner Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            academy: {
+              blue: '#1A237E', // Dark Blue
+              gold: '#D4AF37', // Elegant Gold
+              light: '#f8fafc'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f0f4f8;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 10px 30px rgba(26, 35, 126, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    /* Custom Input Styling */
+    .blank-input {
+      border: none;
+      border-bottom: 2px dashed #94a3b8;
+      background-color: transparent;
+      padding: 2px 8px;
+      margin: 0 4px;
+      text-align: center;
+      font-weight: 700;
+      color: #1A237E;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      min-width: 140px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .blank-input:focus {
+      border-bottom: 2px solid #D4AF37;
+      background-color: rgba(212, 175, 55, 0.05);
+    }
+
+    /* Validation states */
+    .blank-input.correct {
+      border-bottom: 2px solid #22c55e;
+      color: #166534;
+      background-color: #dcfce7;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .blank-input.incorrect {
+      border-bottom: 2px solid #ef4444;
+      color: #991b1b;
+      background-color: #fee2e2;
+      border-radius: 4px 4px 0 0;
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .sentence-row {
+      counter-increment: sentence;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .sentence-row::before {
+      content: counter(sentence) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-weight: 700;
+      color: #D4AF37;
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800 font-sans">
+
+  <header class="bg-academy-blue text-white py-4 shadow-md border-b-4 border-academy-gold sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full border-2 border-academy-gold flex items-center justify-center bg-white/10 backdrop-blur-sm">
+          <svg class="w-7 h-7 text-academy-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-wide text-academy-gold">Wisdom Corner Academy</h1>
+          <p class="text-xs text-blue-200 tracking-widest uppercase font-semibold">Written Evaluation</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4 bg-white/10 px-5 py-2 rounded-xl border border-white/20">
+        <div class="text-sm uppercase tracking-wider font-semibold text-blue-200">Score:</div>
+        <div class="text-2xl font-serif font-bold text-academy-gold">
+          <span id="score-current">0</span><span class="text-lg text-blue-300">/15</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 md:py-12">
+    
+    <div class="glass-card rounded-2xl p-6 md:p-10">
+      
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-serif font-bold text-academy-blue mb-3">Daily Routines: Cloze Test</h2>
+        <p class="text-slate-500 font-medium max-w-2xl mx-auto">
+          Read the sentences carefully. Type the exact English vocabulary phrase in the blanks. Use the Spanish translation in parentheses as a hint.
+        </p>
+      </div>
+
+      <div id="sentences-container" class="space-y-8 text-lg leading-loose">
+        <!-- JS will inject the sentences here -->
+      </div>
+
+      <!-- Result Message -->
+      <div id="feedback-message" class="mt-8 text-center text-xl font-bold font-serif hidden transition-all duration-300 p-4 rounded-xl">
+      </div>
+
+      <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4 pt-6 border-t border-slate-200">
+        <button onclick="checkAnswers()" class="w-full sm:w-auto px-10 py-4 bg-academy-blue hover:bg-[#121858] text-white font-bold rounded-xl shadow-[0_4px_14px_0_rgba(26,35,126,0.39)] hover:shadow-[0_6px_20px_rgba(26,35,126,0.23)] hover:-translate-y-0.5 transition duration-200 text-lg uppercase tracking-wide">
+          Check Answers
+        </button>
+        <button onclick="resetTest()" class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-slate-300 hover:border-slate-400 text-slate-600 hover:text-slate-800 font-bold rounded-xl shadow-sm transition duration-200 text-lg uppercase tracking-wide">
+          Reset
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const questionsData = [
+      {
+        pre: "In the morning, the alarm rings and I",
+        answer: "wake up",
+        post: "at 7:00 AM.",
+        hint: "despertarse"
+      },
+      {
+        pre: "After five minutes, I",
+        answer: "get up",
+        post: "and stretch my arms.",
+        hint: "levantarse de la cama"
+      },
+      {
+        pre: "I always",
+        answer: "make my bed",
+        post: "so my room looks tidy.",
+        hint: "hacer mi cama"
+      },
+      {
+        pre: "I go to the bathroom to",
+        answer: "have a shower",
+        post: "with warm water and soap.",
+        hint: "ducharse"
+      },
+      {
+        pre: "I open my closet to",
+        answer: "get dressed",
+        post: "for the day.",
+        hint: "vestirse"
+      },
+      {
+        pre: "I look in the mirror to",
+        answer: "brush my hair",
+        post: "so it is not messy.",
+        hint: "cepillarme el pelo"
+      },
+      {
+        pre: "I go to the kitchen to",
+        answer: "have breakfast",
+        post: "with cereal, toast, and milk.",
+        hint: "desayunar"
+      },
+      {
+        pre: "After eating, I always",
+        answer: "clean my teeth",
+        post: "to prevent cavities.",
+        hint: "lavarme los dientes"
+      },
+      {
+        pre: "Before leaving, I put my books inside to",
+        answer: "pack my bag",
+        post: "properly.",
+        hint: "preparar la mochila"
+      },
+      {
+        pre: "I take the yellow bus to",
+        answer: "go to school",
+        post: "every weekday.",
+        hint: "ir al colegio"
+      },
+      {
+        pre: "At 1:00 PM, I go to the cafeteria to",
+        answer: "have lunch",
+        post: "with my friends.",
+        hint: "comer / almorzar"
+      },
+      {
+        pre: "At 3:00 PM, the final bell rings and we",
+        answer: "finish school",
+        post: ".",
+        hint: "terminar las clases"
+      },
+      {
+        pre: "After a long day of learning, I walk to",
+        answer: "go home",
+        post: "and relax on the sofa.",
+        hint: "ir a casa"
+      },
+      {
+        pre: "In the evening, I sit with my family to",
+        answer: "have dinner",
+        post: "together.",
+        hint: "cenar"
+      },
+      {
+        pre: "Finally, I turn off the lights, close my eyes and",
+        answer: "go to sleep",
+        post: ".",
+        hint: "dormirse"
+      }
+    ];
+
+    const container = document.getElementById('sentences-container');
+    const scoreDisplay = document.getElementById('score-current');
+    const feedbackMsg = document.getElementById('feedback-message');
+
+    function renderSentences() {
+      container.innerHTML = '';
+      questionsData.forEach((q, index) => {
+        const row = document.createElement('div');
+        row.className = 'sentence-row group';
+        
+        // Build the HTML structure for the sentence
+        row.innerHTML = `
+          <span class="text-slate-700">${q.pre}</span>
+          <input type="text" id="input-${index}" class="blank-input w-32 sm:w-48" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="...">
+          <span class="text-sm font-semibold text-academy-gold ml-1">(${q.hint})</span>
+          <span class="text-slate-700">${q.post}</span>
+        `;
+        
+        container.appendChild(row);
+
+        // Add event listener to clear error state when typing
+        const inputField = document.getElementById(`input-${index}`);
+        inputField.addEventListener('input', function() {
+          this.classList.remove('incorrect');
+        });
+      });
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      const total = questionsData.length;
+
+      questionsData.forEach((q, index) => {
+        const inputField = document.getElementById(`input-${index}`);
+        // Normalize string: lowercase, remove extra spaces inside, trim ends
+        const userAnswer = inputField.value.trim().replace(/\s+/g, ' ').toLowerCase();
+        const correctAnswer = q.answer.toLowerCase();
+
+        inputField.classList.remove('correct', 'incorrect');
+
+        if (userAnswer === correctAnswer) {
+          inputField.classList.add('correct');
+          inputField.disabled = true; // Lock correct answers
+          score++;
+        } else {
+          inputField.classList.add('incorrect');
+        }
+      });
+
+      // Update UI Score
+      scoreDisplay.innerText = score;
+      feedbackMsg.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-yellow-100', 'text-yellow-800');
+
+      if (score === total) {
+        feedbackMsg.classList.add('bg-green-100', 'text-green-800');
+        feedbackMsg.innerText = "🏆 Outstanding! 100% Correct. You master the daily routines!";
+        fireConfetti();
+      } else if (score > (total * 0.7)) {
+        feedbackMsg.classList.add('bg-yellow-100', 'text-yellow-800');
+        feedbackMsg.innerText = "Good job! You got most of them right. Check the red fields and try again.";
+      } else {
+        feedbackMsg.classList.add('bg-red-100', 'text-red-800');
+        feedbackMsg.innerText = "Keep practicing! Check your spelling and try to fix the red fields.";
+      }
+    }
+
+    function resetTest() {
+      scoreDisplay.innerText = "0";
+      feedbackMsg.classList.add('hidden');
+      renderSentences(); // Re-renders fresh inputs
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function fireConfetti() {
+      var count = 200;
+      var defaults = { origin: { y: 0.7 }, zIndex: 100 };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55, colors: ['#D4AF37', '#1A237E'] });
+      fire(0.2, { spread: 60, colors: ['#D4AF37', '#ffffff'] });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+
+    // Initialize on page load
+    window.onload = renderSentences;
+  </script>
+</body>
+</html>
