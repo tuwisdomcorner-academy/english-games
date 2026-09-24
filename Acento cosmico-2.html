@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión: Acento Cósmico - Wisdom Corner Academy</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#030712;color:#fff;font-family:'Segoe UI',Roboto,system-ui,sans-serif;overflow:hidden;user-select:none}
+  #game{position:relative;width:100vw;height:100vh;background:radial-gradient(circle at 50% 20%,#0f172a 0%,#030712 100%);overflow:hidden}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  
+  /* HUD */
+  .hud{position:absolute;top:15px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;z-index:10;pointer-events:none}
+  .panel{background:rgba(15,23,42,0.88);border:1px solid rgba(212,175,55,0.4);box-shadow:0 8px 32px rgba(0,0,0,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:8px 16px;display:flex;align-items:center;gap:14px}
+  .title{font-weight:900;letter-spacing:1px;font-size:15px;color:#d4af37}
+  .stats{font-weight:700;font-size:14px}
+  .lives{color:#ef4444;letter-spacing:2px;font-size:17px}
+  .score{color:#facc15}
+  .weapon-tag{background:rgba(212,175,55,0.2);color:#fde047;border:1px solid #d4af37;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800;text-transform:uppercase}
+  .shield-tag{background:rgba(6,182,212,0.25);color:#22d3ee;border:1px solid #06b6d4;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800;text-transform:uppercase;display:none}
+
+  /* Boss Bar */
+  #bossHud{position:absolute;top:75px;left:50%;transform:translateX(-50%);width:min(480px,88vw);z-index:10;display:none;background:rgba(15,23,42,0.92);border:1px solid #ef4444;padding:9px 16px;border-radius:14px;text-align:center;box-shadow:0 0 25px rgba(239,68,68,0.3)}
+  .boss-name{font-weight:900;font-size:13px;color:#fca5a5;letter-spacing:1px;margin-bottom:5px}
+  .bar-container{height:14px;background:#334155;border-radius:7px;overflow:hidden;position:relative}
+  #bossHealthBar{height:100%;background:linear-gradient(90deg,#ef4444,#dc2626);width:100%;transition:width .2s}
+  .boss-shield-info{font-size:11px;font-weight:800;color:#93c5fd;margin-top:4px}
+
+  /* Cartel de Alerta de Error Ortográfico */
+  #errorNotice{
+    position:absolute;
+    top:125px;
+    left:50%;
+    transform:translateX(-50%) scale(0.85);
+    background:rgba(239,68,68,0.95);
+    border:2px solid #fecaca;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:18px;
+    font-weight:900;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(239,68,68,0.6);
+    z-index:18;
+    pointer-events:none;
+    opacity:0;
+    transition:all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  #errorNotice.show{
+    opacity:1;
+    transform:translateX(-50%) scale(1);
+  }
+  #errorNotice .err-title{font-size:16px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:6px}
+  #errorNotice .err-sub{font-size:13px;color:#fee2e2;font-weight:600;margin-top:2px}
+
+  /* Modals */
+  .modal-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(3,7,18,0.88);backdrop-filter:blur(12px)}
+  .modal{width:min(780px,94vw);max-height:90vh;overflow-y:auto;padding:30px;border-radius:24px;background:linear-gradient(145deg,rgba(15,23,42,0.98),rgba(11,19,43,0.98));border:2px solid #d4af37;box-shadow:0 25px 80px rgba(0,0,0,0.8);text-align:center}
+  h1{font-size:clamp(26px,4.5vw,44px);margin:0 0 6px;color:#d4af37;letter-spacing:1px}
+  h2{font-size:26px;color:#facc15;margin:0 0 10px}
+  p{color:#cbd5e1;line-height:1.5;font-size:14px}
+  
+  /* Reglas de Acentuación */
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0;text-align:left}
+  .rule-card{background:rgba(255,255,255,0.05);border:1px solid rgba(212,175,55,0.3);padding:12px;border-radius:12px}
+  .rule-card b{color:#d4af37;display:block;margin-bottom:4px;font-size:13px}
+  .rule-card span{font-size:12px;color:#94a3b8;line-height:1.3;display:block}
+  .rule-card i{color:#fde047;font-style:normal;font-weight:700}
+
+  button.btn-primary{border:0;border-radius:14px;padding:14px 28px;font-size:16px;font-weight:900;color:#0d1b2a;background:linear-gradient(90deg,#d4af37,#facc15);cursor:pointer;box-shadow:0 8px 25px rgba(212,175,55,0.35);transition:transform .2s}
+  button.btn-primary:hover{transform:scale(1.04)}
+
+  /* Word Floating HTML elements */
+  .wordObj{
+    position:absolute;
+    z-index:5;
+    padding:7px 15px;
+    border-radius:12px;
+    font-size:clamp(18px,2.2vw,28px);
+    font-weight:900;
+    letter-spacing:1px;
+    pointer-events:none;
+    white-space:nowrap;
+    background:rgba(15,23,42,0.92);
+    border:2px solid rgba(212,175,55,0.55);
+    box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    transform-origin:center;
+    transition:border-color 0.1s, box-shadow 0.1s, background 0.1s;
+  }
+  
+  /* VERDE FOSFORITO AL ACERTAR PALABRA ACENTUADA */
+  .wordObj.hit-ok{
+    animation: popSuccessGreen 0.65s ease-out forwards !important;
+    background: rgba(6, 40, 20, 0.98) !important;
+    border-color: #00ff66 !important;
+    color: #00ff66 !important;
+    text-shadow: 0 0 14px #00ff66, 0 0 28px #00ff66 !important;
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.8), inset 0 0 15px rgba(0, 255, 102, 0.4) !important;
+  }
+  @keyframes popSuccessGreen {
+    0% { transform: scale(1); opacity: 1; }
+    35% { transform: scale(1.35); opacity: 1; }
+    75% { transform: scale(1.4); opacity: 0.9; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  .wordObj.hit-bad{animation:popWrong .35s ease-out forwards}
+  @keyframes popWrong{
+    0%{transform:scale(1) rotate(0deg);border-color:#ef4444;background:#ef4444}
+    25%{transform:scale(1.1) rotate(-6deg)}
+    50%{transform:scale(1.1) rotate(6deg)}
+    100%{opacity:0;transform:scale(0.5)}
+  }
+
+  /* Brillo parpadeante para palabras con tilde a punto de escapar */
+  .wordObj.glow-escape {
+    animation: glowPulse 0.4s infinite alternate;
+    border-color: #facc15 !important;
+  }
+  @keyframes glowPulse {
+    0% {
+      box-shadow: 0 0 10px #facc15, 0 0 25px rgba(250,204,21,0.5);
+      background: rgba(30, 27, 75, 0.96);
+      color: #fef08a;
+    }
+    100% {
+      box-shadow: 0 0 25px #ef4444, 0 0 45px rgba(239,68,68,0.8);
+      background: rgba(88, 28, 28, 0.96);
+      color: #ffffff;
+      border-color: #ef4444 !important;
+    }
+  }
+
+  /* Sacudida de pantalla (Screen Shake) */
+  .screen-shake {
+    animation: shakeEffect 0.35s ease-in-out;
+  }
+  @keyframes shakeEffect {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-8px, 6px); }
+    40% { transform: translate(8px, -6px); }
+    60% { transform: translate(-6px, -4px); }
+    80% { transform: translate(6px, 4px); }
+  }
+
+  #flash{position:absolute;inset:0;z-index:15;pointer-events:none;opacity:0}
+  @keyframes flashRed{0%{opacity:.6;background:#ef4444}100%{opacity:0}}
+  @keyframes flashGreen{0%{opacity:.4;background:#22c55e}100%{opacity:0}}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div id="game">
+  <canvas id="space"></canvas>
+  <div id="flash"></div>
+
+  <!-- Alerta de Fallo Ortográfico -->
+  <div id="errorNotice">
+    <div class="err-title">😢 ❌ ¡ERROR ORTOGRÁFICO!</div>
+    <div class="err-sub" id="errorNoticeText">¡Esa palabra NO lleva tilde!</div>
+  </div>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="panel title">🏛️ WISDOM CORNER</div>
+    <div class="panel stats">
+      <span>NIVEL <b id="hudLevel" style="color:#38bdf8">1</b>/10</span>
+      <span>RESTANTES: <b id="hudWords" style="color:#a78bfa">10</b></span>
+      <span class="score">⭐ <span id="hudScore">0</span></span>
+      <span id="hudWeapon" class="weapon-tag">Disparo Simple</span>
+      <span id="hudShield" class="shield-tag">🛡️ ESCUDO ACTIVO</span>
+      <span class="lives" id="hudLives">♥♥♥♥♥♥♥</span>
+    </div>
+  </div>
+
+  <!-- Barra de Jefe -->
+  <div id="bossHud">
+    <div class="boss-name" id="bossName">ALERTA: NODRIZA CÓSMICA</div>
+    <div class="bar-container">
+      <div id="bossHealthBar"></div>
+    </div>
+    <div class="boss-shield-info" id="bossShieldText">🛡️ ESCUDO ACTIVO: Acentúa 3 palabras para romperlo</div>
+  </div>
+
+  <!-- Modal Pantalla de Inicio -->
+  <div id="startScreen" class="modal-overlay">
+    <div class="modal">
+      <h1>MISIÓN: ACENTO CÓSMICO</h1>
+      <p>Defiende el cosmos pilotando la nave estelar. <b>Dispara solo a las palabras que necesitan tilde</b> y elimina naves invasoras.</p>
+      
+      <div class="rule-grid">
+        <div class="rule-card">
+          <b>⚡ AGUDAS</b>
+          <span>Tilde si acaban en <i>-N</i>, <i>-S</i> o <i>VOCAL</i>.<br>Ejemplos: <i>canción, compás, rubí</i>.</span>
+        </div>
+        <div class="rule-card">
+          <b>🌙 LLANAS</b>
+          <span>Tilde si <i>NO</i> acaban en <i>-N</i>, <i>-S</i> ni <i>VOCAL</i>.<br>Ejemplos: <i>árbol, lápiz, mármol</i>.</span>
+        </div>
+        <div class="rule-card">
+          <b>💥 ESDRÚJULAS</b>
+          <span><i>SIEMPRE</i> llevan tilde.<br>Ejemplos: <i>química, música, brújula</i>.</span>
+        </div>
+        <div class="rule-card">
+          <b>🔥 HIATOS / DIACRÍTICA</b>
+          <span>Vocal cerrada tónica: <i>país, maíz, baúl</i>.<br>Tilde diacrítica: <i>más, él, té, tú</i>.</span>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#94a3b8;margin-bottom:18px">
+        🚀 <b>Evolución del Arsenal (Tiro 100% Vertical):</b><br>
+        1. <b>Disparo Simple</b> ➔ 2. <b>Metralleta Rápida</b> ➔ 3. <b>Rayo de Plasma</b> ➔ 4. <b>Llamarada Recta</b>.<br>
+        🛡️ <b>Super Escudo:</b> Con la Llamarada activa, ¡2 aciertos seguidos más activarán un <b>escudo protector</b> que absorberá 1 golpe completo!<br>
+        ✨ <b>Aviso de Acierto:</b> Cada palabra acentuada correctamente se pondrá en <b>verde fosforito</b> con su tilde.<br>
+        👾 <b>5 Jefes Únicos:</b> Cada jefe tiene un diseño visual completamente distinto.
+      </p>
+
+      <button class="btn-primary" id="btnStart">DESPEGAR CON 7 VIDAS 🚀</button>
+    </div>
+  </div>
+
+  <!-- Modal Fin de Partida -->
+  <div id="endScreen" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="endTitle">🚨 MISIÓN CONCLUIDA</h2>
+      <p id="endDesc" style="font-size:16px;margin:15px 0"></p>
+      <button class="btn-primary" id="btnRestart">VOLVER A JUGAR 🔄</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   SÍNTESIS DE AUDIO (SIN ARCHIVOS EXTERNOS)
+========================================================================= */
+let audioCtx = null;
+function playSound(type) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'error') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.35);
+    } else if (type === 'hit') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    } else if (type === 'shield_on') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    } else if (type === 'shield_break') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.25);
+    }
+  } catch (e) {}
+}
+
+/* =========================================================================
+   BASE DE DATOS: 10 NIVELES
+========================================================================= */
+const LEVELS_DATA = [
+  // NIVEL 1
+  [
+    { text: "cancion", correctText: "canción", needsAccent: true },
+    { text: "mesa", correctText: "mesa", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "arbol", correctText: "árbol", needsAccent: true },
+    { text: "hotel", correctText: "hotel", needsAccent: false, rule: "Aguda acabada en consonante -L: NO lleva tilde." },
+    { text: "musica", correctText: "música", needsAccent: true },
+    { text: "papel", correctText: "papel", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." },
+    { text: "compas", correctText: "compás", needsAccent: true },
+    { text: "amigo", correctText: "amigo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "raton", correctText: "ratón", needsAccent: true },
+    { text: "ventana", correctText: "ventana", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." }
+  ],
+  // NIVEL 2 (JEFE 1: DESTRUCTOR ALADO)
+  [
+    { text: "pajaro", correctText: "pájaro", needsAccent: true },
+    { text: "reloj", correctText: "reloj", needsAccent: false, rule: "Aguda acabada en -J: NO lleva tilde." },
+    { text: "lapiz", correctText: "lápiz", needsAccent: true },
+    { text: "nube", correctText: "nube", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "telefono", correctText: "teléfono", needsAccent: true },
+    { text: "sabor", correctText: "sabor", needsAccent: false, rule: "Aguda acabada en -R: NO lleva tilde." },
+    { text: "balcon", correctText: "balcón", needsAccent: true },
+    { text: "pared", correctText: "pared", needsAccent: false, rule: "Aguda acabada en -D: NO lleva tilde." },
+    { text: "magico", correctText: "mágico", needsAccent: true },
+    { text: "silla", correctText: "silla", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." }
+  ],
+  // NIVEL 3
+  [
+    { text: "facil", correctText: "fácil", needsAccent: true },
+    { text: "libro", correctText: "libro", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "rubi", correctText: "rubí", needsAccent: true },
+    { text: "cartel", correctText: "cartel", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." },
+    { text: "esdrujula", correctText: "esdrújula", needsAccent: true },
+    { text: "pluma", correctText: "pluma", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "dificil", correctText: "difícil", needsAccent: true },
+    { text: "coche", correctText: "coche", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "camara", correctText: "cámara", needsAccent: true },
+    { text: "salud", correctText: "salud", needsAccent: false, rule: "Aguda acabada en -D: NO lleva tilde." }
+  ],
+  // NIVEL 4 (JEFE 2: FORTALEZA OCULAR CÍCLOPE)
+  [
+    { text: "raiz", correctText: "raíz", needsAccent: true },
+    { text: "feliz", correctText: "feliz", needsAccent: false, rule: "Aguda acabada en -Z: NO lleva tilde." },
+    { text: "marmol", correctText: "mármol", needsAccent: true },
+    { text: "cereal", correctText: "cereal", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." },
+    { text: "oxigeno", correctText: "oxígeno", needsAccent: true },
+    { text: "pescado", correctText: "pescado", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "corazon", correctText: "corazón", needsAccent: true },
+    { text: "zapato", correctText: "zapato", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "rapido", correctText: "rápido", needsAccent: true },
+    { text: "cantar", correctText: "cantar", needsAccent: false, rule: "Aguda acabada en -R: NO lleva tilde." }
+  ],
+  // NIVEL 5
+  [
+    { text: "maiz", correctText: "maíz", needsAccent: true },
+    { text: "verde", correctText: "verde", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "angel", correctText: "ángel", needsAccent: true },
+    { text: "abuela", correctText: "abuela", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "medico", correctText: "médico", needsAccent: true },
+    { text: "dibujo", correctText: "dibujo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "volcan", correctText: "volcán", needsAccent: true },
+    { text: "techo", correctText: "techo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "ultimo", correctText: "último", needsAccent: true },
+    { text: "tambor", correctText: "tambor", needsAccent: false, rule: "Aguda acabada en -R: NO lleva tilde." }
+  ],
+  // NIVEL 6 (JEFE 3: NAVE BIO-MANTIS)
+  [
+    { text: "murcielago", correctText: "murciélago", needsAccent: true },
+    { text: "guitarra", correctText: "guitarra", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "lider", correctText: "líder", needsAccent: true },
+    { text: "ciudad", correctText: "ciudad", needsAccent: false, rule: "Aguda acabada en -D: NO lleva tilde." },
+    { text: "oceano", correctText: "océano", needsAccent: true },
+    { text: "espada", correctText: "espada", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "aleman", correctText: "alemán", needsAccent: true },
+    { text: "leopardo", correctText: "leopardo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "sabado", correctText: "sábado", needsAccent: true },
+    { text: "cordel", correctText: "cordel", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." }
+  ],
+  // NIVEL 7
+  [
+    { text: "rio", correctText: "río", needsAccent: true },
+    { text: "parque", correctText: "parque", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "femur", correctText: "fémur", needsAccent: true },
+    { text: "pastor", correctText: "pastor", needsAccent: false, rule: "Aguda acabada en -R: NO lleva tilde." },
+    { text: "numero", correctText: "número", needsAccent: true },
+    { text: "puente", correctText: "puente", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "anis", correctText: "anís", needsAccent: true },
+    { text: "manzana", correctText: "manzana", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "pagina", correctText: "página", needsAccent: true },
+    { text: "verdad", correctText: "verdad", needsAccent: false, rule: "Aguda acabada en -D: NO lleva tilde." }
+  ],
+  // NIVEL 8 (JEFE 4: ACORAZADO ESTELAR TITÁN)
+  [
+    { text: "miercoles", correctText: "miércoles", needsAccent: true },
+    { text: "arena", correctText: "arena", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "tandem", correctText: "tándem", needsAccent: true },
+    { text: "marfil", correctText: "marfil", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." },
+    { text: "piramide", correctText: "pirámide", needsAccent: true },
+    { text: "viajero", correctText: "viajero", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "sarten", correctText: "sartén", needsAccent: true },
+    { text: "botella", correctText: "botella", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "critico", correctText: "crítico", needsAccent: true },
+    { text: "trabajo", correctText: "trabajo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." }
+  ],
+  // NIVEL 9
+  [
+    { text: "poesia", correctText: "poesía", needsAccent: true },
+    { text: "estrella", correctText: "estrella", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "movil", correctText: "móvil", needsAccent: true },
+    { text: "tamboril", correctText: "tamboril", needsAccent: false, rule: "Aguda acabada en -L: NO lleva tilde." },
+    { text: "logica", correctText: "lógica", needsAccent: true },
+    { text: "jardinero", correctText: "jardinero", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "frances", correctText: "francés", needsAccent: true },
+    { text: "silencio", correctText: "silencio", needsAccent: false, rule: "Llana acabada en vocal/diptongo: NO lleva tilde." },
+    { text: "gramatica", correctText: "gramática", needsAccent: true },
+    { text: "tesoro", correctText: "tesoro", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." }
+  ],
+  // NIVEL 10 (JEFE FINAL: NODRIZA IMPERIAL EMPERADOR SUPREMO)
+  [
+    { text: "heroe", correctText: "héroe", needsAccent: true },
+    { text: "espejismo", correctText: "espejismo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "caracter", correctText: "carácter", needsAccent: true },
+    { text: "horizonte", correctText: "horizonte", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "espectaculo", correctText: "espectáculo", needsAccent: true },
+    { text: "primavera", correctText: "primavera", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "capitan", correctText: "capitán", needsAccent: true },
+    { text: "escudo", correctText: "escudo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." },
+    { text: "historico", correctText: "histórico", needsAccent: true },
+    { text: "universo", correctText: "universo", needsAccent: false, rule: "Llana acabada en vocal: NO lleva tilde." }
+  ]
+];
+
+const AMBIENT_WORDS = [
+  { text: "sofa", correctText: "sofá", needsAccent: true },
+  { text: "azul", correctText: "azul", needsAccent: false, rule: "Aguda en -L: no lleva tilde." },
+  { text: "baul", correctText: "baúl", needsAccent: true },
+  { text: "sol", correctText: "sol", needsAccent: false, rule: "Monosílabo regular: no lleva tilde." },
+  { text: "cesped", correctText: "césped", needsAccent: true },
+  { text: "pan", correctText: "pan", needsAccent: false, rule: "Monosílabo regular: no lleva tilde." },
+  { text: "tunel", correctText: "túnel", needsAccent: true },
+  { text: "pez", correctText: "pez", needsAccent: false, rule: "Monosílabo en -Z: no lleva tilde." },
+  { text: "brujula", correctText: "brújula", needsAccent: true },
+  { text: "mar", correctText: "mar", needsAccent: false, rule: "Monosílabo: no lleva tilde." },
+  { text: "anis", correctText: "anís", needsAccent: true },
+  { text: "tren", correctText: "tren", needsAccent: false, rule: "Monosílabo: no lleva tilde." },
+  { text: "album", correctText: "álbum", needsAccent: true },
+  { text: "luz", correctText: "luz", needsAccent: false, rule: "Monosílabo en -Z: no lleva tilde." }
+];
+
+/* =========================================================================
+   CANVAS Y VARIABLES GLOBALES
+========================================================================= */
+const canvas = document.getElementById('space');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+}
+addEventListener('resize', resize);
+resize();
+
+const stars = Array.from({length: 120}, () => ({
+  x: Math.random() * innerWidth,
+  y: Math.random() * innerHeight,
+  s: Math.random() * 2 + 0.5,
+  v: Math.random() * 1.5 + 0.4
+}));
+
+let playing = false;
+let score = 0;
+let lives = 7;
+let currentLevel = 1;
+let levelWordIndex = 0;
+let streak = 0;
+let weaponLevel = 1;
+let bossShieldHits = 0;
+
+// Escudo de la nave tras superar la llamarada
+let shipShield = false;
+
+/* EVOLUCIÓN DE ARMAS RECTAS */
+const WEAPONS = {
+  1: { name: "Disparo Simple", color: "#facc15", rate: 0.22, type: 'laser' },
+  2: { name: "Metralleta Rápida", color: "#38bdf8", rate: 0.08, type: 'machinegun' },
+  3: { name: "Rayo de Plasma", color: "#00f5d4", rate: 0.14, type: 'beam' },
+  4: { name: "Llamarada Recta", color: "#ff4500", rate: 0.09, type: 'flame_straight' }
+};
+
+const ship = {
+  x: innerWidth / 2,
+  y: innerHeight - 120,
+  speed: 8.5,
+  cooldown: 0
+};
+
+let wordObjects = [];
+let bullets = [];
+let aliens = [];
+let alienBullets = [];
+let particles = [];
+let boss = null;
+let lastTime = 0;
+let spawnAlienTimer = 0;
+let errorTimeout = null;
+
+const LANES_COUNT = 5;
+
+/* =========================================================================
+   CONTROLES
+========================================================================= */
+const keys = {};
+addEventListener('keydown', e => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+    e.preventDefault();
+  }
+  keys[e.code] = true;
+});
+addEventListener('keyup', e => {
+  keys[e.code] = false;
+});
+
+/* =========================================================================
+   HUD Y EFECTOS
+========================================================================= */
+function updateHud(){
+  document.getElementById('hudLevel').textContent = currentLevel;
+  const remainingInLevel = Math.max(0, 10 - levelWordIndex);
+  document.getElementById('hudWords').textContent = remainingInLevel;
+  document.getElementById('hudScore').textContent = score;
+  document.getElementById('hudLives').textContent = '♥'.repeat(Math.max(0, lives));
+  
+  const w = WEAPONS[weaponLevel];
+  const wEl = document.getElementById('hudWeapon');
+  wEl.textContent = w.name;
+  wEl.style.color = w.color;
+  wEl.style.borderColor = w.color;
+
+  // Indicador de Escudo de Nave
+  const sEl = document.getElementById('hudShield');
+  sEl.style.display = shipShield ? 'inline-block' : 'none';
+
+  const bossHud = document.getElementById('bossHud');
+  if (boss && boss.alive) {
+    bossHud.style.display = 'block';
+    const hpPercent = Math.max(0, (boss.hp / boss.maxHp) * 100);
+    document.getElementById('bossHealthBar').style.width = hpPercent + '%';
+    const shieldTxt = document.getElementById('bossShieldText');
+    if (boss.shield) {
+      shieldTxt.innerHTML = `🛡️ ESCUDO ACTIVO: ${bossShieldHits}/3 palabras con tilde`;
+      shieldTxt.style.color = '#93c5fd';
+    } else {
+      shieldTxt.innerHTML = `⚡ ¡ESCUDO ROTO! ¡DISPÁRALE O ACIERTA PALABRAS PARA DAÑARLO!`;
+      shieldTxt.style.color = '#4ade80';
+    }
+  } else {
+    bossHud.style.display = 'none';
+  }
+}
+
+function flash(type){
+  const f = document.getElementById('flash');
+  f.style.animation = 'none';
+  void f.offsetWidth;
+  f.style.animation = (type === 'good') ? 'flashGreen 0.35s' : 'flashRed 0.4s';
+}
+
+function triggerErrorFeedback(wordObj) {
+  playSound('error');
+
+  const gameContainer = document.getElementById('game');
+  gameContainer.classList.remove('screen-shake');
+  void gameContainer.offsetWidth;
+  gameContainer.classList.add('screen-shake');
+
+  const notice = document.getElementById('errorNotice');
+  const noticeText = document.getElementById('errorNoticeText');
+  const explanation = wordObj.data.rule || "¡Esta palabra NO lleva tilde!";
+  noticeText.innerHTML = `"${wordObj.data.correctText}" no lleva tilde.<br><span style="font-size:11px;color:#fef08a">${explanation}</span>`;
+  
+  notice.classList.add('show');
+  clearTimeout(errorTimeout);
+  errorTimeout = setTimeout(() => {
+    notice.classList.remove('show');
+  }, 2200);
+}
+
+function burst(x, y, color, count = 16){
+  for(let i = 0; i < count; i++){
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 180 + 30;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      color,
+      alpha: 1
+    });
+  }
+}
+
+/* =========================================================================
+   GENERACIÓN DE PALABRAS ANTICOLISIÓN POR CARRILES
+========================================================================= */
+function trySpawnWord(){
+  if (!playing) return;
+
+  const availableLanes = [];
+  const laneWidth = (W - 120) / LANES_COUNT;
+
+  for (let l = 0; l < LANES_COUNT; l++) {
+    const wordsInLane = wordObjects.filter(w => w.alive && w.lane === l);
+    const minY = wordsInLane.reduce((min, w) => Math.min(min, w.y), 9999);
+    if (minY > 160) {
+      availableLanes.push(l);
+    }
+  }
+
+  if (availableLanes.length === 0) return;
+
+  const chosenLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
+  const currentPool = LEVELS_DATA[currentLevel - 1];
+
+  let data;
+  let isLevelGoal = false;
+
+  if (levelWordIndex < currentPool.length) {
+    data = currentPool[levelWordIndex];
+    levelWordIndex++;
+    isLevelGoal = true;
+  } else {
+    data = AMBIENT_WORDS[Math.floor(Math.random() * AMBIENT_WORDS.length)];
+  }
+
+  updateHud();
+
+  const el = document.createElement('div');
+  el.className = 'wordObj';
+  el.textContent = data.text;
+
+  const laneBaseX = 60 + chosenLane * laneWidth;
+  const wordX = laneBaseX + (Math.random() * (laneWidth - 140));
+  const wordY = -60 - Math.random() * 40;
+
+  el.style.left = wordX + 'px';
+  el.style.top = wordY + 'px';
+  el.style.color = '#f8fafc';
+  document.getElementById('game').appendChild(el);
+
+  wordObjects.push({
+    el,
+    data,
+    x: wordX,
+    y: wordY,
+    lane: chosenLane,
+    speed: 40 + (currentLevel * 3.5),
+    isLevelGoal,
+    glowing: false,
+    alive: true
+  });
+}
+
+function clearAllWordObjects(){
+  wordObjects.forEach(w => w.el.remove());
+  wordObjects = [];
+}
+
+/* =========================================================================
+   DISPAROS DEL JUGADOR
+========================================================================= */
+function shoot(){
+  if (!playing || ship.cooldown > 0) return;
+  const cx = ship.x;
+  const cy = ship.y - 28;
+
+  if (weaponLevel === 1) {
+    bullets.push({ 
+      x: cx, y: cy, vx: 0, vy: -680, 
+      type: 'laser', w: 6, h: 22, color: '#facc15' 
+    });
+  } else if (weaponLevel === 2) {
+    bullets.push({ 
+      x: cx, y: cy, vx: 0, vy: -920, 
+      type: 'machinegun', w: 5, h: 18, color: '#38bdf8' 
+    });
+  } else if (weaponLevel === 3) {
+    bullets.push({ 
+      x: cx, y: cy, vx: 0, vy: -1100, 
+      type: 'beam', w: 12, h: 46, color: '#00f5d4',
+      piercing: true
+    });
+  } else if (weaponLevel >= 4) {
+    bullets.push({
+      x: cx, y: cy, vx: 0, vy: -750,
+      type: 'flame_straight', w: 18, h: 36, color: '#ff4500',
+      life: 0.8
+    });
+  }
+
+  ship.cooldown = WEAPONS[weaponLevel].rate;
+}
+
+/* =========================================================================
+   ENEMIGOS Y JEFES
+========================================================================= */
+function spawnAlien(){
+  if (!playing || (boss && boss.alive)) return;
+  aliens.push({
+    x: Math.random() * (W - 120) + 60,
+    y: -40,
+    vx: (Math.random() - 0.5) * 50,
+    vy: 50 + currentLevel * 6,
+    shootTimer: Math.random() * 2 + 1.2,
+    phase: Math.random() * 6,
+    level: currentLevel
+  });
+}
+
+function spawnBoss(lvl){
+  const isFinal = lvl === 10;
+  const names = {
+    2: "INTERCEPTOR COMANDANTE: AEGIS-2",
+    4: "CÍCLOPE ACORAZADO DE ASALTO",
+    6: "BIO-MANTIS PREDATOR ESTELAR",
+    8: "TITÁN DORSAL DEVASTADOR",
+    10: "NODRIZA IMPERIAL: EMPERADOR SUPREMO"
+  };
+
+  boss = {
+    x: W / 2,
+    y: -120,
+    targetY: 130,
+    w: isFinal ? 170 : 130,
+    h: isFinal ? 95 : 75,
+    hp: isFinal ? 32 : 18,
+    maxHp: isFinal ? 32 : 18,
+    shield: true,
+    alive: true,
+    moveTimer: 0,
+    shootTimer: 1.8,
+    speedMultiplier: 0.65,
+    levelType: lvl,
+    name: names[lvl] || `DESTRUCTOR ORTOGRÁFICO MK-${lvl/2}`
+  };
+  bossShieldHits = 0;
+  document.getElementById('bossName').textContent = boss.name;
+  updateHud();
+}
+
+/* =========================================================================
+   RESOLUCIÓN DE IMPACTOS
+========================================================================= */
+function onHitWord(wordObj){
+  if (!wordObj.alive) return;
+  wordObj.alive = false;
+
+  const rect = wordObj.el.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  if (wordObj.data.needsAccent) {
+    // ¡ACIERTO!: Llevaba tilde
+    playSound('hit');
+    streak++;
+    score += 150 + streak * 25;
+    
+    // VERDE FOSFORITO: Actualizar texto con tilde y aplicar animación
+    wordObj.el.classList.remove('glow-escape');
+    wordObj.el.classList.add('hit-ok');
+    wordObj.el.textContent = wordObj.data.correctText + ' ✔️';
+    burst(cx, cy, '#00ff66', 28);
+    flash('good');
+
+    // Evolución de armas hasta nivel 4 (Llamarada)
+    if (streak % 2 === 0) {
+      if (weaponLevel < 4) {
+        weaponLevel++;
+      } else if (weaponLevel === 4 && !shipShield) {
+        // ACTIVAR ESCUDO TRAS LA LLAMARADA (2 aciertos más)
+        shipShield = true;
+        playSound('shield_on');
+        burst(ship.x, ship.y, '#06b6d4', 35);
+      }
+    }
+
+    if (boss && boss.alive) {
+      if (boss.shield) {
+        bossShieldHits++;
+        if (bossShieldHits >= 3) {
+          boss.shield = false;
+          burst(boss.x, boss.y, '#38bdf8', 45);
+        }
+      } else {
+        boss.hp -= 4;
+        burst(boss.x, boss.y, '#ef4444', 28);
+        flash('good');
+
+        if (boss.hp <= 0) {
+          boss.alive = false;
+          burst(boss.x, boss.y, '#f59e0b', 60);
+          score += 1200 * currentLevel;
+        }
+      }
+    }
+  } else {
+    // ¡FALLO!
+    streak = 0;
+    shipShield = false; // El fallo anula el escudo si estaba activo
+    lives--;
+    weaponLevel = Math.max(1, weaponLevel - 1);
+    score = Math.max(0, score - 80);
+    wordObj.el.classList.remove('glow-escape');
+    wordObj.el.classList.add('hit-bad');
+    wordObj.el.textContent = wordObj.data.correctText + ' ❌ (Sin tilde)';
+    burst(cx, cy, '#ef4444', 28);
+    flash('bad');
+
+    triggerErrorFeedback(wordObj);
+
+    if (lives <= 0) {
+      setTimeout(() => endGame(false), 300);
+      return;
+    }
+  }
+
+  updateHud();
+  // Tiempo suficiente para apreciar la palabra en verde fosforito
+  setTimeout(() => wordObj.el.remove(), 600);
+  checkLevelProgress();
+}
+
+function checkLevelProgress(){
+  const pool = LEVELS_DATA[currentLevel - 1];
+  const allLevelWordsDone = levelWordIndex >= pool.length;
+  const isBossLevel = currentLevel % 2 === 0;
+  const bossDefeated = !isBossLevel || (boss && !boss.alive);
+
+  if (allLevelWordsDone && bossDefeated) {
+    if (currentLevel < 10) {
+      currentLevel++;
+      levelWordIndex = 0;
+      boss = null;
+      clearAllWordObjects();
+      if (currentLevel % 2 === 0) spawnBoss(currentLevel);
+      updateHud();
+    } else {
+      endGame(true);
+    }
+  }
+}
+
+/* =========================================================================
+   BUCLE PRINCIPAL
+========================================================================= */
+function update(dt){
+  if (!playing) return;
+
+  const moveX = (keys['ArrowRight'] || keys['KeyD'] ? 1 : 0) - (keys['ArrowLeft'] || keys['KeyA'] ? 1 : 0);
+  const moveY = (keys['ArrowDown'] || keys['KeyS'] ? 1 : 0) - (keys['ArrowUp'] || keys['KeyW'] ? 1 : 0);
+
+  ship.x += moveX * ship.speed;
+  ship.y += moveY * ship.speed;
+
+  ship.x = Math.max(25, Math.min(W - 25, ship.x));
+  ship.y = Math.max(80, Math.min(H - 45, ship.y));
+
+  if (keys['Space']) shoot();
+  if (ship.cooldown > 0) ship.cooldown -= dt;
+
+  wordObjects.forEach(w => {
+    if (!w.alive) return;
+    w.y += w.speed * dt;
+    w.el.style.left = w.x + 'px';
+    w.el.style.top = w.y + 'px';
+
+    // AVISO LUMINOSO: Si necesita tilde y está a punto de escapar
+    if (w.data.needsAccent && w.y > H - 165) {
+      if (!w.glowing) {
+        w.glowing = true;
+        w.el.classList.add('glow-escape');
+      }
+    } else if (w.glowing && w.y <= H - 165) {
+      w.glowing = false;
+      w.el.classList.remove('glow-escape');
+    }
+
+    if (w.y > H + 40) {
+      w.alive = false;
+      w.el.remove();
+      if (w.data.needsAccent) {
+        streak = 0;
+        shipShield = false;
+        weaponLevel = Math.max(1, weaponLevel - 1);
+        updateHud();
+      }
+      checkLevelProgress();
+    }
+  });
+
+  const wordsOnScreen = wordObjects.filter(w => w.alive).length;
+  if (wordsOnScreen < 5) {
+    trySpawnWord();
+  }
+
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    const b = bullets[i];
+    b.x += (b.vx || 0) * dt;
+    b.y += (b.vy || 0) * dt;
+    if (b.life) b.life -= dt;
+
+    wordObjects.forEach(w => {
+      if (!w.alive) return;
+      const r = w.el.getBoundingClientRect();
+      if (b.x >= r.left && b.x <= r.right && b.y >= r.top && b.y <= r.bottom) {
+        onHitWord(w);
+        if (!b.piercing) b.dead = true;
+      }
+    });
+
+    aliens.forEach((a, ai) => {
+      if (Math.hypot(b.x - a.x, b.y - a.y) < 24) {
+        burst(a.x, a.y, '#4ade80', 16);
+        aliens.splice(ai, 1);
+        score += 50;
+        if (!b.piercing) b.dead = true;
+        updateHud();
+      }
+    });
+
+    if (boss && boss.alive) {
+      if (Math.abs(b.x - boss.x) < boss.w / 2 && Math.abs(b.y - boss.y) < boss.h / 2) {
+        if (!b.piercing) b.dead = true;
+        if (boss.shield) {
+          burst(b.x, b.y, '#38bdf8', 6);
+        } else {
+          boss.hp -= (b.type === 'flame_straight' ? 1.4 : 1);
+          burst(b.x, b.y, '#ef4444', 8);
+          if (boss.hp <= 0) {
+            boss.alive = false;
+            burst(boss.x, boss.y, '#f59e0b', 50);
+            score += 1000 * currentLevel;
+            checkLevelProgress();
+          }
+          updateHud();
+        }
+      }
+    }
+
+    if (b.y < -50 || b.y > H + 40 || b.x < -30 || b.x > W + 30 || b.dead || (b.life && b.life <= 0)) {
+      bullets.splice(i, 1);
+    }
+  }
+
+  spawnAlienTimer += dt;
+  if (spawnAlienTimer > Math.max(1.8, 3.8 - currentLevel * 0.2)) {
+    spawnAlienTimer = 0;
+    if (aliens.length < 3 + Math.floor(currentLevel / 3)) spawnAlien();
+  }
+
+  for (let i = aliens.length - 1; i >= 0; i--) {
+    const a = aliens[i];
+    a.y += a.vy * dt;
+    a.phase += dt * 2.5;
+    a.x += Math.sin(a.phase) * 45 * dt;
+
+    a.shootTimer -= dt;
+    if (a.shootTimer <= 0) {
+      a.shootTimer = Math.random() * 2 + 1.2;
+      alienBullets.push({
+        x: a.x,
+        y: a.y + 15,
+        vx: (ship.x - a.x) * 0.35,
+        vy: 180 + currentLevel * 8,
+        sym: Math.random() < 0.5 ? '¿?' : '¡!'
+      });
+    }
+
+    if (a.y > H + 50) aliens.splice(i, 1);
+  }
+
+  if (boss && boss.alive) {
+    if (boss.y < boss.targetY) boss.y += 45 * dt;
+    boss.moveTimer += dt * boss.speedMultiplier;
+    boss.x = W / 2 + Math.sin(boss.moveTimer) * (W * 0.28);
+
+    boss.shootTimer -= dt;
+    if (boss.shootTimer <= 0) {
+      boss.shootTimer = boss.shield ? 1.8 : 1.2;
+      [-25, 25].forEach(offset => {
+        alienBullets.push({
+          x: boss.x + offset,
+          y: boss.y + boss.h / 2,
+          vx: (ship.x - (boss.x + offset)) * 0.45,
+          vy: 220,
+          sym: '💥'
+        });
+      });
+    }
+  }
+
+  for (let i = alienBullets.length - 1; i >= 0; i--) {
+    const s = alienBullets[i];
+    s.x += s.vx * dt;
+    s.y += s.vy * dt;
+
+    if (Math.hypot(s.x - ship.x, s.y - ship.y) < 28) {
+      alienBullets.splice(i, 1);
+
+      // Si el escudo de la nave está activo, ABSORBE EL GOLPE
+      if (shipShield) {
+        shipShield = false;
+        playSound('shield_break');
+        burst(ship.x, ship.y, '#06b6d4', 30);
+        flash('good');
+        updateHud();
+      } else {
+        burst(ship.x, ship.y, '#ef4444', 20);
+        flash('bad');
+        playSound('error');
+        lives--;
+        streak = 0;
+        weaponLevel = Math.max(1, weaponLevel - 1);
+        updateHud();
+        if (lives <= 0) {
+          endGame(false);
+          return;
+        }
+      }
+    } else if (s.y > H + 30 || s.x < -30 || s.x > W + 30) {
+      alienBullets.splice(i, 1);
+    }
+  }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    p.alpha -= dt * 1.6;
+    if (p.alpha <= 0) particles.splice(i, 1);
+  }
+
+  stars.forEach(s => {
+    s.y += s.v * (playing ? 1.5 : 0.4);
+    if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+  });
+}
+
+/* =========================================================================
+   DIBUJO DE ENEMIGOS COMUNES
+========================================================================= */
+function drawAlienByLevel(a) {
+  const lvl = a.level || 1;
+  ctx.save();
+  ctx.translate(a.x, a.y);
+
+  if (lvl === 1) {
+    ctx.shadowBlur = 12; ctx.shadowColor = '#4ade80'; ctx.fillStyle = '#22c55e';
+    ctx.beginPath(); ctx.ellipse(0, 0, 18, 12, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath(); ctx.arc(-6, -2, 3, 0, Math.PI * 2); ctx.arc(6, -2, 3, 0, Math.PI * 2); ctx.fill();
+  } else if (lvl === 2) {
+    ctx.shadowBlur = 14; ctx.shadowColor = '#06b6d4'; ctx.fillStyle = '#0891b2';
+    ctx.beginPath(); ctx.moveTo(0, 15); ctx.lineTo(16, -12); ctx.lineTo(0, -6); ctx.lineTo(-16, -12);
+    ctx.closePath(); ctx.fill();
+  } else if (lvl === 3) {
+    ctx.shadowBlur = 14; ctx.shadowColor = '#c084fc'; ctx.fillStyle = '#7e22ce';
+    ctx.beginPath(); ctx.moveTo(0, 16); ctx.lineTo(18, -14); ctx.lineTo(-18, -14);
+    ctx.closePath(); ctx.fill();
+  } else if (lvl === 4) {
+    ctx.shadowBlur = 15; ctx.shadowColor = '#fb923c'; ctx.fillStyle = '#ea580c';
+    ctx.beginPath(); ctx.arc(0, 0, 14, 0, Math.PI * 2); ctx.fill();
+  } else if (lvl === 5) {
+    ctx.shadowBlur = 15; ctx.shadowColor = '#facc15'; ctx.fillStyle = '#ca8a04';
+    ctx.beginPath(); ctx.roundRect(-16, -10, 32, 20, 6); ctx.fill();
+  } else if (lvl === 6) {
+    ctx.shadowBlur = 14; ctx.shadowColor = '#a3e635'; ctx.fillStyle = '#65a30d';
+    ctx.beginPath(); ctx.ellipse(0, 0, 14, 16, 0, 0, Math.PI * 2); ctx.fill();
+  } else if (lvl === 7) {
+    ctx.shadowBlur = 16; ctx.shadowColor = '#f43f5e'; ctx.fillStyle = '#be123c';
+    ctx.beginPath(); ctx.moveTo(0, 18); ctx.lineTo(15, 0); ctx.lineTo(0, -18); ctx.lineTo(-15, 0);
+    ctx.closePath(); ctx.fill();
+  } else if (lvl === 8) {
+    ctx.shadowBlur = 16; ctx.shadowColor = '#38bdf8'; ctx.fillStyle = '#0284c7';
+    ctx.beginPath(); ctx.roundRect(-8, -14, 16, 28, 4); ctx.fill();
+  } else if (lvl === 9) {
+    ctx.shadowBlur = 18; ctx.shadowColor = '#dc2626'; ctx.fillStyle = '#18181b';
+    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(0, 16); ctx.lineTo(20, -10); ctx.lineTo(8, -4); ctx.lineTo(0, -16);
+    ctx.lineTo(-8, -4); ctx.lineTo(-20, -10); ctx.closePath(); ctx.fill(); ctx.stroke();
+  } else {
+    ctx.shadowBlur = 20; ctx.shadowColor = '#ffffff'; ctx.fillStyle = '#f8fafc';
+    ctx.strokeStyle = '#d4af37'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(0, 20); ctx.lineTo(22, 0); ctx.lineTo(12, -18); ctx.lineTo(-12, -18); ctx.lineTo(-22, 0);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+/* =========================================================================
+   DIBUJO DE LOS 5 JEFES ÚNICOS (NIVELES 2, 4, 6, 8 Y 10)
+========================================================================= */
+function drawBossCustom(b) {
+  ctx.save();
+  ctx.translate(b.x, b.y);
+  ctx.shadowBlur = 25;
+  ctx.shadowColor = b.shield ? '#38bdf8' : '#ef4444';
+
+  const lvl = b.levelType;
+
+  if (lvl === 2) {
+    // JEFE 1: DESTRUCTOR ALADO (Flechas de asalto cian)
+    ctx.fillStyle = '#082f49';
+    ctx.strokeStyle = b.shield ? '#38bdf8' : '#ef4444';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(0, b.h / 2);
+    ctx.lineTo(b.w / 2, -b.h / 3);
+    ctx.lineTo(b.w / 3, -b.h / 2);
+    ctx.lineTo(0, -b.h / 4);
+    ctx.lineTo(-b.w / 3, -b.h / 2);
+    ctx.lineTo(-b.w / 2, -b.h / 3);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Cabina
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath(); ctx.ellipse(0, 0, 14, 20, 0, 0, Math.PI * 2); ctx.fill();
+
+  } else if (lvl === 4) {
+    // JEFE 2: FORTALEZA OCULAR CÍCLOPE (Disco blindado carmesí)
+    ctx.fillStyle = '#261214';
+    ctx.strokeStyle = b.shield ? '#38bdf8' : '#f97316';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(0, 0, b.w / 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    // Placas defensivas
+    ctx.fillStyle = '#7f1d1d';
+    ctx.fillRect(-b.w / 2, -8, 14, 16);
+    ctx.fillRect(b.w / 2 - 14, -8, 14, 16);
+    // Ojo central pulsante
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI * 2); ctx.fill();
+
+  } else if (lvl === 6) {
+    // JEFE 3: NAVE BIO-MANTIS (Cuerpo orgánico-mecánico morado)
+    ctx.fillStyle = '#3b0764';
+    ctx.strokeStyle = b.shield ? '#38bdf8' : '#c084fc';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(0, b.h / 2);
+    ctx.lineTo(b.w / 2, 0);
+    ctx.lineTo(b.w / 2.5, -b.h / 2);
+    ctx.lineTo(-b.w / 2.5, -b.h / 2);
+    ctx.lineTo(-b.w / 2, 0);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Pinzas
+    ctx.strokeStyle = '#e879f9'; ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(-b.w / 2.2, -5); ctx.lineTo(-b.w / 1.8, b.h / 3); ctx.lineTo(-b.w / 2.6, b.h / 2);
+    ctx.moveTo(b.w / 2.2, -5); ctx.lineTo(b.w / 1.8, b.h / 3); ctx.lineTo(b.w / 2.6, b.h / 2);
+    ctx.stroke();
+
+  } else if (lvl === 8) {
+    // JEFE 4: ACORAZADO TITÁN (Doble cañón industrial y turbinas)
+    ctx.fillStyle = '#1c1917';
+    ctx.strokeStyle = b.shield ? '#38bdf8' : '#f59e0b';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.roundRect(-b.w / 2, -b.h / 2, b.w, b.h, 12);
+    ctx.fill(); ctx.stroke();
+    // Dos cañones frontales
+    ctx.fillStyle = '#44403c';
+    ctx.fillRect(-28, b.h / 2 - 2, 12, 18);
+    ctx.fillRect(16, b.h / 2 - 2, 12, 18);
+    // Turbinas
+    ctx.fillStyle = '#ea580c';
+    ctx.fillRect(-b.w / 2 + 6, -b.h / 2 - 8, 18, 8);
+    ctx.fillRect(b.w / 2 - 24, -b.h / 2 - 8, 18, 8);
+
+  } else {
+    // JEFE 5 (NIVEL 10): NODRIZA IMPERIAL EMPERADOR (Corona dorada y platino)
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = b.shield ? '#38bdf8' : '#d4af37';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(0, b.h / 1.8);
+    ctx.lineTo(b.w / 2, b.h / 4);
+    ctx.lineTo(b.w / 2.2, -b.h / 2);
+    ctx.lineTo(b.w / 4, -b.h / 3);
+    ctx.lineTo(0, -b.h / 1.8);
+    ctx.lineTo(-b.w / 4, -b.h / 3);
+    ctx.lineTo(-b.w / 2.2, -b.h / 2);
+    ctx.lineTo(-b.w / 2, b.h / 4);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Filigrana imperial dorada
+    ctx.strokeStyle = '#facc15'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // Campo de Escudo Exterior si está activo
+  if (b.shield) {
+    ctx.strokeStyle = 'rgba(56,189,248,0.75)';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([8, 6]);
+    ctx.beginPath();
+    ctx.arc(0, 0, b.w * 0.65, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function draw(){
+  ctx.clearRect(0, 0, W, H);
+
+  stars.forEach(s => {
+    ctx.fillStyle = '#ffffff';
+    ctx.globalAlpha = 0.6;
+    ctx.fillRect(s.x, s.y, s.s, s.s);
+  });
+  ctx.globalAlpha = 1;
+
+  // Proyectiles del jugador
+  bullets.forEach(b => {
+    ctx.save();
+    if (b.type === 'laser') {
+      ctx.shadowColor = b.color; ctx.shadowBlur = 12; ctx.fillStyle = b.color;
+      ctx.fillRect(b.x - b.w / 2, b.y, b.w, b.h);
+    } else if (b.type === 'machinegun') {
+      ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 10; ctx.fillStyle = '#e0f2fe';
+      ctx.fillRect(b.x - b.w / 2, b.y, b.w, b.h);
+      ctx.fillStyle = '#0284c7'; ctx.fillRect(b.x - 1, b.y + 2, 2, b.h - 4);
+    } else if (b.type === 'beam') {
+      ctx.shadowColor = '#00f5d4'; ctx.shadowBlur = 18; ctx.fillStyle = '#ffffff';
+      ctx.fillRect(b.x - b.w / 2, b.y, b.w, b.h);
+      ctx.strokeStyle = '#00f5d4'; ctx.lineWidth = 3;
+      ctx.strokeRect(b.x - b.w / 2, b.y, b.w, b.h);
+    } else if (b.type === 'flame_straight') {
+      ctx.shadowColor = '#ff4500'; ctx.shadowBlur = 20;
+      ctx.fillStyle = '#ff3b00';
+      ctx.beginPath(); ctx.roundRect(b.x - b.w / 2, b.y, b.w, b.h, 8); ctx.fill();
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath(); ctx.roundRect(b.x - b.w / 3, b.y + 4, (b.w * 2) / 3, b.h - 8, 4); ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(b.x - 2, b.y + 8, 4, b.h - 16);
+    }
+    ctx.restore();
+  });
+
+  // Marcianos comunes
+  aliens.forEach(drawAlienByLevel);
+
+  // Jefe Personalizado
+  if (boss && boss.alive) {
+    drawBossCustom(boss);
+  }
+
+  alienBullets.forEach(s => {
+    ctx.save();
+    ctx.fillStyle = '#f43f5e';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#f43f5e';
+    ctx.shadowBlur = 12;
+    ctx.fillText(s.sym, s.x, s.y);
+    ctx.restore();
+  });
+
+  particles.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, p.alpha);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Nave Jugador
+  ctx.save();
+  ctx.translate(ship.x, ship.y);
+
+  // DIBUJO DEL ESCUDO DE LA NAVE (Si está activo)
+  if (shipShield) {
+    ctx.save();
+    ctx.strokeStyle = '#06b6d4';
+    ctx.shadowColor = '#22d3ee';
+    ctx.shadowBlur = 20;
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.arc(0, 0, 36, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  ctx.shadowColor = WEAPONS[weaponLevel].color;
+  ctx.shadowBlur = 16;
+  ctx.fillStyle = '#0f172a';
+  ctx.strokeStyle = WEAPONS[weaponLevel].color;
+  ctx.lineWidth = 2.5;
+
+  ctx.beginPath();
+  ctx.moveTo(0, -26);
+  ctx.lineTo(20, 18);
+  ctx.lineTo(0, 10);
+  ctx.lineTo(-20, 18);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = '#38bdf8';
+  ctx.beginPath();
+  ctx.ellipse(0, -2, 5, 8, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ff7700';
+  ctx.beginPath();
+  ctx.moveTo(-6, 13);
+  ctx.lineTo(0, 24 + Math.random() * 8);
+  ctx.lineTo(6, 13);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function gameLoop(time){
+  const dt = Math.min(0.04, (time - lastTime) / 1000 || 0);
+  lastTime = time;
+  update(dt);
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);
+
+/* =========================================================================
+   GESTIÓN DE PARTIDA
+========================================================================= */
+function startGame(){
+  playing = true;
+  score = 0;
+  lives = 7;
+  streak = 0;
+  weaponLevel = 1;
+  shipShield = false;
+  currentLevel = 1;
+  levelWordIndex = 0;
+  boss = null;
+  bullets = [];
+  aliens = [];
+  alienBullets = [];
+  particles = [];
+  clearAllWordObjects();
+
+  ship.x = W / 2;
+  ship.y = H - 120;
+
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+
+  updateHud();
+  for(let i = 0; i < 4; i++) {
+    trySpawnWord();
+  }
+}
+
+function endGame(won){
+  playing = false;
+  clearAllWordObjects();
+  document.getElementById('bossHud').style.display = 'none';
+
+  const endScreen = document.getElementById('endScreen');
+  const endTitle = document.getElementById('endTitle');
+  const endDesc = document.getElementById('endDesc');
+
+  if (won) {
+    endTitle.textContent = "🏆 ¡VICTORIA CÓSMICA TOTAL!";
+    endTitle.style.color = "#4ade80";
+    endDesc.innerHTML = `¡Has completado con éxito los <b>10 niveles</b> y derrotado a todos los jefes invasores!<br><br>Puntuación Final: <b style="color:#facc15">${score} puntos</b>.<br>¡Dominio absoluto de la acentuación en Wisdom Corner Academy!`;
+  } else {
+    endTitle.textContent = "🚨 MISIÓN FALLIDA";
+    endTitle.style.color = "#ef4444";
+    endDesc.innerHTML = `Tus 7 vidas han sido consumidas.<br><br>Llegaste hasta el <b>Nivel ${currentLevel}</b> con <b>${score} puntos</b>.<br>¡Repasa las reglas de acentuación y vuelve al combate estelar!`;
+  }
+
+  endScreen.classList.remove('hidden');
+}
+
+document.getElementById('btnStart').onclick = startGame;
+document.getElementById('btnRestart').onclick = startGame;
+</script>
+</body>
+</html>

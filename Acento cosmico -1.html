@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión: Acento Cósmico</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#050816;color:#fff;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;overflow:hidden}
+  #game{position:relative;width:100vw;height:100vh;min-height:650px;background:
+    radial-gradient(circle at 50% 20%,#18265c 0,#090d25 38%,#030510 100%);overflow:hidden}
+  canvas{position:absolute;inset:0;width:100%;height:100%}
+  .hud{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;z-index:5;pointer-events:none}
+  .panel{background:rgba(7,12,35,.78);border:1px solid rgba(130,170,255,.28);box-shadow:0 8px 30px rgba(0,0,0,.25);backdrop-filter:blur(10px);border-radius:16px;padding:10px 16px}
+  .title{font-weight:900;letter-spacing:.8px;font-size:18px}
+  .stats{display:flex;gap:18px;align-items:center;font-weight:700}
+  .lives{letter-spacing:3px;color:#ff6b8a;font-size:20px}
+  .level{color:#6fe7ff}
+  .score{color:#ffe37a}
+  #startScreen,#gameOver,#help{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:rgba(2,4,15,.7);backdrop-filter:blur(8px)}
+  .modal{width:min(680px,92vw);padding:34px;border-radius:28px;text-align:center;background:linear-gradient(145deg,rgba(17,27,69,.96),rgba(7,11,34,.96));border:1px solid rgba(116,185,255,.32);box-shadow:0 25px 90px rgba(0,0,0,.55)}
+  h1{font-size:clamp(32px,6vw,64px);margin:0 0 8px;background:linear-gradient(90deg,#72efff,#a78bfa,#ff77b7);-webkit-background-clip:text;color:transparent}
+  h2{margin:0 0 12px;font-size:34px}
+  p{color:#b9c8ef;line-height:1.55}
+  button{border:0;border-radius:14px;padding:14px 24px;margin-top:14px;font-size:17px;font-weight:900;color:#06101d;background:linear-gradient(90deg,#63e6ff,#8ef6bf);cursor:pointer;box-shadow:0 8px 25px rgba(82,220,255,.25)}
+  button:hover{transform:translateY(-2px)}
+  .instructions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}
+  .chip{padding:13px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+  .chip b{display:block;margin-bottom:4px}
+  #prompt{position:absolute;left:50%;bottom:94px;transform:translateX(-50%);z-index:7;color:#7ee7ff;font-weight:1000;font-size:clamp(20px,2.7vw,34px);letter-spacing:1px;text-shadow:0 0 20px rgba(85,220,255,.35);background:rgba(4,10,31,.8);border:1px solid rgba(126,231,255,.25);padding:10px 24px;border-radius:18px;white-space:nowrap}
+  .wordObj{position:absolute;z-index:4;padding:13px 22px;border-radius:18px;font-size:clamp(24px,3.5vw,48px);font-weight:1000;letter-spacing:1px;white-space:nowrap;transform-origin:center;pointer-events:none;text-shadow:0 4px 18px rgba(0,0,0,.55);background:rgba(5,10,30,.5);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+  .wordObj.hit{animation:explodeWord .22s ease-out forwards}
+  @keyframes explodeWord{to{opacity:0;transform:scale(1.7) rotate(8deg)}}
+  .laser{position:absolute;width:18px;height:42px;border-radius:50% 50% 35% 35%;z-index:5;pointer-events:none;transform:translate(-50%,-50%);background:linear-gradient(#ffffff,#7cf5ff 45%,#5bb7ff);box-shadow:0 0 8px #fff,0 0 18px #70f6ff,0 0 38px #70f6ff}
+  .laser::after{content:'';position:absolute;left:50%;top:28px;width:9px;height:38px;transform:translateX(-50%);border-radius:50%;background:#78f7ff;box-shadow:0 0 12px #70f6ff,0 0 25px #70f6ff}
+
+  .controls{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:6;display:flex;gap:10px}
+  .fire{padding:11px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;box-shadow:none}
+  #flash{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:0}
+  @keyframes hit{0%{opacity:.8;background:#ff355d}100%{opacity:0}}
+  @keyframes good{0%{opacity:.45;background:#62f5bb}100%{opacity:0}}
+  .hidden{display:none!important}
+  @media(max-width:650px){.hud{top:10px;left:10px;right:10px}.title{font-size:14px}.stats{gap:8px;font-size:12px}.lives{font-size:15px}.instructions{grid-template-columns:1fr}.modal{padding:25px}.controls{bottom:10px;gap:5px}.fire{padding:9px 10px;font-size:13px}}
+</style>
+</head>
+<body>
+<div id="game">
+<canvas id="space"></canvas>
+<div id="flash"></div>
+<div class="hud">
+  <div class="panel title">🚀 MISIÓN: ACENTO CÓSMICO</div>
+  <div class="panel stats"><span class="level">NIVEL <span id="level">1</span></span><span class="score">⭐ <span id="score">0</span></span><span class="level">🎯 <span id="remaining">20</span></span><span class="lives" id="lives">♥ ♥ ♥</span></div>
+</div>
+<div id="prompt">🎯 DISPARA A: <span id="targetType">AGUDA</span></div>
+<div class="controls">
+  <button class="fire" id="up">▲</button>
+  <button class="fire" id="left">◀</button>
+  <button class="fire" id="shoot">🚀 DISPARAR [ESPACIO]</button>
+  <button class="fire" id="right">▶</button>
+  <button class="fire" id="down">▼</button>
+</div>
+
+<div id="startScreen">
+  <div class="modal">
+    <h1>ACENTO CÓSMICO</h1>
+    <p>Tu misión: clasificar palabras mientras pilotas una nave espacial. <b>Busca la palabra correcta y apunta con tu nave</b> antes de que escape.</p>
+    <div class="instructions">
+      <div class="chip">⚡<b>AGUDA</b>Te, canción, reloj…</div>
+      <div class="chip">🌙<b>LLANA</b>Casa, árbol, lápiz…</div>
+      <div class="chip">💥<b>ESDRÚJULA</b>Música, teléfono, pájaro…</div>
+    </div>
+    <p>👽 Los marcianos también atacan: esquiva sus <b>¿?</b> y <b>¡!</b>. Si un proyectil te alcanza, pierdes una vida. Tienes <b>3 vidas</b>.<br>Muévete en todas direcciones con <b>WASD o las flechas</b> y dispara con <b>ESPACIO</b>.</p>
+    <button id="start">🚀 COMENZAR MISIÓN</button>
+  </div>
+</div>
+
+<div id="gameOver" class="hidden">
+  <div class="modal">
+    <h2>🚨 MISIÓN TERMINADA</h2>
+    <p id="result"></p>
+    <button id="restart">🔄 VOLVER A JUGAR</button>
+  </div>
+</div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const canvas = document.getElementById('space');
+  const ctx = canvas.getContext('2d');
+  const gameEl = document.getElementById('game');
+
+  const words = [
+    ['canción','aguda'],['reloj','aguda'],['camión','aguda'],['pared','aguda'],['animal','aguda'],
+    ['café','aguda'],['tambor','aguda'],['compás','aguda'],
+    ['casa','llana'],['mesa','llana'],['árbol','llana'],['lápiz','llana'],['fácil','llana'],
+    ['azúcar','llana'],['ventana','llana'],['nube','llana'],
+    ['música','esdrujula'],['pájaro','esdrujula'],['teléfono','esdrujula'],['brújula','esdrujula'],
+    ['esdrújula','esdrujula'],['mágico','esdrujula'],['rápido','esdrujula'],['cámara','esdrujula'],
+    ['murciélago','esdrujula'],['océano','esdrujula'],['número','esdrujula'],['próximo','esdrujula'],
+    ['plátano','esdrujula'],['miércoles','esdrujula']
+  ];
+
+  const types = ['aguda','llana','esdrujula'];
+  const state = {
+    W: 0, H: 0, dpr: 1,
+    playing: false,
+    score: 0,
+    lives: 3,
+    level: 1,
+    remaining: 20,
+    targetType: 'aguda',
+    missionPool: [],
+    activeWords: [],
+    bullets: [],
+    aliens: [],
+    enemyShots: [],
+    particles: [],
+    keys: new Set(),
+    spawnTimer: 0,
+    alienTimer: 0,
+    fireCooldown: 0,
+    lastTime: 0,
+    nextId: 1,
+    ship: { x: 0, y: 0, speed: 360 }
+  };
+
+  function shuffle(arr) {
+    return [...arr].sort(() => Math.random() - 0.5);
+  }
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function targetName(type) {
+    return type === 'aguda' ? 'AGUDA' : type === 'llana' ? 'LLANA' : 'ESDRÚJULA';
+  }
+
+  function randomOtherType(exclude) {
+    const options = types.filter(t => t !== exclude);
+    return options[Math.floor(Math.random() * options.length)];
+  }
+
+  function setTarget(type) {
+    state.targetType = type;
+    document.getElementById('targetType').textContent = targetName(type);
+  }
+
+  function chooseNextTarget(previous) {
+    const availableTypes = types.filter(t => t !== previous && state.missionPool.some(w => w[1] === t));
+    if (availableTypes.length) {
+      setTarget(availableTypes[Math.floor(Math.random() * availableTypes.length)]);
+      return;
+    }
+    const fallback = types.find(t => state.missionPool.some(w => w[1] === t));
+    if (fallback) setTarget(fallback);
+  }
+
+  function resize() {
+    state.dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    state.W = Math.max(320, window.innerWidth);
+    state.H = Math.max(520, window.innerHeight);
+    canvas.width = Math.floor(state.W * state.dpr);
+    canvas.height = Math.floor(state.H * state.dpr);
+    canvas.style.width = `${state.W}px`;
+    canvas.style.height = `${state.H}px`;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+
+    state.ship.x = clamp(state.ship.x || state.W * 0.5, 40, state.W - 40);
+    state.ship.y = clamp(state.ship.y || state.H - 165, 105, state.H - 155);
+    state.activeWords.forEach(w => {
+      w.x = clamp(w.x, -120, state.W + 160);
+      w.y = clamp(w.y, 90, state.H - 220);
+    });
+  }
+
+  window.addEventListener('resize', resize);
+
+  function updateHud() {
+    document.getElementById('score').textContent = String(state.score);
+    document.getElementById('level').textContent = String(state.level);
+    document.getElementById('remaining').textContent = String(state.remaining);
+    document.getElementById('lives').textContent = '♥ '.repeat(state.lives).trim();
+  }
+
+  function flash(kind) {
+    const el = document.getElementById('flash');
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = kind === 'good' ? 'good .35s' : 'hit .4s';
+  }
+
+  function burst(x, y, color) {
+    for (let i = 0; i < 18; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const speed = 70 + Math.random() * 180;
+      state.particles.push({
+        x, y,
+        vx: Math.cos(a) * speed,
+        vy: Math.sin(a) * speed,
+        life: 0,
+        color
+      });
+    }
+  }
+
+  function showWord(word) {
+    ctx.font = '900 34px Inter, Arial, sans-serif';
+    return Math.max(100, ctx.measureText(word).width + 42);
+  }
+
+  function overlaps(a, b) {
+    return !(
+      a.x + a.w < b.x ||
+      a.x > b.x + b.w ||
+      a.y + a.h < b.y ||
+      a.y > b.y + b.h
+    );
+  }
+
+  function canPlaceWord(x, y, w, h) {
+    const candidate = { x, y, w, h };
+    return !state.activeWords.some(other => other.alive && overlaps(candidate, {
+      x: other.x, y: other.y, w: other.w, h: other.h
+    }));
+  }
+
+  function safeY(x, w) {
+    const minY = 100;
+    const maxY = Math.max(minY + 20, state.H - 270);
+    for (let i = 0; i < 30; i++) {
+      const y = minY + Math.random() * (maxY - minY);
+      if (canPlaceWord(x, y, w, 62)) return y;
+    }
+    return minY;
+  }
+
+  function pickMissionWord(type) {
+    const idx = state.missionPool.findIndex(w => w[1] === type);
+    if (idx >= 0) return state.missionPool.splice(idx, 1)[0];
+    return null;
+  }
+
+  function createWord(type, fromMission = false, x = state.W + 80) {
+    let data = fromMission ? pickMissionWord(type) : null;
+
+    // Mission targets consume unique words from the 20-word mission pool.
+    if (!data) {
+      const candidates = fromMission
+        ? state.missionPool
+        : words.filter(w => w[1] === type);
+      if (fromMission && candidates.length) {
+        data = candidates.splice(Math.floor(Math.random() * candidates.length), 1)[0];
+      } else if (!fromMission && candidates.length) {
+        data = candidates[Math.floor(Math.random() * candidates.length)];
+      }
+    }
+    if (!data) return false;
+
+    const w = showWord(data[0]);
+    const y = safeY(x, w);
+
+    state.activeWords.push({
+      id: state.nextId++,
+      text: data[0],
+      type: data[1],
+      x,
+      y,
+      w,
+      h: 62,
+      speed: 24 + Math.random() * 14 + state.level * 1.3,
+      phase: Math.random() * Math.PI * 2,
+      amp: 8 + Math.random() * 20,
+      wave: 0.45 + Math.random() * 0.9,
+      drift: (Math.random() - 0.5) * 6,
+      rot: (Math.random() - 0.5) * 0.12,
+      alive: true,
+      color: data[1] === 'aguda' ? '#70e8ff' : data[1] === 'llana' ? '#b69cff' : '#ff7ac5'
+    });
+  }
+
+  function ensureWords() {
+    const live = state.activeWords.filter(w => w.alive).length;
+    if (state.remaining <= 0) return;
+
+    // Never crowd the screen: normally 2, at higher levels at most 3.
+    const desired = state.level >= 6 ? 3 : 2;
+    if (live >= desired) return;
+
+    // Always introduce a required target before filling with distractors.
+    if (!state.activeWords.some(w => w.alive && w.type === state.targetType)) {
+      if (!state.missionPool.some(w => w[1] === state.targetType)) {
+        const fallback = types.filter(t => state.missionPool.some(w => w[1] === t));
+        if (fallback.length) setTarget(fallback[Math.floor(Math.random() * fallback.length)]);
+      }
+      const x = live === 0 ? state.W * 0.72 : state.W * 0.86;
+      createWord(state.targetType, true, x);
+    }
+
+    while (state.activeWords.filter(w => w.alive).length < Math.min(desired, state.remaining > 0 ? desired : 2)) {
+      const distractorType = randomOtherType(state.targetType);
+      const count = state.activeWords.filter(w => w.alive).length;
+      const x = count === 0 ? state.W * 0.72 : state.W * 0.88;
+      createWord(distractorType, false, x);
+    }
+  }
+
+  function fire() {
+    if (!state.playing || state.fireCooldown > 0) return;
+    state.fireCooldown = 0.18;
+    state.bullets.push({
+      x: state.ship.x,
+      y: state.ship.y - 34,
+      vy: -440,
+      life: 0,
+      trail: []
+    });
+  }
+
+  function loseLife(reason = '') {
+    if (!state.playing) return;
+    state.lives -= 1;
+    flash('hit');
+    burst(state.ship.x, state.ship.y, '#ff547d');
+    updateHud();
+    if (state.lives <= 0) {
+      endGame(false, reason);
+    }
+  }
+
+  function hitWord(word) {
+    if (!word || !word.alive || !state.playing) return;
+
+    word.alive = false;
+    burst(word.x + word.w / 2, word.y + word.h / 2,
+      word.type === state.targetType ? '#7affc4' : '#ff5577');
+
+    if (word.type === state.targetType) {
+      state.score += 100 + state.level * 20;
+      state.remaining -= 1;
+      flash('good');
+
+      // Every successful classification asks for a DIFFERENT random category.
+      const previous = state.targetType;
+      chooseNextTarget(previous);
+
+      if (state.remaining <= 0) {
+        updateHud();
+        setTimeout(() => endGame(true), 320);
+        return;
+      }
+    } else {
+      state.score = Math.max(0, state.score - 40);
+      loseLife('¡Has disparado a una palabra incorrecta!');
+    }
+
+    updateHud();
+  }
+
+  function bulletHitsWord(bullet, word) {
+    const bx = bullet.x, by = bullet.y;
+    return bx >= word.x && bx <= word.x + word.w &&
+           by >= word.y && by <= word.y + word.h;
+  }
+
+  function spawnAlien() {
+    state.aliens.push({
+      x: 45 + Math.random() * (state.W - 90),
+      y: -45,
+      speed: 32 + state.level * 5,
+      phase: Math.random() * Math.PI * 2,
+      shootTimer: 1.4 + Math.random() * 2.0
+    });
+  }
+
+  function alienShot(alien) {
+    const dx = state.ship.x - alien.x;
+    const dy = state.ship.y - alien.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const speed = 120 + state.level * 10;
+    state.enemyShots.push({
+      x: alien.x,
+      y: alien.y + 22,
+      vx: dx / len * speed,
+      vy: dy / len * speed,
+      symbol: Math.random() < 0.5 ? '?' : '!',
+      life: 0
+    });
+  }
+
+  function resetGame() {
+    state.score = 0;
+    state.lives = 3;
+    state.level = 1;
+    state.remaining = 20;
+    state.activeWords = [];
+    state.bullets = [];
+    state.aliens = [];
+    state.enemyShots = [];
+    state.particles = [];
+    state.spawnTimer = 0;
+    state.alienTimer = 0;
+    state.fireCooldown = 0;
+    state.lastTime = performance.now();
+
+    // Exactly 20 words are scheduled for the mission; no repetition in those 20.
+    state.missionPool = shuffle(words).slice(0, 20);
+
+    state.ship.x = state.W * 0.5;
+    state.ship.y = state.H - 165;
+
+    setTarget(types[Math.floor(Math.random() * types.length)]);
+    state.playing = true;
+    ensureWords();
+    updateHud();
+  }
+
+  function startGame() {
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('gameOver').classList.add('hidden');
+    resetGame();
+  }
+
+  function endGame(completed, reason = '') {
+    state.playing = false;
+
+    const result = document.getElementById('result');
+    if (completed) {
+      result.innerHTML =
+        `🏆 ¡MISIÓN COMPLETADA!<br><br>` +
+        `Has clasificado las <b>20 palabras</b>.<br>` +
+        `Puntuación final: <b>${state.score}</b>.`;
+    } else {
+      result.innerHTML =
+        `💥 MISIÓN TERMINADA<br><br>` +
+        `${reason ? `<b>${reason}</b><br><br>` : ''}` +
+        `Palabras restantes: <b>${state.remaining}</b>.<br>` +
+        `Puntuación: <b>${state.score}</b>.`;
+    }
+    document.getElementById('gameOver').classList.remove('hidden');
+  }
+
+  function update(dt) {
+    if (!state.playing) return;
+
+    state.level = clamp(1 + Math.floor(state.score / 500), 1, 10);
+    state.fireCooldown = Math.max(0, state.fireCooldown - dt);
+    state.spawnTimer += dt;
+    state.alienTimer += dt;
+
+    // Full 2D movement.
+    let dx = 0, dy = 0;
+    if (state.keys.has('ArrowLeft') || state.keys.has('a')) dx -= 1;
+    if (state.keys.has('ArrowRight') || state.keys.has('d')) dx += 1;
+    if (state.keys.has('ArrowUp') || state.keys.has('w')) dy -= 1;
+    if (state.keys.has('ArrowDown') || state.keys.has('s')) dy += 1;
+
+    if (dx || dy) {
+      const len = Math.hypot(dx, dy) || 1;
+      state.ship.x = clamp(state.ship.x + (dx / len) * state.ship.speed * dt, 35, state.W - 35);
+      state.ship.y = clamp(state.ship.y + (dy / len) * state.ship.speed * dt, 95, state.H - 155);
+    }
+
+    // Words: slow leftward movement + varied vertical motion.
+    for (const word of state.activeWords) {
+      if (!word.alive) continue;
+      word.x -= word.speed * dt;
+      word.phase += word.wave * dt;
+      word.y += Math.sin(word.phase) * word.amp * dt + word.drift * dt;
+      word.y = clamp(word.y, 90, state.H - 270);
+
+      for (const other of state.activeWords) {
+        if (other === word || !other.alive) continue;
+        const a = {x: word.x, y: word.y, w: word.w, h: word.h};
+        const b = {x: other.x, y: other.y, w: other.w, h: other.h};
+        if (overlaps(a, b)) {
+          word.y = clamp(other.y + 75, 90, state.H - 270);
+        }
+      }
+
+      if (word.x < -word.w - 30) {
+        word.alive = false;
+      }
+    }
+
+    state.activeWords = state.activeWords.filter(w => w.alive);
+
+    // Keep a small number of words and do not stack them.
+    if (state.spawnTimer >= 2.7) {
+      state.spawnTimer = 0;
+      ensureWords();
+    } else {
+      ensureWords();
+    }
+
+    // Visible projectile trajectory. It NEVER seeks a word automatically.
+    for (const bullet of state.bullets) {
+      bullet.y += bullet.vy * dt;
+      bullet.life += dt;
+      bullet.trail.push({ x: bullet.x, y: bullet.y });
+      if (bullet.trail.length > 7) bullet.trail.shift();
+
+      for (const word of state.activeWords) {
+        if (bulletHitsWord(bullet, word)) {
+          hitWord(word);
+          bullet.life = 99;
+          break;
+        }
+      }
+
+      // A missed shot costs one life when it completes its flight.
+      if (bullet.y < -20 && bullet.life < 99) {
+        bullet.life = 99;
+        loseLife('Has fallado el disparo.');
+      }
+    }
+    state.bullets = state.bullets.filter(b => b.life < 99);
+
+    // Aliens.
+    if (state.alienTimer >= Math.max(2.8, 5.0 - state.level * 0.2)) {
+      state.alienTimer = 0;
+      if (state.aliens.length < 1 + Math.floor(state.level / 4)) {
+        spawnAlien();
+      }
+    }
+
+    for (const alien of state.aliens) {
+      alien.y += alien.speed * dt;
+      alien.phase += dt * 2.5;
+      alien.shootTimer -= dt;
+      alien.x += Math.sin(alien.phase) * 14 * dt;
+      if (alien.shootTimer <= 0) {
+        alien.shootTimer = Math.max(1.2, 2.8 - state.level * 0.12);
+        alienShot(alien);
+      }
+    }
+    state.aliens = state.aliens.filter(a => a.y < state.H + 70);
+
+    for (const shot of state.enemyShots) {
+      shot.x += shot.vx * dt;
+      shot.y += shot.vy * dt;
+      shot.life += dt;
+
+      if (Math.hypot(shot.x - state.ship.x, shot.y - state.ship.y) < 30) {
+        shot.life = 99;
+        loseLife('Un marciano te ha alcanzado.');
+      }
+    }
+    state.enemyShots = state.enemyShots.filter(s =>
+      s.life < 99 && s.x > -50 && s.x < state.W + 50 && s.y > -50 && s.y < state.H + 50
+    );
+
+    // Particles.
+    for (const p of state.particles) {
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.life += dt;
+    }
+    state.particles = state.particles.filter(p => p.life < 0.9);
+
+    updateHud();
+  }
+
+  function drawShip() {
+    const x = state.ship.x, y = state.ship.y;
+    ctx.save();
+    ctx.translate(x, y);
+
+    ctx.shadowBlur = 22;
+    ctx.shadowColor = '#5de6ff';
+    ctx.fillStyle = '#b9f5ff';
+    ctx.beginPath();
+    ctx.moveTo(0, -30);
+    ctx.lineTo(24, 25);
+    ctx.lineTo(7, 18);
+    ctx.lineTo(0, 27);
+    ctx.lineTo(-7, 18);
+    ctx.lineTo(-24, 25);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = '#6677ff';
+    ctx.beginPath();
+    ctx.ellipse(0, -5, 8, 13, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#ff9f43';
+    ctx.beginPath();
+    ctx.moveTo(-8, 21);
+    ctx.lineTo(0, 50 + Math.random() * 8);
+    ctx.lineTo(8, 21);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function drawAlien(alien) {
+    ctx.save();
+    ctx.translate(alien.x, alien.y);
+    ctx.rotate(Math.sin(alien.phase) * 0.08);
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = '#ff5eaa';
+    ctx.fillStyle = '#72ffab';
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 25, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#0a1730';
+    ctx.beginPath();
+    ctx.ellipse(-9, -2, 5, 7, 0, 0, Math.PI * 2);
+    ctx.ellipse(9, -2, 5, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function drawWord(word) {
+    const y = word.y + 39;
+    ctx.save();
+    ctx.translate(word.x + word.w / 2, y);
+    ctx.rotate(Math.sin(word.phase * 0.65) * word.rot);
+
+    ctx.fillStyle = 'rgba(5,10,30,0.72)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+    ctx.lineWidth = 1;
+
+    const boxW = word.w;
+    const boxH = word.h;
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+      ctx.roundRect(-boxW / 2, -boxH / 2, boxW, boxH, 17);
+    } else {
+      ctx.rect(-boxW / 2, -boxH / 2, boxW, boxH);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = word.color;
+    ctx.font = '900 34px Inter, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = word.color;
+    ctx.fillText(word.text, 0, 0);
+
+    ctx.restore();
+  }
+
+  function drawBullet(bullet) {
+    ctx.save();
+
+    if (bullet.trail.length > 1) {
+      ctx.strokeStyle = '#7cf5ff';
+      ctx.lineWidth = 4;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = '#70f6ff';
+      ctx.beginPath();
+      ctx.moveTo(bullet.trail[0].x, bullet.trail[0].y);
+      for (let i = 1; i < bullet.trail.length; i++) {
+        ctx.lineTo(bullet.trail[i].x, bullet.trail[i].y);
+      }
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowBlur = 22;
+    ctx.shadowColor = '#70f6ff';
+    ctx.beginPath();
+    ctx.arc(bullet.x, bullet.y, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, state.W, state.H);
+
+    const bg = ctx.createLinearGradient(0, 0, 0, state.H);
+    bg.addColorStop(0, '#060a1f');
+    bg.addColorStop(1, '#02030b');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, state.W, state.H);
+
+    // Stars.
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 120; i++) {
+      const x = (i * 83) % state.W;
+      const speed = 12 + (i % 7) * 4;
+      const y = (performance.now() * speed * 0.001 + i * 47) % state.H;
+      ctx.globalAlpha = 0.25 + (i % 5) * 0.12;
+      ctx.fillRect(x, y, 1 + (i % 2), 1 + (i % 2));
+    }
+    ctx.globalAlpha = 1;
+
+    // Distant planets.
+    ctx.globalAlpha = 0.16;
+    ctx.fillStyle = '#7a70ff';
+    ctx.beginPath();
+    ctx.arc(state.W * 0.12, state.H * 0.28, 55, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ff70bd';
+    ctx.beginPath();
+    ctx.arc(state.W * 0.88, state.H * 0.18, 32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    state.activeWords.forEach(drawWord);
+    state.bullets.forEach(drawBullet);
+    state.enemyShots.forEach(shot => {
+      ctx.fillStyle = '#ff79b5';
+      ctx.font = '900 32px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = '#ff4f9a';
+      ctx.fillText(shot.symbol, shot.x, shot.y);
+    });
+    state.aliens.forEach(drawAlien);
+    drawShip();
+
+    state.particles.forEach(p => {
+      ctx.globalAlpha = Math.max(0, 1 - p.life / 0.9);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(now) {
+    const dt = Math.min(0.035, state.lastTime ? (now - state.lastTime) / 1000 : 0);
+    state.lastTime = now;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function bindButton(id, key) {
+    const button = document.getElementById(id);
+    if (!button) return;
+    const press = e => {
+      e.preventDefault();
+      state.keys.add(key);
+    };
+    const release = e => {
+      e.preventDefault();
+      state.keys.delete(key);
+    };
+    button.addEventListener('pointerdown', press);
+    button.addEventListener('pointerup', release);
+    button.addEventListener('pointerleave', release);
+    button.addEventListener('pointercancel', release);
+  }
+
+  bindButton('up', 'ArrowUp');
+  bindButton('down', 'ArrowDown');
+  bindButton('left', 'ArrowLeft');
+  bindButton('right', 'ArrowRight');
+
+  const shoot = document.getElementById('shoot');
+  if (shoot) shoot.addEventListener('click', fire);
+
+  window.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(e.key)) {
+      e.preventDefault();
+      state.keys.add(e.key);
+    }
+    if (e.code === 'Space') {
+      e.preventDefault();
+      fire();
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    state.keys.delete(e.key);
+  });
+
+  document.getElementById('start').addEventListener('click', startGame);
+  document.getElementById('restart').addEventListener('click', startGame);
+
+  resize();
+  updateHud();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
