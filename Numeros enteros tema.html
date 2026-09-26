@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Interactivo - Wisdom Corner Academy</title>
+<style>
+  :root {
+    --primary: #005b9f;
+    --primary-dark: #00467a;
+    --gold: #c59b27;
+    --gold-hover: #b08920;
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --border: #c9e0f5;
+    --text-main: #334155;
+    --success: #166534;
+    --error: #991b1b;
+  }
+
+  * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container { width: 100%; max-width: 850px; }
+  .hidden { display: none !important; }
+
+  /* CABECERA */
+  .header {
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 91, 159, 0.08);
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .logo { width: 70px; height: 70px; object-fit: contain; margin-right: 20px; }
+  .title-area h1 { color: var(--primary); font-size: 22px; margin: 0 0 5px 0; text-transform: uppercase; }
+  .title-area p { color: #64748b; font-size: 14px; margin: 0; }
+
+  /* MENÚ */
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+  .category-card {
+    background: var(--bg-card); border: 2px solid var(--border); border-radius: 12px; padding: 25px 20px;
+    text-align: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  }
+  .category-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 91, 159, 0.1); }
+  .category-card h3 { color: var(--primary); margin: 0 0 10px 0; font-size: 18px; }
+  .category-card p { color: #64748b; font-size: 13px; margin: 0; }
+  .category-icon { font-size: 35px; margin-bottom: 15px; }
+
+  /* EJERCICIO */
+  .quiz-area { background: var(--bg-card); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .progress-bar-container { height: 10px; background: #e2e8f0; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s ease; }
+  
+  .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
+  .quiz-category-title { color: var(--primary); font-weight: bold; font-size: 14px; text-transform: uppercase; }
+  .quiz-counter { color: #64748b; font-size: 14px; font-weight: bold; }
+
+  .question-text { font-size: 18px; color: var(--text-main); font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
+  .question-format { font-size: 13px; color: #94a3b8; margin-bottom: 20px; font-style: italic; }
+
+  /* INSTRUCCIONES DE TECLADO */
+  .typing-hint {
+    background: #f8fafc;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    font-size: 13.5px;
+    color: #475569;
+  }
+  .typing-hint code {
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--primary-dark);
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .input-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  input[type="text"] { flex: 1; min-width: 200px; padding: 12px 15px; font-size: 16px; border: 2px solid var(--border); border-radius: 8px; outline: none; font-weight: bold; color: var(--primary); }
+  input[type="text"]:focus { border-color: var(--primary); }
+  
+  button { padding: 12px 20px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .btn-check { background: var(--primary); color: white; }
+  .btn-check:hover { background: var(--primary-dark); }
+  .btn-hint { background: var(--gold); color: white; }
+  .btn-hint:hover { background: var(--gold-hover); }
+  .btn-next { background: #10b981; color: white; margin-top: 15px; width: 100%; font-size: 16px; }
+  .btn-next:hover { background: #059669; }
+
+  /* PISTAS Y FEEDBACK */
+  .hint-box { background: #fffbeb; border-left: 4px solid var(--gold); padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; color: #92400e; display: flex; align-items: center; gap: 15px; }
+  .hint-box img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #fff; }
+
+  .feedback-box { display: flex; align-items: flex-start; padding: 20px; border-radius: 8px; gap: 15px; margin-top: 20px; animation: fadeIn 0.3s ease; }
+  .feedback-box img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; flex-shrink: 0; }
+  .feedback-content h4 { margin: 0 0 8px 0; font-size: 15px; text-transform: uppercase; }
+  .feedback-content p { margin: 0; font-size: 14.5px; line-height: 1.6; }
+  
+  .feedback-box.correct { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .feedback-box.correct h4 { color: var(--success); }
+  .feedback-box.error { background: #fef2f2; border: 1px solid #fecaca; }
+  .feedback-box.error h4 { color: var(--error); }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="Captura de pantalla 2026-02-27 112014.png" alt="Wisdom Corner Academy" class="logo">
+    <div class="title-area">
+      <h1>Wisdom Corner Academy</h1>
+      <p>Entrenamiento Intensivo de Matemáticas</p>
+    </div>
+  </div>
+
+  <!-- MENÚ -->
+  <div id="view-menu">
+    <h2 style="color: var(--primary); margin-bottom: 20px;">Selecciona tu entrenamiento:</h2>
+    <div class="menu-grid">
+      <div class="category-card" onclick="startQuiz('enteros')">
+        <div class="category-icon">➕</div><h3>Números Enteros</h3><p>10 Ejercicios paso a paso.</p>
+      </div>
+      <div class="category-card" onclick="startQuiz('factorizacion')">
+        <div class="category-icon">🌳</div><h3>Factorización</h3><p>10 Ejercicios de descomposición.</p>
+      </div>
+      <div class="category-card" onclick="startQuiz('mcm')">
+        <div class="category-icon">🔍</div><h3>M.C.D. y m.c.m.</h3><p>10 Ejercicios y problemas.</p>
+      </div>
+      <div class="category-card" onclick="startQuiz('fracciones-basicas')">
+        <div class="category-icon">⚖️</div><h3>Fracciones Base</h3><p>10 Ejercicios: Equivalencia y Simplificación.</p>
+      </div>
+      <div class="category-card" onclick="startQuiz('fracciones-operaciones')">
+        <div class="category-icon">🧮</div><h3>Fracciones Op.</h3><p>10 Ejercicios: Operaciones y Jerarquía.</p>
+      </div>
+      <div class="category-card" onclick="startQuiz('all')" style="border-color: var(--gold);">
+        <div class="category-icon">🏆</div><h3 style="color: var(--gold);">Reto Total</h3><p>Los 50 ejercicios aleatorios.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA DE QUIZ -->
+  <div id="view-quiz" class="quiz-area hidden">
+    <button onclick="backToMenu()" style="background: transparent; color: var(--primary); border: 1px solid var(--primary); margin-bottom: 15px;">&larr; Volver al Menú</button>
+    <div class="progress-bar-container"><div class="progress-bar" id="progress-bar"></div></div>
+    
+    <div class="quiz-header">
+      <div class="quiz-category-title" id="lbl-category">Categoría</div>
+      <div class="quiz-counter" id="lbl-counter">1 / 50</div>
+    </div>
+    
+    <div class="question-text" id="lbl-question">¿Pregunta?</div>
+    <div class="question-format" id="lbl-format">Formato</div>
+
+    <div class="typing-hint" id="typing-hint">
+      ⌨️ <strong>Guía de Teclado:</strong> Usa <code>*</code> para multiplicar y <code>^</code> para elevar a una potencia.<br>
+      <em>Ejemplo: Para escribir 2³ · 5, teclea <code>2^3*5</code></em>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="user-input" placeholder="Tu respuesta..." autocomplete="off">
+      <button class="btn-check" id="btn-check" onclick="checkAnswer()">Comprobar</button>
+      <button class="btn-hint" id="btn-hint" onclick="showHint()">💡 Pista</button>
+    </div>
+    
+    <div class="hint-box hidden" id="hint-box">
+      <img src="Gemini_Generated_Image_sflauisflauisfla.png" alt="Pista">
+      <div><strong>Pista de Sabiduría:</strong><br><span id="lbl-hint"></span></div>
+    </div>
+    
+    <div class="feedback-box hidden" id="feedback-box">
+      <img id="feedback-img" src="" alt="Feedback">
+      <div class="feedback-content">
+        <h4 id="feedback-title"></h4>
+        <p id="feedback-desc"></p>
+      </div>
+    </div>
+    
+    <button class="btn-next hidden" id="btn-next" onclick="nextQuestion()">Siguiente Ejercicio &rarr;</button>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div id="view-result" class="quiz-area hidden" style="text-align: center;">
+    <img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6.jpg" alt="Éxito" style="width: 120px; border-radius: 50%; margin-bottom: 20px;">
+    <h2 style="color: var(--primary);">¡Entrenamiento Completado!</h2>
+    <p style="font-size: 18px; margin-bottom: 30px;">Has asimilado las reglas matemáticas fundamentales.</p>
+    <button class="btn-check" onclick="backToMenu()">Volver al Menú Principal</button>
+  </div>
+
+</div>
+
+<script>
+  // 50 EJERCICIOS CON EXPLICACIONES PEDAGÓGICAS DE REGLAS MATEMÁTICAS
+  const db = [
+    // --- 10 ENTEROS ---
+    { cat:"enteros", q:"(+4) + (-2)", f:"Escribe el número.", a:["2", "+2"], 
+      h:"Fíjate en los signos: son distintos. ¿Se suman o se restan?", 
+      e:"<strong>Regla de signos:</strong> Al sumar números de distinto signo, se restan sus valores (4 - 2 = 2) y se pone el signo del mayor (positivo). Resultado: <strong>2</strong>." },
+    { cat:"enteros", q:"(-3) + (-6)", f:"Escribe el número.", a:["-9"], 
+      h:"Ambos tienen el mismo signo negativo.", 
+      e:"<strong>Regla de signos:</strong> Si tienen el mismo signo, se suman sus cantidades (3 + 6 = 9) y se mantiene su signo original. Resultado: <strong>-9</strong>." },
+    { cat:"enteros", q:"(-15) - (-5)", f:"Escribe el número.", a:["-10"], 
+      h:"Un signo menos delante de un paréntesis cambia el signo de dentro.", 
+      e:"<strong>Signos seguidos:</strong> Restar un negativo equivale a sumar un positivo (- por - es +). Nos queda: -15 + 5. Como tienen distinto signo, restamos y gana el negativo: <strong>-10</strong>." },
+    { cat:"enteros", q:"(-5) &middot; (-6)", f:"Escribe el número.", a:["30", "+30"], 
+      h:"Es una multiplicación. Aplica la regla de los signos para multiplicar.", 
+      e:"<strong>Multiplicación:</strong> Menos por menos siempre da más. Multiplicamos los números (5 &times; 6 = 30). Resultado: <strong>30</strong>." },
+    { cat:"enteros", q:"(-10) &middot; (+3)", f:"Escribe el número.", a:["-30"], 
+      h:"Es una multiplicación con distintos signos.", 
+      e:"<strong>Multiplicación:</strong> Menos por más es menos. Operamos (10 &times; 3 = 30). Resultado: <strong>-30</strong>." },
+    { cat:"enteros", q:"(-25) : (-5)", f:"Escribe el número.", a:["5", "+5"], 
+      h:"La regla de los signos de la división es igual que la de la multiplicación.", 
+      e:"<strong>División:</strong> Menos entre menos es más. Dividimos (25 : 5 = 5). Resultado: <strong>5</strong>." },
+    { cat:"enteros", q:"(+27) : (-9)", f:"Escribe el número.", a:["-3"], 
+      h:"Estás dividiendo un positivo entre un negativo.", 
+      e:"<strong>División:</strong> Más entre menos es menos. Dividimos (27 : 9 = 3). Resultado: <strong>-3</strong>." },
+    { cat:"enteros", q:"(4 - 1) - (2 - 3)", f:"Escribe el número.", a:["4", "+4"], 
+      h:"Los paréntesis tienen prioridad absoluta. Resuélvelos primero.", 
+      e:"<strong>Jerarquía:</strong> Primero los paréntesis. (4 - 1) = 3. Y (2 - 3) = -1. Nos queda: 3 - (-1). Al restar un negativo se suma: 3 + 1 = <strong>4</strong>." },
+    { cat:"enteros", q:"(-8 + 10) - (10 - 8)", f:"Escribe el número.", a:["0"], 
+      h:"Opera el interior de cada paréntesis antes de la resta central.", 
+      e:"<strong>Jerarquía:</strong> (-8 + 10) = 2. Y (10 - 8) = 2. Nos queda 2 - 2 = <strong>0</strong>." },
+    { cat:"enteros", q:"-9 + (3 - 2 - 1) + 7", f:"Escribe el número.", a:["-2"], 
+      h:"Resuelve todo lo que hay dentro del paréntesis para dejar un solo número.", 
+      e:"<strong>Jerarquía:</strong> Dentro del paréntesis tenemos (3 - 2 - 1) que da 0. La operación se reduce a: -9 + 0 + 7. Distinto signo, se restan: <strong>-2</strong>." },
+
+    // --- 10 FACTORIZACIÓN ---
+    { cat:"factorizacion", q:"Factoriza: 15", f:"Usa * y ^ para potencias.", a:["3*5", "5*3"], 
+      h:"Termina en 5, prueba a dividir entre 5.", 
+      e:"<strong>Regla de divisibilidad:</strong> 15 termina en 5, así que lo dividimos entre 5 y nos da 3. El 3 es número primo. Su factorización es <strong>3 &middot; 5</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 16", f:"Usa * y ^.", a:["2^4"], 
+      h:"Es número par, divide entre 2 constantemente.", 
+      e:"<strong>Descomposición:</strong> 16 : 2 = 8; 8 : 2 = 4; 4 : 2 = 2; 2 : 2 = 1. El 2 se repite 4 veces. Resultado: <strong>2<sup>4</sup></strong>." },
+    { cat:"factorizacion", q:"Factoriza: 24", f:"Usa * y ^.", a:["2^3*3", "3*2^3"], 
+      h:"Es par, saca todas las mitades que puedas.", 
+      e:"<strong>Descomposición:</strong> 24 : 2 = 12; 12 : 2 = 6; 6 : 2 = 3. El 3 es primo, 3 : 3 = 1. El 2 se repite 3 veces. Resultado: <strong>2<sup>3</sup> &middot; 3</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 27", f:"Usa * y ^.", a:["3^3"], 
+      h:"Sus cifras suman 9, así que es divisible por 3.", 
+      e:"<strong>Criterio del 3:</strong> 27 : 3 = 9; 9 : 3 = 3; 3 : 3 = 1. El 3 se repite 3 veces. Resultado: <strong>3<sup>3</sup></strong>." },
+    { cat:"factorizacion", q:"Factoriza: 48", f:"Usa * y ^.", a:["2^4*3", "3*2^4"], 
+      h:"Es par. 48 / 2 = 24. Sigue por ahí.", 
+      e:"<strong>Descomposición:</strong> 48 : 2 = 24; 24 : 2 = 12; 12 : 2 = 6; 6 : 2 = 3. El 2 sale 4 veces y queda un 3. Resultado: <strong>2<sup>4</sup> &middot; 3</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 60", f:"Usa * y ^.", a:["2^2*3*5", "2^2*5*3", "3*5*2^2", "5*3*2^2"], 
+      h:"Termina en 0, es divisible por 2 y por 5.", 
+      e:"<strong>Descomposición:</strong> 60 : 2 = 30; 30 : 2 = 15; 15 : 3 = 5; 5 : 5 = 1. Resultado: <strong>2<sup>2</sup> &middot; 3 &middot; 5</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 72", f:"Usa * y ^.", a:["2^3*3^2", "3^2*2^3"], 
+      h:"Suma de cifras 7+2=9 (múltiplo de 3) y además es par.", 
+      e:"<strong>Descomposición:</strong> 72 : 2 = 36; 36 : 2 = 18; 18 : 2 = 9; 9 : 3 = 3; 3 : 3 = 1. Resultado: <strong>2<sup>3</sup> &middot; 3<sup>2</sup></strong>." },
+    { cat:"factorizacion", q:"Factoriza: 83", f:"Usa * y ^.", a:["83"], 
+      h:"Revisa los criterios de divisibilidad. ¿Se puede dividir entre 2, 3, 5, 7...?", 
+      e:"<strong>Trampa:</strong> El 83 no es divisible ni por 2, 3, 5, 7, ni 9. Es un número primo. Su factorización es él mismo: <strong>83</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 104", f:"Usa * y ^.", a:["2^3*13", "13*2^3"], 
+      h:"Es par. 104 : 2 = 52. Continúa con el 52.", 
+      e:"<strong>Descomposición:</strong> 104 : 2 = 52; 52 : 2 = 26; 26 : 2 = 13. El 13 es número primo. Resultado: <strong>2<sup>3</sup> &middot; 13</strong>." },
+    { cat:"factorizacion", q:"Factoriza: 225", f:"Usa * y ^.", a:["3^2*5^2", "5^2*3^2"], 
+      h:"Termina en 5, divídelo entre 5.", 
+      e:"<strong>Descomposición:</strong> 225 : 5 = 45; 45 : 5 = 9; 9 : 3 = 3; 3 : 3 = 1. Tenemos dos cincos y dos treses. Resultado: <strong>3<sup>2</sup> &middot; 5<sup>2</sup></strong>." },
+
+    // --- 10 M.C.D. y m.c.m. ---
+    { cat:"mcm", q:"Calcula el m.c.d. de 12 y 16", f:"Escribe el número.", a:["4"], 
+      h:"Factoriza: 12=2^2*3 y 16=2^4. Para el m.c.d. coge SOLO los factores repetidos al menor exponente.", 
+      e:"<strong>Regla del M.C.D:</strong> Solo factores comunes al menor exponente. El único común es el 2, y su exponente menor es el 2. Por tanto: 2<sup>2</sup> = <strong>4</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.m. de 12 y 16", f:"Escribe el número.", a:["48"], 
+      h:"Para el m.c.m. coge comunes y no comunes al mayor exponente.", 
+      e:"<strong>Regla del m.c.m:</strong> Tomamos todos los factores, y si se repiten, el mayor exponente. Tenemos 2<sup>4</sup> y 3. Multiplicamos: 16 &times; 3 = <strong>48</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.d. de 24 y 36", f:"Escribe el número.", a:["12"], 
+      h:"24=2^3*3 y 36=2^2*3^2. Comunes al menor exponente.", 
+      e:"<strong>Regla del M.C.D:</strong> Los comunes al menor exponente son 2<sup>2</sup> y 3. Operamos: 4 &times; 3 = <strong>12</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.m. de 24 y 36", f:"Escribe el número.", a:["72"], 
+      h:"Comunes y no comunes al mayor exponente.", 
+      e:"<strong>Regla del m.c.m:</strong> Elegimos los mayores exponentes: 2<sup>3</sup> y 3<sup>2</sup>. Operamos: 8 &times; 9 = <strong>72</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.m. de 3 y 5", f:"Escribe el número.", a:["15"], 
+      h:"Ambos son números primos.", 
+      e:"<strong>Números Primos:</strong> Cuando dos números son primos entre sí, su mínimo común múltiplo es simplemente su multiplicación: 3 &times; 5 = <strong>15</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.m. de 8 y 12", f:"Escribe el número.", a:["24"], 
+      h:"8=2^3 y 12=2^2*3.", 
+      e:"<strong>Regla del m.c.m:</strong> Tomamos los factores al mayor exponente: 2<sup>3</sup> y 3. Multiplicamos: 8 &times; 3 = <strong>24</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.d. de 32 y 28", f:"Escribe el número.", a:["4"], 
+      h:"32=2^5 y 28=2^2*7.", 
+      e:"<strong>Regla del M.C.D:</strong> Solo el factor común (el 2) al menor exponente. Eso es 2<sup>2</sup>. Resultado = <strong>4</strong>." },
+    { cat:"mcm", q:"Calcula el m.c.d. de 15 y 50", f:"Escribe el número.", a:["5"], 
+      h:"15=3*5 y 50=2*5^2.", 
+      e:"<strong>Regla del M.C.D:</strong> El único factor que comparten es el 5. Su exponente menor es 1. Resultado = <strong>5</strong>." },
+    { cat:"mcm", q:"Un reloj suena cada 30 min, otro cada 90 y otro cada 150. ¿En cuántos minutos coinciden?", f:"Problema de coincidencia = m.c.m.", a:["450", "450min", "450minutos"], 
+      h:"Calcula el m.c.m.(30, 90, 150).", 
+      e:"<strong>Problemas en el tiempo:</strong> Siempre que buscamos coincidencia futura es m.c.m. 30=2&middot;3&middot;5, 90=2&middot;3<sup>2</sup>&middot;5, 150=2&middot;3&middot;5<sup>2</sup>. Elegimos todos al mayor exp: 2&middot;3<sup>2</sup>&middot;5<sup>2</sup> = 2&middot;9&middot;25 = <strong>450</strong>." },
+    { cat:"mcm", q:"Un autobús pasa cada 15 min y otro cada 20 min. ¿En cuántos min coinciden?", f:"Problema de coincidencia = m.c.m.", a:["60", "60min", "60minutos"], 
+      h:"Calcula el m.c.m.(15, 20).", 
+      e:"<strong>Problemas en el tiempo:</strong> Usamos m.c.m. 15=3&middot;5 y 20=2<sup>2</sup>&middot;5. Tomamos 2<sup>2</sup>, 3 y 5. Operamos: 4&middot;3&middot;5 = <strong>60</strong>." },
+
+    // --- 10 FRACCIONES BÁSICAS ---
+    { cat:"fracciones-basicas", q:"Son equivalentes: 2/5 = x/15. ¿Cuánto vale x?", f:"Escribe el número.", a:["6"], 
+      h:"Mira el denominador: el 5 se ha multiplicado por 3 para llegar a 15. Haz lo mismo arriba.", 
+      e:"<strong>Fracciones equivalentes:</strong> Si multiplicamos el denominador por 3 (5&times;3=15), obligatoriamente multiplicamos el numerador por 3 para que sea equivalente: 2&times;3 = <strong>6</strong>." },
+    { cat:"fracciones-basicas", q:"Son equivalentes: 3/4 = 15/x. ¿Cuánto vale x?", f:"Escribe el número.", a:["20"], 
+      h:"Mira el numerador: el 3 se multiplicó por 5. Haz lo mismo abajo.", 
+      e:"<strong>Fracciones equivalentes:</strong> Numerador multiplicado por 5 (3&times;5=15). Denominador por 5: 4&times;5 = <strong>20</strong>." },
+    { cat:"fracciones-basicas", q:"Son equivalentes: 5/6 = x/18. ¿Cuánto vale x?", f:"Escribe el número.", a:["15"], 
+      h:"El denominador 6 pasó a 18 multiplicando por 3.", 
+      e:"<strong>Fracciones equivalentes:</strong> Multiplicamos arriba por la misma cantidad que abajo. 5&times;3 = <strong>15</strong>." },
+    { cat:"fracciones-basicas", q:"Simplifica: 12/18", f:"Formato a/b irreducible.", a:["2/3"], 
+      h:"Halla el M.C.D. de 12 y 18 y divide ambos entre él (es 6).", 
+      e:"<strong>Simplificación:</strong> Dividimos numerador y denominador entre su M.C.D. (que es 6). 12&divide;6 = 2, y 18&divide;6 = 3. Fracción irreducible: <strong>2/3</strong>." },
+    { cat:"fracciones-basicas", q:"Simplifica: 20/30", f:"Formato a/b irreducible.", a:["2/3"], 
+      h:"Ambos terminan en 0, puedes dividirlos entre 10 directamente.", 
+      e:"<strong>Simplificación rápida:</strong> Tachar los ceros finales equivale a dividir entre 10. Nos queda directamente <strong>2/3</strong>." },
+    { cat:"fracciones-basicas", q:"Simplifica: 24/36", f:"Formato a/b irreducible.", a:["2/3"], 
+      h:"Divide entre 12 (el M.C.D.).", 
+      e:"<strong>Simplificación:</strong> Dividimos numerador y denominador entre 12. 24&divide;12 = 2. 36&divide;12 = 3. Fracción: <strong>2/3</strong>." },
+    { cat:"fracciones-basicas", q:"Simplifica: 45/60", f:"Formato a/b irreducible.", a:["3/4"], 
+      h:"Ambos se pueden dividir entre 5, y luego entre 3. O directamente entre 15.", 
+      e:"<strong>Simplificación:</strong> 45&divide;15 = 3. 60&divide;15 = 4. Fracción irreducible: <strong>3/4</strong>." },
+    { cat:"fracciones-basicas", q:"Simplifica: 72/90", f:"Formato a/b irreducible.", a:["4/5"], 
+      h:"Si sumas sus cifras, ambas dan 9. Divide primero entre 9.", 
+      e:"<strong>Simplificación:</strong> Dividimos entre 9: queda 8/10. Luego dividimos entre 2, porque son pares: <strong>4/5</strong>." },
+    { cat:"fracciones-basicas", q:"¿Son equivalentes 2/3 y 8/12? (Escribe sí o no)", f:"Sí / No", a:["si", "sí"], 
+      h:"Multiplica en cruz: 2 por 12 y 3 por 8. Si dan lo mismo, sí lo son.", 
+      e:"<strong>Prueba en cruz:</strong> 2&times;12 = 24. Y 3&times;8 = 24. Como los resultados son iguales, <strong>Sí</strong> son equivalentes." },
+    { cat:"fracciones-basicas", q:"¿Son equivalentes 3/7 y 12/21? (Escribe sí o no)", f:"Sí / No", a:["no"], 
+      h:"Multiplica en cruz. 3*21 = 63. 7*12 = 84.", 
+      e:"<strong>Prueba en cruz:</strong> 3&times;21 = 63. Pero 7&times;12 = 84. Como no da el mismo resultado, <strong>No</strong> son equivalentes." },
+
+    // --- 10 FRACCIONES OPERACIONES ---
+    { cat:"fracciones-operaciones", q:"Suma: 4/9 + 2/9", f:"Formato a/b irreducible.", a:["6/9", "2/3"], 
+      h:"Mismo denominador, la suma es directa arriba.", 
+      e:"<strong>Suma mismo denominador:</strong> Se suman los numeradores y se deja el denominador intacto: 4+2=6. Da 6/9. Simplificado dividiendo entre 3, queda <strong>2/3</strong>." },
+    { cat:"fracciones-operaciones", q:"Suma: 3/7 + 2/7", f:"Formato a/b", a:["5/7"], 
+      h:"Mismo denominador, solo suma los numeradores.", 
+      e:"<strong>Suma mismo denominador:</strong> Mantienes el 7 abajo y sumas 3+2 = 5 arriba. Queda <strong>5/7</strong>." },
+    { cat:"fracciones-operaciones", q:"Resta: 3/4 - 1/6", f:"Formato a/b irreducible.", a:["7/12"], 
+      h:"OJO, denominadores diferentes. Calcula m.c.m. de 4 y 6.", 
+      e:"<strong>Resta distinto denominador:</strong> m.c.m(4,6) = 12. Ajustamos: (3&times;3)/12 - (1&times;2)/12 = 9/12 - 2/12. Restamos arriba: <strong>7/12</strong>." },
+    { cat:"fracciones-operaciones", q:"Resta: 5/6 - 1/4", f:"Formato a/b irreducible.", a:["7/12"], 
+      h:"Saca el m.c.m. de 6 y 4.", 
+      e:"<strong>Resta distinto denominador:</strong> m.c.m(6,4) = 12. Ajustamos: (5&times;2)/12 - (1&times;3)/12 = 10/12 - 3/12. Resultado: <strong>7/12</strong>." },
+    { cat:"fracciones-operaciones", q:"Multiplica: 2/5 * 3/4", f:"Formato a/b irreducible.", a:["6/20", "3/10"], 
+      h:"La multiplicación se hace siempre en línea.", 
+      e:"<strong>Multiplicación:</strong> Numerador por numerador (2&times;3 = 6) y denominador por denominador (5&times;4 = 20). Queda 6/20. Simplificado entre 2: <strong>3/10</strong>." },
+    { cat:"fracciones-operaciones", q:"Multiplica: 4/9 * 3/8", f:"Formato a/b irreducible.", a:["12/72", "1/6"], 
+      h:"Multiplica en línea.", 
+      e:"<strong>Multiplicación:</strong> (4&times;3) / (9&times;8) = 12 / 72. Si dividimos arriba y abajo entre 12, llegamos a la irreducible: <strong>1/6</strong>." },
+    { cat:"fracciones-operaciones", q:"Divide: 5/3 : 2/7", f:"Formato a/b irreducible.", a:["35/6"], 
+      h:"La división se resuelve multiplicando en cruz (caramelo).", 
+      e:"<strong>División:</strong> Multiplicamos el primer numerador por el segundo denominador y va arriba (5&times;7 = 35). Denominador: (3&times;2 = 6). <strong>35/6</strong>." },
+    { cat:"fracciones-operaciones", q:"Divide: 7/5 : 14/15", f:"Formato a/b irreducible.", a:["105/70", "3/2"], 
+      h:"Multiplica en cruz y luego simplifica dividiendo entre 35.", 
+      e:"<strong>División:</strong> (7&times;15) / (5&times;14) = 105 / 70. Ambos acaban en múltiplo de 5, si simplificamos al máximo llegamos a <strong>3/2</strong>." },
+    { cat:"fracciones-operaciones", q:"Operación combinada: (1/2 + 2/5) &middot; (3/2 - 1/3)", f:"Formato a/b irreducible.", a:["63/60", "21/20"], 
+      h:"Jerarquía: primero haz las sumas/restas de cada paréntesis usando m.c.m. y luego multiplica.", 
+      e:"<strong>Jerarquía y Operaciones:</strong> Paréntesis A: m.c.m(2,5)=10. (5/10 + 4/10) = 9/10. Paréntesis B: m.c.m(2,3)=6. (9/6 - 2/6) = 7/6. Ahora multiplicamos en línea: (9&middot;7)/(10&middot;6) = 63/60. Simplificando entre 3: <strong>21/20</strong>." },
+    { cat:"fracciones-operaciones", q:"Operación combinada: 1/3 + 2/3 &middot; [ 5/4 - (1/2 + 1/4) ]", f:"Formato a/b irreducible.", a:["2/3"], 
+      h:"Resuelve de dentro a fuera. Paréntesis curvo, luego corchete, luego producto y al final la suma.", 
+      e:"<strong>Jerarquía completa:</strong> 1º (1/2 + 1/4) = 3/4. 2º Corchete: 5/4 - 3/4 = 2/4 = 1/2. 3º Producto: 2/3 &middot; 1/2 = 2/6 = 1/3. 4º Suma final: 1/3 + 1/3 = <strong>2/3</strong>." }
+  ];
+
+  let currentList = [];
+  let currentIndex = 0;
+
+  function startQuiz(category) {
+    if(category === 'all') { currentList = [...db]; } 
+    else { currentList = db.filter(ex => ex.cat === category); }
+    
+    currentList = currentList.sort(() => Math.random() - 0.5);
+    currentIndex = 0;
+    
+    document.getElementById('view-menu').classList.add('hidden');
+    document.getElementById('view-quiz').classList.remove('hidden');
+    loadExercise();
+  }
+
+  function loadExercise() {
+    const ex = currentList[currentIndex];
+    const catNames = { "enteros":"Números Enteros", "factorizacion":"Factorización", "mcm":"M.C.D. y m.c.m.", "fracciones-basicas":"Fracciones Base", "fracciones-operaciones":"Op. Fracciones" };
+    
+    document.getElementById('lbl-category').innerText = catNames[ex.cat] || "Reto Total";
+    document.getElementById('lbl-counter').innerText = `${currentIndex + 1} / ${currentList.length}`;
+    document.getElementById('lbl-question').innerHTML = ex.q;
+    document.getElementById('lbl-format').innerText = "Formato: " + ex.f;
+    
+    document.getElementById('user-input').value = "";
+    document.getElementById('user-input').disabled = false;
+    document.getElementById('btn-check').classList.remove('hidden');
+    document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('hint-box').classList.add('hidden');
+    document.getElementById('feedback-box').classList.add('hidden');
+    
+    document.getElementById('lbl-hint').innerHTML = ex.h;
+    
+    const pct = (currentIndex / currentList.length) * 100;
+    document.getElementById('progress-bar').style.width = pct + "%";
+    document.getElementById('user-input').focus();
+  }
+
+  function showHint() { document.getElementById('hint-box').classList.remove('hidden'); }
+
+  function checkAnswer() {
+    const input = document.getElementById('user-input');
+    const userVal = input.value.replace(/\s+/g, '').toLowerCase();
+    if (userVal === '') return;
+
+    const ex = currentList[currentIndex];
+    const isCorrect = ex.a.some(ans => ans.replace(/\s+/g, '').toLowerCase() === userVal);
+
+    const fBox = document.getElementById('feedback-box');
+    const fImg = document.getElementById('feedback-img');
+    const fTitle = document.getElementById('feedback-title');
+    const fDesc = document.getElementById('feedback-desc');
+
+    fBox.classList.remove('hidden', 'correct', 'error');
+
+    if (isCorrect) {
+      fBox.classList.add('correct');
+      fImg.src = 'Gemini_Generated_Image_yxc6z7yxc6z7yxc6.jpg'; // Éxito
+      fTitle.innerText = "¡Respuesta Correcta!";
+      fDesc.innerHTML = ex.e; // Muestra el por qué incluso si acierta
+      
+      input.disabled = true;
+      document.getElementById('btn-check').classList.add('hidden');
+      document.getElementById('btn-next').classList.remove('hidden');
+    } else {
+      fBox.classList.add('error');
+      fImg.src = 'Gemini_Generated_Image_yfnjteyfnjteyfnj.png'; // Cuidado
+      fTitle.innerText = "Incorrecto. Aprendamos del error:";
+      fDesc.innerHTML = ex.e; // Muestra la explicación
+      document.getElementById('btn-next').classList.remove('hidden');
+    }
+  }
+
+  function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < currentList.length) {
+      loadExercise();
+    } else {
+      document.getElementById('progress-bar').style.width = "100%";
+      document.getElementById('view-quiz').classList.add('hidden');
+      document.getElementById('view-result').classList.remove('hidden');
+    }
+  }
+
+  function backToMenu() {
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-result').classList.add('hidden');
+    document.getElementById('view-menu').classList.remove('hidden');
+  }
+
+  document.getElementById("user-input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && !this.disabled) { e.preventDefault(); checkAnswer(); }
+  });
+</script>
+
+</body>
+</html>
