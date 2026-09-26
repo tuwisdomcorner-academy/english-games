@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisdom Corner Academy - Informal Expressions Challenge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #fffbeb 0%, #fef3c7 35%, #f1f5f9 100%);
+      min-height: 100vh;
+      color: #0f172a;
+    }
+    .custom-shadow {
+      box-shadow: 0 12px 35px -8px rgba(180, 83, 9, 0.18), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
+    }
+    .pulse-subtle {
+      animation: pulseSubtle 2.5s infinite;
+    }
+    @keyframes pulseSubtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .animate-pop {
+      animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .shake-anim {
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      border-radius: 2px;
+      animation: fall 1.8s ease-out forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(350px) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between p-3 sm:p-6 min-h-screen">
+
+  <header class="w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-2xl p-4 mb-4 border border-amber-200 custom-shadow flex items-center justify-between">
+    <div class="flex items-center gap-3.5">
+      <img src="https://lh3.googleusercontent.com/gg/ACRwjatq2IFvIv7RBr0V94wLEFtMrrDAUCCDVh69QsIhNu-UZO7c8TGuYsZyfMGEgRkamaBB0SG-lWMTz1NEGRyO6q0mfznMSubMfvABMsfvKIKPnqK4XPVprMcldm7UzN6DI08rv0UOrsdjXedPH9thL7sfdYe-pp7bFKicGnpc3Bu5jcA8Av5IrKAgBAQqKtDevLcUh8I4O-OZVy9TmOhnXayB83YfQ--HdnSA83QU1ek1-O4stoqamI43Yb1KACKrD6_XOMcQ-66CTJj4NYjeKVauEGoWvAjFwA=s0" 
+           alt="Wisdom Corner Academy Logo" 
+           class="w-12 h-12 object-contain rounded-full bg-amber-50 p-1 border border-amber-300">
+      <div>
+        <h1 class="text-[11px] font-extrabold tracking-widest text-amber-700 uppercase">Wisdom Corner Academy</h1>
+        <h2 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Informal Expressions Master</h2>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <!-- Audio toggle button -->
+      <button id="soundToggleBtn" onclick="toggleSound()" class="p-2 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition" title="Activar/Desactivar sonido">
+        🔊 <span class="hidden sm:inline">Sonido</span>
+      </button>
+      <!-- Stats header widget -->
+      <div id="statsBadge" class="hidden flex items-center gap-2 sm:gap-3 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 text-xs font-bold text-amber-900">
+        <div>🔥 <span id="streakCount">0</span></div>
+        <div>⭐ <span id="scoreCount">0</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full max-w-2xl flex-1 flex flex-col justify-center relative">
+
+    <!-- Screen 1: Start Menu -->
+    <div id="menuScreen" class="bg-white rounded-3xl p-6 sm:p-8 border border-amber-200 custom-shadow animate-pop text-center relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-100 rounded-full blur-2xl opacity-60"></div>
+      
+      <span class="inline-block px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 rounded-full mb-3">
+        16 Expresiones Coloquiales
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-2">¡Domina el Inglés Informal!</h2>
+      <p class="text-xs sm:text-sm text-slate-600 mb-6 max-w-lg mx-auto leading-relaxed">
+        Practica todas las expresiones coloquiales del texto escolar (<em>a big deal, chill out, on a high, way ahead, stuff...</em>) a través de tres modalidades dinámicas.
+      </p>
+
+      <!-- Mode Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6 text-left">
+        <!-- Mode 1: ES to EN -->
+        <button onclick="startGame('es-en')" class="group p-4 sm:p-5 bg-gradient-to-b from-amber-50/80 to-white hover:from-amber-100/80 hover:to-amber-50 border-2 border-amber-200 hover:border-amber-500 rounded-2xl transition-all duration-200 flex flex-col justify-between">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🇪🇸 ➔ 🇬🇧</div>
+          <div>
+            <div class="font-extrabold text-slate-900 text-sm">Español a Inglés</div>
+            <div class="text-[11px] text-slate-500 mt-1">Selecciona la frase correcta en inglés entre 4 opciones.</div>
+          </div>
+        </button>
+
+        <!-- Mode 2: EN to ES -->
+        <button onclick="startGame('en-es')" class="group p-4 sm:p-5 bg-gradient-to-b from-amber-50/80 to-white hover:from-amber-100/80 hover:to-amber-50 border-2 border-amber-200 hover:border-amber-500 rounded-2xl transition-all duration-200 flex flex-col justify-between">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🇬🇧 ➔ 🇪🇸</div>
+          <div>
+            <div class="font-extrabold text-slate-900 text-sm">Inglés a Español</div>
+            <div class="text-[11px] text-slate-500 mt-1">Identifica el significado real de cada modismo informal.</div>
+          </div>
+        </button>
+
+        <!-- Mode 3: Spelling Typing -->
+        <button onclick="startGame('write')" class="group p-4 sm:p-5 gold-gradient hover:opacity-95 text-white border-2 border-amber-600 rounded-2xl transition-all duration-200 flex flex-col justify-between shadow-lg shadow-amber-600/20">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">✍️ ⌨️</div>
+          <div>
+            <div class="font-black text-white text-sm">Modo Escritura</div>
+            <div class="text-[11px] text-amber-100 mt-1">Escribe la expresión exacta en inglés con teclado y pistas.</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Quick Options & Features -->
+      <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-500">
+        <span>✨ Audio Pronunciación Nativa</span>
+        <span>•</span>
+        <span>⚡ Corrector Tolerante</span>
+        <span>•</span>
+        <span>📋 Modo Repaso de Fallos</span>
+      </div>
+    </div>
+
+    <!-- Screen 2: Interactive Game Stage -->
+    <div id="gameScreen" class="hidden bg-white rounded-3xl p-5 sm:p-7 border border-amber-200 custom-shadow animate-pop relative">
+      
+      <!-- Top Bar: Exit button, progress bar & question counter -->
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <button onclick="confirmExit()" class="text-slate-400 hover:text-amber-800 text-xs sm:text-sm font-bold transition flex items-center gap-1">
+          ← Menú
+        </button>
+        <div class="flex-1 max-w-xs mx-2">
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-200">
+            <div id="progressBar" class="bg-amber-500 h-full rounded-full w-0 transition-all duration-300"></div>
+          </div>
+        </div>
+        <div class="text-xs font-extrabold text-slate-500">
+          <span id="currentQuestionNum" class="text-amber-600">1</span>/<span id="totalQuestionsNum">16</span>
+        </div>
+      </div>
+
+      <!-- Question Prompt Card -->
+      <div id="promptCard" class="bg-gradient-to-b from-amber-50/70 to-slate-50 border border-amber-200/80 rounded-2xl p-5 sm:p-6 text-center mb-5 relative transition-all">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span id="modeTag" class="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+            MODO
+          </span>
+          <button id="ttsButton" onclick="speakCurrentExpression()" class="text-slate-500 hover:text-amber-700 bg-white border border-slate-200 hover:border-amber-300 rounded-full w-6 h-6 flex items-center justify-center text-xs transition" title="Escuchar pronunciación">
+            🔊
+          </button>
+        </div>
+
+        <h3 id="promptWord" class="text-2xl sm:text-3xl font-black text-slate-900 mb-2 tracking-tight">Expression</h3>
+        <p id="promptHint" class="text-xs text-slate-500 italic max-w-md mx-auto"></p>
+      </div>
+
+      <!-- Multiple Choice Area (Modes 1 and 2) -->
+      <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mb-4">
+        <!-- Dynamic Option Buttons -->
+      </div>
+
+      <!-- Typing Mode Area (Mode 3) -->
+      <div id="typingContainer" class="hidden flex-col items-center gap-3 mb-4">
+        <div class="w-full relative">
+          <input 
+            type="text" 
+            id="typeInput" 
+            placeholder="Escribe la expresión en inglés..." 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="off" 
+            spellcheck="false"
+            class="w-full text-center text-lg sm:text-xl font-bold py-3.5 px-4 rounded-xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-200 transition text-slate-900"
+          >
+        </div>
+
+        <div class="flex gap-2 w-full">
+          <button onclick="revealLetterHint()" class="flex-1 py-2.5 text-xs font-bold text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-xl transition flex items-center justify-center gap-1.5 border border-amber-300">
+            💡 Pista de letra (<span id="hintsLeftCount">3</span>)
+          </button>
+          <button onclick="submitTypedAnswer()" class="flex-[2] py-2.5 font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition shadow-md shadow-amber-600/20 text-sm">
+            Comprobar ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Immediate Feedback Banner -->
+      <div id="feedbackBanner" class="hidden p-4 rounded-2xl mb-2 text-center animate-pop">
+        <p id="feedbackTitle" class="font-extrabold text-base mb-1"></p>
+        <p id="feedbackDetail" class="text-xs leading-relaxed max-w-lg mx-auto"></p>
+        <button id="nextBtn" onclick="nextQuestion()" class="mt-3.5 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold rounded-xl transition shadow-md">
+          Siguiente Expresión →
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Screen 3: Results Summary -->
+    <div id="resultScreen" class="hidden bg-white rounded-3xl p-6 sm:p-8 border border-amber-200 custom-shadow animate-pop text-center relative overflow-hidden">
+      <div id="confettiContainer" class="pointer-events-none absolute inset-0 overflow-hidden"></div>
+      
+      <div class="text-5xl mb-2">🏆</div>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-1">¡Ronda Finalizada!</h2>
+      <p id="resultSubtitle" class="text-xs sm:text-sm text-slate-600 mb-5 max-w-md mx-auto"></p>
+
+      <!-- Stat Badges -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto mb-6">
+        <div class="p-3 bg-amber-50 rounded-2xl border border-amber-200">
+          <div class="text-[10px] text-amber-800 font-extrabold uppercase">Aciertos</div>
+          <div id="finalScore" class="text-2xl font-black text-amber-950">0/16</div>
+        </div>
+        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+          <div class="text-[10px] text-emerald-800 font-extrabold uppercase">Precisión</div>
+          <div id="finalAccuracy" class="text-2xl font-black text-emerald-950">0%</div>
+        </div>
+        <div class="p-3 bg-orange-50 rounded-2xl border border-orange-200">
+          <div class="text-[10px] text-orange-800 font-extrabold uppercase">Mejor Racha</div>
+          <div id="finalStreak" class="text-2xl font-black text-orange-950">0</div>
+        </div>
+      </div>
+
+      <!-- Mistakes Review Container -->
+      <div id="mistakesSection" class="text-left mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 max-h-48 overflow-y-auto">
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="text-xs font-black text-slate-700 uppercase tracking-wide">Expresiones para reforzar:</h4>
+          <span id="mistakesCountBadge" class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full"></span>
+        </div>
+        <div id="mistakesList" class="space-y-1.5 text-xs"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-2.5 justify-center">
+        <button id="retryMistakesBtn" onclick="retryMistakesOnly()" class="hidden px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl transition text-xs shadow-md shadow-rose-600/20">
+          🎯 Repasar solo las falladas
+        </button>
+        <button onclick="restartCurrentMode()" class="px-5 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition text-xs shadow-md shadow-amber-600/20">
+          🔄 Repetir este modo
+        </button>
+        <button onclick="goToMenu()" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-xs">
+          🏠 Menú Principal
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="mt-4 text-center text-xs text-slate-400 font-semibold">
+    Wisdom Corner Academy • English Department • Informal Expressions Practice
+  </footer>
+
+  <script>
+    // Complete 16 expressions from notebook
+    const VOCABULARY = [
+      { id: 1, en: "a big deal", es: "algo importante / fundamental", ex: "Don't worry about making a small mistake; it's not a big deal." },
+      { id: 2, en: "a nerd", es: "empollón/a / friki / bicho raro", ex: "He is proud of being a computer nerd because he builds great apps." },
+      { id: 3, en: "be into", es: "gustar mucho / estar metido en algo", ex: "Lately, she has really been into learning graphic design." },
+      { id: 4, en: "chill out", es: "relajarse / desconectar", ex: "After school, we like to chill out and listen to music." },
+      { id: 5, en: "day one", es: "el primer día / desde el principio", ex: "We became best friends from day one at secondary school." },
+      { id: 6, en: "half the time", es: "la mayor parte del tiempo / la mitad de las veces", ex: "He doesn't even pay attention half the time during lessons." },
+      { id: 7, en: "have someone around", es: "tener a alguien cerca / alrededor", ex: "It is comforting to have someone around when you feel nervous." },
+      { id: 8, en: "in a big way", es: "a lo grande / hasta más no poder", ex: "They celebrated passing their Cambridge exam in a big way." },
+      { id: 9, en: "in a way", es: "en cierto sentido / de alguna manera", ex: "In a way, doing morning sports gives me energy for the day." },
+      { id: 10, en: "loads of", es: "un montón de / muchísimo/s", ex: "We have got loads of vocabulary exercises to practise tonight." },
+      { id: 11, en: "mate", es: "amigo/a / colega / compañero/a (UK)", ex: "I am meeting my classmates and best mates at the library." },
+      { id: 12, en: "nag", es: "dar la lata / quejarse / regañar", ex: "My parents always nag me about tidying up my desk." },
+      { id: 13, en: "no way", es: "¡ni hablar! / ¡de ninguna manera!", ex: "No way am I going to miss the end-of-year concert!" },
+      { id: 14, en: "on a high", es: "eufórico/a / en una nube", ex: "The football team was on a high after winning the final match." },
+      { id: 15, en: "stuff", es: "cosas / trastos / material", ex: "Don't leave your school stuff scattered all over the floor." },
+      { id: 16, en: "way ahead", es: "muy por delante / con mucha ventaja", ex: "She studied all weekend and is now way ahead of the class." }
+    ];
+
+    // Game state
+    let currentMode = 'es-en';
+    let questionQueue = [];
+    let currentIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let maxStreak = 0;
+    let mistakes = [];
+    let canAnswer = true;
+    let soundEnabled = true;
+    let hintsUsedCount = 0;
+    const MAX_HINTS_PER_WORD = 3;
+
+    // Web Audio Synthesizer for pure self-contained sound effects
+    const audioCtx = (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined')
+      ? new (window.AudioContext || window.webkitAudioContext)()
+      : null;
+
+    function playSound(type) {
+      if (!soundEnabled || !audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+          // Cheerful chime (C5 to G5)
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.15);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (type === 'wrong') {
+          // Low buzzing sound
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'streak') {
+          // Sparkly treble
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(1318.51, now + 0.2);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        }
+      } catch (e) {
+        console.warn("Audio play blocked", e);
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('soundToggleBtn');
+      if (soundEnabled) {
+        btn.innerHTML = '🔊 <span class="hidden sm:inline">Sonido</span>';
+        btn.classList.replace('text-slate-400', 'text-amber-800');
+        playSound('correct');
+      } else {
+        btn.innerHTML = '🔇 <span class="hidden sm:inline">Mute</span>';
+        btn.classList.replace('text-amber-800', 'text-slate-400');
+      }
+    }
+
+    // Text to Speech for English Pronunciation
+    function speakCurrentExpression() {
+      if (!('speechSynthesis' in window)) return;
+      const item = questionQueue[currentIndex];
+      if (!item) return;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(item.en);
+      utterance.lang = 'en-GB';
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function startGame(mode, customSet = null) {
+      currentMode = mode;
+      questionQueue = customSet ? shuffle(customSet) : shuffle(VOCABULARY);
+      currentIndex = 0;
+      score = 0;
+      streak = 0;
+      maxStreak = 0;
+      mistakes = [];
+
+      document.getElementById('menuScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      document.getElementById('statsBadge').classList.remove('hidden');
+
+      document.getElementById('totalQuestionsNum').textContent = questionQueue.length;
+      updateHeaderStats();
+      loadQuestion();
+    }
+
+    function updateHeaderStats() {
+      document.getElementById('streakCount').textContent = streak;
+      document.getElementById('scoreCount').textContent = score;
+    }
+
+    function loadQuestion() {
+      canAnswer = true;
+      hintsUsedCount = 0;
+      const item = questionQueue[currentIndex];
+      const total = questionQueue.length;
+
+      // Update progress visuals
+      document.getElementById('currentQuestionNum').textContent = currentIndex + 1;
+      document.getElementById('progressBar').style.width = `${((currentIndex) / total) * 100}%`;
+      document.getElementById('feedbackBanner').classList.add('hidden');
+      document.getElementById('hintsLeftCount').textContent = MAX_HINTS_PER_WORD;
+
+      const modeTag = document.getElementById('modeTag');
+      const promptWord = document.getElementById('promptWord');
+      const promptHint = document.getElementById('promptHint');
+      const optionsContainer = document.getElementById('optionsContainer');
+      const typingContainer = document.getElementById('typingContainer');
+
+      if (currentMode === 'es-en') {
+        modeTag.textContent = "Español ➔ Inglés";
+        promptWord.textContent = item.es;
+        promptHint.textContent = `💡 Ejemplo: "${item.ex}"`;
+        optionsContainer.classList.remove('hidden');
+        typingContainer.classList.add('hidden');
+        generateMultipleChoice(item.en, 'en');
+      } else if (currentMode === 'en-es') {
+        modeTag.textContent = "Inglés ➔ Español";
+        promptWord.textContent = item.en;
+        promptHint.textContent = `💡 En contexto: "${item.ex}"`;
+        optionsContainer.classList.remove('hidden');
+        typingContainer.classList.add('hidden');
+        generateMultipleChoice(item.es, 'es');
+      } else if (currentMode === 'write') {
+        modeTag.textContent = "Modo Escritura (Spelling)";
+        promptWord.textContent = item.es;
+        promptHint.textContent = `Escribe en inglés (${item.en.length} letras). Ejemplo: "${item.ex.replace(new RegExp(item.en, 'gi'), '_____')}"`;
+        optionsContainer.classList.add('hidden');
+        typingContainer.classList.remove('hidden');
+
+        const input = document.getElementById('typeInput');
+        input.value = '';
+        input.disabled = false;
+        input.className = "w-full text-center text-lg sm:text-xl font-bold py-3.5 px-4 rounded-xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-200 transition text-slate-900";
+        input.focus();
+      }
+    }
+
+    function generateMultipleChoice(correctAnswer, targetLang) {
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+
+      // Pick 3 distractors from the 16 words pool
+      const others = VOCABULARY.filter(v => (targetLang === 'en' ? v.en : v.es) !== correctAnswer);
+      const shuffledOthers = shuffle(others).slice(0, 3);
+      const choices = shuffle([correctAnswer, ...shuffledOthers.map(o => targetLang === 'en' ? o.en : o.es)]);
+
+      choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = "w-full p-4 text-xs sm:text-sm font-bold rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 hover:bg-amber-50/60 transition duration-150 text-slate-800 text-left flex items-center justify-between shadow-sm";
+        btn.innerHTML = `<span>${choice}</span> <span class="text-xs text-amber-500 font-mono">➜</span>`;
+        btn.onclick = () => selectOption(choice, correctAnswer, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(selected, correct, selectedBtn) {
+      if (!canAnswer) return;
+      canAnswer = false;
+
+      const currentItem = questionQueue[currentIndex];
+      const isCorrect = selected.trim().toLowerCase() === correct.trim().toLowerCase();
+
+      const buttons = document.querySelectorAll('#optionsContainer button');
+      buttons.forEach(b => {
+        const text = b.querySelector('span').textContent;
+        if (text.trim().toLowerCase() === correct.trim().toLowerCase()) {
+          b.className = "w-full p-4 text-xs sm:text-sm font-black rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 flex items-center justify-between";
+        } else if (b === selectedBtn && !isCorrect) {
+          b.className = "w-full p-4 text-xs sm:text-sm font-black rounded-2xl border-2 border-rose-500 bg-rose-50 text-rose-950 flex items-center justify-between";
+        }
+      });
+
+      showFeedback(isCorrect, currentItem);
+    }
+
+    function submitTypedAnswer() {
+      if (!canAnswer) return;
+      const input = document.getElementById('typeInput');
+      const typed = input.value.trim().toLowerCase();
+      const currentItem = questionQueue[currentIndex];
+      const correct = currentItem.en.trim().toLowerCase();
+
+      if (!typed) {
+        input.focus();
+        return;
+      }
+
+      canAnswer = false;
+      input.disabled = true;
+
+      // Smart normalization: cleans double spaces or punctuation
+      const cleanTyped = typed.replace(/['’]/g, "'").replace(/\s+/g, ' ');
+      const cleanCorrect = correct.replace(/['’]/g, "'").replace(/\s+/g, ' ');
+
+      const isCorrect = cleanTyped === cleanCorrect;
+
+      if (isCorrect) {
+        input.className = "w-full text-center text-lg sm:text-xl font-black py-3.5 px-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900";
+      } else {
+        input.className = "w-full text-center text-lg sm:text-xl font-black py-3.5 px-4 rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-900 shake-anim";
+      }
+
+      showFeedback(isCorrect, currentItem);
+    }
+
+    function revealLetterHint() {
+      if (!canAnswer) return;
+      if (hintsUsedCount >= MAX_HINTS_PER_WORD) return;
+
+      const currentItem = questionQueue[currentIndex];
+      const target = currentItem.en;
+      const input = document.getElementById('typeInput');
+      
+      hintsUsedCount++;
+      document.getElementById('hintsLeftCount').textContent = MAX_HINTS_PER_WORD - hintsUsedCount;
+
+      input.value = target.slice(0, hintsUsedCount);
+      input.focus();
+    }
+
+    document.getElementById('typeInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        submitTypedAnswer();
+      }
+    });
+
+    function showFeedback(isCorrect, item) {
+      const banner = document.getElementById('feedbackBanner');
+      const title = document.getElementById('feedbackTitle');
+      const detail = document.getElementById('feedbackDetail');
+
+      banner.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-950', 'bg-rose-50', 'border-rose-300', 'text-rose-950');
+      banner.classList.add('border');
+
+      if (isCorrect) {
+        score++;
+        streak++;
+        if (streak > maxStreak) maxStreak = streak;
+
+        if (streak > 2) {
+          playSound('streak');
+        } else {
+          playSound('correct');
+        }
+
+        banner.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-950');
+        title.innerHTML = streak > 2 
+          ? `🔥 ¡Racha de ${streak}! ¡Excelente!` 
+          : `🎉 ¡Correcto!`;
+        detail.innerHTML = `<span class="font-bold text-emerald-900">${item.en}</span> = ${item.es}<br><span class="text-slate-600 italic">"${item.ex}"</span>`;
+      } else {
+        streak = 0;
+        mistakes.push(item);
+        playSound('wrong');
+
+        banner.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-950');
+        title.textContent = `❌ ¡Casi! La respuesta correcta es:`;
+        detail.innerHTML = `<span class="text-base font-black text-rose-900">${item.en}</span> = ${item.es}<br><span class="text-slate-600 italic">"${item.ex}"</span>`;
+      }
+
+      // Automatically speak the expression in English
+      speakCurrentExpression();
+      updateHeaderStats();
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex < questionQueue.length) {
+        loadQuestion();
+      } else {
+        finishGame();
+      }
+    }
+
+    function triggerConfetti() {
+      const container = document.getElementById('confettiContainer');
+      container.innerHTML = '';
+      const colors = ['#f59e0b', '#d97706', '#10b981', '#3b82f6', '#ec4899'];
+      for (let i = 0; i < 40; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.top = `-20px`;
+        piece.style.animationDelay = `${Math.random() * 0.5}s`;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(piece);
+      }
+    }
+
+    function finishGame() {
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+
+      const total = questionQueue.length;
+      const acc = Math.round((score / total) * 100);
+
+      document.getElementById('finalScore').textContent = `${score}/${total}`;
+      document.getElementById('finalAccuracy').textContent = `${acc}%`;
+      document.getElementById('finalStreak').textContent = maxStreak;
+
+      const sub = document.getElementById('resultSubtitle');
+      if (acc === 100) {
+        sub.textContent = "¡Puntuación Perfecta! Conoces todas las expresiones coloquiales al dedillo 🌟";
+        triggerConfetti();
+      } else if (acc >= 75) {
+        sub.textContent = "¡Muy buen trabajo! Tienes un nivel excelente de inglés informal 👍";
+        triggerConfetti();
+      } else {
+        sub.textContent = "¡Buen esfuerzo! Repasa las palabras falladas para afianzar el vocabulario 💡";
+      }
+
+      const listContainer = document.getElementById('mistakesList');
+      const mistakesSection = document.getElementById('mistakesSection');
+      const retryBtn = document.getElementById('retryMistakesBtn');
+      listContainer.innerHTML = '';
+
+      if (mistakes.length > 0) {
+        mistakesSection.classList.remove('hidden');
+        retryBtn.classList.remove('hidden');
+        document.getElementById('mistakesCountBadge').textContent = `${mistakes.length} falladas`;
+
+        mistakes.forEach(m => {
+          const div = document.createElement('div');
+          div.className = "p-2.5 rounded-xl bg-white border border-slate-200 flex justify-between items-center shadow-sm";
+          div.innerHTML = `
+            <div class="flex flex-col">
+              <span class="font-extrabold text-amber-900">${m.en}</span>
+              <span class="text-slate-500 text-[11px]">${m.es}</span>
+            </div>
+            <button onclick="speakWord('${m.en}')" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 p-1.5 rounded-lg border border-amber-200" title="Escuchar">🔊</button>
+          `;
+          listContainer.appendChild(div);
+        });
+      } else {
+        mistakesSection.classList.add('hidden');
+        retryBtn.classList.add('hidden');
+      }
+    }
+
+    function speakWord(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-GB';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function retryMistakesOnly() {
+      if (mistakes.length > 0) {
+        startGame(currentMode, mistakes);
+      }
+    }
+
+    function restartCurrentMode() {
+      startGame(currentMode);
+    }
+
+    function goToMenu() {
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('statsBadge').classList.add('hidden');
+      document.getElementById('menuScreen').classList.remove('hidden');
+    }
+
+    function confirmExit() {
+      goToMenu();
+    }
+  </script>
+</body>
+</html>
