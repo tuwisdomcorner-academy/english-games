@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Plataforma de Ejercicios</title>
+    <style>
+        :root {
+            --primary: #1E3A8A; /* Azul Wisdom */
+            --secondary: #D4AF37; /* Dorado Wisdom */
+            --bg-color: #F3F4F6;
+            --text: #333;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text); margin: 0; padding: 0; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { max-height: 80px; }
+        .header-title { flex-grow: 1; text-align: center; }
+        .header-title h1 { margin: 0; color: var(--primary); }
+        .stats { background: var(--bg-color); padding: 10px 20px; border-radius: 8px; font-weight: bold; }
+        
+        /* Login Screen */
+        #login-screen { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; margin: 100px auto; text-align: center; }
+        input[type="text"] { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        button { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: var(--secondary); color: var(--primary); font-weight: bold; }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { background: white; color: var(--primary); border: 2px solid var(--primary); flex: 1; min-width: 150px; font-weight: bold; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        
+        /* Content Area */
+        .category-section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .category-section.active { display: block; }
+        
+        /* Exercises */
+        .exercise-card { border-left: 5px solid var(--primary); background: #f9fafb; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .exercise-card.correct { border-left-color: var(--success); background: #ecfdf5; }
+        .exercise-card.failed { border-left-color: var(--error); background: #fef2f2; }
+        .question-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .input-group { display: flex; gap: 10px; align-items: center; }
+        .input-group input { width: 150px; margin: 0; }
+        .feedback { margin-top: 10px; font-size: 14px; font-weight: bold; padding: 8px; border-radius: 4px; display: none; }
+        .feedback.tip { background: #fef3c7; color: #b45309; display: block; border-left: 3px solid var(--warning); }
+        .feedback.success-msg { background: #d1fae5; color: #065f46; display: block; }
+        .feedback.error-msg { background: #fee2e2; color: #991b1b; display: block; }
+
+        /* Leaderboard */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: var(--primary); color: white; }
+        tr:hover { background-color: #f1f5f9; }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <img src="Captura de pantalla 2026-02-27 112014.png" alt="Wisdom Corner Logo" style="max-width: 150px; margin-bottom: 20px;" onerror="this.src='https://via.placeholder.com/150?text=Wisdom+Corner'">
+    <h2>Acceso a la Plataforma</h2>
+    <input type="text" id="nombreInput" placeholder="Nombre">
+    <input type="text" id="apellidoInput" placeholder="Apellidos">
+    <button onclick="iniciarSesion()">Comenzar Ejercicios</button>
+</div>
+
+<div class="container" id="main-app" style="display: none;">
+    <header>
+        <img src="Captura de pantalla 2026-02-27 112014.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+        <div class="header-title">
+            <h1>Wisdom Corner Academy</h1>
+            <p id="user-display">Alumno: </p>
+        </div>
+        <div class="stats">
+            ✅ <span id="correct-count">0</span> | ❌ <span id="error-count">0</span><br>
+            Puntos: <span id="score-count">0</span>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('exactos')">1. Decimal Exacto</button>
+        <button class="tab-btn" onclick="switchTab('puros')">2. Periódico Puro</button>
+        <button class="tab-btn" onclick="switchTab('mixtos')">3. Periódico Mixto</button>
+        <button class="tab-btn" onclick="switchTab('operaciones')">4. Operaciones Básicas</button>
+        <button class="tab-btn" onclick="switchTab('potencias')">5. Multiplicar/Dividir por 10</button>
+        <button class="tab-btn" style="background-color: var(--secondary); color: white;" onclick="mostrarClasificacion()">🏆 Clasificación</button>
+    </div>
+
+    <div id="content-area"></div>
+</div>
+
+<script>
+    // Base de datos de 50 preguntas distribuidas por categorías
+    const basePreguntas = [
+        // CATEGORÍA 1: Decimales Exactos (1-10)
+        { id: 1, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.5', a: '1/2', t1: 'Escribe el número sin coma en el numerador.', t2: 'En el denominador pon un 1 seguido de un cero. Luego simplifica entre 5.' },
+        { id: 2, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.25', a: '1/4', t1: 'Numerador: 25. Denominador: un 1 seguido de dos ceros.', t2: 'Divide arriba y abajo entre 25 para simplificar al máximo.' },
+        { id: 3, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 1.2', a: '6/5', t1: 'El numerador será 12. ¿Qué va en el denominador si hay un decimal?', t2: 'Tienes 12/10. Simplifica dividiendo entre 2.' },
+        { id: 4, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.8', a: '4/5', t1: 'El denominador es 10 porque solo hay una cifra decimal.', t2: 'Simplifica 8/10 dividiendo entre 2.' },
+        { id: 5, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 2.5', a: '5/2', t1: 'Numerador: 25. Denominador: 10.', t2: 'Divide ambos términos entre 5.' },
+        { id: 6, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.125', a: '1/8', t1: 'El denominador será 1000 porque hay tres cifras decimales.', t2: 'Prueba a dividir 125 y 1000 entre 125 directamente.' },
+        { id: 7, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 3.4', a: '17/5', t1: 'Escribe 34 partido de 10.', t2: 'Ambos son pares, divide entre 2.' },
+        { id: 8, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.75', a: '3/4', t1: 'Es 75 partido de 100.', t2: 'Simplifica dividiendo entre 25.' },
+        { id: 9, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 1.5', a: '3/2', t1: 'Numerador 15, denominador 10.', t2: 'Divide entre 5 para obtener la irreducible.' },
+        { id: 10, cat: 'exactos', q: 'Halla la fracción generatriz irreducible de: 0.04', a: '1/25', t1: 'El numerador es 4 y el denominador es 100.', t2: 'Divide ambos números entre 4.' },
+
+        // CATEGORÍA 2: Periódico Puro (11-20)
+        { id: 11, cat: 'puros', q: 'Fracción generatriz irreducible de: 0.333... (0.3 periódico)', a: '1/3', t1: 'En los puros, el denominador se llena de nueves (9).', t2: 'Tienes 3/9. Ahora simplifica dividiendo entre 3.' },
+        { id: 12, cat: 'puros', q: 'Fracción generatriz irreducible de: 0.666... (0.6 periódico)', a: '2/3', t1: 'Pon un 9 en el denominador por la cifra del periodo.', t2: 'Tienes 6/9, divide arriba y abajo entre 3.' },
+        { id: 13, cat: 'puros', q: 'Fracción generatriz irreducible de: 1.222... (1.2 periódico)', a: '11/9', t1: 'Al número completo sin coma (12) réstale la parte entera (1).', t2: 'El denominador lleva un 9. Resultado: 11/9 (no se puede simplificar más).' },
+        { id: 14, cat: 'puros', q: 'Fracción generatriz irreducible de: 2.555... (2.5 periódico)', a: '23/9', t1: 'Numerador: 25 menos la parte entera (2).', t2: 'El resultado es 23/9.' },
+        { id: 15, cat: 'puros', q: 'Fracción generatriz irreducible de: 0.111... (0.1 periódico)', a: '1/9', t1: 'El periodo es 1, así que va arriba.', t2: 'Al ser periódico puro con una cifra, el denominador es solo un 9.' },
+        { id: 16, cat: 'puros', q: 'Fracción generatriz irreducible de: 0.8181... (0.81 periódico)', a: '9/11', t1: 'Hay dos cifras en el periodo, así que el denominador es 99.', t2: 'Tienes 81/99. Divide entre 9 para simplificar.' },
+        { id: 17, cat: 'puros', q: 'Fracción generatriz irreducible de: 1.444... (1.4 periódico)', a: '13/9', t1: 'Numerador: 14 - 1.', t2: 'Queda 13/9, es irreducible.' },
+        { id: 18, cat: 'puros', q: 'Fracción generatriz irreducible de: 3.111... (3.1 periódico)', a: '28/9', t1: 'Al 31 le tienes que restar la parte entera que es 3.', t2: 'El denominador es un 9.' },
+        { id: 19, cat: 'puros', q: 'Fracción generatriz irreducible de: 0.4545... (0.45 periódico)', a: '5/11', t1: 'El numerador es 45 y el denominador 99.', t2: 'Simplifica dividiendo ambos entre 9.' },
+        { id: 20, cat: 'puros', q: 'Fracción generatriz irreducible de: 2.777... (2.7 periódico)', a: '25/9', t1: 'Haz la resta en el numerador: 27 - 2.', t2: 'El resultado es 25/9.' },
+
+        // CATEGORÍA 3: Periódico Mixto (21-30)
+        { id: 21, cat: 'mixtos', q: 'Fracción generatriz de: 0.1666... (0.16 con 6 periódico)', a: '1/6', t1: 'Numerador: Número entero sin coma menos la parte no periódica (16 - 1).', t2: 'Denominador: Un 9 (por el periodo) y un 0 (por el anteperiodo). Queda 15/90. Simplifica.' },
+        { id: 22, cat: 'mixtos', q: 'Fracción generatriz de: 0.8333... (0.83 con 3 periódico)', a: '5/6', t1: 'Numerador: 83 - 8 = 75.', t2: 'Denominador: 90. Simplifica 75/90 dividiendo entre 15.' },
+        { id: 23, cat: 'mixtos', q: 'Fracción generatriz de: 1.1666... (1.16 con 6 periódico)', a: '7/6', t1: 'Numerador: 116 - 11 = 105.', t2: 'Denominador 90. Simplifica 105/90 dividiendo entre 15.' },
+        { id: 24, cat: 'mixtos', q: 'Fracción generatriz de: 2.1333... (2.13 con 3 periódico)', a: '32/15', t1: 'Numerador: 213 - 21.', t2: 'Denominador 90. Tienes 192/90, simplifica dividiendo entre 6.' },
+        { id: 25, cat: 'mixtos', q: 'Fracción generatriz de: 0.41666... (0.416 con 6 periódico)', a: '5/12', t1: 'Numerador: 416 - 41 = 375.', t2: 'Denominador: 900. Simplifica dividiendo entre 75.' },
+        { id: 26, cat: 'mixtos', q: 'Fracción generatriz de: 0.2777... (0.27 con 7 periódico)', a: '5/18', t1: 'Numerador: 27 - 2.', t2: 'Denominador 90. Tienes 25/90, divide entre 5.' },
+        { id: 27, cat: 'mixtos', q: 'Fracción generatriz de: 1.0555... (1.05 con 5 periódico)', a: '19/18', t1: 'Numerador: 105 - 10.', t2: 'Denominador 90. Tienes 95/90, divide entre 5.' },
+        { id: 28, cat: 'mixtos', q: 'Fracción generatriz de: 0.3888... (0.38 con 8 periódico)', a: '7/18', t1: 'Numerador: 38 - 3.', t2: 'Denominador 90. Tienes 35/90, divide entre 5.' },
+        { id: 29, cat: 'mixtos', q: 'Fracción generatriz de: 2.0333... (2.03 con 3 periódico)', a: '61/30', t1: 'Numerador: 203 - 20 = 183.', t2: 'Denominador 90. Simplifica 183/90 dividiendo entre 3.' },
+        { id: 30, cat: 'mixtos', q: 'Fracción generatriz de: 0.08333... (0.083 con 3 periódico)', a: '1/12', t1: 'Numerador: 83 - 8 = 75.', t2: 'Denominador: 900. Divide 75/900 entre 75.' },
+
+        // CATEGORÍA 4: Operaciones Básicas (Sumas, Restas, Multiplicaciones) (31-40)
+        { id: 31, cat: 'operaciones', q: 'Calcula: 2.5 + 3.12', a: '5.62', t1: 'Recuerda alinear siempre la coma decimal antes de sumar.', t2: 'Añade un cero imaginario al 2.5 (2.50) para que coincidan las cifras.' },
+        { id: 32, cat: 'operaciones', q: 'Calcula: 10.4 - 3.85', a: '6.55', t1: 'Alinea las comas y escribe 10.40 para restar correctamente 3.85.', t2: 'Cuidado con las llevadas en la resta.' },
+        { id: 33, cat: 'operaciones', q: 'Calcula: 1.2 x 4.5', a: '5.4', t1: 'Multiplica como si no hubiera comas (12 x 45).', t2: 'Al resultado final ponle 2 decimales (porque hay uno en 1.2 y otro en 4.5).' },
+        { id: 34, cat: 'operaciones', q: 'Calcula: 15.6 / 3', a: '5.2', t1: 'Haz la división normal. Cuando bajes la primera cifra decimal (el 6), pon la coma en el cociente.', t2: '15 entre 3 es 5 exacto. Luego 6 entre 3 es 2.' },
+        { id: 35, cat: 'operaciones', q: 'Calcula: 4.8 / 1.2', a: '4', t1: 'Para quitar la coma del divisor, multiplica ambos números por 10.', t2: 'Es equivalente a dividir 48 entre 12.' },
+        { id: 36, cat: 'operaciones', q: 'Calcula: 7.05 + 12.9', a: '19.95', t1: 'Alinea las comas: 7.05 + 12.90.', t2: 'Suma columna a columna con cuidado.' },
+        { id: 37, cat: 'operaciones', q: 'Calcula: 5 - 2.34', a: '2.66', t1: 'Ponle decimales al entero: 5.00 - 2.34', t2: 'Recuerda llevarte la decena en la resta (del 10 al 4, etc.).' },
+        { id: 38, cat: 'operaciones', q: 'Calcula: 0.3 x 0.08', a: '0.024', t1: 'Multiplica 3 x 8 = 24.', t2: 'Cuenta todos los decimales: hay 1 en el 0.3 y 2 en el 0.08. El resultado necesita 3 decimales.' },
+        { id: 39, cat: 'operaciones', q: 'Calcula: 1.44 / 1.2', a: '1.2', t1: 'Multiplica por 10 ambos lados para quitar la coma del divisor: 14.4 / 12', t2: '14 entre 12 cabe a 1, sobra 2, bajas el 4 y pones la coma...' },
+        { id: 40, cat: 'operaciones', q: 'Calcula: 0.5 x 2.4', a: '1.2', t1: 'Multiplicar por 0.5 es lo mismo que hacer la mitad del número.', t2: '¿Cuál es la mitad de 2.4?' },
+
+        // CATEGORÍA 5: Multiplicar/Dividir por potencias de 10 (41-50)
+        { id: 41, cat: 'potencias', q: 'Calcula: 3.45 x 10', a: '34.5', t1: 'Al multiplicar por 10, la coma se mueve hacia la DERECHA.', t2: 'Mueve la coma un solo salto porque el 10 tiene un cero.' },
+        { id: 42, cat: 'potencias', q: 'Calcula: 0.07 x 100', a: '7', t1: 'Multiplicar por 100 mueve la coma dos lugares a la derecha.', t2: 'Los ceros a la izquierda desaparecen al mover la coma.' },
+        { id: 43, cat: 'potencias', q: 'Calcula: 5.2 / 10', a: '0.52', t1: 'Al dividir, la coma se mueve hacia la IZQUIERDA.', t2: 'Un salto a la izquierda. Necesitarás poner un cero delante de la coma.' },
+        { id: 44, cat: 'potencias', q: 'Calcula: 124.5 / 100', a: '1.245', t1: 'Mueve la coma dos posiciones a la izquierda.', t2: 'La coma saltará el 4 y el 2.' },
+        { id: 45, cat: 'potencias', q: 'Calcula: 0.8 x 1000', a: '800', t1: 'Tienes que mover la coma 3 saltos a la derecha.', t2: 'Si te quedas sin números, añade ceros. 1 salto quita el decimal, faltan 2 ceros.' },
+        { id: 46, cat: 'potencias', q: 'Calcula: 3 / 1000', a: '0.003', t1: 'Al número 3 (que tiene la coma imaginaria a la derecha) muévela 3 saltos a la izquierda.', t2: 'Rellena los huecos vacíos con ceros.' },
+        { id: 47, cat: 'potencias', q: 'Calcula: 98.76 x 100', a: '9876', t1: 'Dos ceros, dos saltos a la derecha.', t2: 'El número pierde totalmente los decimales.' },
+        { id: 48, cat: 'potencias', q: 'Calcula: 0.005 x 10', a: '0.05', t1: 'Solo un cero, así que la coma da un paso a la derecha.', t2: 'Pasa de estar detrás del primer cero a estar detrás del segundo.' },
+        { id: 49, cat: 'potencias', q: 'Calcula: 15 / 100', a: '0.15', t1: 'Mueve la coma imaginaria del 15 dos posiciones a la izquierda.', t2: 'La coma se queda delante del 1.' },
+        { id: 50, cat: 'potencias', q: 'Calcula: 42.1 x 1000', a: '42100', t1: 'Tres saltos a la derecha.', t2: 'El primer salto gasta el decimal (1), te quedan dos saltos que son dos ceros.' }
+    ];
+
+    let currentUser = null;
+    let users = JSON.parse(localStorage.getItem('wc_users')) || [];
+    let state = {};
+
+    function iniciarSesion() {
+        const nombre = document.getElementById('nombreInput').value.trim();
+        const apellido = document.getElementById('apellidoInput').value.trim();
+        
+        if(!nombre || !apellido) {
+            alert("Por favor, introduce Nombre y Apellidos");
+            return;
+        }
+
+        const fullName = `${nombre} ${apellido}`;
+        let userExists = users.find(u => u.name === fullName);
+        
+        if(userExists) {
+            currentUser = userExists;
+        } else {
+            currentUser = {
+                name: fullName,
+                correct: 0,
+                error: 0,
+                points: 0,
+                progress: {} // Almacenará {id: {attempts: 0, status: 'pending'}}
+            };
+            users.push(currentUser);
+        }
+
+        // Inicializar progreso pendiente
+        basePreguntas.forEach(q => {
+            if(!currentUser.progress[q.id]) {
+                currentUser.progress[q.id] = { attempts: 0, status: 'pending' };
+            }
+        });
+
+        guardarDatos();
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        document.getElementById('user-display').innerText = `Alumno: ${currentUser.name}`;
+        
+        actualizarMarcadores();
+        switchTab('exactos');
+    }
+
+    function guardarDatos() {
+        // Actualizar el usuario en el array
+        const index = users.findIndex(u => u.name === currentUser.name);
+        if(index !== -1) users[index] = currentUser;
+        localStorage.setItem('wc_users', JSON.stringify(users));
+    }
+
+    function actualizarMarcadores() {
+        document.getElementById('correct-count').innerText = currentUser.correct;
+        document.getElementById('error-count').innerText = currentUser.error;
+        document.getElementById('score-count').innerText = currentUser.points;
+    }
+
+    function switchTab(cat) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const content = document.getElementById('content-area');
+        content.innerHTML = '';
+
+        if(cat === 'clasificacion') return;
+
+        const preguntasCat = basePreguntas.filter(q => q.cat === cat);
+        
+        preguntasCat.forEach(q => {
+            const pState = currentUser.progress[q.id];
+            let html = `
+                <div class="exercise-card ${pState.status === 'correct' ? 'correct' : pState.status === 'failed' ? 'failed' : ''}" id="card-${q.id}">
+                    <div class="question-text">${q.id}. ${q.q}</div>
+            `;
+
+            if(pState.status === 'pending') {
+                html += `
+                    <div class="input-group">
+                        <input type="text" id="input-${q.id}" placeholder="Tu respuesta...">
+                        <button onclick="comprobar(${q.id})">Comprobar</button>
+                    </div>
+                    <div id="feedback-${q.id}" class="feedback"></div>
+                `;
+            } else {
+                html += `
+                    <div class="feedback ${pState.status === 'correct' ? 'success-msg' : 'error-msg'}">
+                        ${pState.status === 'correct' ? '¡Correcto!' : 'Agotaste los intentos. La respuesta correcta era: ' + q.a}
+                    </div>
+                `;
+            }
+            html += `</div>`;
+            content.innerHTML += html;
+        });
+    }
+
+    function comprobar(id) {
+        const q = basePreguntas.find(p => p.id === id);
+        const inputEl = document.getElementById(`input-${id}`);
+        const userVal = inputEl.value.trim().replace(/\s+/g, '').replace(',', '.'); // Formateo básico
+        const fbEl = document.getElementById(`feedback-${id}`);
+        const pState = currentUser.progress[id];
+
+        if(!userVal) return;
+
+        if(userVal === q.a) {
+            pState.status = 'correct';
+            currentUser.correct++;
+            currentUser.points += (30 - (pState.attempts * 10)); // 30 pts a la 1ª, 20 a la 2ª, 10 a la 3ª
+            renderizarAcierto(id);
+        } else {
+            pState.attempts++;
+            if(pState.attempts === 1) {
+                fbEl.className = 'feedback tip';
+                fbEl.innerHTML = `💡 <b>Consejo 1:</b> ${q.t1}`;
+            } else if (pState.attempts === 2) {
+                fbEl.className = 'feedback tip';
+                fbEl.innerHTML = `💡 <b>Consejo 2:</b> ${q.t2}`;
+            } else {
+                pState.status = 'failed';
+                currentUser.error++;
+                renderizarFallo(id, q.a);
+            }
+        }
+        guardarDatos();
+        actualizarMarcadores();
+    }
+
+    function renderizarAcierto(id) {
+        const card = document.getElementById(`card-${id}`);
+        card.classList.add('correct');
+        card.innerHTML = card.innerHTML.replace(/<div class="input-group".*?<\/div>/s, '');
+        const fbEl = document.getElementById(`feedback-${id}`);
+        fbEl.className = 'feedback success-msg';
+        fbEl.innerHTML = '¡Correcto! Excelente trabajo.';
+    }
+
+    function renderizarFallo(id, respuestaCorrecta) {
+        const card = document.getElementById(`card-${id}`);
+        card.classList.add('failed');
+        card.innerHTML = card.innerHTML.replace(/<div class="input-group".*?<\/div>/s, '');
+        const fbEl = document.getElementById(`feedback-${id}`);
+        fbEl.className = 'feedback error-msg';
+        fbEl.innerHTML = `❌ Agotaste los 3 intentos. Recuerda que la respuesta correcta era: <b>${respuestaCorrecta}</b>`;
+    }
+
+    function mostrarClasificacion() {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Ordenar usuarios por puntos descendente
+        let sortedUsers = [...users].sort((a, b) => b.points - a.points);
+        
+        let html = `
+            <div class="category-section active">
+                <h2>🏆 Clasificación de Wisdom Corner Academy</h2>
+                <table>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Alumno</th>
+                        <th>Aciertos</th>
+                        <th>Fallos</th>
+                        <th>Puntos</th>
+                    </tr>
+        `;
+        
+        sortedUsers.forEach((u, index) => {
+            html += `
+                <tr>
+                    <td>${index === 0 ? '🥇 1º' : index === 1 ? '🥈 2º' : index === 2 ? '🥉 3º' : (index + 1) + 'º'}</td>
+                    <td><b>${u.name}</b></td>
+                    <td style="color: var(--success)">${u.correct}</td>
+                    <td style="color: var(--error)">${u.error}</td>
+                    <td><b>${u.points}</b></td>
+                </tr>
+            `;
+        });
+        
+        html += `</table></div>`;
+        document.getElementById('content-area').innerHTML = html;
+    }
+</script>
+</body>
+</html>
