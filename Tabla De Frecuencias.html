@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma de Estadística - Wisdom Corner Academy</title>
+<style>
+  :root {
+    --primary: #005b9f;
+    --primary-dark: #00467a;
+    --gold: #c59b27;
+    --gold-hover: #b08920;
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --border: #c9e0f5;
+    --text-main: #334155;
+    --success: #16a34a;
+    --error: #dc2626;
+    --warning: #ca8a04;
+  }
+
+  * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container { width: 100%; max-width: 900px; }
+  .hidden { display: none !important; }
+
+  /* CABECERA */
+  .header {
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 91, 159, 0.08);
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .logo { width: 70px; height: 70px; object-fit: contain; margin-right: 20px; }
+  .title-area h1 { color: var(--primary); font-size: 22px; margin: 0 0 5px 0; text-transform: uppercase; }
+  .title-area p { color: #64748b; font-size: 14px; margin: 0; }
+
+  /* PANTALLA PRINCIPAL (CONCEPTOS) */
+  .intro-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .concept-box {
+    background: #f8fafc;
+    border-left: 4px solid var(--primary);
+    padding: 15px;
+    border-radius: 4px;
+  }
+  .concept-box h4 { margin: 0 0 5px 0; color: var(--primary); }
+  .concept-box p { margin: 0; font-size: 13.5px; line-height: 1.5; }
+  
+  .btn-start {
+    background: var(--gold); color: white; border: none; padding: 15px 30px;
+    font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer;
+    width: 100%; margin-top: 25px; transition: 0.2s;
+  }
+  .btn-start:hover { background: var(--gold-hover); }
+
+  /* ÁREA DE QUIZ */
+  .quiz-area {
+    background: var(--bg-card); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .quiz-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
+  .quiz-counter { color: var(--primary); font-weight: bold; font-size: 16px; }
+  .attempts-counter { color: var(--error); font-weight: bold; font-size: 14px; }
+
+  .data-box {
+    background: #eef2ff; padding: 15px; border-radius: 8px; border: 1px dashed #a5b4fc;
+    margin-bottom: 20px; font-size: 16px; font-weight: bold; color: var(--primary); text-align: center; letter-spacing: 2px;
+  }
+
+  /* TABLA Y ESTADÍSTICOS */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+  th { background: var(--primary); color: white; padding: 12px; text-align: center; border: 1px solid var(--primary-dark); }
+  td { padding: 10px; text-align: center; border: 1px solid var(--border); }
+  tr:nth-child(even) { background: #f9fbfc; }
+  
+  input[type="text"] {
+    width: 60px; padding: 8px; text-align: center; border: 2px solid var(--border); border-radius: 4px;
+    font-weight: bold; font-size: 14px; outline: none; transition: 0.2s;
+  }
+  input[type="text"]:focus { border-color: var(--primary); }
+  
+  .input-correct { border-color: var(--success) !important; background-color: #f0fdf4; color: var(--success); }
+  .input-error { border-color: var(--error) !important; background-color: #fef2f2; color: var(--error); }
+  .input-revealed { border-color: var(--warning) !important; background-color: #fefce8; color: var(--warning); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+  .stat-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+  .stat-card label { display: block; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
+  .stat-card input { width: 80px; }
+
+  /* BOTONES Y PISTAS */
+  .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+  button { padding: 12px 20px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .btn-check { background: var(--primary); color: white; flex: 1; }
+  .btn-check:hover { background: var(--primary-dark); }
+  .btn-hint { background: var(--gold); color: white; }
+  .btn-hint:hover { background: var(--gold-hover); }
+  .btn-next { background: var(--success); color: white; width: 100%; font-size: 16px; margin-top: 15px; }
+
+  .hint-box { background: #fffbeb; border-left: 4px solid var(--gold); padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; display: flex; align-items: center; gap: 15px; }
+  .hint-box img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #fff; }
+
+  /* RESULTADOS FINALES */
+  .results-area { text-align: center; }
+  .feedback-list { text-align: left; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; }
+  .feedback-list li { margin-bottom: 10px; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="Captura de pantalla 2026-02-27 112014_2.png" alt="Logo" class="logo">
+    <div class="title-area">
+      <h1>Wisdom Corner Academy</h1>
+      <p>Entrenamiento: Tabla de Frecuencias y Estadísticos</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA PRINCIPAL: CONCEPTOS -->
+  <div id="view-intro" class="intro-card">
+    <h2 style="color: var(--primary); margin-top: 0; text-align: center;">Repaso de Conceptos Básicos</h2>
+    <p style="text-align: center; color: #64748b;">Lee atentamente estas reglas antes de comenzar los 10 ejercicios.</p>
+    
+    <div class="concept-grid">
+      <div class="concept-box">
+        <h4>Variable (X<sub>i</sub>)</h4>
+        <p>Son los datos ordenados de menor a mayor sin repetir.</p>
+      </div>
+      <div class="concept-box">
+        <h4>Frec. Absoluta (f<sub>i</sub>)</h4>
+        <p>Es el número de veces que se repite un dato concreto en la lista.</p>
+      </div>
+      <div class="concept-box">
+        <h4>Frec. Acumulada (F<sub>i</sub>)</h4>
+        <p>Se calcula sumando la frecuencia absoluta actual con las anteriores. (El último F<sub>i</sub> debe coincidir con la N total).</p>
+      </div>
+      <div class="concept-box">
+        <h4>Frec. Relativa (h<sub>i</sub>)</h4>
+        <p>Es el resultado de dividir f<sub>i</sub> entre N. (Usa decimales, ej: 0.25). La suma de todos debe dar 1.</p>
+      </div>
+      <div class="concept-box">
+        <h4>Moda</h4>
+        <p>Es el valor de la variable (X<sub>i</sub>) que tiene la frecuencia absoluta (f<sub>i</sub>) más alta. (El que más se repite).</p>
+      </div>
+      <div class="concept-box">
+        <h4>Mediana</h4>
+        <p>Es el dato que queda en el medio al ordenarlos. Búscalo en la columna F<sub>i</sub>: es el primer valor que supere la mitad de N.</p>
+      </div>
+      <div class="concept-box" style="grid-column: span 2;">
+        <h4>Media</h4>
+        <p>Es el promedio. Se calcula sumando todos los datos (o multiplicando cada X<sub>i</sub> por su f<sub>i</sub>) y dividiendo el resultado entre N total.</p>
+      </div>
+    </div>
+    
+    <button class="btn-start" onclick="startQuiz()">Comenzar Entrenamiento</button>
+  </div>
+
+  <!-- ZONA DE EJERCICIO -->
+  <div id="view-quiz" class="quiz-area hidden">
+    <div class="quiz-header">
+      <div class="quiz-counter" id="lbl-counter">Ejercicio 1 / 10</div>
+      <div class="attempts-counter" id="lbl-attempts">Intentos restantes: 3</div>
+    </div>
+
+    <p style="margin-top:0;">Completa la tabla y calcula los estadísticos a partir de los siguientes datos:</p>
+    <div class="data-box" id="lbl-data">2, 3, 3...</div>
+
+    <table id="freq-table">
+      <thead>
+        <tr>
+          <th>X<sub>i</sub></th>
+          <th>f<sub>i</sub></th>
+          <th>F<sub>i</sub></th>
+          <th>h<sub>i</sub></th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Generado dinámicamente -->
+      </tbody>
+    </table>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <label>Moda</label>
+        <input type="text" id="inp-moda" autocomplete="off">
+      </div>
+      <div class="stat-card">
+        <label>Mediana</label>
+        <input type="text" id="inp-mediana" autocomplete="off">
+      </div>
+      <div class="stat-card">
+        <label>Media</label>
+        <input type="text" id="inp-media" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="hint-box hidden" id="hint-box">
+      <img src="Gemini_Generated_Image_sflauisflauisfla_2.png" alt="Pista">
+      <div><strong>Pista de Sabiduría:</strong><br><span id="lbl-hint"></span></div>
+    </div>
+
+    <div class="action-buttons" id="action-buttons">
+      <button class="btn-check" onclick="checkAnswers()">Comprobar</button>
+      <button class="btn-hint" onclick="toggleHint()">💡 Pista</button>
+    </div>
+
+    <div id="feedback-msg" style="text-align: center; font-weight: bold; margin-bottom: 15px; font-size: 16px;"></div>
+
+    <button class="btn-next hidden" id="btn-next" onclick="nextExercise()">Siguiente Ejercicio &rarr;</button>
+  </div>
+
+  <!-- RESULTADOS FINALES -->
+  <div id="view-result" class="quiz-area results-area hidden">
+    <img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg" alt="Éxito" style="width: 120px; border-radius: 50%; margin-bottom: 20px;">
+    <h2 style="color: var(--primary);">¡Entrenamiento Finalizado!</h2>
+    <p>Aquí tienes el resumen de tu rendimiento en los 10 ejercicios:</p>
+    
+    <ul class="feedback-list" id="feedback-list">
+      <!-- Generado dinámicamente -->
+    </ul>
+    
+    <button class="btn-start" onclick="location.reload()" style="width:auto;">Volver a entrenar</button>
+  </div>
+
+</div>
+
+<script>
+  // BASE DE DATOS DE LOS 10 EJERCICIOS
+  const db = [
+    {
+      data: "0, 0, 1, 1, 1, 1, 2, 2, 2, 3",
+      N: 10,
+      Xi: [0, 1, 2, 3],
+      fi: [2, 4, 3, 1],
+      Fi: [2, 6, 9, 10],
+      hi: [0.2, 0.4, 0.3, 0.1],
+      moda: 1, mediana: 1, media: 1.3,
+      hint: "Para la Media, suma todos los números y divide entre 10. La Moda es el número que más se repite (frecuencia absoluta mayor)."
+    },
+    {
+      data: "1, 2, 2, 3, 3, 3, 4, 4, 5, 5",
+      N: 10,
+      Xi: [1, 2, 3, 4, 5],
+      fi: [1, 2, 3, 2, 2],
+      Fi: [1, 3, 6, 8, 10],
+      hi: [0.1, 0.2, 0.3, 0.2, 0.2],
+      moda: 3, mediana: 3, media: 3.2,
+      hint: "La Mediana es el valor que ocupa la posición central. Al ser N=10, busca las posiciones 5 y 6 en la Frecuencia Acumulada."
+    },
+    {
+      data: "2, 3, 3, 4, 4, 4, 4, 5, 5, 6",
+      N: 10,
+      Xi: [2, 3, 4, 5, 6],
+      fi: [1, 2, 4, 2, 1],
+      Fi: [1, 3, 7, 9, 10],
+      hi: [0.1, 0.2, 0.4, 0.2, 0.1],
+      moda: 4, mediana: 4, media: 4.0,
+      hint: "¡Cuidado con la suma de la Frecuencia Acumulada! Suma en diagonal: el F_i anterior más el f_i actual."
+    },
+    {
+      data: "5, 5, 6, 6, 6, 7, 7, 8",
+      N: 8,
+      Xi: [5, 6, 7, 8],
+      fi: [2, 3, 2, 1],
+      Fi: [2, 5, 7, 8],
+      hi: [0.25, 0.375, 0.25, 0.125],
+      moda: 6, mediana: 6, media: 6.25,
+      hint: "N vale 8 esta vez. La Frecuencia Relativa (hi) se calcula dividiendo cada fi entre 8."
+    },
+    {
+      data: "1, 1, 1, 2, 2, 3, 3, 3, 3, 4",
+      N: 10,
+      Xi: [1, 2, 3, 4],
+      fi: [3, 2, 4, 1],
+      Fi: [3, 5, 9, 10],
+      hi: [0.3, 0.2, 0.4, 0.1],
+      moda: 3, mediana: 2.5, media: 2.3,
+      hint: "¡Ojo a la mediana! La mitad de N es 5. Los datos en las posiciones 5 y 6 son el 2 y el 3. Su promedio es la mediana."
+    },
+    {
+      data: "10, 10, 11, 11, 11, 12, 12, 12, 12, 13",
+      N: 10,
+      Xi: [10, 11, 12, 13],
+      fi: [2, 3, 4, 1],
+      Fi: [2, 5, 9, 10],
+      hi: [0.2, 0.3, 0.4, 0.1],
+      moda: 12, mediana: 11.5, media: 11.4,
+      hint: "No te asustes por números grandes. La media se calcula igual: suma todo y divide entre 10."
+    },
+    {
+      data: "0, 1, 1, 2, 2, 2, 2, 3, 3, 4",
+      N: 10,
+      Xi: [0, 1, 2, 3, 4],
+      fi: [1, 2, 4, 2, 1],
+      Fi: [1, 3, 7, 9, 10],
+      hi: [0.1, 0.2, 0.4, 0.2, 0.1],
+      moda: 2, mediana: 2, media: 2.0,
+      hint: "Comprueba que la última fila de tu columna de Frecuencia Acumulada sea exactamente 10."
+    },
+    {
+      data: "5, 6, 6, 7, 7, 7, 8, 8, 9, 9",
+      N: 10,
+      Xi: [5, 6, 7, 8, 9],
+      fi: [1, 2, 3, 2, 2],
+      Fi: [1, 3, 6, 8, 10],
+      hi: [0.1, 0.2, 0.3, 0.2, 0.2],
+      moda: 7, mediana: 7, media: 7.2,
+      hint: "La Moda es el valor con el mayor f_i. ¡Revisa qué número se repite 3 veces!"
+    },
+    {
+      data: "2, 2, 2, 4, 4, 6, 6, 6, 6, 8",
+      N: 10,
+      Xi: [2, 4, 6, 8],
+      fi: [3, 2, 4, 1],
+      Fi: [3, 5, 9, 10],
+      hi: [0.3, 0.2, 0.4, 0.1],
+      moda: 6, mediana: 5, media: 4.6,
+      hint: "Para la mediana: posición 5 es un 4, posición 6 es un 6. El punto medio entre 4 y 6 es la Mediana."
+    },
+    {
+      data: "0, 2, 2, 4, 4, 4, 6, 6, 8, 8",
+      N: 10,
+      Xi: [0, 2, 4, 6, 8],
+      fi: [1, 2, 3, 2, 2],
+      Fi: [1, 3, 6, 8, 10],
+      hi: [0.1, 0.2, 0.3, 0.2, 0.2],
+      moda: 4, mediana: 4, media: 4.4,
+      hint: "Recuerda que la Media es la suma total (44) dividida entre N (10)."
+    }
+  ];
+
+  let currentIndex = 0;
+  let attempts = 0;
+  
+  // Registro de estadísticas del usuario (aciertos en el primer o segundo intento)
+  let userStats = { tables: 0, moda: 0, mediana: 0, media: 0 };
+
+  function startQuiz() {
+    document.getElementById('view-intro').classList.add('hidden');
+    document.getElementById('view-quiz').classList.remove('hidden');
+    loadExercise();
+  }
+
+  function loadExercise() {
+    attempts = 0;
+    const ex = db[currentIndex];
+    
+    document.getElementById('lbl-counter').innerText = `Ejercicio ${currentIndex + 1} / ${db.length}`;
+    document.getElementById('lbl-attempts').innerText = `Intentos restantes: 3`;
+    document.getElementById('lbl-attempts').style.color = "var(--primary)";
+    document.getElementById('lbl-data').innerText = ex.data;
+    
+    // Generar tabla dinámica
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+    ex.Xi.forEach((x, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:bold; color:var(--primary);">${x}</td>
+        <td><input type="text" id="fi_${i}" class="cell-input"></td>
+        <td><input type="text" id="Fi_${i}" class="cell-input"></td>
+        <td><input type="text" id="hi_${i}" class="cell-input"></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Reset Estadísticos
+    document.getElementById('inp-moda').value = '';
+    document.getElementById('inp-mediana').value = '';
+    document.getElementById('inp-media').value = '';
+    
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(inp => {
+      inp.disabled = false;
+      inp.className = 'cell-input'; // limpiar clases de error/acierto
+    });
+
+    document.getElementById('action-buttons').classList.remove('hidden');
+    document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('hint-box').classList.add('hidden');
+    document.getElementById('feedback-msg').innerText = '';
+    document.getElementById('lbl-hint').innerText = ex.hint;
+  }
+
+  function toggleHint() {
+    const hintBox = document.getElementById('hint-box');
+    hintBox.classList.toggle('hidden');
+  }
+
+  function parseVal(str) {
+    return parseFloat(str.replace(',', '.'));
+  }
+
+  function checkAnswers() {
+    const ex = db[currentIndex];
+    let allTableCorrect = true;
+    let tableHasErrors = false;
+
+    // Verificar Tabla
+    ex.Xi.forEach((_, i) => {
+      const fiInp = document.getElementById(`fi_${i}`);
+      const FiInp = document.getElementById(`Fi_${i}`);
+      const hiInp = document.getElementById(`hi_${i}`);
+
+      const fiVal = parseVal(fiInp.value);
+      const FiVal = parseVal(FiInp.value);
+      const hiVal = parseVal(hiInp.value);
+
+      if (fiVal === ex.fi[i]) { fiInp.classList.add('input-correct'); fiInp.classList.remove('input-error'); } 
+      else { fiInp.classList.add('input-error'); fiInp.classList.remove('input-correct'); allTableCorrect = false; tableHasErrors = true; }
+
+      if (FiVal === ex.Fi[i]) { FiInp.classList.add('input-correct'); FiInp.classList.remove('input-error'); } 
+      else { FiInp.classList.add('input-error'); FiInp.classList.remove('input-correct'); allTableCorrect = false; tableHasErrors = true; }
+
+      if (Math.abs(hiVal - ex.hi[i]) < 0.01) { hiInp.classList.add('input-correct'); hiInp.classList.remove('input-error'); } 
+      else { hiInp.classList.add('input-error'); hiInp.classList.remove('input-correct'); allTableCorrect = false; tableHasErrors = true; }
+    });
+
+    // Verificar Estadísticos
+    const modaInp = document.getElementById('inp-moda');
+    const medianaInp = document.getElementById('inp-mediana');
+    const mediaInp = document.getElementById('inp-media');
+
+    let modaCorrect = parseVal(modaInp.value) === ex.moda;
+    let medianaCorrect = parseVal(medianaInp.value) === ex.mediana;
+    let mediaCorrect = Math.abs(parseVal(mediaInp.value) - ex.media) < 0.01;
+
+    modaInp.className = modaCorrect ? 'input-correct' : 'input-error';
+    medianaInp.className = medianaCorrect ? 'input-correct' : 'input-error';
+    mediaInp.className = mediaCorrect ? 'input-correct' : 'input-error';
+
+    const everythingCorrect = allTableCorrect && modaCorrect && medianaCorrect && mediaCorrect;
+    const fbMsg = document.getElementById('feedback-msg');
+
+    if (everythingCorrect) {
+      fbMsg.style.color = "var(--success)";
+      fbMsg.innerText = "¡Excelente! Todo está perfecto.";
+      if (attempts < 3) {
+        userStats.tables++;
+        userStats.moda++;
+        userStats.mediana++;
+        userStats.media++;
+      }
+      endExercise();
+    } else {
+      attempts++;
+      const left = 3 - attempts;
+      document.getElementById('lbl-attempts').innerText = `Intentos restantes: ${left}`;
+      
+      if (left > 0) {
+        fbMsg.style.color = "var(--error)";
+        fbMsg.innerText = `Tienes errores marcados en rojo. Corrígelos. Te quedan ${left} intentos.`;
+      } else {
+        // Revelar respuestas si falla 3 veces
+        fbMsg.style.color = "var(--warning)";
+        fbMsg.innerText = "Agotaste los intentos. Observa las respuestas correctas.";
+        
+        // Registrar qué falló al final
+        if (!tableHasErrors) userStats.tables++;
+        if (modaCorrect) userStats.moda++;
+        if (medianaCorrect) userStats.mediana++;
+        if (mediaCorrect) userStats.media++;
+
+        revealAnswers();
+        endExercise();
+      }
+    }
+  }
+
+  function revealAnswers() {
+    const ex = db[currentIndex];
+    
+    ex.Xi.forEach((_, i) => {
+      const fi = document.getElementById(`fi_${i}`);
+      const Fi = document.getElementById(`Fi_${i}`);
+      const hi = document.getElementById(`hi_${i}`);
+      
+      if(parseVal(fi.value) !== ex.fi[i]) { fi.value = ex.fi[i]; fi.className = 'input-revealed'; }
+      if(parseVal(Fi.value) !== ex.Fi[i]) { Fi.value = ex.Fi[i]; Fi.className = 'input-revealed'; }
+      if(Math.abs(parseVal(hi.value) - ex.hi[i]) > 0.01 || hi.value==='') { hi.value = ex.hi[i]; hi.className = 'input-revealed'; }
+    });
+
+    const mInp = document.getElementById('inp-moda');
+    const meInp = document.getElementById('inp-mediana');
+    const mdInp = document.getElementById('inp-media');
+
+    if(parseVal(mInp.value) !== ex.moda) { mInp.value = ex.moda; mInp.className = 'input-revealed'; }
+    if(parseVal(meInp.value) !== ex.mediana) { meInp.value = ex.mediana; meInp.className = 'input-revealed'; }
+    if(Math.abs(parseVal(mdInp.value) - ex.media) > 0.01 || mdInp.value==='') { mdInp.value = ex.media; mdInp.className = 'input-revealed'; }
+  }
+
+  function endExercise() {
+    document.querySelectorAll('input[type="text"]').forEach(inp => inp.disabled = true);
+    document.getElementById('action-buttons').classList.add('hidden');
+    document.getElementById('btn-next').classList.remove('hidden');
+  }
+
+  function nextExercise() {
+    currentIndex++;
+    if (currentIndex < db.length) {
+      loadExercise();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-result').classList.remove('hidden');
+    
+    const list = document.getElementById('feedback-list');
+    list.innerHTML = "";
+
+    // Análisis Tablas
+    if (userStats.tables >= 8) list.innerHTML += "<li>✅ <strong>Tablas de Frecuencias:</strong> ¡Sobresaliente! Dominas el conteo y las frecuencias acumuladas y relativas.</li>";
+    else list.innerHTML += "<li>⚠️ <strong>Tablas de Frecuencias:</strong> Debes repasar con más calma el conteo y comprobar que la suma de F<sub>i</sub> cuadre siempre con la N.</li>";
+
+    // Análisis Moda
+    if (userStats.moda >= 8) list.innerHTML += "<li>✅ <strong>Moda:</strong> Perfecto. Tienes clarísimo que es el valor que más se repite.</li>";
+    else list.innerHTML += "<li>⚠️ <strong>Moda:</strong> Revisa el concepto. Recuerda que es la X<sub>i</sub> que tenga la mayor f<sub>i</sub> asociada.</li>";
+
+    // Análisis Mediana
+    if (userStats.mediana >= 8) list.innerHTML += "<li>✅ <strong>Mediana:</strong> ¡Genial! Sabes buscar el valor central perfectamente.</li>";
+    else list.innerHTML += "<li>⚠️ <strong>Mediana:</strong> La mediana te está costando un poco. Recuerda buscar la mitad de N en la columna F<sub>i</sub>.</li>";
+
+    // Análisis Media
+    if (userStats.media >= 8) list.innerHTML += "<li>✅ <strong>Media:</strong> ¡Muy bien! Dominas el promedio.</li>";
+    else list.innerHTML += "<li>⚠️ <strong>Media:</strong> Practica más la fórmula: suma todos los datos multiplicando cada X<sub>i</sub> por su f<sub>i</sub> y divídelo entre el total de N.</li>";
+  }
+
+  // Tecla Enter para comprobar
+  document.addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && !document.getElementById('view-quiz').classList.contains('hidden') && !document.getElementById('action-buttons').classList.contains('hidden')) {
+      e.preventDefault();
+      checkAnswers();
+    }
+  });
+</script>
+
+</body>
+</html>
