@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operaciones Combinadas - Wisdom Corner Academy</title>
+<style>
+  :root {
+    --primary: #005b9f;
+    --primary-dark: #00467a;
+    --gold: #c59b27;
+    --gold-hover: #b08920;
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --border: #c9e0f5;
+    --text-main: #334155;
+    --success: #16a34a;
+    --error: #dc2626;
+    --warning: #ca8a04;
+  }
+
+  * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container { width: 100%; max-width: 850px; }
+  .hidden { display: none !important; }
+
+  /* CABECERA */
+  .header {
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 91, 159, 0.08);
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .logo { width: 70px; height: 70px; object-fit: contain; margin-right: 20px; }
+  .title-area h1 { color: var(--primary); font-size: 22px; margin: 0 0 5px 0; text-transform: uppercase; }
+  .title-area p { color: #64748b; font-size: 14px; margin: 0; }
+
+  /* PANTALLA PRINCIPAL (CONCEPTOS) */
+  .intro-card {
+    background: var(--bg-card); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+  }
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+  .concept-box { background: #f8fafc; border-left: 4px solid var(--primary); padding: 20px; border-radius: 4px; }
+  .concept-box h4 { margin: 0 0 10px 0; color: var(--primary); font-size: 16px; text-transform: uppercase; }
+  .concept-box p, .concept-box ul { margin: 0; font-size: 14px; line-height: 1.6; }
+  .concept-box ul { padding-left: 20px; margin-top: 10px; }
+  .concept-box li { margin-bottom: 5px; }
+
+  .rule-highlight { font-family: monospace; font-weight: bold; color: var(--primary-dark); background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
+
+  .btn-start {
+    background: var(--gold); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 25px; transition: 0.2s;
+  }
+  .btn-start:hover { background: var(--gold-hover); }
+
+  /* ÁREA DE QUIZ */
+  .quiz-area { background: var(--bg-card); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .quiz-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
+  .quiz-counter { color: var(--primary); font-weight: bold; font-size: 16px; }
+  .attempts-counter { color: var(--primary); font-weight: bold; font-size: 14px; padding: 4px 10px; border-radius: 20px; background: #eef2ff; }
+
+  .math-display {
+    background: #f8fafc; padding: 25px; border-radius: 8px; border: 2px dashed var(--border);
+    margin-bottom: 25px; font-size: 22px; font-weight: bold; color: var(--text-main); text-align: center; letter-spacing: 1px;
+  }
+
+  .input-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  input[type="text"] {
+    flex: 1; min-width: 150px; padding: 12px 15px; font-size: 18px; border: 2px solid var(--border); border-radius: 8px; outline: none; font-weight: bold; color: var(--primary); text-align: center;
+  }
+  input[type="text"]:focus { border-color: var(--primary); }
+
+  button { padding: 12px 20px; font-size: 15px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .btn-check { background: var(--primary); color: white; width: 150px; }
+  .btn-check:hover { background: var(--primary-dark); }
+  .btn-hint { background: var(--gold); color: white; }
+  .btn-hint:hover { background: var(--gold-hover); }
+  .btn-next { background: var(--success); color: white; width: 100%; margin-top: 15px; }
+
+  /* FEEDBACK Y PISTAS */
+  .hint-box { background: #fffbeb; border-left: 4px solid var(--gold); padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; display: flex; align-items: center; gap: 15px; }
+  .hint-box img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #fff; }
+
+  .feedback-box { display: flex; align-items: flex-start; padding: 20px; border-radius: 8px; gap: 15px; margin-top: 20px; animation: fadeIn 0.3s ease; }
+  .feedback-box img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #fff; flex-shrink: 0; }
+  .feedback-content h4 { margin: 0 0 8px 0; font-size: 16px; text-transform: uppercase; }
+  .feedback-content p { margin: 0; font-size: 15px; line-height: 1.6; }
+  
+  .feedback-box.correct { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .feedback-box.correct h4 { color: var(--success); }
+  .feedback-box.error { background: #fef2f2; border: 1px solid #fecaca; }
+  .feedback-box.error h4 { color: var(--error); }
+  .feedback-box.warning { background: #fefce8; border: 1px solid #fef08a; }
+  .feedback-box.warning h4 { color: var(--warning); }
+
+  /* RESULTADOS */
+  .results-area { text-align: center; }
+  .stats-board { display: flex; justify-content: space-around; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 25px; }
+  .stat-item h3 { margin: 0; font-size: 28px; color: var(--primary); }
+  .stat-item p { margin: 5px 0 0 0; font-size: 14px; color: #64748b; font-weight: bold; text-transform: uppercase; }
+  
+  .improvement-box { text-align: left; background: #eef2ff; padding: 20px; border-radius: 8px; border: 1px dashed #a5b4fc; margin-bottom: 20px; }
+  .improvement-box h4 { margin: 0 0 10px 0; color: var(--primary); }
+  .improvement-box p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="Captura de pantalla 2026-02-27 112014_2.png" alt="Logo" class="logo">
+    <div class="title-area">
+      <h1>Wisdom Corner Academy</h1>
+      <p>Entrenamiento: Operaciones Combinadas (Números Enteros)</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA PRINCIPAL: CONCEPTOS -->
+  <div id="view-intro" class="intro-card">
+    <h2 style="color: var(--primary); margin-top: 0; text-align: center;">Reglas del Juego Matemático</h2>
+    <p style="text-align: center; color: #64748b; margin-bottom: 25px;">Repasa los conceptos básicos antes de enfrentarte a las 20 operaciones.</p>
+    
+    <div class="concept-grid">
+      <div class="concept-box">
+        <h4>1. Jerarquía de Operaciones</h4>
+        <p>El orden estricto que debes seguir siempre:</p>
+        <ul>
+          <li><strong>Primero:</strong> Corchetes <span class="rule-highlight">[ ]</span> y Paréntesis <span class="rule-highlight">( )</span>.</li>
+          <li><strong>Segundo:</strong> Multiplicaciones y Divisiones (de izquierda a derecha).</li>
+          <li><strong>Tercero:</strong> Sumas y Restas.</li>
+        </ul>
+      </div>
+      
+      <div class="concept-box">
+        <h4>2. Regla de Signos (&times; y &divide;)</h4>
+        <p>Al multiplicar o dividir dos números:</p>
+        <ul>
+          <li>Mismos signos da POSITIVO: <span class="rule-highlight">- &middot; - = +</span></li>
+          <li>Distintos signos da NEGATIVO: <span class="rule-highlight">+ &middot; - = -</span></li>
+        </ul>
+      </div>
+
+      <div class="concept-box" style="grid-column: span 2;">
+        <h4>3. Reglas para Sumar y Restar</h4>
+        <ul>
+          <li><strong>Mismo signo:</strong> Se suman los números y se mantiene el signo. Ejemplo: <span class="rule-highlight">-5 - 3 = -8</span></li>
+          <li><strong>Distinto signo:</strong> Se restan los números y se pone el signo del número mayor. Ejemplo: <span class="rule-highlight">-7 + 4 = -3</span></li>
+          <li><strong>Signos seguidos:</strong> Un menos delante de un paréntesis cambia el signo. Ejemplo: <span class="rule-highlight">5 - (-2) = 5 + 2 = 7</span></li>
+        </ul>
+      </div>
+    </div>
+    
+    <button class="btn-start" onclick="startQuiz()">Comenzar Reto (20 Ejercicios)</button>
+  </div>
+
+  <!-- ZONA DE EJERCICIO -->
+  <div id="view-quiz" class="quiz-area hidden">
+    <div class="quiz-header">
+      <div class="quiz-counter" id="lbl-counter">Operación 1 / 20</div>
+      <div class="attempts-counter" id="lbl-attempts">Intentos restantes: 3</div>
+    </div>
+
+    <div class="math-display" id="lbl-math">(-12) : (-4) + 3 &middot; (-2)</div>
+
+    <div class="input-group" id="action-group">
+      <input type="text" id="user-input" placeholder="Escribe el resultado..." autocomplete="off">
+      <button class="btn-check" onclick="checkAnswer()">Comprobar</button>
+      <button class="btn-hint" onclick="toggleHint()">💡 Pista</button>
+    </div>
+
+    <div class="hint-box hidden" id="hint-box">
+      <img src="Gemini_Generated_Image_sflauisflauisfla_2.png" alt="Pista">
+      <div><strong>Pista del Profesor:</strong><br><span id="lbl-hint"></span></div>
+    </div>
+
+    <div class="feedback-box hidden" id="feedback-box">
+      <img id="feedback-img" src="" alt="Feedback">
+      <div class="feedback-content">
+        <h4 id="feedback-title"></h4>
+        <p id="feedback-desc"></p>
+      </div>
+    </div>
+
+    <button class="btn-next hidden" id="btn-next" onclick="nextExercise()">Siguiente Operación &rarr;</button>
+  </div>
+
+  <!-- RESULTADOS FINALES -->
+  <div id="view-result" class="quiz-area results-area hidden">
+    <img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg" alt="Éxito" style="width: 120px; border-radius: 50%; margin-bottom: 10px;">
+    <h2 style="color: var(--primary); margin-top: 0;">¡Entrenamiento Completado!</h2>
+    
+    <div class="stats-board">
+      <div class="stat-item">
+        <h3 id="stat-first" style="color: var(--success);">0</h3>
+        <p>A la Primera</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="stat-attempts" style="color: var(--warning);">0</h3>
+        <p>Con Intentos</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="stat-failed" style="color: var(--error);">0</h3>
+        <p>Fallados</p>
+      </div>
+    </div>
+
+    <div class="improvement-box">
+      <h4>Análisis de tu rendimiento:</h4>
+      <p id="lbl-analysis"></p>
+    </div>
+    
+    <button class="btn-start" onclick="location.reload()" style="width:auto; padding: 12px 30px;">Volver a entrenar</button>
+  </div>
+
+</div>
+
+<script>
+  // BASE DE DATOS DE 20 OPERACIONES COMBINADAS
+  const db = [
+    { q: "(-12) : (-4) + 3 &middot; (-2)", a: ["-3"], 
+      h: "Jerarquía: Realiza primero la división y la multiplicación por separado.", 
+      e: "1º División: (-12) : (-4) = 3.<br>2º Multiplicación: 3 &middot; (-2) = -6.<br>3º Suma: 3 + (-6) = 3 - 6 = <strong>-3</strong>." },
+    
+    { q: "5 &middot; (-3) - 8 : (-4) + 2", a: ["-11"], 
+      h: "Resuelve las multiplicaciones y divisiones antes de sumar y restar.", 
+      e: "1º 5 &middot; (-3) = -15.<br>2º 8 : (-4) = -2.<br>3º Nos queda: -15 - (-2) + 2 = -15 + 2 + 2 = <strong>-11</strong>." },
+    
+    { q: "8 - (+6) : (-2) - 3 + (+4) &middot; (+2)", a: ["16", "+16"], 
+      h: "¡Ojo con el signo menos delante del 6! Trata la división y la multiplicación primero.", 
+      e: "1º (+6) : (-2) = -3.<br>2º (+4) &middot; (+2) = 8.<br>3º Nos queda: 8 - (-3) - 3 + 8 = 8 + 3 - 3 + 8 = <strong>16</strong>." },
+    
+    { q: "[12 - (+8) : (-4)] : (+7) - (+6) : (-3)", a: ["4", "+4"], 
+      h: "Resuelve primero TODO lo que hay dentro del corchete [ ].", 
+      e: "1º Corchete: (+8):(-4) = -2. Queda [12 - (-2)] = [14].<br>2º División izq: 14 : 7 = 2.<br>3º División der: 6 : (-3) = -2.<br>4º Resta final: 2 - (-2) = 2 + 2 = <strong>4</strong>." },
+    
+    { q: "-4 - [5 - 2 + 4] : (+7) - (8 - 5)", a: ["-8"], 
+      h: "Primero haz las operaciones simples dentro de los corchetes y paréntesis.", 
+      e: "1º [5 - 2 + 4] = [7].<br>2º (8 - 5) = 3.<br>3º Queda: -4 - 7 : 7 - 3.<br>4º División: 7 : 7 = 1.<br>5º Final: -4 - 1 - 3 = <strong>-8</strong>." },
+    
+    { q: "6 &middot; (-2) - [12 + 3 &middot; (-4)] : 2 - (-10) : 5", a: ["-10"], 
+      h: "¡Cuidado con el corchete! Tiene una multiplicación dentro que debes hacer primero.", 
+      e: "1º Corchete: 3 &middot; (-4) = -12. Queda [12 + (-12)] = [0].<br>2º Multiplicación izq: 6 &middot; (-2) = -12.<br>3º División der: (-10) : 5 = -2.<br>4º Operamos: -12 - 0 : 2 - (-2) = -12 - 0 + 2 = <strong>-10</strong>." },
+    
+    { q: "(+20) : (-4) : (-5) &middot; (-2)", a: ["-2"], 
+      h: "Cuando solo hay multiplicaciones y divisiones seguidas, se opera estrictamente de IZQUIERDA a DERECHA.", 
+      e: "1º Izquierda: 20 : (-4) = -5.<br>2º Siguiente: (-5) : (-5) = 1.<br>3º Final: 1 &middot; (-2) = <strong>-2</strong>." },
+    
+    { q: "(-18) &middot; 2 : (-9) : 2", a: ["2", "+2"], 
+      h: "Todo multiplicaciones y divisiones: opera de izquierda a derecha sin saltarte pasos.", 
+      e: "1º (-18) &middot; 2 = -36.<br>2º -36 : (-9) = 4.<br>3º Final: 4 : 2 = <strong>2</strong>." },
+    
+    { q: "[(-15) : 3] &middot; [(-12) : (-4)]", a: ["-15"], 
+      h: "Resuelve cada corchete por separado y luego multiplica los resultados.", 
+      e: "1º Primer corchete: -15 : 3 = -5.<br>2º Segundo corchete: -12 : (-4) = 3.<br>3º Producto: -5 &middot; 3 = <strong>-15</strong>." },
+    
+    { q: "(-24) : [(-8) : (-2)] - (-5)", a: ["-1"], 
+      h: "El corchete manda. Resuelve la división de su interior primero.", 
+      e: "1º Corchete: (-8) : (-2) = 4.<br>2º Nos queda: (-24) : 4 - (-5).<br>3º División: -24 : 4 = -6.<br>4º Suma/Resta: -6 - (-5) = -6 + 5 = <strong>-1</strong>." },
+    
+    { q: "[(-6) : (-2) &middot; (+4)] : [(-1) + (+3)]", a: ["6", "+6"], 
+      h: "En el primer corchete, haz la división antes que la multiplicación (por orden de izquierda a derecha).", 
+      e: "1º Corchete 1: (-6):(-2) = 3. Luego 3 &middot; 4 = 12.<br>2º Corchete 2: -1 + 3 = 2.<br>3º División final: 12 : 2 = <strong>6</strong>." },
+    
+    { q: "-8 + (10 - 4 - 2) : (-4)", a: ["-9"], 
+      h: "Resuelve primero lo que hay dentro del paréntesis.", 
+      e: "1º Paréntesis: 10 - 4 - 2 = 4.<br>2º Queda: -8 + 4 : (-4).<br>3º División: 4 : (-4) = -1.<br>4º Final: -8 + (-1) = -8 - 1 = <strong>-9</strong>." },
+    
+    { q: "5 - (-8 - 4) : (-3 - 1)", a: ["2", "+2"], 
+      h: "Resuelve ambos paréntesis antes de hacer la división central.", 
+      e: "1º Paréntesis 1: -8 - 4 = -12.<br>2º Paréntesis 2: -3 - 1 = -4.<br>3º Queda: 5 - (-12) : (-4).<br>4º División: -12 : -4 = 3.<br>5º Final: 5 - 3 = <strong>2</strong>." },
+    
+    { q: "(-9 - 1 + 2 + 16) : (-2 - 1 - 1)", a: ["-2"], 
+      h: "Calcula todo el interior del primer paréntesis y todo el interior del segundo.", 
+      e: "1º Paréntesis 1: -9 - 1 + 2 + 16 = -10 + 18 = 8.<br>2º Paréntesis 2: -2 - 1 - 1 = -4.<br>3º División: 8 : (-4) = <strong>-2</strong>." },
+    
+    { q: "-4 &middot; 3 - 2 &middot; 4 - (6 - 8 + 4)", a: ["-22"], 
+      h: "Las multiplicaciones y el paréntesis se pueden hacer a la vez.", 
+      e: "1º Multiplicaciones: -12 y -8.<br>2º Paréntesis: 6 - 8 + 4 = 2.<br>3º Nos queda: -12 - 8 - 2 = <strong>-22</strong>." },
+    
+    { q: "15 - (+12) : (-4) - 5 + (+2) &middot; (+3)", a: ["19", "+19"], 
+      h: "La división y la multiplicación mandan sobre las sumas y restas.", 
+      e: "1º División: 12 : (-4) = -3.<br>2º Multiplicación: 2 &middot; 3 = 6.<br>3º Queda: 15 - (-3) - 5 + 6 = 15 + 3 - 5 + 6 = <strong>19</strong>." },
+    
+    { q: "[16 - (+10) : (-5)] : (+9) - (+8) : (-4)", a: ["4", "+4"], 
+      h: "Empieza por el interior del corchete realizando su división.", 
+      e: "1º Corchete: 10 : (-5) = -2. Queda [16 - (-2)] = 18.<br>2º Divisiones: 18 : 9 = 2. Y 8 : (-4) = -2.<br>3º Queda: 2 - (-2) = 2 + 2 = <strong>4</strong>." },
+    
+    { q: "-7 - [6 - 2 + 5] : (+9) - (10 - 6)", a: ["-12"], 
+      h: "Resuelve corchete y paréntesis para convertirlos en números simples.", 
+      e: "1º [6 - 2 + 5] = [9].<br>2º (10 - 6) = 4.<br>3º Queda: -7 - 9 : 9 - 4.<br>4º División: 9 : 9 = 1.<br>5º Final: -7 - 1 - 4 = <strong>-12</strong>." },
+    
+    { q: "8 &middot; (-3) - [15 + 5 &middot; (-3)] : 2 - (-14) : 7", a: ["-22"], 
+      h: "El corchete esconde un cero. ¡Averígualo resolviendo su multiplicación primero!", 
+      e: "1º Corchete: 5 &middot; (-3) = -15. Queda [15 + (-15)] = 0.<br>2º Multiplicación izq: 8 &middot; (-3) = -24.<br>3º División der: -14 : 7 = -2.<br>4º Operamos: -24 - 0 : 2 - (-2) = -24 - 0 + 2 = <strong>-22</strong>." },
+    
+    { q: "(-10 - 2) : (-3) + (8 - 12) &middot; (-2)", a: ["12", "+12"], 
+      h: "Saca el resultado numérico de cada paréntesis curvo primero.", 
+      e: "1º Paréntesis 1: -10 - 2 = -12.<br>2º Paréntesis 2: 8 - 12 = -4.<br>3º Queda: -12 : (-3) + (-4) &middot; (-2).<br>4º División y Multiplicación: 4 + 8 = <strong>12</strong>." }
+  ];
+
+  let currentIndex = 0;
+  let currentAttempts = 3;
+  
+  // Estadísticas
+  let stats = { firstTry: 0, withAttempts: 0, failed: 0 };
+
+  const imgHint = "Gemini_Generated_Image_sflauisflauisfla_2.png";
+  const imgError = "Gemini_Generated_Image_yfnjteyfnjteyfnj_2.png";
+  const imgSuccess = "Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg";
+
+  function startQuiz() {
+    document.getElementById('view-intro').classList.add('hidden');
+    document.getElementById('view-quiz').classList.remove('hidden');
+    loadExercise();
+  }
+
+  function loadExercise() {
+    const ex = db[currentIndex];
+    currentAttempts = 3;
+    
+    document.getElementById('lbl-counter').innerText = `Operación ${currentIndex + 1} / ${db.length}`;
+    document.getElementById('lbl-attempts').innerText = `Intentos restantes: 3`;
+    document.getElementById('lbl-attempts').style.color = "var(--primary)";
+    document.getElementById('lbl-attempts').style.background = "#eef2ff";
+    
+    document.getElementById('lbl-math').innerHTML = ex.q;
+    
+    document.getElementById('user-input').value = "";
+    document.getElementById('user-input').disabled = false;
+    document.getElementById('user-input').style.borderColor = "var(--border)";
+    
+    document.getElementById('action-group').classList.remove('hidden');
+    document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('hint-box').classList.add('hidden');
+    document.getElementById('feedback-box').classList.add('hidden');
+    
+    document.getElementById('lbl-hint').innerHTML = ex.h;
+    
+    document.getElementById('user-input').focus();
+  }
+
+  function toggleHint() {
+    document.getElementById('hint-box').classList.toggle('hidden');
+  }
+
+  function checkAnswer() {
+    const input = document.getElementById('user-input');
+    const userVal = input.value.replace(/\s+/g, '');
+    if (userVal === '') return;
+
+    const ex = db[currentIndex];
+    const isCorrect = ex.a.includes(userVal);
+
+    const fBox = document.getElementById('feedback-box');
+    const fImg = document.getElementById('feedback-img');
+    const fTitle = document.getElementById('feedback-title');
+    const fDesc = document.getElementById('feedback-desc');
+
+    fBox.classList.remove('hidden', 'correct', 'error', 'warning');
+
+    if (isCorrect) {
+      fBox.classList.add('correct');
+      fImg.src = imgSuccess;
+      fTitle.innerText = "¡Resultado Perfecto!";
+      fDesc.innerHTML = "<strong>Desarrollo correcto:</strong><br>" + ex.e;
+      
+      input.style.borderColor = "var(--success)";
+      input.disabled = true;
+      
+      if (currentAttempts === 3) stats.firstTry++;
+      else stats.withAttempts++;
+      
+      endExercise();
+    } else {
+      currentAttempts--;
+      input.style.borderColor = "var(--error)";
+      document.getElementById('lbl-attempts').innerText = `Intentos restantes: ${currentAttempts}`;
+      
+      if (currentAttempts > 0) {
+        document.getElementById('lbl-attempts').style.color = "var(--error)";
+        document.getElementById('lbl-attempts').style.background = "#fef2f2";
+        fBox.classList.add('error');
+        fImg.src = imgError;
+        fTitle.innerText = "Incorrecto";
+        fDesc.innerHTML = "Revisa los signos o el orden de prioridad. ¡Puedes intentarlo de nuevo!";
+      } else {
+        // Agotó los intentos
+        stats.failed++;
+        fBox.classList.add('warning');
+        fImg.src = imgError;
+        fTitle.innerText = "¡Atención! Operación fallida";
+        fDesc.innerHTML = "La respuesta correcta era <strong>" + ex.a[0] + "</strong>.<br><br><strong>Observa la resolución paso a paso:</strong><br>" + ex.e;
+        
+        input.disabled = true;
+        endExercise();
+      }
+    }
+  }
+
+  function endExercise() {
+    document.getElementById('action-group').classList.add('hidden');
+    document.getElementById('btn-next').classList.remove('hidden');
+  }
+
+  function nextExercise() {
+    currentIndex++;
+    if (currentIndex < db.length) {
+      loadExercise();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-result').classList.remove('hidden');
+    
+    document.getElementById('stat-first').innerText = stats.firstTry;
+    document.getElementById('stat-attempts').innerText = stats.withAttempts;
+    document.getElementById('stat-failed').innerText = stats.failed;
+
+    const analysis = document.getElementById('lbl-analysis');
+    
+    if (stats.failed === 0) {
+      analysis.innerHTML = "<strong>¡Matrícula de Honor!</strong> Tienes una base matemática excepcionalmente sólida. Controlas a la perfección la jerarquía de operaciones y la regla de los signos. Sigue así.";
+    } else if (stats.failed <= 4) {
+      analysis.innerHTML = "<strong>¡Muy buen trabajo!</strong> Dominas la mecánica general, pero tienes algunos descuidos puntuales. Repasa bien los signos cuando tengas un <code>-</code> delante de un corchete o paréntesis.";
+    } else if (stats.failed <= 10) {
+      analysis.innerHTML = "<strong>¡Progresando adecuadamente!</strong> Necesitas ir más despacio. Tu error más común probablemente sea no respetar el orden estricto (recuerda: primero multiplicaciones/divisiones, luego sumas/restas). ¡Vuelve a intentarlo!";
+    } else {
+      analysis.innerHTML = "<strong>Toca reforzar la base.</strong> No pasa nada, ¡de los errores se aprende! Te recomendamos volver a leer con mucha calma las reglas de la pantalla de inicio y utilizar el botón de pistas en cada ejercicio.";
+    }
+  }
+
+  // Tecla Enter para comprobar
+  document.getElementById("user-input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && !this.disabled) { e.preventDefault(); checkAnswer(); }
+  });
+</script>
+
+</body>
+</html>
