@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto: Opuestos y Valor Absoluto - Wisdom Corner Academy</title>
+<style>
+  :root {
+    --primary: #005b9f;
+    --primary-dark: #00467a;
+    --gold: #c59b27;
+    --gold-hover: #b08920;
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --border: #c9e0f5;
+    --text-main: #334155;
+    --success: #16a34a;
+    --error: #dc2626;
+    --warning: #ca8a04;
+  }
+
+  * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container { width: 100%; max-width: 850px; }
+  .hidden { display: none !important; }
+
+  /* CABECERA */
+  .header {
+    background: var(--bg-card); padding: 20px 25px; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 91, 159, 0.08); display: flex; align-items: center;
+    margin-bottom: 25px; border-bottom: 4px solid var(--gold);
+  }
+  .logo { width: 70px; height: 70px; object-fit: contain; margin-right: 20px; }
+  .title-area h1 { color: var(--primary); font-size: 22px; margin: 0 0 5px 0; text-transform: uppercase; }
+  .title-area p { color: #64748b; font-size: 14px; margin: 0; }
+
+  /* PANELES GENERALES */
+  .panel {
+    background: var(--bg-card); border-radius: 12px; padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+  }
+  
+  /* PANTALLA LOGIN */
+  .login-box { text-align: center; max-width: 400px; margin: 40px auto; }
+  .login-box input {
+    width: 100%; padding: 12px 15px; margin-bottom: 15px; font-size: 16px;
+    border: 2px solid var(--border); border-radius: 8px; outline: none; transition: 0.2s;
+  }
+  .login-box input:focus { border-color: var(--primary); }
+
+  /* PANTALLA MENÚ NIVELES */
+  .user-stats {
+    background: #eef2ff; border: 1px dashed #a5b4fc; padding: 15px 20px;
+    border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+  }
+  .user-stats h3 { margin: 0; color: var(--primary); font-size: 18px; }
+  .user-stats .score { font-size: 24px; font-weight: bold; color: var(--gold); }
+
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+  .level-card {
+    background: #f8fafc; border: 2px solid var(--border); border-radius: 8px; padding: 20px;
+    text-align: center; cursor: pointer; transition: 0.2s;
+  }
+  .level-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+  .level-card h4 { margin: 0 0 5px 0; color: var(--primary); font-size: 18px; }
+  .level-card p { margin: 0; font-size: 13px; color: #64748b; }
+
+  /* BOTONES */
+  button {
+    padding: 12px 20px; font-size: 15px; font-weight: bold; border: none;
+    border-radius: 8px; cursor: pointer; transition: 0.2s;
+  }
+  .btn-primary { background: var(--primary); color: white; width: 100%; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: var(--gold-hover); }
+  .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-outline:hover { background: #eef2ff; }
+
+  /* ÁREA QUIZ */
+  .quiz-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
+  .quiz-counter { color: var(--primary); font-weight: bold; font-size: 16px; }
+  .attempts-counter { color: var(--primary); font-weight: bold; font-size: 14px; padding: 4px 10px; border-radius: 20px; background: #eef2ff; }
+
+  .math-display {
+    background: #f8fafc; padding: 25px; border-radius: 8px; border: 2px dashed var(--border);
+    margin-bottom: 25px; font-size: 24px; font-weight: bold; color: var(--text-main); text-align: center; letter-spacing: 2px;
+  }
+
+  .input-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .input-group input {
+    flex: 1; min-width: 150px; padding: 12px 15px; font-size: 18px; border: 2px solid var(--border);
+    border-radius: 8px; outline: none; font-weight: bold; color: var(--primary); text-align: center;
+  }
+
+  /* PISTAS Y FEEDBACK */
+  .hint-box { background: #fffbeb; border-left: 4px solid var(--gold); padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; display: flex; align-items: center; gap: 15px; }
+  .hint-box img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #fff; }
+
+  .feedback-box { display: flex; align-items: flex-start; padding: 20px; border-radius: 8px; gap: 15px; margin-top: 20px; animation: fadeIn 0.3s ease; }
+  .feedback-box img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #fff; flex-shrink: 0; }
+  .feedback-content h4 { margin: 0 0 8px 0; font-size: 16px; text-transform: uppercase; }
+  .feedback-content p { margin: 0; font-size: 15px; line-height: 1.6; }
+  
+  .feedback-box.correct { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .feedback-box.correct h4 { color: var(--success); }
+  .feedback-box.error { background: #fef2f2; border: 1px solid #fecaca; }
+  .feedback-box.error h4 { color: var(--error); }
+  .feedback-box.warning { background: #fefce8; border: 1px solid #fef08a; }
+  .feedback-box.warning h4 { color: var(--warning); }
+
+  /* RANKING */
+  table.ranking-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  .ranking-table th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+  .ranking-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .ranking-table tr:nth-child(1) td { font-weight: bold; color: var(--gold); font-size: 16px; background: #fffbeb; }
+  .ranking-table tr:nth-child(2) td { font-weight: bold; color: #94a3b8; }
+  .ranking-table tr:nth-child(3) td { font-weight: bold; color: #b45309; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="Captura de pantalla 2026-02-27 112014_2.png" alt="Logo" class="logo">
+    <div class="title-area">
+      <h1>Wisdom Corner Academy</h1>
+      <p>Entrenamiento: Opuestos y Valor Absoluto</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA 1: LOGIN -->
+  <div id="view-login" class="panel login-box">
+    <h2 style="color: var(--primary); margin-top: 0;">Registro de Alumno</h2>
+    <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">Ingresa tus datos. Tu puntuación se guardará para que puedas seguir mejorando.</p>
+    <input type="text" id="inp-nombre" placeholder="Nombre">
+    <input type="text" id="inp-apellido" placeholder="Apellido">
+    <button class="btn-primary" onclick="login()">Entrar al Campus</button>
+  </div>
+
+  <!-- PANTALLA 2: MENÚ PRINCIPAL -->
+  <div id="view-menu" class="panel hidden">
+    <div class="user-stats">
+      <div>
+        <h3 id="lbl-username">Hola, Estudiante</h3>
+        <p style="margin: 5px 0 0 0; font-size: 13px; color: #64748b;">Selecciona un nivel para ganar puntos.</p>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 12px; text-transform: uppercase; font-weight: bold; color: #64748b;">Puntuación Total</span><br>
+        <span class="score" id="lbl-score">0</span> pts
+      </div>
+    </div>
+
+    <div class="level-grid">
+      <div class="level-card" onclick="startLevel(1)">
+        <h4>Nivel 1: Iniciación</h4>
+        <p>Conceptos básicos separados</p>
+      </div>
+      <div class="level-card" onclick="startLevel(2)">
+        <h4>Nivel 2: Intermedio</h4>
+        <p>Sumas y restas simples</p>
+      </div>
+      <div class="level-card" onclick="startLevel(3)">
+        <h4>Nivel 3: Avanzado</h4>
+        <p>Opuestos de valores absolutos</p>
+      </div>
+      <div class="level-card" onclick="startLevel(4)" style="border-color: var(--gold);">
+        <h4 style="color: var(--gold);">Nivel 4: Combinadas I</h4>
+        <p>Jerarquía con Op y |a|</p>
+      </div>
+      <div class="level-card" onclick="startLevel(5)" style="border-color: var(--gold); background: #fffbeb;">
+        <h4 style="color: var(--gold);">Nivel 5: Experto</h4>
+        <p>Reto final de operaciones</p>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-top: 30px;">
+      <button class="btn-primary" onclick="showRanking()">🏆 Ver Clasificación General</button>
+      <button class="btn-outline" onclick="logout()" style="width: auto;">Cerrar Sesión</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA 3: ÁREA DE EJERCICIOS -->
+  <div id="view-quiz" class="panel hidden">
+    <button class="btn-outline" onclick="showMenu()" style="margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">&larr; Volver al Menú</button>
+    
+    <div class="quiz-header">
+      <div class="quiz-counter" id="lbl-quiz-counter">Nivel X - Op. 1 / 4</div>
+      <div class="attempts-counter" id="lbl-attempts">Intentos restantes: 3</div>
+    </div>
+
+    <div class="math-display" id="lbl-math">|-5| + Op(3)</div>
+
+    <div class="input-group" id="action-group">
+      <input type="text" id="user-input" placeholder="Resultado..." autocomplete="off">
+      <button class="btn-primary" style="width: auto; flex: 1;" onclick="checkAnswer()">Comprobar</button>
+      <button class="btn-gold" onclick="toggleHint()">💡 Pista</button>
+    </div>
+
+    <div class="hint-box hidden" id="hint-box">
+      <img src="Gemini_Generated_Image_sflauisflauisfla_2.png" alt="Pista">
+      <div><strong>Pista de Sabiduría:</strong><br><span id="lbl-hint"></span></div>
+    </div>
+
+    <div class="feedback-box hidden" id="feedback-box">
+      <img id="feedback-img" src="" alt="Feedback">
+      <div class="feedback-content">
+        <h4 id="feedback-title"></h4>
+        <p id="feedback-desc"></p>
+      </div>
+    </div>
+
+    <button class="btn-success hidden" id="btn-next" onclick="nextExercise()" style="background: var(--success); color: white; width: 100%; margin-top: 15px;">Siguiente Operación &rarr;</button>
+    <button class="btn-gold hidden" id="btn-finish" onclick="finishLevel()" style="width: 100%; margin-top: 15px;">Finalizar Nivel</button>
+  </div>
+
+  <!-- PANTALLA 4: CLASIFICACIÓN -->
+  <div id="view-ranking" class="panel hidden">
+    <button class="btn-outline" onclick="showMenu()" style="margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">&larr; Volver al Menú</button>
+    <h2 style="color: var(--primary); margin-top: 0;"><img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg" style="width: 40px; border-radius: 50%; vertical-align: middle; margin-right: 10px;"> Clasificación General</h2>
+    <p style="color: #64748b; font-size: 14px;">Así van las puntuaciones de todos los alumnos de la academia.</p>
+    
+    <table class="ranking-table">
+      <thead>
+        <tr>
+          <th style="width: 15%;">Pos.</th>
+          <th>Alumno/a</th>
+          <th style="text-align: right;">Puntuación</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-body">
+        <!-- Generado por JS -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // BASE DE DATOS DE PREGUNTAS
+  const db = {
+    1: [
+      { q: "|-7|", a: ["7", "+7"], h: "El valor absoluto siempre es la distancia al cero (positivo).", e: "|-7| = 7" },
+      { q: "Op(15)", a: ["-15"], h: "El opuesto solo cambia el signo del número.", e: "Op(15) = -15" },
+      { q: "|12|", a: ["12", "+12"], h: "El valor absoluto de un número positivo se queda igual.", e: "|12| = 12" },
+      { q: "Op(-8)", a: ["8", "+8"], h: "El opuesto de un negativo es un positivo.", e: "Op(-8) = 8" }
+    ],
+    2: [
+      { q: "|-5| + |-3|", a: ["8", "+8"], h: "Resuelve primero cada valor absoluto y luego suma.", e: "5 + 3 = 8" },
+      { q: "Op(-4) + |2|", a: ["6", "+6"], h: "Saca el opuesto, saca el valor absoluto, y suma.", e: "4 + 2 = 6" },
+      { q: "|-10| - Op(6)", a: ["16", "+16"], h: "Cuidado: el Op(6) es -6. Así que estarás restando un negativo.", e: "10 - (-6) = 10 + 6 = 16" },
+      { q: "| -8 + 3 |", a: ["5", "+5"], h: "Haz primero la operación DE DENTRO de las barras.", e: "|-5| = 5" }
+    ],
+    3: [
+      { q: "-|-6|", a: ["-6"], h: "Primero haz el valor absoluto. Luego aplícale el menos de fuera.", e: "-(6) = -6" },
+      { q: "Op( |-4| )", a: ["-4"], h: "Resuelve de dentro hacia afuera. Primero las barras.", e: "Op( 4 ) = -4" },
+      { q: "| Op(-5) |", a: ["5", "+5"], h: "El opuesto de -5 es 5. ¿Cuál es el valor absoluto de 5?", e: "| 5 | = 5" },
+      { q: "Op( Op(-9) )", a: ["-9"], h: "El opuesto del opuesto de un número es el mismo número.", e: "Op( 9 ) = -9" }
+    ],
+    4: [
+      { q: "|-3| &middot; Op(-2) - 4", a: ["2", "+2"], h: "Transforma los valores absolutos/opuestos a números normales y aplica la jerarquía (multiplicar primero).", e: "3 &middot; 2 - 4 = 6 - 4 = 2" },
+      { q: "Op(5) + |-8| : 2", a: ["-1"], h: "Convierte: -5 + 8 : 2. Haz la división primero.", e: "-5 + 4 = -1" },
+      { q: "|-4| &middot; |-3| - Op(-10)", a: ["2", "+2"], h: "Convierte: 4 &middot; 3 - (+10). Multiplica y luego resta.", e: "12 - 10 = 2" },
+      { q: "( |-5| + Op(-3) ) : 2", a: ["4", "+4"], h: "Resuelve todo el paréntesis primero.", e: "( 5 + 3 ) : 2 = 8 : 2 = 4" }
+    ],
+    5: [
+      { q: "Op(-2) &middot; |-5 + 2| - Op(4)", a: ["10", "+10"], h: "Traduce: 2 &middot; |-3| - (-4). Haz la multiplicación antes que la suma final.", e: "2 &middot; 3 - (-4) = 6 + 4 = 10" },
+      { q: "|-12| : Op(-3) + |-2| &middot; Op(5)", a: ["-6"], h: "Traduce: 12 : 3 + 2 &middot; (-5). Haz división y multiplicación, luego suma.", e: "4 + (-10) = 4 - 10 = -6" },
+      { q: "| 4 - 9 | &middot; Op(-2) - |-8|", a: ["2", "+2"], h: "Resuelve el interior de las primeras barras. Luego traduce todo a números simples.", e: "|-5| &middot; 2 - 8 = 5 &middot; 2 - 8 = 10 - 8 = 2" },
+      { q: "-|-10| : 2 + Op( |-6| )", a: ["-11"], h: "Cuidado: -|-10| se convierte en -10. Y Op(|-6|) es Op(6) = -6.", e: "-(10) : 2 + Op(6) = -10 : 2 - 6 = -5 - 6 = -11" }
+    ]
+  };
+
+  let currentUser = "";
+  let currentLevel = 1;
+  let questionIndex = 0;
+  let attempts = 3;
+  let currentQuestions = [];
+  let pointsGainedInLevel = 0;
+
+  // IMÁGENES
+  const imgHint = "Gemini_Generated_Image_sflauisflauisfla_2.png";
+  const imgError = "Gemini_Generated_Image_yfnjteyfnjteyfnj_2.png";
+  const imgSuccess = "Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg";
+
+  // SISTEMA DE SESIÓN
+  window.onload = () => {
+    let savedUser = localStorage.getItem('wc_currentUser');
+    if (savedUser) {
+      currentUser = savedUser;
+      showMenu();
+    }
+  };
+
+  function login() {
+    let name = document.getElementById('inp-nombre').value.trim();
+    let surname = document.getElementById('inp-apellido').value.trim();
+    if (!name || !surname) {
+      alert("Por favor, introduce tu nombre y apellido para guardar tu puntuación.");
+      return;
+    }
+    
+    // Capitalizar
+    name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    surname = surname.charAt(0).toUpperCase() + surname.slice(1).toLowerCase();
+    currentUser = name + " " + surname;
+    
+    localStorage.setItem('wc_currentUser', currentUser);
+    
+    let users = JSON.parse(localStorage.getItem('wc_users')) || {};
+    if (users[currentUser] === undefined) {
+      users[currentUser] = 0;
+      localStorage.setItem('wc_users', JSON.stringify(users));
+    }
+    
+    showMenu();
+  }
+
+  function logout() {
+    localStorage.removeItem('wc_currentUser');
+    currentUser = "";
+    document.getElementById('inp-nombre').value = '';
+    document.getElementById('inp-apellido').value = '';
+    
+    document.getElementById('view-menu').classList.add('hidden');
+    document.getElementById('view-login').classList.remove('hidden');
+  }
+
+  // MENÚ Y RANKING
+  function showMenu() {
+    document.getElementById('view-login').classList.add('hidden');
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-ranking').classList.add('hidden');
+    document.getElementById('view-menu').classList.remove('hidden');
+    
+    document.getElementById('lbl-username').innerText = "Hola, " + currentUser;
+    
+    let users = JSON.parse(localStorage.getItem('wc_users')) || {};
+    document.getElementById('lbl-score').innerText = users[currentUser] || 0;
+  }
+
+  function showRanking() {
+    document.getElementById('view-menu').classList.add('hidden');
+    document.getElementById('view-ranking').classList.remove('hidden');
+    
+    let users = JSON.parse(localStorage.getItem('wc_users')) || {};
+    
+    // Convertir objeto en array y ordenar por puntuación
+    let sortedUsers = Object.keys(users).map(name => {
+      return { name: name, score: users[name] };
+    }).sort((a, b) => b.score - a.score);
+
+    let tbody = document.getElementById('ranking-body');
+    tbody.innerHTML = '';
+    
+    if(sortedUsers.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Aún no hay alumnos registrados.</td></tr>';
+      return;
+    }
+
+    sortedUsers.forEach((u, index) => {
+      let tr = document.createElement('tr');
+      // Destacar al usuario actual
+      if(u.name === currentUser) tr.style.backgroundColor = "#eef2ff";
+      
+      let pos = index + 1;
+      if (pos === 1) pos = "🥇 1º";
+      else if (pos === 2) pos = "🥈 2º";
+      else if (pos === 3) pos = "🥉 3º";
+      else pos = pos + "º";
+
+      tr.innerHTML = `
+        <td>${pos}</td>
+        <td>${u.name} ${u.name === currentUser ? "<strong>(Tú)</strong>" : ""}</td>
+        <td style="text-align: right; font-weight: bold;">${u.score} pts</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // SISTEMA DE QUIZ
+  function startLevel(level) {
+    currentLevel = level;
+    currentQuestions = [...db[level]];
+    questionIndex = 0;
+    pointsGainedInLevel = 0;
+    
+    document.getElementById('view-menu').classList.add('hidden');
+    document.getElementById('view-quiz').classList.remove('hidden');
+    
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    attempts = 3;
+    const ex = currentQuestions[questionIndex];
+    
+    document.getElementById('lbl-quiz-counter').innerText = `Nivel ${currentLevel} - Op. ${questionIndex + 1} / ${currentQuestions.length}`;
+    document.getElementById('lbl-attempts').innerText = `Intentos restantes: 3`;
+    document.getElementById('lbl-attempts').style.color = "var(--primary)";
+    document.getElementById('lbl-attempts').style.background = "#eef2ff";
+    
+    document.getElementById('lbl-math').innerHTML = ex.q;
+    
+    document.getElementById('user-input').value = "";
+    document.getElementById('user-input').disabled = false;
+    document.getElementById('user-input').style.borderColor = "var(--border)";
+    
+    document.getElementById('action-group').classList.remove('hidden');
+    document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('btn-finish').classList.add('hidden');
+    document.getElementById('hint-box').classList.add('hidden');
+    document.getElementById('feedback-box').classList.add('hidden');
+    
+    document.getElementById('lbl-hint').innerHTML = ex.h;
+    document.getElementById('user-input').focus();
+  }
+
+  function toggleHint() {
+    document.getElementById('hint-box').classList.toggle('hidden');
+  }
+
+  function addPoints(pts) {
+    let users = JSON.parse(localStorage.getItem('wc_users')) || {};
+    users[currentUser] += pts;
+    localStorage.setItem('wc_users', JSON.stringify(users));
+    pointsGainedInLevel += pts;
+  }
+
+  function checkAnswer() {
+    const input = document.getElementById('user-input');
+    const userVal = input.value.replace(/\s+/g, '');
+    if (userVal === '') return;
+
+    const ex = currentQuestions[questionIndex];
+    const isCorrect = ex.a.includes(userVal);
+
+    const fBox = document.getElementById('feedback-box');
+    const fImg = document.getElementById('feedback-img');
+    const fTitle = document.getElementById('feedback-title');
+    const fDesc = document.getElementById('feedback-desc');
+
+    fBox.classList.remove('hidden', 'correct', 'error', 'warning');
+
+    if (isCorrect) {
+      fBox.classList.add('correct');
+      fImg.src = imgSuccess;
+      fTitle.innerText = "¡Excelente!";
+      
+      let pts = 0;
+      if (attempts === 3) pts = 10;
+      else if (attempts === 2) pts = 5;
+      else if (attempts === 1) pts = 2;
+      
+      addPoints(pts);
+      
+      fDesc.innerHTML = `<strong>Desarrollo:</strong> ${ex.e}<br><br><span style="color:var(--gold); font-weight:bold;">+${pts} PUNTOS AÑADIDOS A TU CLASIFICACIÓN</span>`;
+      
+      input.style.borderColor = "var(--success)";
+      input.disabled = true;
+      endQuestion();
+      
+    } else {
+      attempts--;
+      input.style.borderColor = "var(--error)";
+      document.getElementById('lbl-attempts').innerText = `Intentos restantes: ${attempts}`;
+      
+      if (attempts > 0) {
+        document.getElementById('lbl-attempts').style.color = "var(--error)";
+        document.getElementById('lbl-attempts').style.background = "#fef2f2";
+        fBox.classList.add('error');
+        fImg.src = imgError;
+        fTitle.innerText = "Incorrecto";
+        fDesc.innerHTML = "Revisa la jerarquía o los signos. Tienes otra oportunidad.";
+      } else {
+        // Agotó intentos
+        fBox.classList.add('warning');
+        fImg.src = imgError;
+        fTitle.innerText = "Operación Fallada";
+        fDesc.innerHTML = `La respuesta era <strong>${ex.a[0]}</strong>.<br><strong>Resolución:</strong> ${ex.e}<br><br><span style="color:var(--error); font-weight:bold;">+0 PUNTOS</span>`;
+        input.disabled = true;
+        endQuestion();
+      }
+    }
+  }
+
+  function endQuestion() {
+    document.getElementById('action-group').classList.add('hidden');
+    if (questionIndex < currentQuestions.length - 1) {
+      document.getElementById('btn-next').classList.remove('hidden');
+    } else {
+      document.getElementById('btn-finish').classList.remove('hidden');
+    }
+  }
+
+  function nextExercise() {
+    questionIndex++;
+    loadQuestion();
+  }
+
+  function finishLevel() {
+    alert(`¡Nivel completado!\nHas conseguido ${pointsGainedInLevel} puntos en esta ronda.\nSigue practicando para subir en la Clasificación General.`);
+    showMenu();
+  }
+
+  // Tecla Enter para responder
+  document.getElementById("user-input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && !this.disabled) { e.preventDefault(); checkAnswer(); }
+  });
+</script>
+
+</body>
+</html>
