@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner - Práctica de Estadística Avanzada</title>
+    <style>
+        :root { --primary: #1E3A8A; --secondary: #D4AF37; --bg-color: #F3F4F6; --text: #333; --success: #10B981; --error: #EF4444; --warning: #F59E0B; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text); margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: white; padding: 15px 20px; border-radius: 10px; border-top: 5px solid var(--secondary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 20px;}
+        .logo { max-height: 70px; }
+        .header-title h1 { margin: 0; color: var(--primary); font-size: 24px; text-transform: uppercase; }
+        .stats { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 8px; font-weight: bold; text-align: center; }
+        
+        #login-screen { background: white; padding: 40px; border-radius: 10px; border-top: 5px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 700px; margin: 40px auto; text-align: center; }
+        input[type="text"] { width: 80%; padding: 12px; margin: 8px 0; border: 2px solid #e5e7eb; border-radius: 5px; font-size: 16px; transition: 0.3s; }
+        button { background-color: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: var(--secondary); color: var(--primary); }
+        
+        .avatar-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; background: white;}
+        .welcome-box { display: flex; align-items: center; gap: 20px; background: #eff6ff; padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary); text-align: left; margin-bottom: 20px;}
+        
+        .exercise-card { background: white; border: 1px solid #e5e7eb; border-left: 5px solid var(--primary); padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .exercise-card.completed { border-left-color: var(--success); background: #f0fdf4; }
+        .exercise-card.failed-max { border-left-color: var(--error); background: #fef2f2; }
+        
+        .raw-data-box { background: #f8fafc; padding: 15px; border-radius: 5px; border: 1px dashed #cbd5e1; font-size: 18px; font-family: monospace; letter-spacing: 1px; color: var(--primary); margin-bottom: 20px; text-align: center;}
+        
+        .grid-layout { display: flex; flex-direction: column; gap: 20px; }
+        
+        .freq-table { width: 100%; border-collapse: collapse; text-align: center; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .freq-table th { background: var(--primary); color: white; padding: 12px 5px; border: 1px solid #cbd5e1; font-size: 15px;}
+        .freq-table td { padding: 8px 5px; border: 1px solid #cbd5e1; background: white; }
+        .freq-table .total-row td { background: #f1f5f9; font-weight: bold; border-top: 2px solid var(--primary);}
+        .freq-table input { width: 100%; max-width: 80px; padding: 8px 4px; text-align: center; border: 2px solid #e2e8f0; border-radius: 4px; font-size: 15px; margin: 0; box-sizing: border-box;}
+        .freq-table input.correct { border-color: var(--success); background: #d1fae5; color: #065f46; font-weight: bold; }
+        .freq-table input.incorrect { border-color: var(--error); background: #fee2e2; color: #991b1b; }
+        
+        .measures-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;}
+        .measure-item label { display: block; font-weight: bold; margin-bottom: 5px; color: #4b5563; font-size: 14px; text-align: center;}
+        .measure-item input { width: 100%; box-sizing: border-box; padding: 10px; border: 2px solid #e2e8f0; border-radius: 5px; font-size: 16px; text-align: center;}
+        .measure-item input.correct { border-color: var(--success); background: #d1fae5; color: #065f46; font-weight: bold; }
+        .measure-item input.incorrect { border-color: var(--error); background: #fee2e2; color: #991b1b; }
+        
+        .feedback-box { margin-top: 20px; font-size: 15px; padding: 15px; border-radius: 8px; display: none; align-items: center; gap: 15px; }
+        .feedback-box.tip { background: #fffbeb; color: #b45309; display: flex; border: 1px solid #fde68a; }
+        .feedback-box.success-msg { background: #d1fae5; color: #065f46; display: flex; border: 1px solid #a7f3d0; }
+        .feedback-box.error-msg { background: #fee2e2; color: #991b1b; display: flex; border: 1px solid #fecaca; }
+        
+        .check-btn { width: 100%; padding: 15px; font-size: 18px; margin-top: 20px; }
+        .note { font-size: 13px; color: #64748b; margin-top: 5px; text-align: center; font-style: italic;}
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <img src="Captura de pantalla 2026-02-27 112014.png" alt="Logo" style="max-height: 120px; margin-bottom: 15px;" onerror="this.src='https://via.placeholder.com/150?text=Wisdom+Corner'">
+    <h1 style="color: var(--primary); margin-top: 0;">PRÁCTICA DE ESTADÍSTICA TOTAL</h1>
+    
+    <div class="welcome-box">
+        <img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg" alt="Profe Sonriendo" class="avatar-img" style="width: 80px; height: 80px;" onerror="this.style.display='none'">
+        <div>
+            <h2 style="margin-top:0; color: var(--primary);">¡Tabla Completa!</h2>
+            <p style="margin-bottom:0; font-size: 15px; color: #4b5563;">Ahora tendrás que construir la tabla estadística al completo: Frecuencias acumuladas, relativas, e incluso los productos para calcular la media y la varianza. Todo paso a paso. ¡Tú puedes!</p>
+        </div>
+    </div>
+
+    <input type="text" id="nombreInput" placeholder="Tu Nombre">
+    <input type="text" id="apellidoInput" placeholder="Tus Apellidos"><br><br>
+    <button onclick="iniciarSesion()">ACCEDER A LOS RETOS</button>
+</div>
+
+<div class="container" id="main-app" style="display: none;">
+    <header>
+        <img src="Captura de pantalla 2026-02-27 112014.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+        <div class="header-title">
+            <h1>Wisdom Corner Academy</h1>
+            <p id="user-display" style="margin: 5px 0 0 0; font-size: 16px; color: #64748b; font-weight: bold;">ALUMNO: </p>
+        </div>
+        <div class="stats">
+            <div>RENDIMIENTO</div>
+            ✅ <span id="correct-count" style="color: var(--success); font-size: 18px;">0</span> | 
+            ❌ <span id="error-count" style="color: var(--error); font-size: 18px;">0</span><br>
+            🏆 <span id="score-count" style="color: var(--primary); font-size: 20px;">0 pts</span>
+        </div>
+        <div style="display: flex; gap:10px;">
+            <button style="background: var(--secondary); color: white;" onclick="mostrarClasificacion()">🏆 Ranking</button>
+            <button style="background: var(--primary); color: white;" onclick="volverEjercicios()">📝 Ejercicios</button>
+        </div>
+    </header>
+
+    <div id="content-area"></div>
+</div>
+
+<script>
+    const exercises = [{"id": 1, "title": "Edades de ni\u00f1os en un parque", "data_raw": "[5, 6, 5, 7, 5, 6, 8, 5, 6, 7]", "unique_x": [5, 6, 7, 8], "f_correct": ["4", "3", "2", "1"], "F_correct": ["4", "7", "9", "10"], "h_correct": ["0.40", "0.30", "0.20", "0.10"], "xf_correct": ["20", "18", "14", "8"], "x2f_correct": ["100", "108", "98", "64"], "totals": {"n": "10", "h": "1.00", "sum_xf": "60", "sum_x2f": "370"}, "answers": {"media": "6", "moda": "5", "mediana": "6", "varianza": "1.00", "desviacion": "1.00"}}, {"id": 2, "title": "N\u00famero de hermanos", "data_raw": "[0, 1, 2, 1, 0, 3, 1, 2, 1, 0, 1, 2, 4, 1, 2]", "unique_x": [0, 1, 2, 3, 4], "f_correct": ["3", "6", "4", "1", "1"], "F_correct": ["3", "9", "13", "14", "15"], "h_correct": ["0.20", "0.40", "0.27", "0.07", "0.07"], "xf_correct": ["0", "6", "8", "3", "4"], "x2f_correct": ["0", "6", "16", "9", "16"], "totals": {"n": "15", "h": "1.00", "sum_xf": "21", "sum_x2f": "47"}, "answers": {"media": "1.4", "moda": "1", "mediana": "1", "varianza": "1.17", "desviacion": "1.08"}}, {"id": 3, "title": "Notas de un examen", "data_raw": "[3, 4, 2, 5, 3, 3, 4, 1, 3, 5, 4, 3, 2, 4, 3]", "unique_x": [1, 2, 3, 4, 5], "f_correct": ["1", "2", "6", "4", "2"], "F_correct": ["1", "3", "9", "13", "15"], "h_correct": ["0.07", "0.13", "0.40", "0.27", "0.13"], "xf_correct": ["1", "4", "18", "16", "10"], "x2f_correct": ["1", "8", "54", "64", "50"], "totals": {"n": "15", "h": "1.00", "sum_xf": "49", "sum_x2f": "177"}, "answers": {"media": "3.27", "moda": "3", "mediana": "3", "varianza": "1.13", "desviacion": "1.06"}}, {"id": 4, "title": "Goles marcados", "data_raw": "[1, 2, 0, 1, 3, 2, 1, 0, 1, 2, 4, 1]", "unique_x": [0, 1, 2, 3, 4], "f_correct": ["2", "5", "3", "1", "1"], "F_correct": ["2", "7", "10", "11", "12"], "h_correct": ["0.17", "0.42", "0.25", "0.08", "0.08"], "xf_correct": ["0", "5", "6", "3", "4"], "x2f_correct": ["0", "5", "12", "9", "16"], "totals": {"n": "12", "h": "1.00", "sum_xf": "18", "sum_x2f": "42"}, "answers": {"media": "1.5", "moda": "1", "mediana": "1", "varianza": "1.25", "desviacion": "1.12"}}, {"id": 5, "title": "Horas de estudio", "data_raw": "[10, 12, 10, 8, 15, 12, 10, 14, 12, 10]", "unique_x": [8, 10, 12, 14, 15], "f_correct": ["1", "4", "3", "1", "1"], "F_correct": ["1", "5", "8", "9", "10"], "h_correct": ["0.10", "0.40", "0.30", "0.10", "0.10"], "xf_correct": ["8", "40", "36", "14", "15"], "x2f_correct": ["64", "400", "432", "196", "225"], "totals": {"n": "10", "h": "1.00", "sum_xf": "113", "sum_x2f": "1317"}, "answers": {"media": "11.3", "moda": "10", "mediana": "11", "varianza": "4.01", "desviacion": "2.00"}}, {"id": 6, "title": "Libros le\u00eddos", "data_raw": "[2, 3, 5, 2, 4, 3, 2, 6, 3, 4, 2, 5, 3, 2]", "unique_x": [2, 3, 4, 5, 6], "f_correct": ["5", "4", "2", "2", "1"], "F_correct": ["5", "9", "11", "13", "14"], "h_correct": ["0.36", "0.29", "0.14", "0.14", "0.07"], "xf_correct": ["10", "12", "8", "10", "6"], "x2f_correct": ["20", "36", "32", "50", "36"], "totals": {"n": "14", "h": "1.00", "sum_xf": "46", "sum_x2f": "174"}, "answers": {"media": "3.29", "moda": "2", "mediana": "3", "varianza": "1.63", "desviacion": "1.28"}}, {"id": 7, "title": "Mascotas", "data_raw": "[1, 0, 2, 1, 1, 0, 3, 1, 2, 0, 1, 1]", "unique_x": [0, 1, 2, 3], "f_correct": ["3", "6", "2", "1"], "F_correct": ["3", "9", "11", "12"], "h_correct": ["0.25", "0.50", "0.17", "0.08"], "xf_correct": ["0", "6", "4", "3"], "x2f_correct": ["0", "6", "8", "9"], "totals": {"n": "12", "h": "1.00", "sum_xf": "13", "sum_x2f": "23"}, "answers": {"media": "1.08", "moda": "1", "mediana": "1", "varianza": "0.74", "desviacion": "0.86"}}, {"id": 8, "title": "D\u00edas de lluvia", "data_raw": "[5, 7, 5, 8, 5, 9, 7, 5, 6, 7]", "unique_x": [5, 6, 7, 8, 9], "f_correct": ["4", "1", "3", "1", "1"], "F_correct": ["4", "5", "8", "9", "10"], "h_correct": ["0.40", "0.10", "0.30", "0.10", "0.10"], "xf_correct": ["20", "6", "21", "8", "9"], "x2f_correct": ["100", "36", "147", "64", "81"], "totals": {"n": "10", "h": "1.00", "sum_xf": "64", "sum_x2f": "428"}, "answers": {"media": "6.4", "moda": "5", "mediana": "6.5", "varianza": "1.84", "desviacion": "1.36"}}, {"id": 9, "title": "Talla de calzado", "data_raw": "[28, 29, 28, 30, 29, 28, 31, 29, 28, 30]", "unique_x": [28, 29, 30, 31], "f_correct": ["4", "3", "2", "1"], "F_correct": ["4", "7", "9", "10"], "h_correct": ["0.40", "0.30", "0.20", "0.10"], "xf_correct": ["112", "87", "60", "31"], "x2f_correct": ["3136", "2523", "1800", "961"], "totals": {"n": "10", "h": "1.00", "sum_xf": "290", "sum_x2f": "8420"}, "answers": {"media": "29", "moda": "28", "mediana": "29", "varianza": "1.00", "desviacion": "1.00"}}, {"id": 10, "title": "Puntos de juego", "data_raw": "[7, 8, 9, 7, 10, 8, 7, 9, 8, 7, 10, 8, 7, 9, 8]", "unique_x": [7, 8, 9, 10], "f_correct": ["5", "5", "3", "2"], "F_correct": ["5", "10", "13", "15"], "h_correct": ["0.33", "0.33", "0.20", "0.13"], "xf_correct": ["35", "40", "27", "20"], "x2f_correct": ["245", "320", "243", "200"], "totals": {"n": "15", "h": "1.00", "sum_xf": "122", "sum_x2f": "1008"}, "answers": {"media": "8.13", "moda": "7, 8", "mediana": "8", "varianza": "1.05", "desviacion": "1.02"}}];
+    let currentUser = null;
+    let users = JSON.parse(localStorage.getItem('wc_stats_table_users')) || [];
+
+    function iniciarSesion() {
+        const nombre = document.getElementById('nombreInput').value.trim();
+        const apellido = document.getElementById('apellidoInput').value.trim();
+        if(!nombre || !apellido) return alert("Introduce Nombre y Apellidos");
+
+        const fullName = `${nombre} ${apellido}`;
+        let userExists = users.find(u => u.name === fullName);
+        
+        if(userExists) currentUser = userExists;
+        else {
+            currentUser = { name: fullName, correct: 0, error: 0, points: 0, progress: {} };
+            users.push(currentUser);
+        }
+
+        exercises.forEach(ex => {
+            if(!currentUser.progress[ex.id]) currentUser.progress[ex.id] = { attempts: 0, status: 'pending' };
+        });
+
+        guardarDatos();
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        document.getElementById('user-display').innerText = currentUser.name;
+        
+        actualizarMarcadores();
+        renderizarEjercicios();
+    }
+
+    function guardarDatos() {
+        const index = users.findIndex(u => u.name === currentUser.name);
+        if(index !== -1) users[index] = currentUser;
+        localStorage.setItem('wc_stats_table_users', JSON.stringify(users));
+    }
+
+    function actualizarMarcadores() {
+        document.getElementById('correct-count').innerText = currentUser.correct;
+        document.getElementById('error-count').innerText = currentUser.error;
+        document.getElementById('score-count').innerText = currentUser.points + " pts";
+    }
+
+    function renderizarEjercicios() {
+        const content = document.getElementById('content-area');
+        let html = ``;
+        
+        exercises.forEach(ex => {
+            const pState = currentUser.progress[ex.id];
+            const isDone = pState.status !== 'pending';
+            const cardClass = pState.status === 'correct' ? 'completed' : pState.status === 'failed' ? 'failed-max' : '';
+            
+            html += `<div class="exercise-card ${cardClass}" id="ex-card-${ex.id}">
+                <h2 style="margin-top:0; color: var(--primary); text-align:center;">Reto ${ex.id}: ${ex.title}</h2>
+                <div class="raw-data-box">
+                    Datos recolectados:<br>
+                    <span style="color:#333;">${ex.data_raw.replace(/\[|\]/g, '')}</span>
+                </div>
+                
+                <div class="grid-layout">
+                    <div>
+                        <h4 style="margin-top:0; text-align:center; color: var(--primary);">1. Tabla de Frecuencias Completa</h4>
+                        <p class="note">Anota h<sub>i</sub> con 2 decimales (ej. 0.25). Usa punto decimal.</p>
+                        <div style="overflow-x:auto;">
+                        <table class="freq-table">
+                            <tr>
+                                <th>x<sub>i</sub><br><small>(Variable)</small></th>
+                                <th>f<sub>i</sub><br><small>(Frec. Abs.)</small></th>
+                                <th>F<sub>i</sub><br><small>(Acumulada)</small></th>
+                                <th>h<sub>i</sub><br><small>(Relativa)</small></th>
+                                <th>x<sub>i</sub> · f<sub>i</sub><br><small>(Para la Media)</small></th>
+                                <th>x<sub>i</sub>² · f<sub>i</sub><br><small>(Para la Varianza)</small></th>
+                            </tr>`;
+                            
+            ex.unique_x.forEach((x_val, idx) => {
+                html += `<tr>
+                            <td><b>${x_val}</b></td>
+                            <td><input type="text" id="fi_${ex.id}_${idx}" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="Fi_${ex.id}_${idx}" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="hi_${ex.id}_${idx}" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="xf_${ex.id}_${idx}" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="x2f_${ex.id}_${idx}" ${isDone ? 'disabled' : ''}></td>
+                         </tr>`;
+            });
+            
+            // Fila de TOTALES
+            html += `   <tr class="total-row">
+                            <td>TOTALES (Σ)</td>
+                            <td><input type="text" id="n_${ex.id}" placeholder="N" ${isDone ? 'disabled' : ''}></td>
+                            <td>-</td>
+                            <td><input type="text" id="sum_hi_${ex.id}" placeholder="Σ h" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="sum_xf_${ex.id}" placeholder="Σ (x·f)" ${isDone ? 'disabled' : ''}></td>
+                            <td><input type="text" id="sum_x2f_${ex.id}" placeholder="Σ (x²·f)" ${isDone ? 'disabled' : ''}></td>
+                        </tr>
+                        </table>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-top:0; text-align:center; color: var(--primary);">2. Medidas Estadísticas</h4>
+                        <div class="measures-grid">
+                            <div class="measure-item"><label>Media (x̄)</label><input type="text" id="media_${ex.id}" ${isDone ? 'disabled' : ''}></div>
+                            <div class="measure-item"><label>Moda (Mo)</label><input type="text" id="moda_${ex.id}" ${isDone ? 'disabled' : ''}></div>
+                            <div class="measure-item"><label>Mediana (Me)</label><input type="text" id="mediana_${ex.id}" ${isDone ? 'disabled' : ''}></div>
+                            <div class="measure-item"><label>Varianza (σ²)</label><input type="text" id="varianza_${ex.id}" ${isDone ? 'disabled' : ''}></div>
+                            <div class="measure-item"><label>Desv. Típica (σ)</label><input type="text" id="desviacion_${ex.id}" ${isDone ? 'disabled' : ''}></div>
+                        </div>
+                    </div>
+                </div>`;
+                
+            if(!isDone) html += `<button class="check-btn" id="btn_${ex.id}" onclick="comprobarReto(${ex.id})">COMPROBAR TODO</button>`;
+            html += `<div id="feedback_${ex.id}" class="feedback-box"></div></div>`;
+        });
+        
+        content.innerHTML = html;
+        
+        exercises.forEach(ex => {
+            const pState = currentUser.progress[ex.id];
+            if(pState.status !== 'pending') { fillCorrectAnswers(ex.id); showFinalFeedback(ex.id, pState.status); }
+        });
+    }
+
+    function volverEjercicios() { renderizarEjercicios(); }
+
+    function comprobarReto(id) {
+        const ex = exercises.find(e => e.id === id);
+        const pState = currentUser.progress[id];
+        let allCorrect = true;
+        let firstErrorTip = "";
+        let errorType = ""; 
+
+        // Helper check cell
+        const checkCell = (el_id, correct_val, tip_msg, is_float=false, tol=0.03) => {
+            const el = document.getElementById(el_id);
+            let u_val = el.value.trim().replace(',', '.');
+            let is_ok = false;
+            
+            if(is_float) {
+                let uNum = parseFloat(u_val);
+                let cNum = parseFloat(correct_val);
+                if(!isNaN(uNum) && Math.abs(uNum - cNum) <= tol) is_ok = true;
+            } else {
+                if(u_val.toLowerCase() === String(correct_val).toLowerCase()) is_ok = true;
+            }
+            
+            if(is_ok) {
+                el.classList.add('correct'); el.classList.remove('incorrect');
+            } else {
+                el.classList.add('incorrect'); el.classList.remove('correct');
+                allCorrect = false;
+                if(!errorType) { errorType = 'cell'; firstErrorTip = tip_msg; }
+            }
+        };
+
+        // Check Table cells
+        ex.unique_x.forEach((x_val, idx) => {
+            checkCell(`fi_${id}_${idx}`, ex.f_correct[idx], `Revisa la frecuencia (f<sub>i</sub>) de la variable <b>${x_val}</b>.`);
+            checkCell(`Fi_${id}_${idx}`, ex.F_correct[idx], `Revisa la Frec. Acumulada (F<sub>i</sub>). Recuerda sumar en zig-zag la f<sub>i</sub> anterior.`);
+            checkCell(`hi_${id}_${idx}`, ex.h_correct[idx], `Revisa la Frec. Relativa (h<sub>i</sub>) de la variable <b>${x_val}</b>. Divide su f<sub>i</sub> entre N y pon 2 decimales.`, true, 0.02);
+            checkCell(`xf_${id}_${idx}`, ex.xf_correct[idx], `En la columna <b>x<sub>i</sub> · f<sub>i</sub></b>, debes multiplicar el valor de la variable por su frecuencia absoluta.`);
+            checkCell(`x2f_${id}_${idx}`, ex.x2f_correct[idx], `En la columna <b>x<sub>i</sub>² · f<sub>i</sub></b>, primero eleva la variable al cuadrado y luego multiplícala por su f<sub>i</sub>.`);
+        });
+
+        // Check Totals
+        checkCell(`n_${id}`, ex.totals.n, `El Total de Datos (N) no es correcto. Suma toda la columna f<sub>i</sub>.`);
+        checkCell(`sum_hi_${id}`, 1, `La suma total de h<sub>i</sub> siempre tiene que dar aproximadamente <b>1.00</b> (o 0.99).`, true, 0.05);
+        checkCell(`sum_xf_${id}`, ex.totals.sum_xf, `El Total de (x<sub>i</sub> · f<sub>i</sub>) está mal sumado.`);
+        checkCell(`sum_x2f_${id}`, ex.totals.sum_x2f, `El Total de (x<sub>i</sub>² · f<sub>i</sub>) está mal sumado.`);
+
+        // Check Measures
+        checkCell(`media_${id}`, ex.answers.media, `<b>Media:</b> Divide el total de (x<sub>i</sub> · f<sub>i</sub>) entre N.`, true);
+        checkCell(`moda_${id}`, ex.answers.moda, `<b>Moda:</b> Es el valor de x<sub>i</sub> que tenga la mayor frecuencia f<sub>i</sub>.`);
+        checkCell(`mediana_${id}`, ex.answers.mediana, `<b>Mediana:</b> Busca en la columna F<sub>i</sub> el primer número que supere N/2.`, true);
+        checkCell(`varianza_${id}`, ex.answers.varianza, `<b>Varianza:</b> Divide el total de (x<sub>i</sub>² · f<sub>i</sub>) entre N, y al resultado réstale la Media al cuadrado.`, true, 0.05);
+        checkCell(`desviacion_${id}`, ex.answers.desviacion, `<b>Desv. Típica:</b> Haz la raíz cuadrada de la Varianza.`, true, 0.05);
+
+        const fbBox = document.getElementById(`feedback_${id}`);
+
+        if(allCorrect) {
+            pState.status = 'correct'; currentUser.correct++; currentUser.points += (100 - (pState.attempts * 25)); 
+            disableInputs(id); document.getElementById(`btn_${id}`).style.display = 'none';
+            document.getElementById(`ex-card-${id}`).classList.add('completed');
+            showFinalFeedback(id, 'correct');
+        } else {
+            pState.attempts++;
+            if(pState.attempts >= 3) {
+                pState.status = 'failed'; currentUser.error++;
+                disableInputs(id); document.getElementById(`btn_${id}`).style.display = 'none';
+                document.getElementById(`ex-card-${id}`).classList.add('failed-max');
+                fillCorrectAnswers(id); showFinalFeedback(id, 'failed');
+            } else {
+                fbBox.className = 'feedback-box tip';
+                let avatar = pState.attempts === 1 ? 'Gemini_Generated_Image_sflauisflauisfla_2.png' : 'Gemini_Generated_Image_txvivztxvivztxvi_2.png';
+                fbBox.innerHTML = `<img src="${avatar}" class="avatar-img" onerror="this.style.display='none'">
+                                   <div><b>Intento ${pState.attempts}/3</b><br>${firstErrorTip}</div>`;
+                fbBox.style.display = 'flex';
+            }
+        }
+        guardarDatos(); actualizarMarcadores();
+    }
+
+    function disableInputs(id) {
+        const ex = exercises.find(e => e.id === id);
+        ex.unique_x.forEach((_, idx) => {
+            ['fi','Fi','hi','xf','x2f'].forEach(col => document.getElementById(`${col}_${id}_${idx}`).disabled = true);
+        });
+        ['n','sum_hi','sum_xf','sum_x2f'].forEach(f => document.getElementById(`${f}_${id}`).disabled = true);
+        ['media','moda','mediana','varianza','desviacion'].forEach(f => document.getElementById(`${f}_${id}`).disabled = true);
+    }
+
+    function fillCorrectAnswers(id) {
+        const ex = exercises.find(e => e.id === id);
+        ex.unique_x.forEach((_, idx) => {
+            document.getElementById(`fi_${id}_${idx}`).value = ex.f_correct[idx];
+            document.getElementById(`Fi_${id}_${idx}`).value = ex.F_correct[idx];
+            document.getElementById(`hi_${id}_${idx}`).value = ex.h_correct[idx];
+            document.getElementById(`xf_${id}_${idx}`).value = ex.xf_correct[idx];
+            document.getElementById(`x2f_${id}_${idx}`).value = ex.x2f_correct[idx];
+            ['fi','Fi','hi','xf','x2f'].forEach(col => document.getElementById(`${col}_${id}_${idx}`).className = 'correct');
+        });
+        
+        const tMap = {'n': ex.totals.n, 'sum_hi': '1.00', 'sum_xf': ex.totals.sum_xf, 'sum_x2f': ex.totals.sum_x2f};
+        for(let k in tMap) { let el = document.getElementById(`${k}_${id}`); el.value = tMap[k]; el.className = 'correct'; }
+        
+        const mMap = {'media': ex.answers.media, 'moda': ex.answers.moda, 'mediana': ex.answers.mediana, 'varianza': ex.answers.varianza, 'desviacion': ex.answers.desviacion};
+        for(let k in mMap) { let el = document.getElementById(`${k}_${id}`); el.value = mMap[k]; el.className = 'correct'; }
+    }
+
+    function showFinalFeedback(id, status) {
+        const fbBox = document.getElementById(`feedback_${id}`);
+        if(status === 'correct') {
+            fbBox.className = 'feedback-box success-msg';
+            fbBox.innerHTML = `<img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_2.jpg" class="avatar-img" onerror="this.style.display='none'">
+                               <div><b>¡Tabla y Cálculos Perfectos!</b> Un ejercicio impecable.</div>`;
+        } else {
+            fbBox.className = 'feedback-box error-msg';
+            fbBox.innerHTML = `<img src="Gemini_Generated_Image_yfnjteyfnjteyfnj_2.png" class="avatar-img" onerror="this.style.display='none'">
+                               <div><b>¡Se agotaron los intentos!</b> Tienes la tabla resuelta al 100% para que detectes tu error.</div>`;
+        }
+        fbBox.style.display = 'flex';
+    }
+
+    function mostrarClasificacion() {
+        const content = document.getElementById('content-area');
+        let sortedUsers = [...users].sort((a, b) => b.points - a.points);
+        let html = `<div class="exercise-card"><h2 style="color: var(--primary); text-align: center; margin-top:0;">🏆 Ranking The Wisdom Corner 🏆</h2>
+                    <table style="width:100%; border-collapse: collapse;">
+                    <tr style="background:var(--primary); color:white;"><th style="padding:10px;">Posición</th><th>Alumno</th><th>Superados</th><th>Fallos</th><th>Puntos Finales</th></tr>`;
+        sortedUsers.forEach((u, index) => {
+            html += `<tr><td style="padding:10px;"><h2>${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1) + 'º'}</h2></td>
+                    <td><b>${u.name}</b></td><td style="color: var(--success); font-weight:bold;">${u.correct}</td>
+                    <td style="color: var(--error); font-weight:bold;">${u.error}</td>
+                    <td style="color: var(--primary); font-size: 18px;"><b>${u.points} pts</b></td></tr>`;
+        });
+        html += `</table></div>`;
+        content.innerHTML = html;
+    }
+</script>
+</body>
+</html>
