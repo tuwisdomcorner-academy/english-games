@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisdom Corner Academy - Voice & Pronunciation Trainer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 45%, #020617 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+    }
+    .cinzel {
+      font-family: 'Cinzel', serif;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+    }
+    .gold-text {
+      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.55), 0 0 25px rgba(217, 119, 6, 0.12);
+    }
+    .mic-pulse {
+      animation: micPulse 1.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+    @keyframes micPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
+        transform: scale(1.05);
+      }
+    }
+    .audio-bar {
+      width: 4px;
+      height: 12px;
+      border-radius: 2px;
+      background-color: #f59e0b;
+      animation: audioWave 1s infinite ease-in-out alternate;
+    }
+    @keyframes audioWave {
+      0% { height: 6px; }
+      100% { height: 26px; }
+    }
+    .animate-pop {
+      animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.96); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      border-radius: 2px;
+      animation: fall 2.2s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between p-3 sm:p-6 min-h-screen">
+
+  <header class="w-full max-w-4xl glass-card rounded-2xl p-3.5 sm:p-4 mb-4 flex items-center justify-between z-20">
+    <div class="flex items-center gap-3">
+      <img src="https://lh3.googleusercontent.com/gg/ACRwjatHWFtY-Qlr_uPWgqXv_-vjwU4O_G2YavAOlKAARTE9ElbWL-dKu8q5gPSfi42kHcrj2KbSwDaArg87L9N0CPIdwmMNKmslB84y4fKi3Y7Z6x_WWdAim61ktLi18JsMJqI9pWrVcYTxDVNeBNU78XYzh8-IomSjzx00d6lu1uAIhJ0Q9SwszQbFGsghF5vTUEISjuNisNJ7pAhlEm8WWnTQyWtOsufiCXMmQwyjc-q4LmgNZXD_ijG1Nr-IYDY15tDZwq7UuvF9EYOko34qhiJT8UnnVam7HG0=s0" 
+           alt="Wisdom Corner Academy Logo" 
+           class="w-12 h-12 object-contain rounded-full bg-slate-900 p-1 border border-amber-400">
+      <div>
+        <h1 class="text-[10px] tracking-widest uppercase font-extrabold text-amber-400 cinzel">Wisdom Corner Academy</h1>
+        <h2 class="text-sm sm:text-base font-black text-white leading-tight">Voice &amp; Pronunciation Trainer 🎙️</h2>
+      </div>
+    </div>
+
+    <!-- Student Stats and Leaderboard -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      <button onclick="openLeaderboard()" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5">
+        <span>🏆</span> <span class="hidden sm:inline">Récord</span>
+      </button>
+      <div class="bg-slate-900/90 border border-amber-500/40 px-3 py-1 rounded-xl text-right">
+        <span class="text-[9px] uppercase font-bold text-amber-400 block" id="headerPlayerName">Estudiante</span>
+        <span class="text-sm font-black text-white" id="headerTotalScore">⭐ 0 pts</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full max-w-4xl flex-1 flex flex-col justify-center relative z-10">
+
+    <!-- ==================== SCREEN 1: LEVEL MAP & MENU ==================== -->
+    <div id="menuScreen" class="glass-card rounded-3xl p-5 sm:p-8 animate-pop">
+      
+      <!-- Recommendation Banner -->
+      <div class="p-3.5 mb-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-transparent border-l-4 border-amber-400 text-xs text-amber-200 flex items-start gap-2.5">
+        <span class="text-xl">🎙️️</span>
+        <div>
+          <strong class="font-extrabold text-amber-300 block uppercase tracking-wide text-[11px]">Metodología de Fonética y Pronunciación:</strong>
+          Para entrenar el oído y la memoria muscular vocal, te recomendamos <strong>seguir el orden pedagógico del Nivel 1 al 6</strong>. Cada nivel evalúa la correcta pronunciación de las tres formas verbales (<em>Infinitive, Past Simple, Past Participle</em>). Escucha el modelo nativo antes de hablar.
+        </div>
+      </div>
+
+      <!-- Student Profile Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6 p-3 bg-slate-900/80 rounded-2xl border border-slate-700">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🗣️</span>
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase font-bold">Estudiante activo:</div>
+            <div id="currentPlayerDisplay" class="font-extrabold text-amber-300 text-sm">Estudiante</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <input type="text" id="playerNameInput" placeholder="Tu nombre..." class="px-3 py-1.5 rounded-xl bg-slate-800 text-white text-xs border border-slate-600 focus:outline-none focus:border-amber-400 flex-1 sm:w-44">
+          <button onclick="savePlayerName()" class="px-3 py-1.5 gold-gradient hover:brightness-110 text-slate-950 font-bold rounded-xl text-xs transition">
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode Selector (Pronounce All 3 forms vs Single Form) -->
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/60">
+        <div class="text-xs text-slate-300">
+          <strong class="text-amber-300">Modo de desafío vocal:</strong>
+          <span class="text-slate-400 block text-[11px]">Recitar la serie completa (recomendado) o una a una.</span>
+        </div>
+        <div class="flex gap-2">
+          <button id="modeSeriesBtn" onclick="setChallengeMode('series')" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition">
+            3 Formas Seguidas (Break • Broke • Broken)
+          </button>
+          <button id="modeSingleBtn" onclick="setChallengeMode('single')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition">
+            Forma Individual
+          </button>
+        </div>
+      </div>
+
+      <!-- 6 Levels Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-2" id="levelsGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 2: VOICE PRACTICE ARENA ==================== -->
+    <div id="gameScreen" class="hidden glass-card rounded-3xl p-4 sm:p-7 animate-pop">
+      
+      <!-- Top info bar with progress & return -->
+      <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+        <button onclick="confirmReturnToMenu()" class="text-xs font-bold text-slate-400 hover:text-amber-400 transition flex items-center gap-1">
+          ← Mapa de Niveles
+        </button>
+        <div class="flex items-center gap-3">
+          <span id="levelTitleBadge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black border border-amber-500/40">
+            Nivel 1 (A1)
+          </span>
+          <span class="text-xs font-bold text-slate-300">
+            Verbo <span id="verbCounter" class="text-amber-400">1</span>/<span id="verbTotal">6</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-1" id="heartsContainer">
+          <!-- 3 Attempts Hearts -->
+        </div>
+      </div>
+
+      <!-- Central Visual and Voice Stage -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+        
+        <!-- Left: Action Icon and Native Model Audio -->
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 rounded-2xl p-4 border border-amber-500/30 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-inner">
+          <div id="verbIconContainer" class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-2">
+            <!-- Dynamic SVG -->
+          </div>
+          <span id="verbMeaningDisplay" class="text-sm font-extrabold text-white mb-1">
+            "cortar"
+          </span>
+          <span id="verbPatternTag" class="text-[10px] text-amber-300/80 font-medium px-2 italic">
+            Patrón: Idénticos A-A-A
+          </span>
+
+          <!-- Listen to Native Pronunciation buttons -->
+          <div class="mt-4 flex flex-col gap-1.5 w-full">
+            <button onclick="playNativeModel(1.0)" class="w-full py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <span>🔊</span> <span>Escuchar Modelo Nativo</span>
+            </button>
+            <button onclick="playNativeModel(0.7)" class="w-full py-1 px-3 rounded-xl bg-slate-800/60 hover:bg-slate-700/60 text-slate-400 hover:text-amber-200 text-[11px] font-semibold flex items-center justify-center gap-1 transition">
+              <span>🐢</span> <span>Escuchar más lento</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Target Verb Forms & Voice Engine Feedback -->
+        <div class="md:col-span-2 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base sm:text-lg font-black text-white" id="promptInstruction">
+                Pronuncia claramente las 3 formas:
+              </h3>
+              <span id="accuracyBadge" class="text-xs font-black px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 border border-slate-700">
+                Precisión: --%
+              </span>
+            </div>
+
+            <!-- Target 3 Verb Badges (Infinitive - Past - Participle) -->
+            <div class="grid grid-cols-3 gap-2 mb-4" id="targetWordsContainer">
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-700 text-center" id="cardInf">
+                <span class="text-[9px] uppercase font-black text-slate-400 block mb-0.5">Infinitive</span>
+                <span class="text-base font-extrabold text-white" id="textInf">cut</span>
+                <span class="text-[10px] block mt-1 text-slate-500 font-mono" id="statusInf">Esperando...</span>
+              </div>
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-700 text-center" id="cardPast">
+                <span class="text-[9px] uppercase font-black text-slate-400 block mb-0.5">Past Simple</span>
+                <span class="text-base font-extrabold text-white" id="textPast">cut</span>
+                <span class="text-[10px] block mt-1 text-slate-500 font-mono" id="statusPast">Esperando...</span>
+              </div>
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-700 text-center" id="cardPart">
+                <span class="text-[9px] uppercase font-black text-slate-400 block mb-0.5">Past Participle</span>
+                <span class="text-base font-extrabold text-white" id="textPart">cut</span>
+                <span class="text-[10px] block mt-1 text-slate-500 font-mono" id="statusPart">Esperando...</span>
+              </div>
+            </div>
+
+            <!-- Speech Recognition Live Transcript & Wave -->
+            <div class="bg-slate-950/70 rounded-2xl p-3.5 border border-slate-800 mb-4 min-h-[75px] flex flex-col justify-between">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                <span>Tu voz detectada por el micrófono:</span>
+                <div id="audioWaveBars" class="hidden items-center gap-1">
+                  <div class="audio-bar" style="animation-delay: 0.1s"></div>
+                  <div class="audio-bar" style="animation-delay: 0.3s"></div>
+                  <div class="audio-bar" style="animation-delay: 0.2s"></div>
+                  <div class="audio-bar" style="animation-delay: 0.4s"></div>
+                </div>
+              </div>
+              <p id="liveTranscriptDisplay" class="text-sm font-bold text-amber-200 italic">
+                Presiona el micrófono y pronuncia las formas en inglés...
+              </p>
+            </div>
+          </div>
+
+          <!-- Big Microphone Recording Control -->
+          <div class="flex items-center gap-3">
+            <button id="micButton" onclick="toggleMicrophone()" class="flex-1 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 transition shadow-lg shadow-amber-500/20 active:scale-98">
+              <span class="text-lg" id="micIcon">🎙️</span>
+              <span id="micLabel">ACTIVAR MICRÓFONO Y HABLAR</span>
+            </button>
+            <button onclick="simulateVoiceInput()" class="px-3.5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-bold transition" title="Opción alternativa si tu navegador no permite micrófono">
+              ⌨️ Escribir
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Feedback / Solution Banner -->
+      <div id="solutionBanner" class="hidden p-4 rounded-2xl border text-center animate-pop">
+        <h4 id="solutionTitle" class="text-base font-extrabold mb-1"></h4>
+        <p id="solutionDetails" class="text-xs text-slate-300 leading-relaxed"></p>
+        <button id="nextVerbBtn" onclick="nextVerb()" class="mt-3 px-6 py-2 gold-gradient text-slate-950 text-xs font-black rounded-xl hover:brightness-110 transition shadow">
+          Siguiente Verbo ➜
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ==================== SCREEN 3: LEVEL SUMMARY ==================== -->
+    <div id="summaryScreen" class="hidden glass-card rounded-3xl p-6 sm:p-8 text-center animate-pop relative overflow-hidden">
+      <div id="confettiStage" class="absolute inset-0 pointer-events-none"></div>
+
+      <div class="text-5xl mb-2">🌟🎙️</div>
+      <h2 class="text-2xl sm:text-3xl font-black text-white cinzel mb-1">¡Evaluación Vocal Superada!</h2>
+      <p id="summarySubtitle" class="text-xs sm:text-sm text-slate-300 mb-6"></p>
+
+      <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-6">
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Puntuación</div>
+          <div id="levelScoreEarned" class="text-xl sm:text-2xl font-black text-amber-400">0 pts</div>
+        </div>
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Calificación</div>
+          <div id="levelStarsEarned" class="text-xl sm:text-2xl font-black text-amber-400">⭐⭐⭐</div>
+        </div>
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Precisión Media</div>
+          <div id="levelAccuracy" class="text-xl sm:text-2xl font-black text-emerald-400">95%</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2.5 justify-center">
+        <button onclick="goToMenu()" class="px-6 py-3 gold-gradient text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider transition hover:brightness-110 shadow-lg cinzel">
+          🏠 Volver al Mapa de Niveles
+        </button>
+        <button id="nextLevelDirectBtn" onclick="advanceNextLevelDirectly()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-black rounded-xl text-xs uppercase tracking-wider transition">
+          Siguiente Nivel ➜
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 4: PERSISTENT LEADERBOARD MODAL ==================== -->
+    <div id="leaderboardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3">
+      <div class="glass-card rounded-3xl p-6 sm:p-7 max-w-lg w-full relative animate-pop border-amber-400/50">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🏆</span>
+            <div>
+              <h3 class="text-base font-black text-white cinzel">Récords de Pronunciación</h3>
+              <p class="text-[10px] text-amber-300/80 uppercase tracking-wider">Guardados permanentemente</p>
+            </div>
+          </div>
+          <button onclick="closeLeaderboard()" class="text-slate-400 hover:text-white text-lg font-bold p-1">
+            ✕
+          </button>
+        </div>
+
+        <div class="max-h-72 overflow-y-auto space-y-2 pr-1 mb-5" id="leaderboardList">
+          <!-- Dynamically populated entries -->
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <button onclick="clearLeaderboardData()" class="px-3 py-1.5 text-xs text-rose-400 hover:text-rose-300 transition">
+            Limpiar Datos
+          </button>
+          <button onclick="closeLeaderboard()" class="px-5 py-2 gold-gradient text-slate-950 font-bold rounded-xl text-xs">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="mt-4 text-center text-xs text-slate-500 font-semibold z-10">
+    Wisdom Corner Academy • English Department • Voice &amp; Pronunciation Challenge
+  </footer>
+
+  <script>
+    const GAME_LEVELS = [
+      {
+        id: 1,
+        title: "Nivel 1 (A1)",
+        name: "Los 3 Idénticos y Esenciales",
+        desc: "Verbos sin variación fonética (cut, cost, put, read) y los verbos base be, go.",
+        badgeColor: "from-emerald-500 to-teal-700",
+        verbs: [
+          {
+            inf: "cut", past: "cut", part: "cut",
+            phonetic: "/kʌt/",
+            meaning: "cortar",
+            hint: "Las tres formas suenan exactamente igual: /kʌt - kʌt - kʌt/.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`
+          },
+          {
+            inf: "cost", past: "cost", part: "cost",
+            phonetic: "/kɒst/",
+            meaning: "costar / valer",
+            hint: "Mismo sonido en pasado y participio: /kɒst - kɒst - kɒst/.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9h6M9 13h4"/></svg>`
+          },
+          {
+            inf: "put", past: "put", part: "put",
+            phonetic: "/pʊt/",
+            meaning: "poner / colocar",
+            hint: "Vocal cerrada /pʊt/. No cambia.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`
+          },
+          {
+            inf: "read", past: "read", part: "read",
+            phonetic: "/riːd/ ➔ /red/ ➔ /red/",
+            meaning: "leer",
+            hint: "¡Atención al cambio de sonido! Infinitivo /riːd/, pasado y participio /red/.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+          },
+          {
+            inf: "be", past: "was", part: "been",
+            altPast: ["was", "were"],
+            phonetic: "/biː/ ➔ /wɒz/ o /wɜː/ ➔ /biːn/",
+            meaning: "ser / estar",
+            hint: "Di: 'be, was, been' o 'be, were, been'.",
+            svg: `<svg class="w-16 h-16 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>`
+          },
+          {
+            inf: "go", past: "went", part: "gone",
+            altPart: ["gone", "been"],
+            phonetic: "/ɡəʊ/ ➔ /went/ ➔ /ɡɒn/",
+            meaning: "ir",
+            hint: "Di con claridad: 'go, went, gone'.",
+            svg: `<svg class="w-16 h-16 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Nivel 2 (A1-A2)",
+        name: "Pasado y Participio Idénticos I",
+        desc: "Familia con terminación fonética /ɔːt/ (-ought/-aught) y cambio a -t.",
+        badgeColor: "from-blue-600 to-cyan-800",
+        verbs: [
+          {
+            inf: "buy", past: "bought", part: "bought",
+            phonetic: "/baɪ/ ➔ /bɔːt/ ➔ /bɔːt/",
+            meaning: "comprar",
+            hint: "La terminación -ought suena /ɔːt/ (rimando con 'door').",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`
+          },
+          {
+            inf: "bring", past: "brought", part: "brought",
+            phonetic: "/brɪŋ/ ➔ /brɔːt/ ➔ /brɔːt/",
+            meaning: "traer / llevar",
+            hint: "Sonido /brɔːt/ tanto en pasado como participio.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`
+          },
+          {
+            inf: "teach", past: "taught", part: "taught",
+            phonetic: "/tiːtʃ/ ➔ /tɔːt/ ➔ /tɔːt/",
+            meaning: "enseñar",
+            hint: "Teach /tiːtʃ/ pasa a taught /tɔːt/.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>`
+          },
+          {
+            inf: "think", past: "thought", part: "thought",
+            phonetic: "/θɪŋk/ ➔ /θɔːt/ ➔ /θɔːt/",
+            meaning: "pensar / creer",
+            hint: "Pronuncia la 'th' inicial apoyando la lengua en los dientes: /θɔːt/.",
+            svg: `<svg class="w-16 h-16 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>`
+          },
+          {
+            inf: "build", past: "built", part: "built",
+            phonetic: "/bɪld/ ➔ /bɪlt/ ➔ /bɪlt/",
+            meaning: "construir",
+            hint: "La consonante final cambia de 'd' suave a 't' sorda: /bɪlt/.",
+            svg: `<svg class="w-16 h-16 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6"/><line x1="15" y1="6" x2="15" y2="6"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="9" y2="14"/><line x1="15" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>`
+          },
+          {
+            inf: "send", past: "sent", part: "sent",
+            phonetic: "/send/ ➔ /sent/ ➔ /sent/",
+            meaning: "enviar / mandar",
+            hint: "Pronuncia claro la 't' final: 'sent'.",
+            svg: `<svg class="w-16 h-16 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Nivel 3 (A2)",
+        name: "Pasado y Participio Idénticos II",
+        desc: "Cambios vocálicos interiores y terminaciones en -t / -d.",
+        badgeColor: "from-amber-600 to-orange-800",
+        verbs: [
+          {
+            inf: "find", past: "found", part: "found",
+            phonetic: "/faɪnd/ ➔ /faʊnd/ ➔ /faʊnd/",
+            meaning: "encontrar",
+            hint: "Diptongo /aʊ/: find - found - found.",
+            svg: `<svg class="w-16 h-16 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`
+          },
+          {
+            inf: "meet", past: "met", part: "met",
+            phonetic: "/miːt/ ➔ /met/ ➔ /met/",
+            meaning: "conocer / quedar con",
+            hint: "Vocal larga /iː/ pasa a vocal corta /e/: meet - met - met.",
+            svg: `<svg class="w-16 h-16 text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+          },
+          {
+            inf: "leave", past: "left", part: "left",
+            phonetic: "/liːv/ ➔ /left/ ➔ /left/",
+            meaning: "irse / dejar / salir",
+            hint: "Pronuncia /left/ claramente.",
+            svg: `<svg class="w-16 h-16 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`
+          },
+          {
+            inf: "make", past: "made", part: "made",
+            phonetic: "/meɪk/ ➔ /meɪd/ ➔ /meɪd/",
+            meaning: "hacer / fabricar",
+            hint: "La 'k' se convierte en 'd': make - made - made.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
+          },
+          {
+            inf: "lose", past: "lost", part: "lost",
+            phonetic: "/luːz/ ➔ /lɒst/ ➔ /lɒst/",
+            meaning: "perder",
+            hint: "Vocal /uː/ pasa a vocal abierta /ɒ/: lose - lost - lost.",
+            svg: `<svg class="w-16 h-16 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Nivel 4 (A2-B1)",
+        name: "3 Formas Distintas I",
+        desc: "Participio terminado con terminación consonántica en -en / -n.",
+        badgeColor: "from-purple-600 to-indigo-800",
+        verbs: [
+          {
+            inf: "break", past: "broke", part: "broken",
+            phonetic: "/breɪk/ ➔ /brəʊk/ ➔ /ˈbrəʊkən/",
+            meaning: "romper / quebrar",
+            hint: "Tres sonidos distintos: break - broke - broken.",
+            svg: `<svg class="w-16 h-16 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6l3 2-6 4 3 2v6"/></svg>`
+          },
+          {
+            inf: "write", past: "wrote", part: "written",
+            phonetic: "/raɪt/ ➔ /rəʊt/ ➔ /ˈrɪtən/",
+            meaning: "escribir",
+            hint: "La 'w' inicial es muda: /raɪt - rəʊt - ˈrɪtən/.",
+            svg: `<svg class="w-16 h-16 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`
+          },
+          {
+            inf: "drive", past: "drove", part: "driven",
+            phonetic: "/draɪv/ ➔ /drəʊv/ ➔ /ˈdrɪvən/",
+            meaning: "conducir",
+            hint: "Mismo esquema de write: drive - drove - driven.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="7" cy="15" r="2"/><circle cx="17" cy="15" r="2"/></svg>`
+          },
+          {
+            inf: "speak", past: "spoke", part: "spoken",
+            phonetic: "/spiːk/ ➔ /spəʊk/ ➔ /ˈspəʊkən/",
+            meaning: "hablar",
+            hint: "Rima con break: speak - spoke - spoken.",
+            svg: `<svg class="w-16 h-16 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`
+          },
+          {
+            inf: "eat", past: "ate", part: "eaten",
+            phonetic: "/iːt/ ➔ /eɪt/ (o /et/) ➔ /ˈiːtən/",
+            meaning: "comer",
+            hint: "Di: eat - ate - eaten.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Nivel 5 (B1-B2)",
+        name: "3 Formas Distintas II",
+        desc: "Gradación vocálica sonora i - a - u y familia en -ew/-own.",
+        badgeColor: "from-pink-600 to-rose-800",
+        verbs: [
+          {
+            inf: "swim", past: "swam", part: "swum",
+            phonetic: "/swɪm/ ➔ /swæm/ ➔ /swʌm/",
+            meaning: "nadar",
+            hint: "Triple salto vocálico /ɪ/ ➔ /æ/ ➔ /ʌ/.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/><path d="M2 14c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/><circle cx="17" cy="6" r="2"/></svg>`
+          },
+          {
+            inf: "sing", past: "sang", part: "sung",
+            phonetic: "/sɪŋ/ ➔ /sæŋ/ ➔ /sʌŋ/",
+            meaning: "cantar",
+            hint: "Misma melodía que swim: sing - sang - sung.",
+            svg: `<svg class="w-16 h-16 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`
+          },
+          {
+            inf: "drink", past: "drank", part: "drunk",
+            phonetic: "/drɪŋk/ ➔ /dræŋk/ ➔ /drʌŋk/",
+            meaning: "beber",
+            hint: "drink - drank - drunk.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>`
+          },
+          {
+            inf: "fly", past: "flew", part: "flown",
+            phonetic: "/flaɪ/ ➔ /fluː/ ➔ /fləʊn/",
+            meaning: "volar",
+            hint: "Pasado con /uː/ 'flew', participio 'flown'.",
+            svg: `<svg class="w-16 h-16 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>`
+          },
+          {
+            inf: "come", past: "came", part: "come",
+            phonetic: "/kʌm/ ➔ /keɪm/ ➔ /kʌm/",
+            meaning: "venir",
+            hint: "Patrón A-B-A: come - came - come.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "Nivel 6 (B2-C1)",
+        name: "Avanzado y Dobles Formas",
+        desc: "Verbos académicos, cultos y formas dobles (arise, seek, cling, learn).",
+        badgeColor: "from-amber-500 to-yellow-600",
+        verbs: [
+          {
+            inf: "arise", past: "arose", part: "arisen",
+            phonetic: "/əˈraɪz/ ➔ /əˈrəʊz/ ➔ /əˈrɪzən/",
+            meaning: "surgir / presentarse",
+            hint: "Acentúa la segunda sílaba: arise - arose - arisen.",
+            svg: `<svg class="w-16 h-16 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>`
+          },
+          {
+            inf: "seek", past: "sought", part: "sought",
+            phonetic: "/siːk/ ➔ /sɔːt/ ➔ /sɔːt/",
+            meaning: "buscar / procurar",
+            hint: "seek - sought - sought (/sɔːt/).",
+            svg: `<svg class="w-16 h-16 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>`
+          },
+          {
+            inf: "cling", past: "clung", part: "clung",
+            phonetic: "/klɪŋ/ ➔ /klʌŋ/ ➔ /klʌŋ/",
+            meaning: "aferrarse / agarrarse",
+            hint: "cling - clung - clung (/klʌŋ/).",
+            svg: `<svg class="w-16 h-16 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/></svg>`
+          },
+          {
+            inf: "learn", past: "learnt", part: "learnt",
+            altPast: ["learnt", "learned"],
+            altPart: ["learnt", "learned"],
+            phonetic: "/lɜːn/ ➔ /lɜːnt/ ➔ /lɜːnt/",
+            meaning: "aprender",
+            hint: "Pronunciación británica en -t: learn - learnt - learnt.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>`
+          }
+        ]
+      }
+    ];
+
+    let challengeMode = 'series'; // 'series' (all 3 forms) or 'single' (one form prompt)
+    let activeLevel = null;
+    let currentVerbIndex = 0;
+    let attemptsLeft = 3;
+    let levelScore = 0;
+    let totalAccuracySum = 0;
+    let isRecording = false;
+    let recognition = null;
+    let audioCtx = null;
+
+    const STORAGE_KEY_USER = "wca_voice_player";
+    const STORAGE_KEY_PROGRESS = "wca_voice_progress";
+    const STORAGE_KEY_LEADERBOARD = "wca_voice_leaderboard";
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playAudioTone(type) {
+      try {
+        initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'beep') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } else if (type === 'success') {
+          [523.25, 659.25, 783.99].forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(freq, now + idx * 0.08);
+            g.gain.setValueAtTime(0.18, now + idx * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.28);
+            o.start(now + idx * 0.08);
+            o.stop(now + idx * 0.08 + 0.3);
+          });
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.linearRampToValueAtTime(90, now + 0.25);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'fanfare') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, now + idx * 0.1);
+            g.gain.setValueAtTime(0.2, now + idx * 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
+            o.start(now + idx * 0.1);
+            o.stop(now + idx * 0.1 + 0.42);
+          });
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function setupSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.warn("Speech Recognition API not supported in this browser.");
+        return null;
+      }
+      const rec = new SpeechRecognition();
+      rec.continuous = false;
+      rec.interimResults = true;
+      rec.lang = 'en-GB';
+
+      rec.onstart = function() {
+        isRecording = true;
+        updateMicUI(true);
+        playAudioTone('beep');
+        document.getElementById('liveTranscriptDisplay').textContent = "Escuchando... Di las formas con claridad en inglés.";
+      };
+
+      rec.onresult = function(event) {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        document.getElementById('liveTranscriptDisplay').textContent = `"${transcript}"`;
+        
+        // If final result, evaluate
+        if (event.results[0].isFinal) {
+          evaluateSpokenTranscript(transcript);
+        }
+      };
+
+      rec.onerror = function(event) {
+        console.error("Speech Recognition Error:", event.error);
+        stopRecording();
+        let msg = "No se detectó audio claro. Por favor, reintenta.";
+        if (event.error === 'not-allowed') {
+          msg = "Permiso de micrófono denegado. Permite el acceso al micrófono en los ajustes de tu navegador.";
+        }
+        document.getElementById('liveTranscriptDisplay').textContent = `⚠️ ${msg}`;
+      };
+
+      rec.onend = function() {
+        stopRecording();
+      };
+
+      return rec;
+    }
+
+    function toggleMicrophone() {
+      if (isRecording) {
+        if (recognition) recognition.stop();
+        stopRecording();
+      } else {
+        if (!recognition) {
+          recognition = setupSpeechRecognition();
+        }
+        if (recognition) {
+          try {
+            recognition.start();
+          } catch (e) {
+            console.warn(e);
+          }
+        } else {
+          alert("Tu navegador no soporta reconocimiento de voz nativo (Web Speech API). Puedes usar el botón '⌨️ Escribir' para practicar.");
+        }
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      updateMicUI(false);
+    }
+
+    function updateMicUI(listening) {
+      const btn = document.getElementById('micButton');
+      const icon = document.getElementById('micIcon');
+      const label = document.getElementById('micLabel');
+      const wave = document.getElementById('audioWaveBars');
+
+      if (listening) {
+        btn.classList.remove('from-amber-500', 'to-amber-600');
+        btn.classList.add('from-red-600', 'to-rose-700', 'mic-pulse');
+        icon.textContent = '⏹️';
+        label.textContent = 'ESCUCHANDO TU VOZ (DETENER)...';
+        wave.classList.remove('hidden');
+        wave.classList.add('flex');
+      } else {
+        btn.classList.remove('from-red-600', 'to-rose-700', 'mic-pulse');
+        btn.classList.add('from-amber-500', 'to-amber-600');
+        icon.textContent = '🎙️';
+        label.textContent = 'ACTIVAR MICRÓFONO Y HABLAR';
+        wave.classList.add('hidden');
+        wave.classList.remove('flex');
+      }
+    }
+
+    function cleanToken(s) {
+      return (s || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .trim();
+    }
+
+    function levenshteinDistance(a, b) {
+      const m = a.length, n = b.length;
+      const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+      for (let i = 0; i <= m; i++) dp[i][0] = i;
+      for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          if (a[i - 1] === b[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+          else dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+        }
+      }
+      return dp[m][n];
+    }
+
+    function tokenSimilarity(target, candidate) {
+      const t = cleanToken(target);
+      const c = cleanToken(candidate);
+      if (!t || !c) return 0;
+      if (t === c) return 1.0;
+      const dist = levenshteinDistance(t, c);
+      const maxLen = Math.max(t.length, c.length);
+      return Math.max(0, 1 - dist / maxLen);
+    }
+
+    function evaluateSpokenTranscript(spokenText) {
+      const v = activeLevel.verbs[currentVerbIndex];
+      const spokenTokens = spokenText.toLowerCase().split(/[\s,.-]+/).map(cleanToken).filter(Boolean);
+
+      // Target definitions
+      const targets = [
+        { key: 'Inf', name: 'Infinitive', expected: v.inf, alts: [v.inf] },
+        { key: 'Past', name: 'Past Simple', expected: v.past, alts: v.altPast ? [v.past, ...v.altPast] : [v.past] },
+        { key: 'Part', name: 'Past Participle', expected: v.part, alts: v.altPart ? [v.part, ...v.altPart] : [v.part] }
+      ];
+
+      let matchResults = [];
+      let totalAcc = 0;
+
+      // Phonetic matching
+      targets.forEach(target => {
+        let bestScore = 0;
+        let bestToken = '';
+
+        spokenTokens.forEach(token => {
+          target.alts.forEach(alt => {
+            const sim = tokenSimilarity(alt, token);
+            if (sim > bestScore) {
+              bestScore = sim;
+              bestToken = token;
+            }
+          });
+        });
+
+        const isMatch = bestScore >= 0.72; // Lenient threshold for accents
+        matchResults.push({ target, isMatch, score: bestScore, token: bestToken });
+        totalAcc += bestScore;
+      });
+
+      const avgAccuracy = Math.round((totalAcc / targets.length) * 100);
+      document.getElementById('accuracyBadge').textContent = `Precisión: ${avgAccuracy}%`;
+
+      // Update Word Badges
+      let allPassed = true;
+      matchResults.forEach(res => {
+        const card = document.getElementById(`card${res.target.key}`);
+        const status = document.getElementById(`status${res.target.key}`);
+        if (res.isMatch) {
+          card.className = "bg-emerald-950/80 p-3 rounded-xl border-2 border-emerald-500 text-center";
+          status.className = "text-[10px] block mt-1 text-emerald-400 font-bold";
+          status.textContent = `✓ Detectado (${Math.round(res.score * 100)}%)`;
+        } else {
+          allPassed = false;
+          card.className = "bg-rose-950/80 p-3 rounded-xl border-2 border-rose-500 text-center";
+          status.className = "text-[10px] block mt-1 text-rose-400 font-bold";
+          status.textContent = `✗ Repetir`;
+        }
+      });
+
+      if (allPassed) {
+        playAudioTone('success');
+        let points = 100;
+        if (attemptsLeft === 2) points = 70;
+        if (attemptsLeft === 1) points = 40;
+
+        levelScore += points;
+        totalAccuracySum += avgAccuracy;
+        showResolutionBanner(true, points, avgAccuracy, v);
+      } else {
+        attemptsLeft--;
+        updateHeartsDisplay();
+
+        if (attemptsLeft > 0) {
+          playAudioTone('wrong');
+          document.getElementById('liveTranscriptDisplay').innerHTML = `
+            <span class="text-rose-400">⚠️ Se detectó: "${spokenText}". Intenta pronunciar más despacio o escucha el modelo nativo (${attemptsLeft} intentos restantes).</span>
+          `;
+        } else {
+          playAudioTone('wrong');
+          totalAccuracySum += avgAccuracy;
+          showResolutionBanner(false, 0, avgAccuracy, v);
+        }
+      }
+    }
+
+    function showResolutionBanner(success, pointsWon, accuracy, verb) {
+      const banner = document.getElementById('solutionBanner');
+      const title = document.getElementById('solutionTitle');
+      const details = document.getElementById('solutionDetails');
+      const nextBtn = document.getElementById('nextVerbBtn');
+
+      document.getElementById('micButton').disabled = true;
+      banner.classList.remove('hidden', 'bg-emerald-950/90', 'border-emerald-500', 'text-emerald-300', 'bg-rose-950/90', 'border-rose-500', 'text-rose-300');
+
+      if (success) {
+        banner.classList.add('bg-emerald-950/90', 'border-emerald-500', 'text-emerald-300');
+        title.innerHTML = `🎉 ¡EXCELENTE PRONUNCIACIÓN! (${accuracy}% precisión)`;
+        details.innerHTML = `
+          Has ganado <strong>+${pointsWon} puntos</strong>.<br>
+          Formas: <strong class="text-white">${verb.inf} • ${verb.past} • ${verb.part}</strong> (${verb.phonetic})
+        `;
+      } else {
+        banner.classList.add('bg-rose-950/90', 'border-rose-500', 'text-rose-300');
+        title.innerHTML = `⌛ Intentos agotados. Modelo Fonético Correcto:`;
+        details.innerHTML = `
+          Escucha cómo suena: <strong class="text-white">${verb.inf} • ${verb.past} • ${verb.part}</strong><br>
+          Transcripción fonética: <span class="text-amber-300">${verb.phonetic}</span>
+        `;
+        playNativeModel(0.9);
+      }
+
+      const isLast = (currentVerbIndex === activeLevel.verbs.length - 1);
+      nextBtn.textContent = isLast ? "Ver Resultados del Nivel ➜" : "Siguiente Verbo ➜";
+    }
+
+    function playNativeModel(speedRate = 1.0) {
+      if (!('speechSynthesis' in window)) return;
+      const v = activeLevel.verbs[currentVerbIndex];
+      window.speechSynthesis.cancel();
+
+      const text = `${v.inf}... ${v.past}... ${v.part}`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-GB';
+      utterance.rate = speedRate;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function simulateVoiceInput() {
+      const v = activeLevel.verbs[currentVerbIndex];
+      const typed = prompt("Introduce las 3 formas pronunciadas (separadas por espacio):", `${v.inf} ${v.past} ${v.part}`);
+      if (typed) {
+        evaluateSpokenTranscript(typed);
+      }
+    }
+
+    function setChallengeMode(mode) {
+      challengeMode = mode;
+      const seriesBtn = document.getElementById('modeSeriesBtn');
+      const singleBtn = document.getElementById('modeSingleBtn');
+      if (mode === 'series') {
+        seriesBtn.className = "px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition";
+        singleBtn.className = "px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition";
+      } else {
+        singleBtn.className = "px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition";
+        seriesBtn.className = "px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition";
+      }
+    }
+
+    function startLevel(lvlId) {
+      initAudio();
+      activeLevel = GAME_LEVELS.find(l => l.id === lvlId);
+      currentVerbIndex = 0;
+      levelScore = 0;
+      totalAccuracySum = 0;
+
+      document.getElementById('menuScreen').classList.add('hidden');
+      document.getElementById('summaryScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+
+      document.getElementById('levelTitleBadge').textContent = `${activeLevel.title}: ${activeLevel.name}`;
+      document.getElementById('verbTotal').textContent = activeLevel.verbs.length;
+
+      loadCurrentVerb();
+    }
+
+    function loadCurrentVerb() {
+      attemptsLeft = 3;
+      const v = activeLevel.verbs[currentVerbIndex];
+
+      document.getElementById('verbCounter').textContent = currentVerbIndex + 1;
+      document.getElementById('verbIconContainer').innerHTML = v.svg;
+      document.getElementById('verbMeaningDisplay').textContent = `"${v.meaning}"`;
+      document.getElementById('verbPatternTag').textContent = `Fonética: ${v.phonetic}`;
+
+      document.getElementById('textInf').textContent = v.inf;
+      document.getElementById('textPast').textContent = v.past;
+      document.getElementById('textPart').textContent = v.part;
+
+      ['Inf', 'Past', 'Part'].forEach(key => {
+        document.getElementById(`card${key}`).className = "bg-slate-900/90 p-3 rounded-xl border border-slate-700 text-center";
+        const status = document.getElementById(`status${key}`);
+        status.className = "text-[10px] block mt-1 text-slate-500 font-mono";
+        status.textContent = "Esperando...";
+      });
+
+      document.getElementById('accuracyBadge').textContent = "Precisión: --%";
+      document.getElementById('liveTranscriptDisplay').textContent = "Presiona el micrófono y pronuncia las formas en inglés...";
+      document.getElementById('micButton').disabled = false;
+      document.getElementById('solutionBanner').classList.add('hidden');
+
+      updateHeartsDisplay();
+    }
+
+    function updateHeartsDisplay() {
+      const container = document.getElementById('heartsContainer');
+      container.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const span = document.createElement('span');
+        span.className = "text-base transition-transform duration-200";
+        span.textContent = i < attemptsLeft ? "❤️" : "🖤";
+        container.appendChild(span);
+      }
+    }
+
+    function nextVerb() {
+      currentVerbIndex++;
+      if (currentVerbIndex < activeLevel.verbs.length) {
+        loadCurrentVerb();
+      } else {
+        finishLevelSummary();
+      }
+    }
+
+    function finishLevelSummary() {
+      playAudioTone('fanfare');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('summaryScreen').classList.remove('hidden');
+
+      const totalVerbs = activeLevel.verbs.length;
+      const avgLevelAcc = Math.round(totalAccuracySum / totalVerbs);
+
+      let stars = 1;
+      if (avgLevelAcc >= 85) stars = 3;
+      else if (avgLevelAcc >= 65) stars = 2;
+
+      document.getElementById('levelScoreEarned').textContent = `${levelScore} pts`;
+      document.getElementById('levelStarsEarned').textContent = "⭐".repeat(stars);
+      document.getElementById('levelAccuracy').textContent = `${avgLevelAcc}%`;
+
+      const sub = document.getElementById('summarySubtitle');
+      if (stars === 3) sub.textContent = "¡Pronunciación Impecable! Tienes un acento y claridad fonética de sobresaliente 🌟";
+      else if (stars === 2) sub.textContent = "¡Buen dominio vocal! Has pronunciado con gran inteligibilidad 👍";
+      else sub.textContent = "Has completado la sesión. Repite el nivel escuchando el modelo lento para perfeccionar 💡";
+
+      saveProgress(activeLevel.id, stars, levelScore);
+
+      const nextBtn = document.getElementById('nextLevelDirectBtn');
+      if (activeLevel.id < GAME_LEVELS.length) {
+        nextBtn.classList.remove('hidden');
+        nextBtn.textContent = `Avanzar al Nivel ${activeLevel.id + 1} ➜`;
+      } else {
+        nextBtn.classList.add('hidden');
+      }
+
+      triggerConfetti();
+    }
+
+    function advanceNextLevelDirectly() {
+      if (activeLevel && activeLevel.id < GAME_LEVELS.length) {
+        startLevel(activeLevel.id + 1);
+      }
+    }
+
+    function triggerConfetti() {
+      const container = document.getElementById('confettiStage');
+      container.innerHTML = '';
+      const colors = ['#f59e0b', '#10b981', '#38bdf8', '#ec4899', '#fbbf24'];
+      for (let i = 0; i < 40; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.animationDelay = `${Math.random() * 0.6}s`;
+        container.appendChild(el);
+      }
+    }
+
+    function getStoredPlayer() {
+      return localStorage.getItem(STORAGE_KEY_USER) || "Estudiante";
+    }
+
+    function getStoredProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_PROGRESS)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveProgress(levelId, stars, score) {
+      const p = getStoredProgress();
+      if (!p[levelId] || score > p[levelId].score) {
+        p[levelId] = { stars, score };
+        localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(p));
+      }
+      recordToLeaderboard(getStoredPlayer(), calculateTotalScore());
+      updateHeaderProfile();
+    }
+
+    function calculateTotalScore() {
+      const p = getStoredProgress();
+      return Object.values(p).reduce((sum, item) => sum + (item.score || 0), 0);
+    }
+
+    function getLeaderboard() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_LEADERBOARD)) || [
+          { name: "Sara V.", score: 2600, date: "02/10/2026" },
+          { name: "Daniel K.", score: 2150, date: "01/10/2026" },
+          { name: "Profesor W.", score: 3000, date: "29/09/2026" }
+        ];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function recordToLeaderboard(name, score) {
+      if (!name || score <= 0) return;
+      let lb = getLeaderboard();
+      const existing = lb.find(x => x.name.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        if (score > existing.score) existing.score = score;
+      } else {
+        lb.push({ name, score, date: new Date().toLocaleDateString() });
+      }
+      lb.sort((a, b) => b.score - a.score);
+      localStorage.setItem(STORAGE_KEY_LEADERBOARD, JSON.stringify(lb.slice(0, 15)));
+    }
+
+    function renderLevelCards() {
+      const container = document.getElementById('levelsGrid');
+      container.innerHTML = '';
+      const progress = getStoredProgress();
+
+      GAME_LEVELS.forEach((lvl) => {
+        const p = progress[lvl.id] || { stars: 0, score: 0 };
+        const starsText = p.stars > 0 ? "⭐".repeat(p.stars) : "☆☆☆";
+
+        const card = document.createElement('div');
+        card.className = "p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-amber-400/80 transition duration-200 flex flex-col justify-between group hover:shadow-xl hover:shadow-amber-500/10";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r ${lvl.badgeColor} text-white">
+                ${lvl.title}
+              </span>
+              <span class="text-xs font-bold text-amber-400">${starsText}</span>
+            </div>
+            <h4 class="text-sm font-black text-white group-hover:text-amber-300 transition mb-1">${lvl.name}</h4>
+            <p class="text-[11px] text-slate-400 leading-snug mb-3">${lvl.desc}</p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400">Récord: <strong class="text-amber-300">${p.score} pts</strong></span>
+            <button onclick="startLevel(${lvl.id})" class="px-3 py-1.5 rounded-xl gold-gradient hover:brightness-110 text-slate-950 font-black text-xs transition uppercase tracking-wider">
+              Practicar 🎙️
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updateHeaderProfile() {
+      const name = getStoredPlayer();
+      const score = calculateTotalScore();
+      document.getElementById('headerPlayerName').textContent = name;
+      document.getElementById('currentPlayerDisplay').textContent = name;
+      document.getElementById('headerTotalScore').textContent = `⭐ ${score.toLocaleString()} pts`;
+      document.getElementById('playerNameInput').value = name;
+    }
+
+    function savePlayerName() {
+      const input = document.getElementById('playerNameInput');
+      const val = input.value.trim();
+      if (val) {
+        localStorage.setItem(STORAGE_KEY_USER, val);
+        updateHeaderProfile();
+        recordToLeaderboard(val, calculateTotalScore());
+        alert("¡Nombre de estudiante guardado con éxito!");
+      }
+    }
+
+    function goToMenu() {
+      if (recognition && isRecording) {
+        recognition.stop();
+        stopRecording();
+      }
+      document.getElementById('summaryScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('menuScreen').classList.remove('hidden');
+      renderLevelCards();
+      updateHeaderProfile();
+    }
+
+    function confirmReturnToMenu() {
+      if (confirm("¿Deseas volver al menú de niveles? Se pausará el ejercicio actual.")) {
+        goToMenu();
+      }
+    }
+
+    function openLeaderboard() {
+      const modal = document.getElementById('leaderboardModal');
+      const list = document.getElementById('leaderboardList');
+      modal.classList.remove('hidden');
+      list.innerHTML = '';
+
+      const lb = getLeaderboard();
+      if (lb.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Aún no hay puntuaciones registradas.</p>`;
+        return;
+      }
+
+      lb.forEach((entry, idx) => {
+        const item = document.createElement('div');
+        item.className = "p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 flex items-center justify-between";
+        
+        let medal = `#${idx + 1}`;
+        if (idx === 0) medal = "🥇";
+        if (idx === 1) medal = "🥈";
+        if (idx === 2) medal = "🥉";
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-black text-amber-400 w-6 text-center">${medal}</span>
+            <div>
+              <span class="font-extrabold text-white text-xs block">${entry.name}</span>
+              <span class="text-[10px] text-slate-400">${entry.date || 'Reciente'}</span>
+            </div>
+          </div>
+          <span class="text-xs font-black text-amber-300">⭐ ${entry.score.toLocaleString()} pts</span>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function closeLeaderboard() {
+      document.getElementById('leaderboardModal').classList.add('hidden');
+    }
+
+    function clearLeaderboardData() {
+      if (confirm("¿Estás seguro de que deseas reiniciar todos los récords de la clasificación vocal?")) {
+        localStorage.removeItem(STORAGE_KEY_LEADERBOARD);
+        localStorage.removeItem(STORAGE_KEY_PROGRESS);
+        updateHeaderProfile();
+        openLeaderboard();
+        renderLevelCards();
+      }
+    }
+
+    window.onload = function () {
+      updateHeaderProfile();
+      renderLevelCards();
+    };
+  </script>
+</body>
+</html>
