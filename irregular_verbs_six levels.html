@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisdom Corner Academy - Irregular Verbs Mastery Quest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 45%, #020617 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+    }
+    .cinzel {
+      font-family: 'Cinzel', serif;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+    }
+    .gold-text {
+      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.55), 0 0 25px rgba(217, 119, 6, 0.12);
+    }
+    .glow-gold {
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+      border-color: #f59e0b;
+    }
+    .animate-pop {
+      animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.96); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .shake-anim {
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 9px;
+      height: 13px;
+      border-radius: 2px;
+      animation: fall 2.2s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between p-3 sm:p-6 min-h-screen">
+
+  <!-- Header Bar -->
+  <header class="w-full max-w-4xl glass-card rounded-2xl p-3.5 sm:p-4 mb-4 flex items-center justify-between z-20">
+    <div class="flex items-center gap-3">
+      <img src="https://lh3.googleusercontent.com/gg/ACRwjatHWFtY-Qlr_uPWgqXv_-vjwU4O_G2YavAOlKAARTE9ElbWL-dKu8q5gPSfi42kHcrj2KbSwDaArg87L9N0CPIdwmMNKmslB84y4fKi3Y7Z6x_WWdAim61ktLi18JsMJqI9pWrVcYTxDVNeBNU78XYzh8-IomSjzx00d6lu1uAIhJ0Q9SwszQbFGsghF5vTUEISjuNisNJ7pAhlEm8WWnTQyWtOsufiCXMmQwyjc-q4LmgNZXD_ijG1Nr-IYDY15tDZwq7UuvF9EYOko34qhiJT8UnnVam7HG0=s0" 
+           alt="Wisdom Corner Academy Logo" 
+           class="w-12 h-12 object-contain rounded-full bg-slate-900 p-1 border border-amber-400">
+      <div>
+        <h1 class="text-[10px] tracking-widest uppercase font-extrabold text-amber-400 cinzel">Wisdom Corner Academy</h1>
+        <h2 class="text-sm sm:text-base font-black text-white leading-tight">Irregular Verbs Mastery Quest</h2>
+      </div>
+    </div>
+
+    <!-- User & Points bar -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      <button onclick="openLeaderboard()" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5">
+        <span>🏆</span> <span class="hidden sm:inline">Clasificación</span>
+      </button>
+      <div class="bg-slate-900/90 border border-amber-500/40 px-3 py-1 rounded-xl text-right">
+        <span class="text-[9px] uppercase font-bold text-amber-400 block" id="headerPlayerName">Player</span>
+        <span class="text-sm font-black text-white" id="headerTotalScore">⭐ 0 pts</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full max-w-4xl flex-1 flex flex-col justify-center relative z-10">
+
+    <!-- ==================== SCREEN 1: LEVEL SELECTOR MENU ==================== -->
+    <div id="menuScreen" class="glass-card rounded-3xl p-5 sm:p-8 animate-pop">
+      
+      <!-- Pedagogical Banner / Recommendation -->
+      <div class="p-3.5 mb-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-transparent border-l-4 border-amber-400 text-xs text-amber-200 flex items-start gap-2.5">
+        <span class="text-xl">💡</span>
+        <div>
+          <strong class="font-extrabold text-amber-300 block uppercase tracking-wide text-[11px]">Recomendación Pedagógica del Profesorado:</strong>
+          Aunque puedes acceder libremente a cualquier nivel, te recomendamos completar los niveles en <strong>orden progresivo (del Nivel 1 al 6)</strong>. Los verbos se agrupan por patrones mnemotécnicos que te permitirán dominar primero los idénticos antes de enfrentarte a los cambios triples y formas cultas.
+        </div>
+      </div>
+
+      <!-- Player Profile Strip -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6 p-3 bg-slate-900/80 rounded-2xl border border-slate-700">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🎓</span>
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase font-bold">Estudiante en sesión:</div>
+            <div id="currentPlayerDisplay" class="font-extrabold text-amber-300 text-sm">Estudiante</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <input type="text" id="playerNameInput" placeholder="Escribe tu nombre..." class="px-3 py-1.5 rounded-xl bg-slate-800 text-white text-xs border border-slate-600 focus:outline-none focus:border-amber-400 flex-1 sm:w-44">
+          <button onclick="savePlayerName()" class="px-3 py-1.5 gold-gradient hover:brightness-110 text-slate-950 font-bold rounded-xl text-xs transition">
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <!-- 6 Levels Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-2" id="levelsGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 2: GAMEPLAY WORKSPACE ==================== -->
+    <div id="gameScreen" class="hidden glass-card rounded-3xl p-4 sm:p-7 animate-pop">
+      
+      <!-- Top info bar with progress & return -->
+      <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+        <button onclick="confirmReturnToMenu()" class="text-xs font-bold text-slate-400 hover:text-amber-400 transition flex items-center gap-1">
+          ← Volver a Niveles
+        </button>
+        <div class="flex items-center gap-3">
+          <span id="levelTitleBadge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black border border-amber-500/40">
+            Nivel 1 (A1)
+          </span>
+          <span class="text-xs font-bold text-slate-300">
+            Verbo <span id="verbCounter" class="text-amber-400">1</span>/<span id="verbTotal">10</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-1" id="heartsContainer">
+          <!-- Hearts for 3 attempts -->
+        </div>
+      </div>
+
+      <!-- Main Visual Cue + Prompt Area -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+        
+        <!-- Left: SVG Illustration / Visual Scene -->
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 rounded-2xl p-4 border border-amber-500/30 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-inner">
+          <div id="verbIconContainer" class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-2">
+            <!-- Dynamic SVG Icon -->
+          </div>
+          <span id="mnemonicHint" class="text-[11px] text-amber-200/90 font-medium px-2 italic">
+            "Patrón: Las 3 formas idénticas"
+          </span>
+          <button onclick="pronounceCurrentVerb()" class="mt-3 px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold border border-slate-700 flex items-center gap-1.5 transition">
+            🔊 <span>Escuchar Formas</span>
+          </button>
+        </div>
+
+        <!-- Right: 4 Inputs Formulation Area -->
+        <div class="md:col-span-2 flex flex-col justify-between">
+          <div class="mb-3">
+            <h3 class="text-lg sm:text-xl font-black text-white mb-1">Completa las 4 partes del verbo</h3>
+            <p class="text-xs text-slate-400">Introduce la forma base, su pasado, participio y su significado en español. ¡Tienes 3 intentos!</p>
+          </div>
+
+          <!-- The 4 Input Fields -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
+            <!-- 1. Infinitive -->
+            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700" id="boxInfinitive">
+              <label class="block text-[10px] font-extrabold uppercase tracking-wider text-amber-400 mb-1">
+                1. Infinitive (Base Form)
+              </label>
+              <input type="text" id="inputInfinitive" placeholder="ej. break" autocomplete="off" autocapitalize="off" spellcheck="false"
+                     class="w-full bg-slate-800 text-white font-bold text-sm px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-amber-400">
+              <div id="msgInfinitive" class="text-[10px] mt-1 hidden font-semibold"></div>
+            </div>
+
+            <!-- 2. Past Simple -->
+            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700" id="boxPast">
+              <label class="block text-[10px] font-extrabold uppercase tracking-wider text-amber-400 mb-1">
+                2. Past Simple
+              </label>
+              <input type="text" id="inputPast" placeholder="ej. broke" autocomplete="off" autocapitalize="off" spellcheck="false"
+                     class="w-full bg-slate-800 text-white font-bold text-sm px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-amber-400">
+              <div id="msgPast" class="text-[10px] mt-1 hidden font-semibold"></div>
+            </div>
+
+            <!-- 3. Past Participle -->
+            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700" id="boxParticiple">
+              <label class="block text-[10px] font-extrabold uppercase tracking-wider text-amber-400 mb-1">
+                3. Past Participle
+              </label>
+              <input type="text" id="inputParticiple" placeholder="ej. broken" autocomplete="off" autocapitalize="off" spellcheck="false"
+                     class="w-full bg-slate-800 text-white font-bold text-sm px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-amber-400">
+              <div id="msgParticiple" class="text-[10px] mt-1 hidden font-semibold"></div>
+            </div>
+
+            <!-- 4. Meaning in Spanish -->
+            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700" id="boxMeaning">
+              <label class="block text-[10px] font-extrabold uppercase tracking-wider text-amber-400 mb-1">
+                4. Significado en Español
+              </label>
+              <input type="text" id="inputMeaning" placeholder="ej. romper" autocomplete="off" autocapitalize="off" spellcheck="false"
+                     class="w-full bg-slate-800 text-white font-bold text-sm px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-amber-400">
+              <div id="msgMeaning" class="text-[10px] mt-1 hidden font-semibold"></div>
+            </div>
+          </div>
+
+          <!-- Buttons & Interaction Bar -->
+          <div class="flex gap-2">
+            <button onclick="requestHint()" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs border border-slate-700 flex items-center gap-1 transition">
+              💡 <span>Pista</span>
+            </button>
+            <button id="checkButton" onclick="checkAnswer()" class="flex-1 py-2.5 gold-gradient hover:brightness-110 text-slate-950 font-black rounded-xl text-sm transition uppercase tracking-wide shadow-md shadow-amber-500/20 active:scale-98">
+              Comprobar Intento (3 restantes)
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Feedback / Solution Banner -->
+      <div id="solutionBanner" class="hidden p-4 rounded-2xl border text-center animate-pop">
+        <h4 id="solutionTitle" class="text-base font-extrabold mb-1"></h4>
+        <p id="solutionDetails" class="text-xs text-slate-300 leading-relaxed"></p>
+        <button id="nextVerbBtn" onclick="nextVerb()" class="mt-3 px-6 py-2 gold-gradient text-slate-950 text-xs font-black rounded-xl hover:brightness-110 transition shadow">
+          Siguiente Verbo ➜
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ==================== SCREEN 3: LEVEL COMPLETED ==================== -->
+    <div id="summaryScreen" class="hidden glass-card rounded-3xl p-6 sm:p-8 text-center animate-pop relative overflow-hidden">
+      <div id="confettiStage" class="absolute inset-0 pointer-events-none"></div>
+
+      <div class="text-5xl mb-2">🎖️</div>
+      <h2 class="text-2xl sm:text-3xl font-black text-white cinzel mb-1">¡Nivel Completado con Éxito!</h2>
+      <p id="summarySubtitle" class="text-xs sm:text-sm text-slate-300 mb-6"></p>
+
+      <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-6">
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Puntos Obtenidos</div>
+          <div id="levelScoreEarned" class="text-xl sm:text-2xl font-black text-amber-400">0</div>
+        </div>
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Estrellas</div>
+          <div id="levelStarsEarned" class="text-xl sm:text-2xl font-black text-amber-400">⭐⭐⭐</div>
+        </div>
+        <div class="p-3 bg-slate-900/80 rounded-2xl border border-amber-500/30">
+          <div class="text-[9px] uppercase font-bold text-amber-300">Efectividad</div>
+          <div id="levelAccuracy" class="text-xl sm:text-2xl font-black text-emerald-400">100%</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2.5 justify-center">
+        <button onclick="goToMenu()" class="px-6 py-3 gold-gradient text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider transition hover:brightness-110 shadow-lg cinzel">
+          🏠 Volver al Mapa de Niveles
+        </button>
+        <button id="nextLevelDirectBtn" onclick="advanceNextLevelDirectly()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-black rounded-xl text-xs uppercase tracking-wider transition">
+          Siguiente Nivel ➜
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 4: PERSISTENT LEADERBOARD MODAL ==================== -->
+    <div id="leaderboardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3">
+      <div class="glass-card rounded-3xl p-6 sm:p-7 max-w-lg w-full relative animate-pop border-amber-400/50">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🏆</span>
+            <div>
+              <h3 class="text-base font-black text-white cinzel">Clasificación Histórica</h3>
+              <p class="text-[10px] text-amber-300/80 uppercase tracking-wider">Guardada en este dispositivo</p>
+            </div>
+          </div>
+          <button onclick="closeLeaderboard()" class="text-slate-400 hover:text-white text-lg font-bold p-1">
+            ✕
+          </button>
+        </div>
+
+        <div class="max-h-72 overflow-y-auto space-y-2 pr-1 mb-5" id="leaderboardList">
+          <!-- Dynamically populated entries -->
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <button onclick="clearLeaderboardData()" class="px-3 py-1.5 text-xs text-rose-400 hover:text-rose-300 transition">
+            Limpiar Datos
+          </button>
+          <button onclick="closeLeaderboard()" class="px-5 py-2 gold-gradient text-slate-950 font-bold rounded-xl text-xs">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-4 text-center text-xs text-slate-500 font-semibold z-10">
+    Wisdom Corner Academy • English Department • Irregular Verbs Mastery Quest
+  </footer>
+
+  <script>
+    /* Complete Verbs Database segregated across the 6 official levels from the study guides */
+    const GAME_LEVELS = [
+      {
+        id: 1,
+        title: "Nivel 1 (A1)",
+        name: "Los 3 Idénticos y Esenciales",
+        desc: "Verbos que no cambian (cut, put, cost...) y los pilares básicos (be, have, do, go).",
+        badgeColor: "from-emerald-500 to-teal-700",
+        verbs: [
+          {
+            inf: "cut", past: "cut", part: "cut",
+            meanings: ["cortar"],
+            hint: "Verbo idéntico en las 3 formas. Se usa con tijeras o cuchillo.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`
+          },
+          {
+            inf: "cost", past: "cost", part: "cost",
+            meanings: ["costar", "valer"],
+            hint: "Verbo A-A-A relacionado con el dinero o precio de algo.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9h6M9 13h4"/></svg>`
+          },
+          {
+            inf: "hit", past: "hit", part: "hit",
+            meanings: ["golpear", "pegar"],
+            hint: "Verbo idéntico. Impactar algo con fuerza.",
+            svg: `<svg class="w-16 h-16 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 22l5-5"/></svg>`
+          },
+          {
+            inf: "put", past: "put", part: "put",
+            meanings: ["poner", "colocar"],
+            hint: "Verbo A-A-A de 3 letras. Colocar algo en un lugar.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`
+          },
+          {
+            inf: "read", past: "read", part: "read",
+            meanings: ["leer"],
+            hint: "Se escribe igual pero se pronuncia /red/ en pasado.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+          },
+          {
+            inf: "be", past: "was", part: "been",
+            altPast: ["was", "were", "was/were"],
+            meanings: ["ser", "estar", "ser/estar"],
+            hint: "El verbo más importante del inglés. Pasado: was/were.",
+            svg: `<svg class="w-16 h-16 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>`
+          },
+          {
+            inf: "go", past: "went", part: "gone",
+            altPart: ["gone", "been", "gone/been"],
+            meanings: ["ir"],
+            hint: "Moverse de un lugar a otro. Pasado totalmente irregular: went.",
+            svg: `<svg class="w-16 h-16 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Nivel 2 (A1-A2)",
+        name: "Pasado y Participio Idénticos I",
+        desc: "Familia en -ought/-aught (buy, teach) y cambio de 'd' a 't' (send, build).",
+        badgeColor: "from-blue-600 to-cyan-800",
+        verbs: [
+          {
+            inf: "buy", past: "bought", part: "bought",
+            meanings: ["comprar"],
+            hint: "Termina en -ought. Adquirir algo con dinero.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`
+          },
+          {
+            inf: "bring", past: "brought", part: "brought",
+            meanings: ["traer", "llevar consigo"],
+            hint: "Termina en -ought. Transportar algo hacia donde estás.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`
+          },
+          {
+            inf: "teach", past: "taught", part: "taught",
+            meanings: ["enseñar"],
+            hint: "¡Cuidado con la ortografía! Se escribe con -aught.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>`
+          },
+          {
+            inf: "think", past: "thought", part: "thought",
+            meanings: ["pensar", "creer"],
+            hint: "Termina en -ought. Usar la mente o cerebro.",
+            svg: `<svg class="w-16 h-16 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>`
+          },
+          {
+            inf: "build", past: "built", part: "built",
+            meanings: ["construir", "edificar"],
+            hint: "Cambia la 'd' final por una 't'.",
+            svg: `<svg class="w-16 h-16 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6"/><line x1="15" y1="6" x2="15" y2="6"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="9" y2="14"/><line x1="15" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>`
+          },
+          {
+            inf: "send", past: "sent", part: "sent",
+            meanings: ["enviar", "mandar"],
+            hint: "Cambia la 'd' por 't'. Enviar un mensaje o paquete.",
+            svg: `<svg class="w-16 h-16 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Nivel 3 (A2)",
+        name: "Pasado y Participio Idénticos II",
+        desc: "Cambio vocálico interno (find, meet, tell, leave, make, lose).",
+        badgeColor: "from-amber-600 to-orange-800",
+        verbs: [
+          {
+            inf: "find", past: "found", part: "found",
+            meanings: ["encontrar", "hallar"],
+            hint: "La vocal 'i' cambia a 'ou'. Localizar algo perdido.",
+            svg: `<svg class="w-16 h-16 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`
+          },
+          {
+            inf: "meet", past: "met", part: "met",
+            meanings: ["conocer", "conocer a", "encontrarse con", "quedar"],
+            hint: "Acortamiento vocálico: pierde una 'e'.",
+            svg: `<svg class="w-16 h-16 text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+          },
+          {
+            inf: "leave", past: "left", part: "left",
+            meanings: ["irse", "dejar", "salir", "abandonar"],
+            hint: "Pasado y participio son iguales a la palabra 'izquierda'.",
+            svg: `<svg class="w-16 h-16 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`
+          },
+          {
+            inf: "tell", past: "told", part: "told",
+            meanings: ["decir", "contar"],
+            hint: "La vocal cambia a 'o' + ld. Contar una historia a alguien.",
+            svg: `<svg class="w-16 h-16 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`
+          },
+          {
+            inf: "lose", past: "lost", part: "lost",
+            meanings: ["perder"],
+            hint: "Termina en 't' en pasado y participio.",
+            svg: `<svg class="w-16 h-16 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+          },
+          {
+            inf: "make", past: "made", part: "made",
+            meanings: ["hacer", "fabricar"],
+            hint: "Cambia la 'k' por 'd'. Crear o fabricar algo.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Nivel 4 (A2-B1)",
+        name: "3 Formas Distintas I",
+        desc: "Participio terminado en -n/-en (break, drive, write, speak, eat).",
+        badgeColor: "from-purple-600 to-indigo-800",
+        verbs: [
+          {
+            inf: "break", past: "broke", part: "broken",
+            meanings: ["romper", "partir"],
+            hint: "Participio en -en. Quebrar algo en pedazos.",
+            svg: `<svg class="w-16 h-16 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6l3 2-6 4 3 2v6"/></svg>`
+          },
+          {
+            inf: "write", past: "wrote", part: "written",
+            meanings: ["escribir"],
+            hint: "Doble 't' en el participio: written.",
+            svg: `<svg class="w-16 h-16 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`
+          },
+          {
+            inf: "drive", past: "drove", part: "driven",
+            meanings: ["conducir", "manejar"],
+            hint: "Mismo ritmo que write: drive - drove - driven.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="7" cy="15" r="2"/><circle cx="17" cy="15" r="2"/></svg>`
+          },
+          {
+            inf: "speak", past: "spoke", part: "spoken",
+            meanings: ["hablar"],
+            hint: "Rima con break: speak - spoke - spoken.",
+            svg: `<svg class="w-16 h-16 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`
+          },
+          {
+            inf: "eat", past: "ate", part: "eaten",
+            meanings: ["comer"],
+            hint: "Pasado ate, participio eaten.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`
+          },
+          {
+            inf: "choose", past: "chose", part: "chosen",
+            meanings: ["elegir", "escoger"],
+            hint: "Pierde una 'o' en pasado (chose) y participio en -en.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Nivel 5 (B1-B2)",
+        name: "3 Formas Distintas II",
+        desc: "Patrón sonoro i-a-u (swim, sing, drink) y familia en -ew/-own (fly, grow).",
+        badgeColor: "from-pink-600 to-rose-800",
+        verbs: [
+          {
+            inf: "swim", past: "swam", part: "swum",
+            meanings: ["nadar"],
+            hint: "Patrón sonoro: swim - swam - swum.",
+            svg: `<svg class="w-16 h-16 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/><path d="M2 14c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/><circle cx="17" cy="6" r="2"/></svg>`
+          },
+          {
+            inf: "sing", past: "sang", part: "sung",
+            meanings: ["cantar"],
+            hint: "Triple cambio vocálico i - a - u.",
+            svg: `<svg class="w-16 h-16 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`
+          },
+          {
+            inf: "drink", past: "drank", part: "drunk",
+            meanings: ["beber", "tomar"],
+            hint: "Mismo patrón que sing y swim.",
+            svg: `<svg class="w-16 h-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>`
+          },
+          {
+            inf: "fly", past: "flew", part: "flown",
+            meanings: ["volar"],
+            hint: "Pasado flew, participio flown.",
+            svg: `<svg class="w-16 h-16 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>`
+          },
+          {
+            inf: "grow", past: "grew", part: "grown",
+            meanings: ["crecer", "cultivar"],
+            hint: "Pasado en -ew, participio en -own.",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`
+          },
+          {
+            inf: "come", past: "came", part: "come",
+            meanings: ["venir"],
+            hint: "Patrón A - B - A: El participio vuelve al infinitivo come.",
+            svg: `<svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>`
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "Nivel 6 (B2-C1)",
+        name: "Avanzado y Dobles Formas",
+        desc: "Verbos académicos y cultos (arise, cling, seek, lay vs. lie, learn).",
+        badgeColor: "from-amber-500 to-yellow-600",
+        verbs: [
+          {
+            inf: "arise", past: "arose", part: "arisen",
+            meanings: ["surgir", "presentarse"],
+            hint: "Verbo formal: 'A problem arose'. Participio en -en.",
+            svg: `<svg class="w-16 h-16 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>`
+          },
+          {
+            inf: "seek", past: "sought", part: "sought",
+            meanings: ["buscar", "procurar"],
+            hint: "Registro formal. Mismo patrón en -ought que think y buy.",
+            svg: `<svg class="w-16 h-16 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>`
+          },
+          {
+            inf: "cling", past: "clung", part: "clung",
+            meanings: ["aferrarse", "agarrarse"],
+            hint: "La vocal cambia a 'u': clung.",
+            svg: `<svg class="w-16 h-16 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/></svg>`
+          },
+          {
+            inf: "lie", past: "lay", part: "lain",
+            meanings: ["tumbarse", "estar acostado"],
+            hint: "Intransitivo (sin objeto). 'Lie down on the bed'.",
+            svg: `<svg class="w-16 h-16 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 17h20M4 17V9h8v8M18 17v-4h4v4"/></svg>`
+          },
+          {
+            inf: "learn", past: "learnt", part: "learnt",
+            altPast: ["learnt", "learned"],
+            altPart: ["learnt", "learned"],
+            meanings: ["aprender"],
+            hint: "Forma británica clásica con -t final (learnt).",
+            svg: `<svg class="w-16 h-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>`
+          }
+        ]
+      }
+    ];
+
+    let activeLevel = null;
+    let currentVerbIndex = 0;
+    let attemptsLeft = 3;
+    let levelScore = 0;
+    let totalCorrectFirstTry = 0;
+    let audioCtx = null;
+
+    // Persistent storage helpers
+    const STORAGE_KEY_USER = "wca_irreg_player";
+    const STORAGE_KEY_PROGRESS = "wca_irreg_progress";
+    const STORAGE_KEY_LEADERBOARD = "wca_irreg_leaderboard";
+
+    function getStoredPlayer() {
+      return localStorage.getItem(STORAGE_KEY_USER) || "Estudiante";
+    }
+
+    function getStoredProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_PROGRESS)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveProgress(levelId, stars, score) {
+      const p = getStoredProgress();
+      if (!p[levelId] || score > p[levelId].score) {
+        p[levelId] = { stars, score };
+        localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(p));
+      }
+      recordToLeaderboard(getStoredPlayer(), calculateTotalScore());
+      updateHeaderProfile();
+    }
+
+    function calculateTotalScore() {
+      const p = getStoredProgress();
+      return Object.values(p).reduce((sum, item) => sum + (item.score || 0), 0);
+    }
+
+    function getLeaderboard() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_LEADERBOARD)) || [
+          { name: "Lucía M.", score: 2850, date: "02/10/2026" },
+          { name: "Carlos G.", score: 2400, date: "01/10/2026" },
+          { name: "Profesor W.", score: 3200, date: "28/09/2026" }
+        ];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function recordToLeaderboard(name, score) {
+      if (!name || score <= 0) return;
+      let lb = getLeaderboard();
+      const existing = lb.find(x => x.name.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        if (score > existing.score) existing.score = score;
+      } else {
+        lb.push({ name, score, date: new Date().toLocaleDateString() });
+      }
+      lb.sort((a, b) => b.score - a.score);
+      localStorage.setItem(STORAGE_KEY_LEADERBOARD, JSON.stringify(lb.slice(0, 15)));
+    }
+
+    function initSound() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playAudioTone(type) {
+      try {
+        initSound();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'success') {
+          // Major Triad Arpeggio (C5 -> E5 -> G5)
+          [523.25, 659.25, 783.99].forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(freq, now + idx * 0.08);
+            g.gain.setValueAtTime(0.18, now + idx * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.3);
+            o.start(now + idx * 0.08);
+            o.stop(now + idx * 0.08 + 0.32);
+          });
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(150, now);
+          osc.frequency.linearRampToValueAtTime(85, now + 0.25);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'fanfare') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, now + idx * 0.1);
+            g.gain.setValueAtTime(0.2, now + idx * 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
+            o.start(now + idx * 0.1);
+            o.stop(now + idx * 0.1 + 0.42);
+          });
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function pronounceCurrentVerb() {
+      if (!('speechSynthesis' in window)) return;
+      const v = activeLevel.verbs[currentVerbIndex];
+      window.speechSynthesis.cancel();
+      const textToSpeak = `${v.inf}... past: ${v.past}... participle: ${v.part}`;
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'en-GB';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function renderLevelCards() {
+      const container = document.getElementById('levelsGrid');
+      container.innerHTML = '';
+      const progress = getStoredProgress();
+
+      GAME_LEVELS.forEach((lvl) => {
+        const p = progress[lvl.id] || { stars: 0, score: 0 };
+        const starsText = p.stars > 0 ? "⭐".repeat(p.stars) : "☆☆☆";
+
+        const card = document.createElement('div');
+        card.className = "p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-amber-400/80 transition duration-200 flex flex-col justify-between group hover:shadow-xl hover:shadow-amber-500/10";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r ${lvl.badgeColor} text-white">
+                ${lvl.title}
+              </span>
+              <span class="text-xs font-bold text-amber-400">${starsText}</span>
+            </div>
+            <h4 class="text-sm font-black text-white group-hover:text-amber-300 transition mb-1">${lvl.name}</h4>
+            <p class="text-[11px] text-slate-400 leading-snug mb-3">${lvl.desc}</p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400">Récord: <strong class="text-amber-300">${p.score} pts</strong></span>
+            <button onclick="startLevel(${lvl.id})" class="px-3 py-1.5 rounded-xl gold-gradient hover:brightness-110 text-slate-950 font-black text-xs transition uppercase tracking-wider">
+              Jugar ➜
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updateHeaderProfile() {
+      const name = getStoredPlayer();
+      const score = calculateTotalScore();
+      document.getElementById('headerPlayerName').textContent = name;
+      document.getElementById('currentPlayerDisplay').textContent = name;
+      document.getElementById('headerTotalScore').textContent = `⭐ ${score.toLocaleString()} pts`;
+      document.getElementById('playerNameInput').value = name;
+    }
+
+    function savePlayerName() {
+      const input = document.getElementById('playerNameInput');
+      const val = input.value.trim();
+      if (val) {
+        localStorage.setItem(STORAGE_KEY_USER, val);
+        updateHeaderProfile();
+        recordToLeaderboard(val, calculateTotalScore());
+        alert("¡Nombre de estudiante guardado con éxito!");
+      }
+    }
+
+    function startLevel(levelId) {
+      initSound();
+      activeLevel = GAME_LEVELS.find(l => l.id === levelId);
+      currentVerbIndex = 0;
+      levelScore = 0;
+      totalCorrectFirstTry = 0;
+
+      document.getElementById('menuScreen').classList.add('hidden');
+      document.getElementById('summaryScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+
+      document.getElementById('levelTitleBadge').textContent = `${activeLevel.title}: ${activeLevel.name}`;
+      document.getElementById('verbTotal').textContent = activeLevel.verbs.length;
+
+      loadCurrentVerb();
+    }
+
+    function loadCurrentVerb() {
+      attemptsLeft = 3;
+      const v = activeLevel.verbs[currentVerbIndex];
+
+      document.getElementById('verbCounter').textContent = currentVerbIndex + 1;
+      document.getElementById('verbIconContainer').innerHTML = v.svg;
+      document.getElementById('mnemonicHint').textContent = `💡 Pista de estudio: "${v.hint}"`;
+
+      // Reset inputs & styles
+      ['Infinitive', 'Past', 'Participle', 'Meaning'].forEach(field => {
+        const input = document.getElementById(`input${field}`);
+        const box = document.getElementById(`box${field}`);
+        const msg = document.getElementById(`msg${field}`);
+
+        input.value = '';
+        input.disabled = false;
+        box.className = "bg-slate-900/90 p-2.5 rounded-xl border border-slate-700";
+        msg.className = "text-[10px] mt-1 hidden font-semibold";
+        msg.textContent = '';
+      });
+
+      document.getElementById('checkButton').disabled = false;
+      document.getElementById('checkButton').textContent = `Comprobar Intento (${attemptsLeft} restantes)`;
+      document.getElementById('solutionBanner').classList.add('hidden');
+
+      updateHeartsDisplay();
+      document.getElementById('inputInfinitive').focus();
+    }
+
+    function updateHeartsDisplay() {
+      const container = document.getElementById('heartsContainer');
+      container.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const span = document.createElement('span');
+        span.className = "text-base transition-transform duration-200";
+        span.textContent = i < attemptsLeft ? "❤️" : "🖤";
+        container.appendChild(span);
+      }
+    }
+
+    // Normalization logic for smart lenient checking
+    function cleanStr(s) {
+      return (s || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, ""); // remove accents for spanish tolerance
+    }
+
+    function checkAnswer() {
+      const v = activeLevel.verbs[currentVerbIndex];
+
+      const valInf = cleanStr(document.getElementById('inputInfinitive').value);
+      const valPast = cleanStr(document.getElementById('inputPast').value);
+      const valPart = cleanStr(document.getElementById('inputParticiple').value);
+      const valMean = cleanStr(document.getElementById('inputMeaning').value);
+
+      if (!valInf && !valPast && !valPart && !valMean) {
+        alert("Por favor, rellena al menos uno de los campos antes de comprobar.");
+        return;
+      }
+
+      // Check each field
+      const okInf = (valInf === cleanStr(v.inf));
+      
+      const okPast = (valPast === cleanStr(v.past)) || 
+                     (v.altPast && v.altPast.some(a => cleanStr(a) === valPast));
+      
+      const okPart = (valPart === cleanStr(v.part)) || 
+                     (v.altPart && v.altPart.some(a => cleanStr(a) === valPart));
+
+      const okMean = v.meanings.some(m => {
+        const cleanM = cleanStr(m);
+        return valMean === cleanM || valMean.includes(cleanM) || cleanM.includes(valMean);
+      });
+
+      // Update UI visual indicators for each field
+      updateFieldUI('Infinitive', okInf, v.inf);
+      updateFieldUI('Past', okPast, v.past);
+      updateFieldUI('Participle', okPart, v.part);
+      updateFieldUI('Meaning', okMean, v.meanings[0]);
+
+      const allCorrect = okInf && okPast && okPart && okMean;
+
+      if (allCorrect) {
+        // Success
+        playAudioTone('success');
+        let points = 100;
+        if (attemptsLeft === 2) points = 60;
+        if (attemptsLeft === 1) points = 30;
+
+        levelScore += points;
+        if (attemptsLeft === 3) totalCorrectFirstTry++;
+
+        showResolutionBanner(true, points, v);
+      } else {
+        // Failed attempt
+        attemptsLeft--;
+        updateHeartsDisplay();
+
+        if (attemptsLeft > 0) {
+          playAudioTone('wrong');
+          document.getElementById('gameScreen').classList.add('shake-anim');
+          setTimeout(() => document.getElementById('gameScreen').classList.remove('shake-anim'), 400);
+          document.getElementById('checkButton').textContent = `Reintentar (${attemptsLeft} ${attemptsLeft === 1 ? 'intento restante' : 'intentos restantes'})`;
+        } else {
+          // Exhausted all 3 attempts: Reveal solution
+          playAudioTone('wrong');
+          showResolutionBanner(false, 0, v);
+        }
+      }
+    }
+
+    function updateFieldUI(field, isCorrect, solutionText) {
+      const box = document.getElementById(`box${field}`);
+      const input = document.getElementById(`input${field}`);
+      const msg = document.getElementById(`msg${field}`);
+
+      if (isCorrect) {
+        box.className = "bg-emerald-950/80 p-2.5 rounded-xl border-2 border-emerald-500 text-emerald-200";
+        input.className = "w-full bg-slate-900 text-emerald-300 font-black text-sm px-3 py-1.5 rounded-lg border border-emerald-500";
+        input.disabled = true;
+        msg.className = "text-[10px] mt-1 font-bold text-emerald-400 block";
+        msg.textContent = "✓ ¡Correcto!";
+      } else {
+        box.className = "bg-rose-950/80 p-2.5 rounded-xl border-2 border-rose-500 text-rose-200";
+        input.className = "w-full bg-slate-900 text-rose-300 font-black text-sm px-3 py-1.5 rounded-lg border border-rose-500";
+        msg.className = "text-[10px] mt-1 font-bold text-rose-400 block";
+        msg.textContent = "✗ Revisa esta forma";
+      }
+    }
+
+    function showResolutionBanner(success, pointsWon, verb) {
+      const banner = document.getElementById('solutionBanner');
+      const title = document.getElementById('solutionTitle');
+      const details = document.getElementById('solutionDetails');
+      const nextBtn = document.getElementById('nextVerbBtn');
+
+      // Lock check button
+      document.getElementById('checkButton').disabled = true;
+
+      banner.classList.remove('hidden', 'bg-emerald-950/90', 'border-emerald-500', 'text-emerald-300', 'bg-rose-950/90', 'border-rose-500', 'text-rose-300');
+
+      if (success) {
+        banner.classList.add('bg-emerald-950/90', 'border-emerald-500', 'text-emerald-300');
+        title.innerHTML = `🎉 ¡EXCELENTE! Has ganado +${pointsWon} puntos`;
+        details.innerHTML = `
+          <strong>${verb.inf.toUpperCase()}</strong> — Pasado: <strong>${verb.past}</strong> — Participio: <strong>${verb.part}</strong><br>
+          <span class="text-slate-300">Significado: <em>${verb.meanings.join(', ')}</em></span>
+        `;
+      } else {
+        banner.classList.add('bg-rose-950/90', 'border-rose-500', 'text-rose-300');
+        title.innerHTML = `⌛ Se agotaron los 3 intentos. Solución oficial:`;
+        details.innerHTML = `
+          1. Base: <strong class="text-white">${verb.inf}</strong> | 
+          2. Past: <strong class="text-white">${verb.past}</strong> | 
+          3. Participle: <strong class="text-white">${verb.part}</strong> | 
+          4. Español: <strong class="text-white">${verb.meanings[0]}</strong>
+        `;
+      }
+
+      // Auto-pronounce when revealed
+      pronounceCurrentVerb();
+
+      const isLast = (currentVerbIndex === activeLevel.verbs.length - 1);
+      nextBtn.textContent = isLast ? "Ver Resultados del Nivel ➜" : "Siguiente Verbo ➜";
+    }
+
+    function requestHint() {
+      const v = activeLevel.verbs[currentVerbIndex];
+      const inputInf = document.getElementById('inputInfinitive');
+      if (!inputInf.value) {
+        inputInf.value = v.inf.charAt(0);
+        inputInf.focus();
+      }
+      alert(`💡 PISTA:\n• Verbo base: empieza por '${v.inf.charAt(0)}'\n• Significado en español: ${v.meanings[0]}\n• Mnemotecnia: ${v.hint}`);
+    }
+
+    function nextVerb() {
+      currentVerbIndex++;
+      if (currentVerbIndex < activeLevel.verbs.length) {
+        loadCurrentVerb();
+      } else {
+        finishLevelSummary();
+      }
+    }
+
+    function finishLevelSummary() {
+      playAudioTone('fanfare');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('summaryScreen').classList.remove('hidden');
+
+      const totalVerbs = activeLevel.verbs.length;
+      const maxPossibleScore = totalVerbs * 100;
+      const acc = Math.round((levelScore / maxPossibleScore) * 100);
+
+      let stars = 1;
+      if (acc >= 85) stars = 3;
+      else if (acc >= 60) stars = 2;
+
+      document.getElementById('levelScoreEarned').textContent = `${levelScore} pts`;
+      document.getElementById('levelStarsEarned').textContent = "⭐".repeat(stars);
+      document.getElementById('levelAccuracy').textContent = `${acc}%`;
+
+      const sub = document.getElementById('summarySubtitle');
+      if (stars === 3) sub.textContent = "¡Dominio Magistral! Has superado el nivel con máxima calificación 🌟";
+      else if (stars === 2) sub.textContent = "¡Muy bien hecho! Has demostrado solidez en este grupo de verbos 👍";
+      else sub.textContent = "Nivel completado. Te recomendamos volver a intentarlo para conseguir las 3 estrellas 💡";
+
+      saveProgress(activeLevel.id, stars, levelScore);
+
+      // Next level shortcut button
+      const nextBtn = document.getElementById('nextLevelDirectBtn');
+      if (activeLevel.id < GAME_LEVELS.length) {
+        nextBtn.classList.remove('hidden');
+        nextBtn.textContent = `Avanzar al Nivel ${activeLevel.id + 1} ➜`;
+      } else {
+        nextBtn.classList.add('hidden');
+      }
+
+      triggerConfetti();
+    }
+
+    function advanceNextLevelDirectly() {
+      if (activeLevel && activeLevel.id < GAME_LEVELS.length) {
+        startLevel(activeLevel.id + 1);
+      }
+    }
+
+    function triggerConfetti() {
+      const container = document.getElementById('confettiStage');
+      container.innerHTML = '';
+      const colors = ['#f59e0b', '#10b981', '#38bdf8', '#ec4899', '#fbbf24'];
+      for (let i = 0; i < 40; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.animationDelay = `${Math.random() * 0.6}s`;
+        container.appendChild(el);
+      }
+    }
+
+    function goToMenu() {
+      document.getElementById('summaryScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('menuScreen').classList.remove('hidden');
+      renderLevelCards();
+      updateHeaderProfile();
+    }
+
+    function confirmReturnToMenu() {
+      if (confirm("¿Seguro que deseas salir al menú? Se perderá el avance de este nivel.")) {
+        goToMenu();
+      }
+    }
+
+    function openLeaderboard() {
+      const modal = document.getElementById('leaderboardModal');
+      const list = document.getElementById('leaderboardList');
+      modal.classList.remove('hidden');
+      list.innerHTML = '';
+
+      const lb = getLeaderboard();
+      if (lb.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Aún no hay puntuaciones registradas.</p>`;
+        return;
+      }
+
+      lb.forEach((entry, idx) => {
+        const item = document.createElement('div');
+        item.className = "p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 flex items-center justify-between";
+        
+        let medal = `#${idx + 1}`;
+        if (idx === 0) medal = "🥇";
+        if (idx === 1) medal = "🥈";
+        if (idx === 2) medal = "🥉";
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-black text-amber-400 w-6 text-center">${medal}</span>
+            <div>
+              <span class="font-extrabold text-white text-xs block">${entry.name}</span>
+              <span class="text-[10px] text-slate-400">${entry.date || 'Reciente'}</span>
+            </div>
+          </div>
+          <span class="text-xs font-black text-amber-300">⭐ ${entry.score.toLocaleString()} pts</span>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function closeLeaderboard() {
+      document.getElementById('leaderboardModal').classList.add('hidden');
+    }
+
+    function clearLeaderboardData() {
+      if (confirm("¿Estás seguro de que deseas reiniciar todos los récords de la clasificación?")) {
+        localStorage.removeItem(STORAGE_KEY_LEADERBOARD);
+        localStorage.removeItem(STORAGE_KEY_PROGRESS);
+        updateHeaderProfile();
+        openLeaderboard();
+        renderLevelCards();
+      }
+    }
+
+    window.onload = function () {
+      updateHeaderProfile();
+      renderLevelCards();
+    };
+  </script>
+</body>
+</html>
