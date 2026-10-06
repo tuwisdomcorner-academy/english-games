@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus: Intervalos, Desigualdades y Gráficas - Wisdom Corner Academy</title>
+<style>
+  :root {
+    --primary: #005b9f;
+    --primary-dark: #00467a;
+    --gold: #c59b27;
+    --gold-hover: #b08920;
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --border: #c9e0f5;
+    --text-main: #334155;
+    --success: #16a34a;
+    --error: #dc2626;
+    --warning: #ca8a04;
+  }
+
+  * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background-color: var(--bg-main); color: var(--text-main);
+    margin: 0; padding: 20px 10px; display: flex; justify-content: center; min-height: 100vh;
+  }
+
+  .container { width: 100%; max-width: 900px; }
+  .hidden { display: none !important; }
+
+  /* CABECERA */
+  .header {
+    background: var(--bg-card); padding: 20px 25px; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 91, 159, 0.08); display: flex; align-items: center;
+    margin-bottom: 25px; border-bottom: 4px solid var(--gold);
+  }
+  .logo { width: 70px; height: 70px; object-fit: contain; margin-right: 20px; }
+  .title-area h1 { color: var(--primary); font-size: 22px; margin: 0 0 5px 0; text-transform: uppercase; }
+  .title-area p { color: #64748b; font-size: 14px; margin: 0; }
+
+  /* PANELES GENERALES */
+  .panel {
+    background: var(--bg-card); border-radius: 12px; padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+  }
+  
+  /* LOGIN Y ESTADÍSTICAS */
+  .login-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .login-box { text-align: center; padding: 20px; border: 1px dashed var(--border); border-radius: 8px; background: #f8fafc;}
+  .login-box input {
+    width: 100%; padding: 12px 15px; margin-bottom: 15px; font-size: 16px;
+    border: 2px solid var(--border); border-radius: 8px; outline: none; transition: 0.2s;
+  }
+  .login-box input:focus { border-color: var(--primary); }
+
+  .user-stats {
+    background: #eef2ff; border: 1px dashed #a5b4fc; padding: 15px 20px;
+    border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+  }
+  .user-stats h3 { margin: 0; color: var(--primary); font-size: 18px; }
+  .user-stats .score { font-size: 24px; font-weight: bold; color: var(--gold); }
+
+  /* BOTONES Y TECLADO DE SÍMBOLOS */
+  button {
+    padding: 12px 20px; font-size: 15px; font-weight: bold; border: none;
+    border-radius: 8px; cursor: pointer; transition: 0.2s;
+  }
+  .btn-primary { background: var(--primary); color: white; width: 100%; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: var(--gold-hover); }
+  .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-outline:hover { background: #eef2ff; }
+
+  .symbol-toolbar {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px;
+  }
+  .symbol-toolbar button {
+    padding: 8px 15px; font-size: 18px; background: white; border: 1px solid var(--primary);
+    color: var(--primary); border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .symbol-toolbar button:hover { background: var(--primary); color: white; }
+
+  /* CANVAS HERRAMIENTAS DE DIBUJO */
+  .canvas-container { margin-bottom: 20px; text-align: center; }
+  canvas { background: #f8fafc; border: 2px dashed var(--border); border-radius: 8px; cursor: crosshair; touch-action: none; width: 100%; max-width: 600px; height: 120px; }
+  .drawing-tools { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+  .tool-btn { padding: 8px 12px; font-size: 14px; background: white; border: 2px solid var(--border); color: #64748b; }
+  .tool-btn.active { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
+  .tool-btn:hover { border-color: var(--primary); }
+
+  /* ÁREA QUIZ */
+  .quiz-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
+  .quiz-counter { color: var(--primary); font-weight: bold; font-size: 16px; }
+  .attempts-counter { color: var(--primary); font-weight: bold; font-size: 14px; padding: 4px 10px; border-radius: 20px; background: #eef2ff; }
+
+  .question-display {
+    background: #f8fafc; padding: 25px; border-radius: 8px; border: 2px dashed var(--border);
+    margin-bottom: 25px; font-size: 20px; font-weight: bold; color: var(--text-main); text-align: center;
+  }
+
+  .input-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+  .input-row { display: flex; align-items: center; gap: 15px; }
+  .input-row label { font-weight: bold; color: var(--primary); width: 120px; text-align: right; }
+  .input-row input {
+    flex: 1; padding: 12px 15px; font-size: 18px; border: 2px solid var(--border);
+    border-radius: 8px; outline: none; font-weight: bold; color: var(--primary);
+  }
+  .input-row input:focus { border-color: var(--primary); }
+
+  /* FEEDBACK */
+  .feedback-box { display: flex; align-items: flex-start; padding: 20px; border-radius: 8px; gap: 15px; margin-top: 20px; animation: fadeIn 0.3s ease; }
+  .feedback-box img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #fff; flex-shrink: 0; }
+  .feedback-content h4 { margin: 0 0 8px 0; font-size: 16px; text-transform: uppercase; }
+  .feedback-content p { margin: 0; font-size: 15px; line-height: 1.6; }
+  
+  .feedback-box.correct { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .feedback-box.correct h4 { color: var(--success); }
+  .feedback-box.error { background: #fef2f2; border: 1px solid #fecaca; }
+  .feedback-box.error h4 { color: var(--error); }
+  .feedback-box.warning { background: #fefce8; border: 1px solid #fef08a; }
+  .feedback-box.warning h4 { color: var(--warning); }
+
+  /* RANKING */
+  table.ranking-table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;}
+  .ranking-table th { background: var(--primary); color: white; padding: 12px; }
+  .ranking-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .ranking-table tr:nth-child(1) td { font-weight: bold; color: var(--gold); font-size: 16px; background: #fffbeb; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="Captura de pantalla 2026-02-27 112014_7.png" alt="Logo" class="logo">
+    <div class="title-area">
+      <h1>Wisdom Corner Academy</h1>
+      <p>Entrenamiento Avanzado: Intervalos, Desigualdades y Gráficas</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA LOGIN -->
+  <div id="view-login" class="panel">
+    <h2 style="color: var(--primary); margin-top: 0; text-align: center;">Portal de Acceso</h2>
+    <div class="login-container">
+      <div class="login-box">
+        <h3 style="color: var(--primary);">Acceso Alumnos</h3>
+        <p style="font-size: 13px; color: #666;">Tu progreso se guarda automáticamente.</p>
+        <input type="text" id="inp-nombre" placeholder="Nombre">
+        <input type="text" id="inp-apellido" placeholder="Apellido">
+        <button class="btn-primary" onclick="loginStudent()">Entrar a Jugar</button>
+      </div>
+      <div class="login-box" style="background: #fffbeb; border-color: var(--gold);">
+        <h3 style="color: var(--gold);">Acceso Docentes</h3>
+        <p style="font-size: 13px; color: #666;">Introduce el código maestro.</p>
+        <input type="password" id="inp-codigo" placeholder="Código de acceso">
+        <button class="btn-gold" onclick="loginTeacher()">Acceder al Panel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA PANEL DOCENTE -->
+  <div id="view-teacher" class="panel hidden">
+    <button class="btn-outline" onclick="logout()" style="margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">&larr; Salir</button>
+    <h2 style="color: var(--primary); margin-top: 0;"><img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_7.jpg" style="width: 40px; border-radius: 50%; vertical-align: middle; margin-right: 10px;"> Clasificación General</h2>
+    <button class="btn-outline" onclick="clearData()" style="float: right; margin-bottom: 10px; color: var(--error); border-color: var(--error);">🗑️ Borrar Clasificación</button>
+    <table class="ranking-table">
+      <thead><tr><th style="width: 15%;">Pos.</th><th>Alumno/a</th><th>Progreso</th><th style="text-align: right;">Puntuación</th></tr></thead>
+      <tbody id="teacher-ranking-body"></tbody>
+    </table>
+  </div>
+
+  <!-- PANTALLA MENÚ ALUMNO -->
+  <div id="view-student-menu" class="panel hidden">
+    <div class="user-stats">
+      <div>
+        <h3 id="lbl-username">Hola, Estudiante</h3>
+        <p style="margin: 5px 0 0 0; font-size: 13px; color: #64748b;">Completados: <strong id="lbl-progress">0</strong> / 30</p>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 12px; text-transform: uppercase; font-weight: bold; color: #64748b;">Puntuación Total</span><br>
+        <span class="score" id="lbl-score">0</span> pts
+      </div>
+    </div>
+    <div class="question-display" style="font-size: 16px; text-align: left;">
+      <h4 style="margin-top: 0; color: var(--primary);">Estructura del Reto (30 Ejercicios):</h4>
+      <ul style="margin-bottom: 0;">
+        <li><strong>Nivel 1 (1-10):</strong> Traducción a Desigualdades e Intervalos.</li>
+        <li><strong>Nivel 2 (11-20):</strong> Representación de intervalos en la Recta Numérica.</li>
+        <li><strong>Nivel 3 (21-30):</strong> Desafío Total (Desigualdad + Intervalo + Gráfica).</li>
+      </ul>
+    </div>
+    <button class="btn-primary" id="btn-start-quiz" onclick="startQuiz()" style="font-size: 18px; padding: 15px;">▶ Comenzar Reto</button>
+    <button class="btn-outline" onclick="logout()" style="width: 100%; margin-top: 15px;">Cerrar Sesión</button>
+  </div>
+
+  <!-- PANTALLA ÁREA DE EJERCICIOS -->
+  <div id="view-quiz" class="panel hidden">
+    <button class="btn-outline" onclick="showStudentMenu()" style="margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">&larr; Menú Principal</button>
+    
+    <div class="quiz-header">
+      <div class="quiz-counter" id="lbl-quiz-counter">Ejercicio 1 / 30</div>
+      <div class="attempts-counter" id="lbl-attempts">Intentos restantes: 3</div>
+    </div>
+
+    <p id="lbl-question-type" style="color: #64748b; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Pregunta:</p>
+    <div class="question-display" id="lbl-math"></div>
+
+    <!-- ZONA HERRAMIENTAS TECLADO -->
+    <div id="zone-text" class="hidden">
+      <div class="symbol-toolbar">
+        <button onclick="insSym('≤')">≤</button>
+        <button onclick="insSym('≥')">≥</button>
+        <button onclick="insSym('<')">&lt;</button>
+        <button onclick="insSym('>')">&gt;</button>
+        <button onclick="insSym('[')">[</button>
+        <button onclick="insSym(']')">]</button>
+        <button onclick="insSym('(')">(</button>
+        <button onclick="insSym(')')">)</button>
+        <button onclick="insSym('∞')">∞</button>
+        <button onclick="insSym('-∞')">-∞</button>
+      </div>
+
+      <div class="input-grid" id="text-inputs-container">
+        <!-- Generados dinámicamente -->
+      </div>
+    </div>
+
+    <!-- ZONA HERRAMIENTAS DIBUJO -->
+    <div id="zone-canvas" class="canvas-container hidden">
+      <p style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">Dibuja la solución en la recta:</p>
+      <div class="drawing-tools">
+        <button class="tool-btn active" id="tool-seg" onclick="setTool('segment')">➖ Segmento (2 clics)</button>
+        <button class="tool-btn" id="tool-left" onclick="setTool('ray_left')">⟵ Hacia -∞</button>
+        <button class="tool-btn" id="tool-right" onclick="setTool('ray_right')">⟶ Hacia +∞</button>
+        <button class="tool-btn" style="color: var(--error);" onclick="clearGraph()">🗑️ Borrar Todo</button>
+      </div>
+      <p style="font-size: 12px; color: #64748b; margin-top: 0; margin-bottom: 10px;"><em>*Después de dibujar, haz clic en los extremos (círculos) para hacerlos abiertos (blancos) o cerrados (azules).</em></p>
+      <canvas id="math-canvas" width="600" height="100"></canvas>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 20px;" id="action-group">
+      <button class="btn-primary" onclick="checkAnswer()">Comprobar</button>
+      <button class="btn-gold" style="width: auto;" onclick="toggleHint()">💡 Pista</button>
+    </div>
+
+    <div class="feedback-box hidden" id="hint-box" style="background: #fffbeb; border-color: var(--gold);">
+      <img src="Gemini_Generated_Image_sflauisflauisfla_7.png" alt="Pista">
+      <div class="feedback-content">
+        <h4 style="color: var(--gold);">Pista de Sabiduría</h4>
+        <p id="lbl-hint"></p>
+      </div>
+    </div>
+
+    <div class="feedback-box hidden" id="feedback-box">
+      <img id="feedback-img" src="" alt="Feedback">
+      <div class="feedback-content">
+        <h4 id="feedback-title"></h4>
+        <p id="feedback-desc"></p>
+      </div>
+    </div>
+
+    <button class="btn-primary hidden" id="btn-next" onclick="nextQuestion()" style="background: var(--success); margin-top: 15px;">Siguiente Ejercicio &rarr;</button>
+  </div>
+
+  <!-- PANTALLA FIN -->
+  <div id="view-result" class="panel hidden" style="text-align: center;">
+    <img src="Gemini_Generated_Image_yxc6z7yxc6z7yxc6_7.jpg" alt="Éxito" style="width: 130px; border-radius: 50%; margin-bottom: 15px;">
+    <h2 style="color: var(--primary);">¡CAMPUS SUPERADO!</h2>
+    <p>Has conquistado todos los niveles de Intervalos y Semirrectas.</p>
+    <p style="font-size: 24px; font-weight: bold; color: var(--gold);">Puntuación Final: <span id="lbl-final-score"></span> pts</p>
+    <button class="btn-outline" onclick="showStudentMenu()">Volver al Inicio</button>
+  </div>
+
+</div>
+
+<script>
+  // ESTRUCTURA BASE DE DATOS (30 Ejercicios)
+  // type: text_int, text_ineq, graph, all
+  const db = [
+    // 1-10: Traducciones
+    { type: "text_ineq", q: "El intervalo [-3, 5]", a_ineq: ["-3≤x≤5", "-3<=x<=5"], h: "Corchetes significa que los números están incluidos (menor o igual)." },
+    { type: "text_ineq", q: "El intervalo (-2, 8)", a_ineq: ["-2<x<8"], h: "Paréntesis significa que no están incluidos (estrictamente menor)." },
+    { type: "text_ineq", q: "El intervalo [0, 10)", a_ineq: ["0≤x<10", "0<=x<10"], h: "Corchete en el 0 (≤) y paréntesis en el 10 (<)." },
+    { type: "text_ineq", q: "La semirrecta [4, +∞)", a_ineq: ["x≥4", "x>=4"], h: "Son todos los números mayores o iguales que 4." },
+    { type: "text_ineq", q: "La frase: 'Todos los números menores que 7'", a_ineq: ["x<7"], h: "Variable x estrictamente menor que 7." },
+    { type: "text_int", q: "La desigualdad -1 < x < 6", a_int: ["(-1,6)"], h: "No hay 'iguales', así que usa paréntesis en ambos lados." },
+    { type: "text_int", q: "La desigualdad 0 ≤ x ≤ 9", a_int: ["[0,9]"], h: "Ambos tienen 'igual', así que usa corchetes." },
+    { type: "text_int", q: "La desigualdad x > 1", a_int: ["(1,+∞)", "(1,∞)"], h: "Mayores que 1 hasta el infinito. El infinito siempre lleva paréntesis." },
+    { type: "text_int", q: "La frase: 'Entre -4 y 0, incluyendo el 0 pero no el -4'", a_int: ["(-4,0]"], h: "Paréntesis en el -4, corchete en el 0." },
+    { type: "text_int", q: "La frase: 'Menores o iguales a -3'", a_int: ["(-∞,-3]", "(-∞,-3]"], h: "Viene desde el infinito negativo hasta el -3 (incluido)." },
+    
+    // 11-20: Representaciones Gráficas SOLAMENTE
+    { type: "graph", q: "Dibuja el intervalo [-2, 4]", g: {t: 'seg', x1:-2, c1:true, x2:4, c2:true}, h: "Usa la herramienta Segmento. Haz clic en -2 y en 4. Ambos extremos deben ser cerrados (azules)." },
+    { type: "graph", q: "Dibuja el intervalo (-5, 1)", g: {t: 'seg', x1:-5, c1:false, x2:1, c2:false}, h: "Segmento del -5 al 1. Haz clic en los puntos dibujados para que sean abiertos (blancos)." },
+    { type: "graph", q: "Dibuja el intervalo [-3, 2)", g: {t: 'seg', x1:-3, c1:true, x2:2, c2:false}, h: "El punto del -3 es cerrado (azul) y el del 2 es abierto (blanco)." },
+    { type: "graph", q: "Dibuja la desigualdad x ≥ 1", g: {t: 'ray_right', x1:1, c1:true}, h: "Usa la herramienta 'Hacia +∞'. Haz clic en el 1 y déjalo cerrado." },
+    { type: "graph", q: "Dibuja la desigualdad x < -2", g: {t: 'ray_left', x1:-2, c1:false}, h: "Usa la herramienta 'Hacia -∞'. Haz clic en el -2 y ábrelo (círculo blanco)." },
+    { type: "graph", q: "Dibuja: 'Números entre 0 y 6, ambos excluidos'", g: {t: 'seg', x1:0, c1:false, x2:6, c2:false}, h: "Segmento del 0 al 6. Ambos puntos abiertos." },
+    { type: "graph", q: "Dibuja: 'El intervalo (-∞, 3]'", g: {t: 'ray_left', x1:3, c1:true}, h: "Flecha hacia la izquierda desde el 3, con el punto cerrado." },
+    { type: "graph", q: "Dibuja: 'La desigualdad -4 ≤ x < 5'", g: {t: 'seg', x1:-4, c1:true, x2:5, c2:false}, h: "Punto cerrado en -4, punto abierto en 5." },
+    { type: "graph", q: "Dibuja: 'El intervalo [0, +∞)'", g: {t: 'ray_right', x1:0, c1:true}, h: "Del cero incluido hacia la derecha." },
+    { type: "graph", q: "Dibuja: 'Números estrictamente negativos'", g: {t: 'ray_left', x1:0, c1:false}, h: "Desde el 0 (sin incluir) hacia el menos infinito." },
+
+    // 21-30: TODO (Intervalo + Desigualdad + Gráfica)
+    { type: "all", q: "Números comprendidos entre el -3 y el 4 (ambos incluidos)", a_int: ["[-3,4]"], a_ineq: ["-3≤x≤4", "-3<=x<=4"], g: {t:'seg', x1:-3, c1:true, x2:4, c2:true}, h: "Usa corchetes y ≤. Dibuja un segmento cerrado." },
+    { type: "all", q: "Números mayores que 2", a_int: ["(2,+∞)", "(2,∞)"], a_ineq: ["x>2"], g: {t:'ray_right', x1:2, c1:false}, h: "Paréntesis y >. Semirrecta derecha con punto abierto." },
+    { type: "all", q: "El conjunto de los números negativos hasta el -1 incluido", a_int: ["(-∞,-1]"], a_ineq: ["x≤-1", "x<=-1"], g: {t:'ray_left', x1:-1, c1:true}, h: "Viene del -∞ hasta el -1 cerrado. Desigualdad con ≤." },
+    { type: "all", q: "Entre -5 y 5, excluyendo el -5 y el 5", a_int: ["(-5,5)"], a_ineq: ["-5<x<5"], g: {t:'seg', x1:-5, c1:false, x2:5, c2:false}, h: "Usa solo paréntesis y <. Los dos puntos en la gráfica son blancos." },
+    { type: "all", q: "La representación de x ≥ 0", a_int: ["[0,+∞)", "[0,∞)"], a_ineq: ["x≥0", "x>=0"], g: {t:'ray_right', x1:0, c1:true}, h: "Desde el cero con corchete. Gráfica hacia la derecha con punto cerrado." },
+    { type: "all", q: "El intervalo (-4, 3]", a_int: ["(-4,3]"], a_ineq: ["-4<x≤3", "-4<x<=3"], g: {t:'seg', x1:-4, c1:false, x2:3, c2:true}, h: "Abierto en -4, cerrado en 3." },
+    { type: "all", q: "El intervalo (-∞, 6)", a_int: ["(-∞,6)"], a_ineq: ["x<6"], g: {t:'ray_left', x1:6, c1:false}, h: "Menores que 6. Semirrecta izquierda abierta." },
+    { type: "all", q: "La desigualdad -2 ≤ x < 7", a_int: ["[-2,7)"], a_ineq: ["-2≤x<7", "-2<=x<7"], g: {t:'seg', x1:-2, c1:true, x2:7, c2:false}, h: "Corchete en el -2, paréntesis en el 7." },
+    { type: "all", q: "Números mayores o iguales a -5 y menores que 0", a_int: ["[-5,0)"], a_ineq: ["-5≤x<0", "-5<=x<0"], g: {t:'seg', x1:-5, c1:true, x2:0, c2:false}, h: "Cerrado en -5, abierto en 0." },
+    { type: "all", q: "Todos los números positivos (incluyendo el cero)", a_int: ["[0,+∞)", "[0,∞)"], a_ineq: ["x≥0", "x>=0"], g: {t:'ray_right', x1:0, c1:true}, h: "Del 0 al +∞. Corchete en el 0, desigualdad ≥." }
+  ];
+
+  let currentUserName = "";
+  let userProgress = 0; 
+  let userScore = 0;
+  let attempts = 3;
+
+  // IMÁGENES
+  const imgHint = "Gemini_Generated_Image_sflauisflauisfla_7.png";
+  const imgError = "Gemini_Generated_Image_yfnjteyfnjteyfnj_7.png";
+  const imgSuccess = "Gemini_Generated_Image_yxc6z7yxc6z7yxc6_7.jpg";
+
+  // INICIO
+  window.onload = () => {
+    initCanvas();
+    let saved = localStorage.getItem('wc_adv_intervals_current');
+    if (saved) {
+      currentUserName = saved;
+      loadUserProgress();
+      showStudentMenu();
+    }
+  };
+
+  // LOGIN Y SESIÓN
+  function loginStudent() {
+    let name = document.getElementById('inp-nombre').value.trim();
+    let surname = document.getElementById('inp-apellido').value.trim();
+    if (!name || !surname) { alert("Introduce nombre y apellido."); return; }
+    
+    currentUserName = (name + " " + surname).toUpperCase();
+    localStorage.setItem('wc_adv_intervals_current', currentUserName);
+    
+    let users = JSON.parse(localStorage.getItem('wc_adv_intervals_users')) || {};
+    if (!users[currentUserName]) {
+      users[currentUserName] = { score: 0, progress: 0 };
+      localStorage.setItem('wc_adv_intervals_users', JSON.stringify(users));
+    }
+    
+    loadUserProgress();
+    showStudentMenu();
+  }
+
+  function loginTeacher() {
+    let code = document.getElementById('inp-codigo').value;
+    if (btoa(code) === "MTIzNA==") { 
+      document.getElementById('inp-codigo').value = "";
+      showTeacherDashboard();
+    } else { alert("Código incorrecto."); }
+  }
+
+  function logout() {
+    localStorage.removeItem('wc_adv_intervals_current');
+    currentUserName = "";
+    document.getElementById('view-student-menu').classList.add('hidden');
+    document.getElementById('view-teacher').classList.add('hidden');
+    document.getElementById('view-login').classList.remove('hidden');
+  }
+
+  function loadUserProgress() {
+    let users = JSON.parse(localStorage.getItem('wc_adv_intervals_users')) || {};
+    if (users[currentUserName]) {
+      userScore = users[currentUserName].score;
+      userProgress = users[currentUserName].progress;
+    }
+  }
+
+  function saveUserProgress() {
+    let users = JSON.parse(localStorage.getItem('wc_adv_intervals_users')) || {};
+    users[currentUserName] = { score: userScore, progress: userProgress };
+    localStorage.setItem('wc_adv_intervals_users', JSON.stringify(users));
+  }
+
+  // MENÚS Y DASHBOARDS
+  function showStudentMenu() {
+    document.getElementById('view-login').classList.add('hidden');
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-result').classList.add('hidden');
+    document.getElementById('view-student-menu').classList.remove('hidden');
+    
+    document.getElementById('lbl-username').innerText = "Hola, " + currentUserName;
+    document.getElementById('lbl-score').innerText = userScore;
+    document.getElementById('lbl-progress').innerText = userProgress;
+
+    let btn = document.getElementById('btn-start-quiz');
+    if (userProgress >= 30) {
+      btn.innerText = "Ver Resultados Finales";
+      btn.onclick = showResults;
+    } else {
+      btn.innerText = userProgress === 0 ? "▶ Comenzar Reto" : "▶ Continuar Reto";
+      btn.onclick = startQuiz;
+    }
+  }
+
+  function showTeacherDashboard() {
+    document.getElementById('view-login').classList.add('hidden');
+    document.getElementById('view-teacher').classList.remove('hidden');
+    renderRanking();
+  }
+
+  function renderRanking() {
+    let users = JSON.parse(localStorage.getItem('wc_adv_intervals_users')) || {};
+    let sortedUsers = Object.keys(users).map(name => {
+      return { name: name, score: users[name].score, progress: users[name].progress };
+    }).sort((a, b) => b.score - a.score);
+
+    let tbody = document.getElementById('teacher-ranking-body');
+    tbody.innerHTML = '';
+    
+    if(sortedUsers.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay alumnos.</td></tr>'; return; }
+
+    sortedUsers.forEach((u, idx) => {
+      let tr = document.createElement('tr');
+      let pos = idx + 1;
+      if (pos === 1) pos = "🥇 1º"; else if (pos === 2) pos = "🥈 2º"; else if (pos === 3) pos = "🥉 3º";
+      
+      tr.innerHTML = `<td>${pos}</td><td>${u.name}</td><td>${u.progress} / 30</td><td style="text-align: right; font-weight: bold;">${u.score} pts</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function clearData() {
+    if(confirm("¿Estás seguro de que quieres borrar TODAS las puntuaciones?")) {
+      localStorage.removeItem('wc_adv_intervals_users');
+      renderRanking();
+    }
+  }
+
+  // LÓGICA DE DIBUJO EN CANVAS
+  const canvas = document.getElementById('math-canvas');
+  const ctx = canvas.getContext('2d');
+  let userGraph = { t: 'none', x1: null, c1: true, x2: null, c2: true };
+  let currentTool = 'segment';
+  let tempX = null;
+  let activeInputId = null;
+
+  function initCanvas() {
+    // Adaptación para que encaje bien
+    canvas.width = canvas.parentElement.clientWidth || 600;
+    
+    canvas.onmousedown = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const w = canvas.width;
+      
+      // Mapear de píxeles a valor de -10 a 10
+      let val = Math.round(((x - 30) / (w - 60)) * 20 - 10);
+      if(val < -10) val = -10; if(val > 10) val = 10;
+
+      // Verificar si clicó en un punto existente para cambiarlo de abierto/cerrado
+      if (userGraph.t !== 'none') {
+        if (userGraph.t === 'seg') {
+          if (Math.abs(val - userGraph.x1) <= 1) { userGraph.c1 = !userGraph.c1; renderCanvas(); return; }
+          if (Math.abs(val - userGraph.x2) <= 1) { userGraph.c2 = !userGraph.c2; renderCanvas(); return; }
+        } else {
+          if (Math.abs(val - userGraph.x1) <= 1) { userGraph.c1 = !userGraph.c1; renderCanvas(); return; }
+        }
+      }
+
+      // Dibujar nueva forma
+      if (currentTool === 'segment') {
+        if (tempX === null) { tempX = val; }
+        else {
+          userGraph = { t: 'seg', x1: Math.min(tempX, val), c1: true, x2: Math.max(tempX, val), c2: true };
+          tempX = null;
+        }
+      } else if (currentTool === 'ray_left') {
+        userGraph = { t: 'ray_left', x1: val, c1: true };
+        tempX = null;
+      } else if (currentTool === 'ray_right') {
+        userGraph = { t: 'ray_right', x1: val, c1: true };
+        tempX = null;
+      }
+      renderCanvas();
+    };
+    renderCanvas();
+  }
+
+  function setTool(tool) {
+    currentTool = tool;
+    tempX = null;
+    document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+    if(tool === 'segment') document.getElementById('tool-seg').classList.add('active');
+    if(tool === 'ray_left') document.getElementById('tool-left').classList.add('active');
+    if(tool === 'ray_right') document.getElementById('tool-right').classList.add('active');
+  }
+
+  function clearGraph() {
+    userGraph = { t: 'none' };
+    tempX = null;
+    renderCanvas();
+  }
+
+  function mapX(val) {
+    return 30 + ((val + 10) / 20) * (canvas.width - 60);
+  }
+
+  function renderCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cy = 50;
+    const w = canvas.width;
+
+    // Eje base
+    ctx.beginPath(); ctx.moveTo(10, cy); ctx.lineTo(w - 10, cy);
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Marcas de -10 a 10
+    ctx.font = '14px Arial'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+    for (let i = -10; i <= 10; i++) {
+      let x = mapX(i);
+      ctx.beginPath(); ctx.moveTo(x, cy - 6); ctx.lineTo(x, cy + 6); ctx.stroke();
+      if (i % 2 === 0 || i === 5 || i === -5) ctx.fillText(i, x, cy + 25);
+    }
+
+    // Punto temporal (si está haciendo segmento)
+    if (tempX !== null) {
+      ctx.beginPath(); ctx.arc(mapX(tempX), cy, 6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 91, 159, 0.4)'; ctx.fill();
+    }
+
+    // Dibujar figura del usuario
+    if (userGraph.t !== 'none') {
+      ctx.strokeStyle = '#005b9f'; ctx.lineWidth = 5; ctx.fillStyle = '#005b9f';
+      
+      if (userGraph.t === 'seg') {
+        ctx.beginPath(); ctx.moveTo(mapX(userGraph.x1), cy); ctx.lineTo(mapX(userGraph.x2), cy); ctx.stroke();
+        drawPoint(userGraph.x1, userGraph.c1, cy);
+        drawPoint(userGraph.x2, userGraph.c2, cy);
+      } else if (userGraph.t === 'ray_left') {
+        ctx.beginPath(); ctx.moveTo(mapX(userGraph.x1), cy); ctx.lineTo(10, cy); ctx.stroke();
+        // Flecha
+        ctx.beginPath(); ctx.moveTo(10, cy); ctx.lineTo(20, cy - 6); ctx.lineTo(20, cy + 6); ctx.fill();
+        drawPoint(userGraph.x1, userGraph.c1, cy);
+      } else if (userGraph.t === 'ray_right') {
+        ctx.beginPath(); ctx.moveTo(mapX(userGraph.x1), cy); ctx.lineTo(w - 10, cy); ctx.stroke();
+        // Flecha
+        ctx.beginPath(); ctx.moveTo(w - 10, cy); ctx.lineTo(w - 20, cy - 6); ctx.lineTo(w - 20, cy + 6); ctx.fill();
+        drawPoint(userGraph.x1, userGraph.c1, cy);
+      }
+    }
+  }
+
+  function drawPoint(val, isClosed, cy) {
+    ctx.beginPath(); ctx.arc(mapX(val), cy, 7, 0, Math.PI * 2);
+    ctx.fillStyle = isClosed ? '#005b9f' : '#fff'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#005b9f'; ctx.stroke();
+  }
+
+  // TECLADO DE SÍMBOLOS
+  function insSym(sym) {
+    let inp = document.getElementById(activeInputId);
+    if(!inp) inp = document.querySelector('.input-grid input[type="text"]');
+    if(!inp) return;
+    
+    let start = inp.selectionStart; let end = inp.selectionEnd;
+    inp.value = inp.value.substring(0, start) + sym + inp.value.substring(end);
+    inp.selectionStart = inp.selectionEnd = start + sym.length;
+    inp.focus();
+  }
+
+  document.addEventListener('focusin', (e) => {
+    if(e.target.tagName === 'INPUT' && e.target.type === 'text') activeInputId = e.target.id;
+  });
+
+  // QUIZ LOGIC
+  function startQuiz() {
+    document.getElementById('view-student-menu').classList.add('hidden');
+    document.getElementById('view-quiz').classList.remove('hidden');
+    // Para asegurar que el canvas tome su ancho correcto al mostrarse
+    setTimeout(() => { initCanvas(); loadQuestion(); }, 50);
+  }
+
+  function loadQuestion() {
+    if (userProgress >= 30) { showResults(); return; }
+    
+    attempts = 3;
+    const ex = db[userProgress];
+    
+    document.getElementById('lbl-quiz-counter').innerText = `Ejercicio ${userProgress + 1} / 30`;
+    document.getElementById('lbl-attempts').innerText = `Intentos restantes: 3`;
+    document.getElementById('lbl-attempts').style.color = "var(--primary)";
+    document.getElementById('lbl-attempts').style.background = "#eef2ff";
+    
+    document.getElementById('lbl-math').innerHTML = ex.q;
+    
+    // Configurar zonas según el tipo de pregunta
+    const zoneText = document.getElementById('zone-text');
+    const zoneCanvas = document.getElementById('zone-canvas');
+    const inputsContainer = document.getElementById('text-inputs-container');
+    
+    zoneText.classList.add('hidden');
+    zoneCanvas.classList.add('hidden');
+    inputsContainer.innerHTML = '';
+    clearGraph();
+    
+    if (ex.type === 'text_int' || ex.type === 'text_ineq') {
+      zoneText.classList.remove('hidden');
+      inputsContainer.innerHTML = `
+        <div class="input-row">
+          <label>Respuesta:</label>
+          <input type="text" id="inp-ans1" autocomplete="off">
+        </div>`;
+    } else if (ex.type === 'graph') {
+      zoneCanvas.classList.remove('hidden');
+    } else if (ex.type === 'all') {
+      zoneText.classList.remove('hidden');
+      zoneCanvas.classList.remove('hidden');
+      inputsContainer.innerHTML = `
+        <div class="input-row">
+          <label>Intervalo:</label>
+          <input type="text" id="inp-ans-int" placeholder="Ej: [-3, 5)" autocomplete="off">
+        </div>
+        <div class="input-row">
+          <label>Desigualdad:</label>
+          <input type="text" id="inp-ans-ineq" placeholder="Ej: -3 <= x < 5" autocomplete="off">
+        </div>`;
+    }
+    
+    document.getElementById('action-group').classList.remove('hidden');
+    document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('hint-box').classList.add('hidden');
+    document.getElementById('feedback-box').classList.add('hidden');
+    
+    document.getElementById('lbl-hint').innerHTML = ex.h;
+    
+    let firstInp = document.querySelector('.input-grid input[type="text"]');
+    if(firstInp) { firstInp.focus(); activeInputId = firstInp.id; }
+  }
+
+  function toggleHint() { document.getElementById('hint-box').classList.toggle('hidden'); }
+
+  function normalize(str) {
+    let s = str.replace(/\s+/g, '').toLowerCase();
+    s = s.replace(/infinito/g, 'inf').replace(/\+\\infty/g, '+inf').replace(/\\infty/g, 'inf').replace(/infinity/g, 'inf');
+    s = s.replace(/≤/g, '<=').replace(/≥/g, '>=');
+    return s;
+  }
+
+  function checkGraphMatch(g1, g2) {
+    if(g1.t !== g2.t) return false;
+    if(g1.t === 'none') return false;
+    if(g1.x1 !== g2.x1 || g1.c1 !== g2.c1) return false;
+    if(g1.t === 'seg' && (g1.x2 !== g2.x2 || g1.c2 !== g2.c2)) return false;
+    return true;
+  }
+
+  function checkAnswer() {
+    const ex = db[userProgress];
+    let isCorrect = true;
+
+    if (ex.type === 'text_int') {
+      let val = normalize(document.getElementById('inp-ans1').value);
+      isCorrect = ex.a_int.map(normalize).includes(val);
+    } else if (ex.type === 'text_ineq') {
+      let val = normalize(document.getElementById('inp-ans1').value);
+      isCorrect = ex.a_ineq.map(normalize).includes(val);
+    } else if (ex.type === 'graph') {
+      isCorrect = checkGraphMatch(userGraph, ex.g);
+    } else if (ex.type === 'all') {
+      let vInt = normalize(document.getElementById('inp-ans-int').value);
+      let vIneq = normalize(document.getElementById('inp-ans-ineq').value);
+      let okInt = ex.a_int.map(normalize).includes(vInt);
+      let okIneq = ex.a_ineq.map(normalize).includes(vIneq);
+      let okGraph = checkGraphMatch(userGraph, ex.g);
+      isCorrect = okInt && okIneq && okGraph;
+    }
+
+    const fBox = document.getElementById('feedback-box');
+    const fImg = document.getElementById('feedback-img');
+    const fTitle = document.getElementById('feedback-title');
+    const fDesc = document.getElementById('feedback-desc');
+
+    fBox.classList.remove('hidden', 'correct', 'error', 'warning');
+
+    if (isCorrect) {
+      fBox.classList.add('correct');
+      fImg.src = imgSuccess;
+      fTitle.innerText = "¡Excelente!";
+      
+      let pts = attempts === 3 ? 10 : (attempts === 2 ? 5 : 2);
+      if(ex.type === 'all') pts *= 2; // Doble puntuación en el reto final
+      
+      userScore += pts; userProgress++; saveUserProgress();
+      
+      fDesc.innerHTML = `<span style="color:var(--gold); font-weight:bold;">+${pts} PUNTOS</span>`;
+      disableInputs();
+      
+    } else {
+      attempts--;
+      document.getElementById('lbl-attempts').innerText = `Intentos restantes: ${attempts}`;
+      
+      if (attempts > 0) {
+        document.getElementById('lbl-attempts').style.color = "var(--error)";
+        document.getElementById('lbl-attempts').style.background = "#fef2f2";
+        fBox.classList.add('error');
+        fImg.src = imgError;
+        fTitle.innerText = "Revisa tu respuesta...";
+        fDesc.innerHTML = "Comprueba corchetes, signos, o los puntos abiertos/cerrados en tu gráfica.";
+      } else {
+        fBox.classList.add('warning');
+        fImg.src = imgError;
+        fTitle.innerText = "¡Se acabaron los intentos!";
+        
+        let ansStr = "";
+        if(ex.a_int) ansStr += `Intervalo: <strong>${ex.a_int[0]}</strong><br>`;
+        if(ex.a_ineq) ansStr += `Desigualdad: <strong>${ex.a_ineq[0]}</strong><br>`;
+        if(ex.g) {
+          userGraph = ex.g; renderCanvas(); // Revelar la gráfica correcta
+          ansStr += `La gráfica correcta se ha dibujado en pantalla.`;
+        }
+        
+        fDesc.innerHTML = `Respuestas correctas:<br>${ansStr}<br><span style="color:var(--error); font-weight:bold;">+0 PUNTOS</span>`;
+        
+        userProgress++; saveUserProgress();
+        disableInputs();
+      }
+    }
+  }
+
+  function disableInputs() {
+    document.querySelectorAll('.input-grid input').forEach(i => i.disabled = true);
+    document.getElementById('action-group').classList.add('hidden');
+    document.getElementById('btn-next').classList.remove('hidden');
+  }
+
+  function nextQuestion() { loadQuestion(); }
+
+  function showResults() {
+    document.getElementById('view-student-menu').classList.add('hidden');
+    document.getElementById('view-quiz').classList.add('hidden');
+    document.getElementById('view-result').classList.remove('hidden');
+    document.getElementById('lbl-final-score').innerText = userScore;
+  }
+
+</script>
+
+</body>
+</html>
