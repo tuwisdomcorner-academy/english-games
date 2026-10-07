@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Examen de Economía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
+        .wisdom-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .question-card { transition: all 0.3s ease; }
+        .feedback { display: none; }
+        textarea { resize: vertical; min-height: 100px; }
+    </style>
+</head>
+<body class="text-gray-800 pb-12">
+
+    <!-- Cabecera Wisdom Corner Academy -->
+    <header class="wisdom-header text-white p-8 text-center shadow-lg mb-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-extrabold tracking-widest mb-2">WISDOM CORNER ACADEMY</h1>
+            <h2 class="text-2xl font-light text-blue-100 border-t border-blue-400 pt-4 mt-2">Prueba de Desarrollo: Economía</h2>
+            <p class="mt-4 text-sm text-blue-200">Lee atentamente cada pregunta y desarrolla tu respuesta basándote en la teoría estudiada.</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 md:px-0">
+        <div id="exam-container" class="space-y-6">
+            <!-- Las preguntas se inyectan aquí con JavaScript -->
+        </div>
+
+        <div class="mt-8 bg-white p-6 rounded-xl shadow-md border-t-4 border-blue-800 text-center">
+            <button id="submit-btn" onclick="corregirExamen()" class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-4 px-10 rounded-lg shadow-lg transform transition hover:-translate-y-1 text-lg w-full md:w-auto">
+                Finalizar Evaluación y Ver Nota
+            </button>
+        </div>
+        
+        <!-- Panel de Resultados Finales -->
+        <div id="results-panel" class="hidden mt-8 p-10 text-center rounded-xl shadow-2xl bg-white border-4 border-blue-900 transition-all duration-500 transform scale-95">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2 uppercase tracking-wide">Calificación Final</h2>
+            <div id="score-display" class="text-7xl font-black text-blue-800 my-6">-- / 10</div>
+            <p id="score-message" class="text-xl font-medium text-gray-600 mb-8"></p>
+            <button onclick="location.reload()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg transition border border-gray-400">
+                Repetir Evaluación
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const examData = [
+            {
+                id: 1,
+                question: "¿Qué es la economía y cuáles son las tres fases de su proceso?",
+                keywords: ["produccion", "bienes", "servicios", "comercializacion", "consumo"],
+                model: "La economía es la producción de bienes y servicios. Su proceso tiene 3 fases: Producción, Comercialización y Consumo."
+            },
+            {
+                id: 2,
+                question: "Enumera los tres agentes económicos y los cuatro factores económicos.",
+                keywords: ["personas", "empresas", "sector publico", "naturales", "humanos", "tecnologia", "capital"],
+                model: "Agentes: Personas, Empresas y Sector público. Factores económicos: Recursos naturales, Recursos humanos, Tecnología y Capital."
+            },
+            {
+                id: 3,
+                question: "Explica brevemente los cuatro sectores económicos en los que se organiza la actividad.",
+                keywords: ["naturaleza", "agricultura", "transforman", "industria", "servicios", "sanidad", "educacion", "especializados", "financieros", "informaticos"],
+                model: "Sector 1: Recursos naturales como agricultura, ganadería, pesca. Sector 2: Transforman a los productos naturales como industria, energía. Sector 3: Solo ofrece servicios como la sanidad o la educación. Sector 4: Servicios especializados como financieros o informáticos."
+            },
+            {
+                id: 4,
+                question: "¿Qué es el PIB, qué otros indicadores económicos aparecen (FIB) y cuáles son las tres tendencias económicas de un país?",
+                keywords: ["total", "produce", "expansiva", "regresiva", "estacionaria", "coches", "desempleo", "importaciones", "exportaciones"],
+                model: "El PIB es el total de bienes y servicios que produce un país. Tendencias: Expansiva, Regresiva y Estacionaria. El FIB incluye: Nº coches matriculados, Actividad y desempleo (al revés), y Nº (Importaciones/exportaciones), siendo positiva si las expo superan las impo."
+            },
+            {
+                id: 5,
+                question: "Define 'Sistemas económicos' y explica las diferencias entre el planificado, el de mercado (capitalista) y el mixto.",
+                keywords: ["decisiones", "planificado", "estado", "medios", "capitalista", "interviene poco", "mixto", "necesidades basicas", "impuestos"],
+                model: "Sistemas económicos son las decisiones económicas que adopta un país para organizarse. Sistema planificado: El estado controla los medios de producción. Eco de mercado o sistema capitalista: El estado interviene poco en la eco. Sistema eco mixto: El estado interviene en necesidades básicas y equilibra el nivel de riqueza (recibe dinero a través de los impuestos, característico de países europeos)."
+            },
+            {
+                id: 6,
+                question: "Enumera y explica los cinco elementos del sistema capitalista (incluyendo Oferta, Demanda, Bolsa, Competencia y Publicidad).",
+                keywords: ["oferta", "demanda", "bolsa", "acciones", "libre competencia", "publicidad", "mas caro"],
+                model: "Oferta: Bienes y servicios a la venta. Demanda: Bienes y servicios que se determinan al mercado mediante la ley de oferta y demanda (si la oferta es peor que la demanda, es más caro). La bolsa: Mercado de valores (como las acciones). Libre competencia: Lo que usan las empresas para vender en función de la oferta y la demanda. La publi: Lo que usan las empresas para darse a conocer."
+            },
+            {
+                id: 7,
+                question: "¿Qué es la globalización y cuáles son sus tres dimensiones (y sus características)?",
+                keywords: ["integracion", "interconexion", "mundial", "economica", "intercambios", "cultural", "identidad", "politico", "soberania"],
+                model: "Es el proceso de integración e interconexión de los mercados a escala mundial. Dimensiones de la globalización -> Económica: Gran volumen de intercambios, estandarización y liberación de capitales. Cultural: Aspectos culturales que llevan a la perdida de identidad. Político: Organizaciones transnacionales y pérdida de soberanía."
+            },
+            {
+                id: 8,
+                question: "Menciona y explica los cuatro elementos que favorecen la globalización.",
+                keywords: ["transportes", "comunicaciones", "internet", "multinacionales", "integracion", "bloques"],
+                model: "Elementos que favorecen: 1. Transportes. 2. Comunicaciones con internet. 3. Multinacionales (empresas con sedes en varios países desarrollados o en vías de desarrollo). 4. Integración económica (creación de bloques para facilitar los intercambios comerciales)."
+            },
+            {
+                id: 9,
+                question: "Diferencia entre trabajadores asalariados y autónomos. Además, explica el impacto de la globalización en el trabajo y qué son los sindicatos.",
+                keywords: ["cuenta ajena", "cuenta propia", "tecnologico", "subcontratacion", "flexibilidad", "conflictividad", "sindicatos", "derechos"],
+                model: "Asalariados: Trabajan por cuenta ajena contratados por el Estado o empresas. Autónomos: Trabajan por su cuenta propia. Impacto de la globalización: Desarrollo tecnológico, Subcontratación y contrato por obra, Flexibilidad laboral, y Conflictividad entre empresarios y trabajadores de la patronal y los sindicatos. Sindicatos: Defienden los derechos laborales (salarios, prestaciones, condiciones)."
+            },
+            {
+                id: 10,
+                question: "¿Qué es la sustentabilidad económica y cuáles son sus tres pilares?",
+                keywords: ["viabilidad eco", "viabilidad social", "viabilidad ecologica", "medio ambiente", "trabajadores"],
+                model: "Son tres pilares: 1. Viabilidad eco: Elementos sociales y medioambientales. 2. Viabilidad social: Derechos a los trabajadores. 3. Viabilidad ecológica: Para proteger el medio ambiente."
+            }
+        ];
+
+        const container = document.getElementById('exam-container');
+
+        examData.forEach((q, index) => {
+            const html = `
+                <div class="question-card bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-start">
+                        <span class="bg-blue-800 text-white py-1 px-3 rounded-md mr-3 text-lg">${index + 1}</span> 
+                        <span>${q.question}</span>
+                    </h3>
+                    <textarea id="ans-${q.id}" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-gray-800" placeholder="Redacta tu respuesta..."></textarea>
+                    
+                    <div id="feedback-${q.id}" class="feedback mt-6 p-5 rounded-lg border-l-4">
+                        <p class="font-bold mb-2 status-text text-lg"></p>
+                        <div class="bg-white p-4 rounded border border-gray-200 mt-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-blue-800 mb-1 block">Solución Oficial de la Academia</span>
+                            <p class="text-sm text-gray-700">${q.model}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function normalizeText(text) {
+            return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        function corregirExamen() {
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            
+            let totalScore = 0;
+
+            examData.forEach(q => {
+                const textarea = document.getElementById(`ans-${q.id}`);
+                const feedbackDiv = document.getElementById(`feedback-${q.id}`);
+                const statusText = feedbackDiv.querySelector('.status-text');
+                
+                textarea.disabled = true; 
+                textarea.classList.add('bg-gray-100', 'text-gray-500');
+                
+                const userAnswer = normalizeText(textarea.value);
+                let hitCount = 0;
+                
+                q.keywords.forEach(kw => {
+                    if (userAnswer.includes(normalizeText(kw))) {
+                        hitCount++;
+                    }
+                });
+
+                const hitPercentage = hitCount / q.keywords.length;
+                let qScore = 0;
+                
+                feedbackDiv.style.display = 'block';
+
+                if (hitPercentage > 0.6) { 
+                    qScore = 1;
+                    feedbackDiv.classList.add('bg-green-50', 'border-green-500');
+                    statusText.classList.add('text-green-700');
+                    statusText.innerHTML = '✓ Excelente. (1 / 1 pto)';
+                } else if (hitPercentage > 0.2) { 
+                    qScore = 0.5;
+                    feedbackDiv.classList.add('bg-yellow-50', 'border-yellow-500');
+                    statusText.classList.add('text-yellow-700');
+                    statusText.innerHTML = '⚠ Respuesta Incompleta. (0.5 / 1 pto)';
+                } else { 
+                    qScore = 0;
+                    feedbackDiv.classList.add('bg-red-50', 'border-red-500');
+                    statusText.classList.add('text-red-700');
+                    statusText.innerHTML = '✗ Incorrecto o falta información clave. (0 / 1 pto)';
+                }
+
+                totalScore += qScore;
+            });
+
+            const resultsPanel = document.getElementById('results-panel');
+            const scoreDisplay = document.getElementById('score-display');
+            const scoreMessage = document.getElementById('score-message');
+            
+            resultsPanel.classList.remove('hidden');
+            setTimeout(() => { resultsPanel.classList.remove('scale-95'); }, 50);
+            
+            scoreDisplay.innerText = `${totalScore} / 10`;
+            
+            if (totalScore >= 9) {
+                scoreDisplay.classList.add('text-green-600');
+                scoreMessage.innerText = "¡Sobresaliente! Dominas perfectamente los conceptos económicos.";
+            } else if (totalScore >= 5) {
+                scoreDisplay.classList.add('text-yellow-600');
+                scoreMessage.innerText = "¡Aprobado! Tienes una buena base, revisa las soluciones oficiales para perfeccionar detalles.";
+            } else {
+                scoreDisplay.classList.add('text-red-600');
+                scoreMessage.innerText = "Necesitas seguir repasando los apuntes. ¡No te rindas, vuelve a intentarlo!";
+            }
+
+            resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
