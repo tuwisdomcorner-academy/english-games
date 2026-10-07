@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Interactivo de Economía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Un tono turquesa muy suave */
+        }
+        
+        /* Animaciones personalizadas para feedback */
+        @keyframes pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Estilos base para las opciones (antes de corregir) */
+        .option-label {
+            transition: all 0.2s ease-in-out;
+        }
+        /* Bloquear clics cuando el examen está terminado */
+        .exam-finished .option-label {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-3xl mx-auto">
+        <!-- Cabecera -->
+        <header class="text-center mb-10 animate-pop">
+            <div class="inline-block bg-teal-100 text-teal-800 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide uppercase mb-4 shadow-sm">
+                Evaluación
+            </div>
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">Examen de Economía</h1>
+            <p class="text-lg text-slate-600">Demuestra tus conocimientos sobre el proceso económico, los sectores y la globalización.</p>
+        </header>
+
+        <!-- Contenedor de preguntas -->
+        <main id="quiz-container" class="space-y-6 mb-8">
+            <!-- Las preguntas se generarán aquí con JavaScript -->
+        </main>
+
+        <!-- Botón de Enviar -->
+        <div class="text-center mt-8">
+            <button id="submit-btn" onclick="submitQuiz()" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 text-lg">
+                Terminar y ver nota
+            </button>
+        </div>
+
+        <!-- Tarjeta de Resultados (Oculta inicialmente) -->
+        <div id="results-card" class="hidden mt-10 bg-white rounded-3xl shadow-2xl p-8 text-center border-t-8 border-teal-500 animate-pop">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Resultados</h2>
+            <p id="score-text" class="text-5xl font-extrabold text-teal-600 mb-4"></p>
+            <p id="feedback-text" class="text-lg text-slate-600 mb-6"></p>
+            <button onclick="location.reload()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-6 rounded-xl transition-colors">
+                Repetir Examen
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Datos de las preguntas basadas en los apuntes
+        const questionsData = [
+            {
+                id: 1,
+                question: "¿Cuáles son las tres fases del proceso de la economía?",
+                options: [
+                    { id: '1a', text: "Producción, comercialización, consumo", correct: true },
+                    { id: '1b', text: "Fabricación, venta, reciclaje", correct: false },
+                    { id: '1c', text: "Agricultura, industria, servicios", correct: false }
+                ]
+            },
+            {
+                id: 2,
+                question: "¿Cuáles son los factores económicos principales?",
+                options: [
+                    { id: '2a', text: "Dinero, tiempo, esfuerzo, trabajadores", correct: false },
+                    { id: '2b', text: "Recursos naturales, recursos humanos, tecnología, capital", correct: true },
+                    { id: '2c', text: "Sector público, empresas, personas, bolsa", correct: false }
+                ]
+            },
+            {
+                id: 3,
+                question: "¿De qué se encarga el Sector Secundario (Sector 2)?",
+                options: [
+                    { id: '3a', text: "De transformar los productos naturales, como la industria", correct: true },
+                    { id: '3b', text: "De ofrecer servicios como sanidad o educación", correct: false },
+                    { id: '3c', text: "De los recursos naturales como agricultura y ganadería", correct: false }
+                ]
+            },
+            {
+                id: 4,
+                question: "¿Qué es el PIB?",
+                options: [
+                    { id: '4a', text: "Porcentaje de Importaciones Brutas", correct: false },
+                    { id: '4b', text: "Total de bienes y servicios que produce un país", correct: true },
+                    { id: '4c', text: "Producto de Inversión y Beneficios", correct: false }
+                ]
+            },
+            {
+                id: 5,
+                question: "¿Cuáles son las tres tendencias económicas de un país?",
+                options: [
+                    { id: '5a', text: "Expansiva, regresiva y estacionaria", correct: true },
+                    { id: '5b', text: "Positiva, negativa y neutral", correct: false },
+                    { id: '5c', text: "Planificada, mixta y capitalista", correct: false }
+                ]
+            },
+            {
+                id: 6,
+                question: "Según la ley de oferta y demanda, si la oferta es menor que la demanda...",
+                options: [
+                    { id: '6a', text: "El producto es más barato", correct: false },
+                    { id: '6b', text: "El producto es más caro", correct: true },
+                    { id: '6c', text: "El precio se mantiene igual", correct: false }
+                ]
+            },
+            {
+                id: 7,
+                question: "¿Qué es la globalización?",
+                options: [
+                    { id: '7a', text: "Un sistema donde el estado controla los medios de producción", correct: false },
+                    { id: '7b', text: "El proceso de integración e interconexión de los mercados a escala mundial", correct: true },
+                    { id: '7c', text: "El control absoluto de la economía por parte de un solo país", correct: false }
+                ]
+            },
+            {
+                id: 8,
+                question: "¿Qué impacto tiene la globalización en el mundo laboral?",
+                options: [
+                    { id: '8a', text: "Desarrollo tecnológico, subcontratación y flexibilidad laboral", correct: true },
+                    { id: '8b', text: "Mayor estabilidad y sueldos fijos para todos", correct: false },
+                    { id: '8c', text: "Desaparición total de los sindicatos", correct: false }
+                ]
+            },
+            {
+                id: 9,
+                question: "¿Qué diferencia a un trabajador asalariado de uno autónomo?",
+                options: [
+                    { id: '9a', text: "El asalariado trabaja por cuenta ajena y el autónomo por cuenta propia", correct: true },
+                    { id: '9b', text: "El autónomo es contratado obligatoriamente por el Estado", correct: false },
+                    { id: '9c', text: "El asalariado solo puede trabajar en el Sector 3", correct: false }
+                ]
+            },
+            {
+                id: 10,
+                question: "¿Cuáles son los tres pilares de la sustentabilidad económica?",
+                options: [
+                    { id: '10a', text: "Derechos laborales, salarios y prestaciones", correct: false },
+                    { id: '10b', text: "Rentabilidad, expansión y libre competencia", correct: false },
+                    { id: '10c', text: "Viabilidad económica, social y ecológica", correct: true }
+                ]
+            }
+        ];
+
+        // Mezclar opciones aleatoriamente para evitar patrones fijos
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Renderizar las preguntas en el DOM
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            
+            questionsData.forEach((q, index) => {
+                // Barajamos las opciones para cada pregunta
+                let optionsCopy = [...q.options];
+                shuffleArray(optionsCopy);
+
+                // Crear contenedor de la pregunta
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 animate-pop question-block';
+                questionDiv.style.animationDelay = `${index * 0.1}s`;
+                questionDiv.id = `question-block-${q.id}`;
+
+                // Título de la pregunta
+                const questionTitle = document.createElement('h3');
+                questionTitle.className = 'text-xl font-semibold text-slate-800 mb-5';
+                questionTitle.innerHTML = `<span class="text-teal-500 mr-2">${index + 1}.</span> ${q.question}`;
+                questionDiv.appendChild(questionTitle);
+
+                // Contenedor de opciones
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'space-y-3';
+
+                optionsCopy.forEach(opt => {
+                    const label = document.createElement('label');
+                    // Clases iniciales que incluyen peer-checked para dar estilo visual al seleccionar
+                    label.className = `option-label flex items-center p-4 border-2 border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors`;
+                    label.id = `label-${opt.id}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question-${q.id}`;
+                    input.value = opt.id;
+                    input.className = 'w-5 h-5 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500 focus:ring-2 mr-4 cursor-pointer peer';
+                    
+                    // Al seleccionar, cambiar el estilo del label padre
+                    input.addEventListener('change', (e) => {
+                        // Resetear todos los labels de esta pregunta
+                        const allLabels = optionsDiv.querySelectorAll('.option-label');
+                        allLabels.forEach(l => {
+                            l.classList.remove('border-teal-500', 'bg-teal-50');
+                            l.classList.add('border-slate-100');
+                        });
+                        // Aplicar estilo al seleccionado
+                        if(e.target.checked) {
+                            label.classList.remove('border-slate-100');
+                            label.classList.add('border-teal-500', 'bg-teal-50');
+                        }
+                    });
+
+                    const span = document.createElement('span');
+                    span.className = 'text-slate-700 font-medium select-none';
+                    span.textContent = opt.text;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    optionsDiv.appendChild(label);
+                });
+
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let answeredCount = 0;
+            
+            // Bloquear el contenedor para no permitir más cambios
+            document.getElementById('quiz-container').classList.add('exam-finished');
+            
+            // Evaluar cada pregunta
+            questionsData.forEach(q => {
+                const selectedInput = document.querySelector(`input[name="question-${q.id}"]:checked`);
+                const questionBlock = document.getElementById(`question-block-${q.id}`);
+                
+                if (selectedInput) {
+                    answeredCount++;
+                    const selectedId = selectedInput.value;
+                    
+                    // Buscar la opción seleccionada en los datos
+                    const selectedOption = q.options.find(opt => opt.id === selectedId);
+                    
+                    // Encontrar la opción correcta para marcarla siempre
+                    const correctOption = q.options.find(opt => opt.correct);
+                    const correctLabel = document.getElementById(`label-${correctOption.id}`);
+                    
+                    // Limpiar clases previas de selección
+                    const labels = questionBlock.querySelectorAll('.option-label');
+                    labels.forEach(l => l.classList.remove('border-teal-500', 'bg-teal-50'));
+
+                    if (selectedOption.correct) {
+                        // Respuesta Correcta
+                        score++;
+                        const label = document.getElementById(`label-${selectedId}`);
+                        label.classList.add('border-green-500', 'bg-green-50', 'text-green-800');
+                        // Añadir un check
+                        const iconSpan = document.createElement('span');
+                        iconSpan.innerHTML = '✅';
+                        iconSpan.className = 'ml-auto';
+                        label.appendChild(iconSpan);
+                    } else {
+                        // Respuesta Incorrecta
+                        const wrongLabel = document.getElementById(`label-${selectedId}`);
+                        wrongLabel.classList.add('border-red-500', 'bg-red-50', 'text-red-800');
+                        const iconSpanWrong = document.createElement('span');
+                        iconSpanWrong.innerHTML = '❌';
+                        iconSpanWrong.className = 'ml-auto';
+                        wrongLabel.appendChild(iconSpanWrong);
+                        
+                        // Resaltar también cuál era la correcta
+                        correctLabel.classList.add('border-green-500', 'bg-green-50');
+                        const iconSpanRight = document.createElement('span');
+                        iconSpanRight.innerHTML = '🎯 (Correcta)';
+                        iconSpanRight.className = 'ml-auto text-green-700 text-sm font-bold';
+                        correctLabel.appendChild(iconSpanRight);
+                    }
+                } else {
+                    // Si no respondió, marcar la correcta de todas formas para que aprenda
+                    const correctOption = q.options.find(opt => opt.correct);
+                    const correctLabel = document.getElementById(`label-${correctOption.id}`);
+                    correctLabel.classList.add('border-green-500', 'bg-green-50', 'border-dashed');
+                }
+                
+                // Deshabilitar inputs
+                const inputs = document.querySelectorAll(`input[name="question-${q.id}"]`);
+                inputs.forEach(input => input.disabled = true);
+            });
+
+            // Comprobar si faltaron preguntas por responder (opcional, solo mostramos alerta visual pero corregimos igual)
+            if(answeredCount < questionsData.length) {
+                // Podríamos usar un custom modal, pero lo gestionamos en el texto final
+            }
+
+            // Mostrar resultados
+            const btn = document.getElementById('submit-btn');
+            btn.style.display = 'none';
+
+            const resultsCard = document.getElementById('results-card');
+            resultsCard.classList.remove('hidden');
+            
+            const scoreText = document.getElementById('score-text');
+            const feedbackText = document.getElementById('feedback-text');
+            
+            scoreText.textContent = `${score} / 10`;
+            
+            if (score === 10) {
+                feedbackText.textContent = "¡Excelente! Tienes un dominio perfecto de los conceptos económicos.";
+                scoreText.classList.replace('text-teal-600', 'text-green-500');
+            } else if (score >= 7) {
+                feedbackText.textContent = "¡Muy buen trabajo! Has entendido la mayor parte del temario.";
+            } else if (score >= 5) {
+                feedbackText.textContent = "¡Aprobado! Pero te recomendamos repasar un poco más los apuntes.";
+                scoreText.classList.replace('text-teal-600', 'text-yellow-500');
+            } else {
+                feedbackText.textContent = "Necesitas repasar más los apuntes. ¡No te desanimes, vuelve a intentarlo!";
+                scoreText.classList.replace('text-teal-600', 'text-red-500');
+            }
+            
+            // Hacer scroll hacia los resultados
+            resultsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Inicializar al cargar
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
