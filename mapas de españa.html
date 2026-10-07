@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapas Interactivos - Wisdom Corner Academy</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #f6ad55;
+            --bg-color: #f0f4f8;
+            --text-color: #2d3748;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 2.5em;
+        }
+        .header p {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+        .instructions {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-width: 900px;
+            text-align: center;
+            border-left: 6px solid var(--secondary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Contenedor de la Imagen Local */
+        .map-area {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            display: none;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 3px solid var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #dbeafe; /* Fondo azul clarito por si tarda en cargar */
+        }
+        .map-area.active {
+            display: block;
+        }
+        .map-image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* ----- SISTEMA DE PINES (NOVEDAD) ----- */
+        .pin {
+            position: absolute;
+            transform: translate(-50%, -50%); /* Centra el punto exacto en la coordenada */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            transition: z-index 0.2s;
+        }
+        .pin:hover, .pin:focus-within {
+            z-index: 25; /* Pasa al frente al escribir */
+        }
+        
+        /* El puntito visual */
+        .pin .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 4px;
+        }
+        /* Colores según el tipo de accidente geográfico */
+        .dot.water { background-color: #3182ce; } /* Ríos, mares, islas */
+        .dot.coast { background-color: #e53e3e; } /* Cabos y Golfos */
+        .dot.relief { background-color: #8b4513; } /* Cordilleras y Picos */
+        .dot.political { background-color: #2d3748; width: 8px; height: 8px;} /* Provincias */
+
+        /* Estilos de las cajas de texto */
+        .map-input {
+            padding: 2px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            width: 70px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+        .map-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 12px var(--secondary-color);
+            width: 110px; 
+            background-color: white;
+        }
+        
+        /* Diferenciación para Mapa Político */
+        .input-ccaa { border-color: #3182ce; font-size: 12px; width: 85px; }
+        .input-prov { border-color: #dd6b20; font-size: 10px; width: 60px; color: #4a5568; }
+
+        .map-input.correct {
+            background-color: #c6f6d5 !important;
+            border-color: #38a169 !important;
+            color: #276749;
+            width: auto;
+            min-width: 70px;
+        }
+        .map-input.error {
+            background-color: #fed7d7;
+            border-color: #e53e3e;
+            animation: shake 0.4s;
+        }
+        .map-input.failed {
+            background-color: #fed7d7 !important;
+            border-color: #e53e3e !important;
+            color: #c53030;
+            width: auto;
+            min-width: 70px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Wisdom Corner Academy</h1>
+        <p>Mapas de España - Situación Geográfica</p>
+    </div>
+
+    <div class="instructions">
+        <strong>Instrucciones:</strong> El <strong>puntito de color</strong> te indica el lugar exacto (río, cabo, pico o provincia). Escribe el nombre en su recuadro.<br>
+        Tienes <strong>3 intentos</strong> por hueco. Si fallas 3 veces, la respuesta se revelará en rojo. <br>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showMap(1)">Mapa 1: Costas y Ríos</button>
+        <button class="tab-btn" onclick="showMap(2)">Mapa 2: Relieve</button>
+        <button class="tab-btn" onclick="showMap(3)">Mapa 3: Político</button>
+    </div>
+
+    <!-- ================= MAPA 1: RÍOS Y COSTAS ================= -->
+    <div id="mapa1" class="map-area active">
+        <img src="mapa-fisico-espana-para-imprimir.png" class="map-image" alt="Mapa Físico de España">
+        
+        <!-- Ríos (Puntos Azules) -->
+        <div class="pin" style="top: 15%; left: 18%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Miño" placeholder="Río..."></div>
+        <div class="pin" style="top: 8%; left: 27%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Navia" placeholder="Río..."></div>
+        <div class="pin" style="top: 32%; left: 32%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Duero" placeholder="Río..."></div>
+        <div class="pin" style="top: 46%; left: 30%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Tajo" placeholder="Río..."></div>
+        <div class="pin" style="top: 62%; left: 30%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Guadiana" placeholder="Río..."></div>
+        <div class="pin" style="top: 73%; left: 27%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Odiel" placeholder="Río..."></div>
+        <div class="pin" style="top: 72%; left: 31%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Tinto" placeholder="Río..."></div>
+        <div class="pin" style="top: 71%; left: 40%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Guadalquivir" placeholder="Río..."></div>
+        <div class="pin" style="top: 66%; left: 64%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Segura" placeholder="Río..."></div>
+        <div class="pin" style="top: 55%; left: 63%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Júcar" placeholder="Río..."></div>
+        <div class="pin" style="top: 48%; left: 66%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Turia" placeholder="Río..."></div>
+        <div class="pin" style="top: 26%; left: 65%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Ebro" placeholder="Río..."></div>
+
+        <!-- Costas: Cabos y Golfos (Puntos Rojos) -->
+        <div class="pin" style="top: 15%; left: 5%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. Finisterre" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 4%; left: 34%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. de Peñas" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 8%; left: 55%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="G. de Vizcaya" placeholder="Golfo..."></div>
+        <div class="pin" style="top: 19%; left: 93%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. de Creus" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 57%; left: 78%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. de la Nao" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 71%; left: 72%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. de Palos" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 83%; left: 58%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="C. de Gata" placeholder="Cabo..."></div>
+        <div class="pin" style="top: 81%; left: 28%;"><span class="dot coast"></span><input type="text" class="map-input" data-answer="G. de Cádiz" placeholder="Golfo..."></div>
+
+        <!-- Mares (Puntos Azules) -->
+        <div class="pin" style="top: 3%; left: 45%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Mar Cantábrico" placeholder="Mar..."></div>
+        <div class="pin" style="top: 40%; left: 5%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Océano Atlántico" placeholder="Océano..."></div>
+        <div class="pin" style="top: 65%; left: 88%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Mar Mediterráneo" placeholder="Mar..."></div>
+        <div class="pin" style="top: 67%; left: 70%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Mar Menor" placeholder="Mar..."></div>
+
+        <!-- Islas (Puntos Azules) -->
+        <div class="pin" style="top: 48%; left: 88%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Mallorca" placeholder="Isla..."></div>
+        <div class="pin" style="top: 42%; left: 95%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Menorca" placeholder="Isla..."></div>
+        <div class="pin" style="top: 55%; left: 82%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Ibiza" placeholder="Isla..."></div>
+        <div class="pin" style="top: 60%; left: 81%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Formentera" placeholder="Isla..."></div>
+        <div class="pin" style="top: 52%; left: 88%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Cabrera" placeholder="Isla..."></div>
+        
+        <div class="pin" style="top: 81%; left: 28%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Lanzarote" placeholder="Isla..."></div>
+        <div class="pin" style="top: 87%; left: 24%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Fuerteventura" placeholder="Isla..."></div>
+        <div class="pin" style="top: 92%; left: 17%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Gran Canaria" placeholder="Isla..."></div>
+        <div class="pin" style="top: 87%; left: 12%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Tenerife" placeholder="Isla..."></div>
+        <div class="pin" style="top: 91%; left: 9%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Gomera" placeholder="Isla..."></div>
+        <div class="pin" style="top: 83%; left: 4%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="La Palma" placeholder="Isla..."></div>
+        <div class="pin" style="top: 95%; left: 4%;"><span class="dot water"></span><input type="text" class="map-input" data-answer="Hierro" placeholder="Isla..."></div>
+    </div>
+
+    <!-- ================= MAPA 2: RELIEVES ================= -->
+    <div id="mapa2" class="map-area">
+        <img src="mapa-fisico-espana-para-imprimir.png" class="map-image" alt="Mapa Relieve de España">
+        
+        <!-- Relieves (Puntos Marrones) -->
+        <div class="pin" style="top: 12%; left: 40%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Cordillera Cantábrica" placeholder="Cordillera..."></div>
+        <div class="pin" style="top: 14%; left: 60%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Montes Vascos" placeholder="Montes..."></div>
+        <div class="pin" style="top: 15%; left: 75%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Pirineos" placeholder="Cordillera..."></div>
+        <div class="pin" style="top: 20%; left: 25%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Montes de León" placeholder="Montes..."></div>
+        <div class="pin" style="top: 32%; left: 60%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Sistema Ibérico" placeholder="Sistema..."></div>
+        <div class="pin" style="top: 40%; left: 45%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Sistema Central" placeholder="Sistema..."></div>
+        <div class="pin" style="top: 28%; left: 84%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Cordillera Costero Catalana" placeholder="Cordillera..."></div>
+        <div class="pin" style="top: 52%; left: 42%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Montes de Toledo" placeholder="Montes..."></div>
+        <div class="pin" style="top: 64%; left: 42%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Sierra Morena" placeholder="Sierra..."></div>
+        <div class="pin" style="top: 78%; left: 55%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Sistemas Béticos" placeholder="Sistemas..."></div>
+        
+        <div class="pin" style="top: 24%; left: 65%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Depresión del Ebro" placeholder="Depresión..."></div>
+        <div class="pin" style="top: 70%; left: 35%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Depresión del Guadalquivir" placeholder="Depresión..."></div>
+        
+        <div class="pin" style="top: 80%; left: 52%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Pico del Mulhacén" placeholder="Pico..."></div>
+        <div class="pin" style="top: 85%; left: 12%;"><span class="dot relief"></span><input type="text" class="map-input" data-answer="Pico del Teide" placeholder="Pico..."></div>
+    </div>
+
+    <!-- ================= MAPA 3: POLÍTICO ================= -->
+    <div id="mapa3" class="map-area">
+        <img src="mapa-espana-mudo provincias.png" class="map-image" alt="Mapa Político de España">
+        
+        <!-- CCAA (Puntos Negros, Cajas Azules) -->
+        <div class="pin" style="top: 10%; left: 14%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Galicia" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 5%; left: 32%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Asturias" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 5%; left: 45%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Cantabria" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 5%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="País Vasco" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 10%; left: 63%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Navarra" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 25%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="La Rioja" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 25%; left: 70%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Aragón" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 20%; left: 85%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Cataluña" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 25%; left: 35%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Castilla y León" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 45%; left: 52%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Madrid" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 58%; left: 25%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Extremadura" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 55%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Castilla-La Mancha" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 52%; left: 75%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Comunidad Valenciana" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 72%; left: 70%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Murcia" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 75%; left: 45%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Andalucía" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 42%; left: 92%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Islas Baleares" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 85%; left: 15%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Canarias" placeholder="CCAA..."></div>
+        <div class="pin" style="top: 90%; left: 42%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Ceuta" placeholder="Ciudad..."></div>
+        <div class="pin" style="top: 95%; left: 58%;"><span class="dot political"></span><input type="text" class="map-input input-ccaa" data-answer="Melilla" placeholder="Ciudad..."></div>
+
+        <!-- Provincias (Puntos Negros, Cajas Naranjas) -->
+        <div class="pin" style="top: 15%; left: 10%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="A Coruña" placeholder="Prov..."></div>
+        <div class="pin" style="top: 15%; left: 18%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Lugo" placeholder="Prov..."></div>
+        <div class="pin" style="top: 22%; left: 10%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Pontevedra" placeholder="Prov..."></div>
+        <div class="pin" style="top: 24%; left: 18%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Ourense" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 12%; left: 50%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Bizkaia" placeholder="Prov..."></div>
+        <div class="pin" style="top: 12%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Gipuzkoa" placeholder="Prov..."></div>
+        <div class="pin" style="top: 16%; left: 52%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Álava" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 18%; left: 70%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Huesca" placeholder="Prov..."></div>
+        <div class="pin" style="top: 30%; left: 65%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Zaragoza" placeholder="Prov..."></div>
+        <div class="pin" style="top: 38%; left: 70%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Teruel" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 22%; left: 80%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Lleida" placeholder="Prov..."></div>
+        <div class="pin" style="top: 20%; left: 90%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Girona" placeholder="Prov..."></div>
+        <div class="pin" style="top: 28%; left: 88%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Barcelona" placeholder="Prov..."></div>
+        <div class="pin" style="top: 32%; left: 82%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Tarragona" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 20%; left: 30%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="León" placeholder="Prov..."></div>
+        <div class="pin" style="top: 20%; left: 40%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Palencia" placeholder="Prov..."></div>
+        <div class="pin" style="top: 20%; left: 48%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Burgos" placeholder="Prov..."></div>
+        <div class="pin" style="top: 32%; left: 28%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Zamora" placeholder="Prov..."></div>
+        <div class="pin" style="top: 32%; left: 38%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Valladolid" placeholder="Prov..."></div>
+        <div class="pin" style="top: 30%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Soria" placeholder="Prov..."></div>
+        <div class="pin" style="top: 42%; left: 28%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Salamanca" placeholder="Prov..."></div>
+        <div class="pin" style="top: 42%; left: 38%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Ávila" placeholder="Prov..."></div>
+        <div class="pin" style="top: 38%; left: 45%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Segovia" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 40%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Guadalajara" placeholder="Prov..."></div>
+        <div class="pin" style="top: 52%; left: 45%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Toledo" placeholder="Prov..."></div>
+        <div class="pin" style="top: 50%; left: 60%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Cuenca" placeholder="Prov..."></div>
+        <div class="pin" style="top: 62%; left: 48%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Ciudad Real" placeholder="Prov..."></div>
+        <div class="pin" style="top: 60%; left: 62%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Albacete" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 50%; left: 25%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Cáceres" placeholder="Prov..."></div>
+        <div class="pin" style="top: 65%; left: 25%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Badajoz" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 45%; left: 75%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Castellón" placeholder="Prov..."></div>
+        <div class="pin" style="top: 58%; left: 70%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Valencia" placeholder="Prov..."></div>
+        <div class="pin" style="top: 65%; left: 75%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Alicante" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 75%; left: 25%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Huelva" placeholder="Prov..."></div>
+        <div class="pin" style="top: 78%; left: 35%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Sevilla" placeholder="Prov..."></div>
+        <div class="pin" style="top: 72%; left: 42%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Córdoba" placeholder="Prov..."></div>
+        <div class="pin" style="top: 72%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Jaén" placeholder="Prov..."></div>
+        <div class="pin" style="top: 86%; left: 35%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Cádiz" placeholder="Prov..."></div>
+        <div class="pin" style="top: 82%; left: 45%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Málaga" placeholder="Prov..."></div>
+        <div class="pin" style="top: 80%; left: 55%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Granada" placeholder="Prov..."></div>
+        <div class="pin" style="top: 82%; left: 65%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Almería" placeholder="Prov..."></div>
+        
+        <div class="pin" style="top: 92%; left: 10%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Santa Cruz de Tenerife" placeholder="Prov..."></div>
+        <div class="pin" style="top: 92%; left: 25%;"><span class="dot political"></span><input type="text" class="map-input input-prov" data-answer="Las Palmas" placeholder="Prov..."></div>
+    </div>
+
+    <script>
+        function showMap(mapId) {
+            document.querySelectorAll('.map-area').forEach(map => map.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('mapa' + mapId).classList.add('active');
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons[mapId - 1].classList.add('active');
+        }
+
+        document.querySelectorAll('.map-input').forEach(input => {
+            input.dataset.attempts = 3; 
+            
+            input.addEventListener('change', function() {
+                let normalize = (str) => {
+                    return str.toLowerCase()
+                              .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                              .replace(/[^a-z0-9 ]/g, "")
+                              .trim();
+                };
+                
+                let correctAnswer = normalize(this.dataset.answer);
+                let userAnswer = normalize(this.value);
+                let attempts = parseInt(this.dataset.attempts);
+
+                this.classList.remove('error');
+
+                if(userAnswer === correctAnswer || 
+                  (userAnswer.includes(correctAnswer) && userAnswer.length < correctAnswer.length + 5) || 
+                  (correctAnswer.includes(userAnswer) && userAnswer.length > 3)) {
+                    
+                    this.value = this.dataset.answer; 
+                    this.classList.add('correct');
+                    this.disabled = true; 
+                } else {
+                    attempts--;
+                    this.dataset.attempts = attempts;
+                    
+                    if(attempts > 0) {
+                        void this.offsetWidth; 
+                        this.classList.add('error');
+                        this.value = '';
+                        this.placeholder = `Quedan ${attempts}`;
+                    } else {
+                        this.value = this.dataset.answer; 
+                        this.classList.add('failed');
+                        this.disabled = true; 
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
