@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Grammar Games</title>
+    <style>
+        :root {
+            --primary: #003366; /* Wisdom Corner Blue */
+            --secondary: #FFB81C; /* Wisdom Corner Gold */
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary);
+        }
+
+        header h1 { margin: 0; font-size: 2.5em; }
+        header p { margin: 5px 0 0 0; font-size: 1.2em; color: var(--secondary); }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav button {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav button:hover, nav button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .game-section { display: none; }
+        .game-section.active { display: block; }
+
+        /* Game 1: Matching */
+        .match-container { display: flex; justify-content: space-between; }
+        .match-column { width: 45%; display: flex; flex-direction: column; gap: 10px; }
+        .match-btn {
+            padding: 15px; border: 2px solid #ddd; background: #fafafa;
+            cursor: pointer; border-radius: 8px; text-align: center; font-size: 1.1em;
+        }
+        .match-btn.selected { border-color: var(--secondary); background: #fff8e1; }
+        .match-btn.correct { border-color: var(--success); background: #e8f8f5; color: var(--success); pointer-events: none; }
+        
+        /* Game 2: Whack a mole */
+        .mole-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            max-width: 500px; margin: 0 auto;
+        }
+        .mole-hole {
+            background: #ddd; height: 120px; border-radius: 15px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2em; font-weight: bold; cursor: pointer; overflow: hidden;
+            position: relative; border: 4px solid #ccc;
+        }
+        .mole-word {
+            display: none; width: 100%; height: 100%; background: var(--secondary);
+            color: var(--primary); justify-content: center; align-items: center; text-align: center; padding: 10px; box-sizing: border-box;
+        }
+        .mole-word.active { display: flex; }
+        #mole-score { text-align: center; font-size: 1.5em; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
+
+        /* Quizzes */
+        .quiz-item {
+            border-bottom: 1px solid #eee; padding: 15px 0;
+        }
+        .quiz-item input {
+            padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 1em; width: 150px;
+        }
+        .quiz-item button {
+            padding: 8px 15px; background: var(--secondary); color: var(--primary); border: none; border-radius: 4px; cursor: pointer; font-weight: bold;
+        }
+        .quiz-feedback { margin-top: 10px; font-size: 0.95em; padding: 10px; border-radius: 5px; display: none; }
+        .feedback-error { background: #fdeedc; color: #b73c2a; border-left: 4px solid var(--error); }
+        .feedback-success { background: #e8f8f5; color: #27ae60; border-left: 4px solid var(--success); }
+        .feedback-solution { background: #e3f2fd; color: #1565c0; border-left: 4px solid #1976d2; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Wisdom Corner Academy</h1>
+        <p>Interactive Grammar & Vocabulary Mastery</p>
+    </header>
+
+    <nav>
+        <button onclick="showGame('game1')" class="active" id="nav-game1">1. Flechas (Significado)</button>
+        <button onclick="showGame('game2')" id="nav-game2">2. Cazar el Topo</button>
+        <button onclick="showGame('game3')" id="nav-game3">3. Presente Simple</button>
+        <button onclick="showGame('game4')" id="nav-game4">4. Presente Continuo</button>
+        <button onclick="showGame('game5')" id="nav-game5">5. Mix (Simple vs Continuo)</button>
+    </nav>
+
+    <div class="container">
+        
+        <!-- JUEGO 1: FLECHAS -->
+        <div id="game1" class="game-section active">
+            <h2>Juego 1: Une con flechas (Significado)</h2>
+            <p>Selecciona una expresión en inglés y su traducción correcta al español. ¡Practica las expresiones de frecuencia!</p>
+            <div class="match-container" id="match-board">
+                <div class="match-column" id="col-en"></div>
+                <div class="match-column" id="col-es"></div>
+            </div>
+        </div>
+
+        <!-- JUEGO 2: TOPO -->
+        <div id="game2" class="game-section">
+            <h2>Juego 2: Cazar el Topo (Adverbios)</h2>
+            <p>¡Haz clic <strong>solo</strong> en los Adverbios y Expresiones de Frecuencia! Tienes que cazar 10 correctos.</p>
+            <div id="mole-score">Puntuación: 0 / 10</div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button onclick="startMoleGame()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">Iniciar Juego</button>
+            </div>
+            <div class="mole-grid" id="mole-board">
+                <!-- 9 holes -->
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+                <div class="mole-hole"><div class="mole-word"></div></div>
+            </div>
+        </div>
+
+        <!-- JUEGO 3: PRESENTE SIMPLE -->
+        <div id="game3" class="game-section">
+            <h2>Juego 3: Presente Simple (20 Ejercicios)</h2>
+            <p>Rellena los huecos usando el <strong>Presente Simple</strong> (+, -, ?). Tienes 2 intentos por pregunta.</p>
+            <div id="quiz-simple"></div>
+        </div>
+
+        <!-- JUEGO 4: PRESENTE CONTINUO -->
+        <div id="game4" class="game-section">
+            <h2>Juego 4: Presente Continuo (20 Ejercicios)</h2>
+            <p>Rellena los huecos usando el <strong>Presente Continuo</strong> (+, -, ?). Tienes 2 intentos por pregunta.</p>
+            <div id="quiz-continuous"></div>
+        </div>
+
+        <!-- JUEGO 5: MIXTO -->
+        <div id="game5" class="game-section">
+            <h2>Juego 5: Presente Simple vs Presente Continuo (20 Ejercicios)</h2>
+            <p>¡Demuestra que sabes diferenciarlos! Tienes 2 intentos por pregunta.</p>
+            <div id="quiz-mixed"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- NAVIGATION ---
+        function showGame(gameId) {
+            document.querySelectorAll('.game-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById(gameId).classList.add('active');
+            document.getElementById('nav-' + gameId).classList.add('active');
+        }
+
+        // --- DATA ---
+        // Extraído de image.png: always, hardly ever, never, often, sometimes, usually, etc.
+        const matchData = [
+            { id: 1, en: "always", es: "siempre" },
+            { id: 2, en: "hardly ever", es: "casi nunca" },
+            { id: 3, en: "sometimes", es: "a veces" },
+            { id: 4, en: "usually", es: "normalmente" },
+            { id: 5, en: "often", es: "a menudo" },
+            { id: 6, en: "never", es: "nunca" },
+            { id: 7, en: "twice a day", es: "dos veces al día" },
+            { id: 8, en: "once a week", es: "una vez a la semana" },
+            { id: 9, en: "three times a month", es: "tres veces al mes" },
+            { id: 10, en: "twice a year", es: "dos veces al año" }
+        ];
+
+        // --- GAME 1: MATCHING LOGIC ---
+        let selectedEn = null;
+        let selectedEs = null;
+        
+        function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+        function initMatchGame() {
+            const colEn = document.getElementById('col-en');
+            const colEs = document.getElementById('col-es');
+            
+            let enItems = shuffle([...matchData]);
+            let esItems = shuffle([...matchData]);
+
+            enItems.forEach(item => {
+                let btn = document.createElement('div');
+                btn.className = 'match-btn en-btn'; btn.innerText = item.en; btn.dataset.id = item.id;
+                btn.onclick = () => handleMatchClick(btn, 'en');
+                colEn.appendChild(btn);
+            });
+
+            esItems.forEach(item => {
+                let btn = document.createElement('div');
+                btn.className = 'match-btn es-btn'; btn.innerText = item.es; btn.dataset.id = item.id;
+                btn.onclick = () => handleMatchClick(btn, 'es');
+                colEs.appendChild(btn);
+            });
+        }
+
+        function handleMatchClick(btn, type) {
+            if(btn.classList.contains('correct')) return;
+            
+            if(type === 'en') {
+                document.querySelectorAll('.en-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedEn = btn;
+            } else {
+                document.querySelectorAll('.es-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedEs = btn;
+            }
+
+            if(selectedEn && selectedEs) {
+                if(selectedEn.dataset.id === selectedEs.dataset.id) {
+                    selectedEn.classList.add('correct'); selectedEn.classList.remove('selected');
+                    selectedEs.classList.add('correct'); selectedEs.classList.remove('selected');
+                } else {
+                    setTimeout(() => {
+                        selectedEn.classList.remove('selected');
+                        selectedEs.classList.remove('selected');
+                        selectedEn = null; selectedEs = null;
+                    }, 500);
+                }
+                selectedEn = null; selectedEs = null;
+            }
+        }
+        initMatchGame();
+
+        // --- GAME 2: WHACK A MOLE ---
+        const adverbsList = ["always", "hardly ever", "never", "often", "sometimes", "usually", "once a month", "five times a week", "twice a day", "four times a day"];
+        const decoyList = ["apple", "run", "beautiful", "yesterday", "tomorrow", "table", "quickly", "car", "blue", "water"];
+        let moleScore = 0;
+        let moleInterval;
+        let gameActive = false;
+
+        function startMoleGame() {
+            if(gameActive) return;
+            moleScore = 0;
+            document.getElementById('mole-score').innerText = `Puntuación: 0 / 10`;
+            gameActive = true;
+            moleInterval = setInterval(popMole, 1200);
+        }
+
+        function popMole() {
+            if(!gameActive) return;
+            const holes = document.querySelectorAll('.mole-word');
+            holes.forEach(h => h.classList.remove('active'));
+            
+            const randomHole = holes[Math.floor(Math.random() * holes.length)];
+            const isAdverb = Math.random() > 0.4; // 60% chance to be adverb
+            
+            const word = isAdverb ? adverbsList[Math.floor(Math.random() * adverbsList.length)] : decoyList[Math.floor(Math.random() * decoyList.length)];
+            
+            randomHole.innerText = word;
+            randomHole.dataset.isAdverb = isAdverb;
+            randomHole.classList.add('active');
+
+            randomHole.onclick = function() {
+                if(this.dataset.isAdverb === "true") {
+                    moleScore++;
+                    this.classList.remove('active');
+                    document.getElementById('mole-score').innerText = `Puntuación: ${moleScore} / 10`;
+                    if(moleScore >= 10) {
+                        clearInterval(moleInterval);
+                        gameActive = false;
+                        setTimeout(() => alert("¡Felicidades! Has cazado 10 expresiones de frecuencia de Wisdom Corner."), 100);
+                    }
+                } else {
+                    moleScore = Math.max(0, moleScore - 1);
+                    document.getElementById('mole-score').innerText = `Puntuación: ${moleScore} / 10`;
+                    this.classList.remove('active');
+                }
+            };
+            
+            setTimeout(() => { randomHole.classList.remove('active'); }, 1000);
+        }
+
+        // --- QUIZ LOGIC (Games 3, 4, 5) ---
+        const exReasonSimple = "El Presente Simple se usa para rutinas, hábitos o verdades generales. Suele ir con adverbios como 'always', 'every day'.";
+        const exReasonCont = "El Presente Continuo se usa para acciones que están ocurriendo ahora mismo ('now', 'at the moment') o situaciones temporales.";
+
+        const qSimple = [
+            { q: "I {input} (play) tennis every Sunday. (+)", a: "play", exp: exReasonSimple },
+            { q: "She {input} (not/eat) meat. (-)", a: "doesn't eat", exp: "Tercera persona singular (She) usa 'doesn't' + verbo en infinitivo para rutinas." },
+            { q: "{input} (you/like) pizza? (?)", a: "do you like", exp: "Para preguntas usamos 'Do/Does' + sujeto + infinitivo." },
+            { q: "He always {input} (arrive) late. (+)", a: "arrives", exp: "'always' indica rutina. Tercera persona añade '-s'." },
+            { q: "We {input} (not/go) to the gym on Mondays. (-)", a: "don't go", exp: "'We' usa auxiliar 'don't' para negativo." },
+            { q: "{input} (she/study) French? (?)", a: "does she study", exp: "Pregunta tercera persona: 'Does' + she + infinitivo." },
+            { q: "They {input} (live) in London. (+)", a: "live", exp: "Hecho permanente, no cambia el verbo con 'They'." },
+            { q: "The train {input} (leave) at 8:00 AM. (+)", a: "leaves", exp: "Horarios fijos se expresan en presente simple." },
+            { q: "I {input} (not/know) the answer. (-)", a: "don't know", exp: "Verbos de estado (know) casi siempre van en presente simple." },
+            { q: "{input} (it/rain) a lot here? (?)", a: "does it rain", exp: "Pregunta general sobre el clima." },
+            { q: "My cat usually {input} (sleep) all day. (+)", a: "sleeps", exp: "Hábito ('usually'), el sujeto es 'it', añade '-s'." },
+            { q: "You {input} (not/listen) to me. (-)", a: "don't listen", exp: "Negativa con 'You' usa 'don't'." },
+            { q: "{input} (they/play) football? (?)", a: "do they play", exp: "Pregunta rutina con 'They'." },
+            { q: "Water {input} (boil) at 100 degrees. (+)", a: "boils", exp: "Verdad científica/general, presente simple." },
+            { q: "He {input} (not/watch) TV often. (-)", a: "doesn't watch", exp: "Rutina negativa 3ª persona ('often')." },
+            { q: "I {input} (read) a book every month. (+)", a: "read", exp: "Hábito ('every month')." },
+            { q: "{input} (we/have) time? (?)", a: "do we have", exp: "Pregunta con verbo principal 'have'." },
+            { q: "She never {input} (cry). (+)", a: "cries", exp: "Hábito ('never'), 'y' cambia a 'ies' en 3ª persona." },
+            { q: "The store {input} (not/open) on Sundays. (-)", a: "doesn't open", exp: "Horario/rutina del comercio." },
+            { q: "{input} (he/work) here? (?)", a: "does he work", exp: "Pregunta sobre un hecho permanente." }
+        ];
+
+        const qContinuous = [
+            { q: "I {input} (read) a great book right now. (+)", a: "am reading", exp: exReasonCont },
+            { q: "She {input} (not/watch) TV at the moment. (-)", a: "isn't watching", exp: "Acción en este momento en negativa (is not + ing)." },
+            { q: "{input} (they/play) football now? (?)", a: "are they playing", exp: "Pregunta en progreso: Are + sujeto + ing." },
+            { q: "Look! The bus {input} (come). (+)", a: "is coming", exp: "Acción que está ocurriendo frente a tus ojos ('Look!')." },
+            { q: "We {input} (not/study) right now. (-)", a: "aren't studying", exp: "Negativa plural de una acción en progreso." },
+            { q: "{input} (you/listen) to me? (?)", a: "are you listening", exp: "Pregunta sobre la atención en el momento actual." },
+            { q: "He {input} (work) from home this week. (+)", a: "is working", exp: "Situación temporal ('this week'), se usa continuo." },
+            { q: "The kids {input} (not/sleep) yet. (-)", a: "aren't sleeping", exp: "Acción en desarrollo (o no) en el presente." },
+            { q: "{input} (she/cook) dinner now? (?)", a: "is she cooking", exp: "Pregunta sobre acción actual." },
+            { q: "I {input} (not/go) to the party tonight. (-)", a: "am not going", exp: "Presente continuo para planes futuros confirmados." },
+            { q: "Listen! Somebody {input} (sing). (+)", a: "is singing", exp: "Ocurriendo en el momento ('Listen!')." },
+            { q: "They {input} (stay) in a hotel. (+)", a: "are staying", exp: "Situación temporal (no permanente)." },
+            { q: "{input} (it/rain) outside? (?)", a: "is it raining", exp: "Pregunta sobre el clima en el momento actual." },
+            { q: "You {input} (not/wear) a jacket today. (-)", a: "aren't wearing", exp: "Descripción de lo que lleva puesto hoy (temporal)." },
+            { q: "The dog {input} (bark) loudly. (+)", a: "is barking", exp: "Acción sucediendo ahora." },
+            { q: "{input} (we/leave) soon? (?)", a: "are we leaving", exp: "Plan futuro / acción a punto de ocurrir." },
+            { q: "She {input} (talk) on the phone at the moment. (+)", a: "is talking", exp: "'at the moment' indica acción continua." },
+            { q: "I {input} (not/use) the computer. (-)", a: "am not using", exp: "Negando una acción en el momento presente." },
+            { q: "The population {input} (increase) fast. (+)", a: "is increasing", exp: "Procesos de cambio gradual se usan con continuo." },
+            { q: "{input} (he/wait) for the bus? (?)", a: "is he waiting", exp: "Acción de esperar en el momento." }
+        ];
+
+        const qMixed = [
+            { q: "Be quiet! The baby {input} (sleep).", a: "is sleeping", exp: "Continuo: está pasando ahora mismo ('Be quiet!')." },
+            { q: "Water {input} (boil) at 100 degrees.", a: "boils", exp: "Simple: Es una verdad científica." },
+            { q: "Look! It {input} (snow).", a: "is snowing", exp: "Continuo: Sucede en el momento de hablar ('Look!')." },
+            { q: "I usually {input} (walk) to school.", a: "walk", exp: "Simple: Hábito, indicado por 'usually'." },
+            { q: "She {input} (not/eat) meat, she is vegetarian.", a: "doesn't eat", exp: "Simple: Es un estado permanente/hábito." },
+            { q: "Right now, I {input} (do) my homework.", a: "am doing", exp: "Continuo: Pasa en este exacto momento ('Right now')." },
+            { q: "{input} (you/go) to the gym on Fridays?", a: "do you go", exp: "Simple: Pregunta sobre una rutina ('on Fridays')." },
+            { q: "He {input} (play) football every weekend.", a: "plays", exp: "Simple: Hábito repetido ('every weekend')." },
+            { q: "They {input} (not/listen) to music at the moment.", a: "aren't listening", exp: "Continuo: Pasa ahora mismo ('at the moment')." },
+            { q: "Why {input} (you/cry)?", a: "are you crying", exp: "Continuo: Pregunta sobre una acción que ves ocurrir ahora." },
+            { q: "The sun {input} (rise) in the east.", a: "rises", exp: "Simple: Verdad universal." },
+            { q: "I {input} (read) an interesting book these days.", a: "am reading", exp: "Continuo: Situación temporal ('these days')." },
+            { q: "We often {input} (visit) our grandparents.", a: "visit", exp: "Simple: Adverbio de frecuencia ('often') indica rutina." },
+            { q: "She {input} (not/work) today, she is ill.", a: "isn't working", exp: "Continuo: Situación temporal diferente a la rutina ('today')." },
+            { q: "{input} (they/understand) the lesson?", a: "do they understand", exp: "Simple: 'Understand' es un verbo de estado, no se suele usar en continuo." },
+            { q: "My father {input} (drive) me to school every morning.", a: "drives", exp: "Simple: Rutina diaria." },
+            { q: "I {input} (not/like) coffee.", a: "don't like", exp: "Simple: 'Like' es un verbo de estado (sentimientos/gustos)." },
+            { q: "Where is John? He {input} (take) a shower.", a: "is taking", exp: "Continuo: Ocurriendo en el momento de la pregunta." },
+            { q: "The train always {input} (leave) on time.", a: "leaves", exp: "Simple: Horarios programados." },
+            { q: "{input} (she/cook) dinner right now?", a: "is she cooking", exp: "Continuo: Pregunta sobre una acción actual ('right now')." }
+        ];
+
+        function renderQuiz(containerId, questions) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            
+            questions.forEach((qObj, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'quiz-item';
+                
+                const parts = qObj.q.split('{input}');
+                
+                const inputId = `${containerId}-q${index}`;
+                
+                qDiv.innerHTML = `
+                    <p><strong>${index + 1}.</strong> ${parts[0]} <input type="text" id="${inputId}" data-attempts="2"> ${parts[1]}</p>
+                    <button onclick="checkAnswer('${inputId}', '${qObj.a.replace(/'/g, "\\'")}', '${qObj.exp.replace(/'/g, "\\'")}')">Comprobar</button>
+                    <div id="feedback-${inputId}" class="quiz-feedback"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkAnswer(inputId, correctAnswer, explanation) {
+            const inputEl = document.getElementById(inputId);
+            const feedbackEl = document.getElementById(`feedback-${inputId}`);
+            const userAnswer = inputEl.value.trim().toLowerCase();
+            let attempts = parseInt(inputEl.dataset.attempts);
+
+            // Clean feedback classes
+            feedbackEl.className = 'quiz-feedback';
+            feedbackEl.style.display = 'block';
+
+            if(userAnswer === correctAnswer.toLowerCase()) {
+                feedbackEl.classList.add('feedback-success');
+                feedbackEl.innerHTML = `<strong>¡Correcto!</strong> Excelente trabajo.`;
+                inputEl.disabled = true;
+            } else {
+                attempts--;
+                inputEl.dataset.attempts = attempts;
+                
+                if(attempts > 0) {
+                    feedbackEl.classList.add('feedback-error');
+                    feedbackEl.innerHTML = `<strong>Incorrecto.</strong> Te queda 1 intento. ¡Fíjate bien en las reglas de Wisdom Corner!`;
+                } else {
+                    feedbackEl.classList.add('feedback-solution');
+                    feedbackEl.innerHTML = `<strong>Solución:</strong> ${correctAnswer}<br><br><strong>¿Por qué?</strong> ${explanation}`;
+                    inputEl.disabled = true;
+                }
+            }
+        }
+
+        // Initialize Quizzes
+        renderQuiz('quiz-simple', qSimple);
+        renderQuiz('quiz-continuous', qContinuous);
+        renderQuiz('quiz-mixed', qMixed);
+
+    </script>
+</body>
+</html>
