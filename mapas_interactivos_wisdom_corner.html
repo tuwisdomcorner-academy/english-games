@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapas Interactivos - Wisdom Corner Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Un verde muy suave, educativo */
+            color: #1e293b;
+        }
+
+        /* Animación de error (sacudida) */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Clases de estado para los inputs */
+        .input-correct {
+            background-color: #dcfce7 !important; /* bg-green-100 */
+            border-color: #22c55e !important;     /* border-green-500 */
+            color: #166534 !important;            /* text-green-900 */
+            font-weight: 600;
+        }
+
+        .input-incorrect {
+            background-color: #fee2e2 !important; /* bg-red-100 */
+            border-color: #ef4444 !important;     /* border-red-500 */
+            color: #991b1b !important;            /* text-red-900 */
+        }
+
+        .input-revealed {
+            background-color: #ffedd5 !important; /* bg-orange-100 */
+            border-color: #f97316 !important;     /* border-orange-500 */
+            color: #9a3412 !important;            /* text-orange-900 */
+            font-weight: 600;
+        }
+
+        /* Transición suave para cambiar de pestañas */
+        .tab-content { 
+            display: none; 
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .tab-content.active { 
+            display: block; 
+            opacity: 1;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ajuste de contenedor de imagen para evitar desbordes */
+        .map-image-container img {
+            max-height: 70vh;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 4px solid white;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <header class="bg-slate-800 text-white py-6 shadow-md mb-8 border-b-4 border-blue-500">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2">Wisdom Corner Academy</h1>
+            <p class="text-slate-300 text-lg">Aprende Geografía de España</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4">
+        
+        <!-- Contenedor principal -->
+        <div class="bg-white rounded-2xl shadow-lg p-4 md:p-8 mb-8 border border-slate-200">
+            
+            <div class="bg-blue-50 text-blue-800 p-4 rounded-xl mb-8 text-center max-w-3xl mx-auto border border-blue-100">
+                <p class="text-sm md:text-base">
+                    <strong>Instrucciones:</strong> Observa los números en el mapa y escribe el nombre correspondiente en la lista inferior. Tienes <strong>3 intentos</strong> por cada recuadro.
+                </p>
+            </div>
+
+            <div id="tabs-container" class="flex flex-wrap justify-center gap-2 md:gap-4 border-b border-slate-200 pb-6 mb-8">
+                <!-- Las pestañas se inyectarán aquí mediante JS -->
+            </div>
+
+            <!-- Contenedor de Mapas y Formularios -->
+            <div id="maps-container">
+                <!-- Los contenidos de cada mapa se inyectarán aquí mediante JS -->
+            </div>
+            
+        </div>
+    </main>
+
+    <script>
+        // Base de datos centralizada con la información de todos los mapas
+        const mapData = [
+            {
+                id: 'relieves',
+                title: 'Relieves',
+                image: 'Mapa físico de España con marcadores numerados.png',
+                items: [
+                    { num: 1, ans: 'Pirineos' },
+                    { num: 2, ans: 'Montes Vascos' },
+                    { num: 3, ans: 'Cordillera Costero Catalana' },
+                    { num: 4, ans: 'Sistema Central' },
+                    { num: 5, ans: 'Cordillera Cantábrica' },
+                    { num: 6, ans: 'Montes de León' },
+                    { num: 7, ans: 'Montes de Toledo' },
+                    { num: 8, ans: 'Sistema Ibérico' },
+                    { num: 9, ans: 'Sierra Morena' },
+                    { num: 10, ans: 'Sistemas Béticos' },
+                    { num: 11, ans: 'Pico del Teide' },
+                    { num: 12, ans: 'Sistemas Béticos' }, 
+                    { num: 13, ans: 'Depresión del Ebro' },
+                    { num: 14, ans: 'Depresión del Guadalquivir' }
+                ]
+            },
+            {
+                id: 'comunidades',
+                title: 'Comunidades',
+                image: 'Mapa político de España con regiones numeradas.png',
+                items: [
+                    { num: 1, ans: 'Galicia' }, { num: 2, ans: 'Asturias' },
+                    { num: 3, ans: 'Cantabria' }, { num: 4, ans: 'País Vasco' },
+                    { num: 5, ans: 'Navarra' }, { num: 6, ans: 'Castilla y León' },
+                    { num: 7, ans: 'La Rioja' }, { num: 8, ans: 'Aragón' },
+                    { num: 9, ans: 'Cataluña' }, { num: 10, ans: 'Madrid' },
+                    { num: 11, ans: 'Castilla La Mancha' }, { num: 12, ans: 'Comunidad Valenciana' },
+                    { num: 13, ans: 'Extremadura' }, { num: 14, ans: 'Andalucía' },
+                    { num: 15, ans: 'Región de Murcia' }, { num: 16, ans: 'Islas Baleares' },
+                    { num: 17, ans: 'Islas Canarias' }, { num: 18, ans: 'Ceuta' },
+                    { num: 19, ans: 'Melilla' }
+                ]
+            },
+            {
+                id: 'provincias',
+                title: 'Provincias',
+                image: 'Mapa político numerado de España.png',
+                items: [
+                    { num: 1, ans: 'A Coruña' }, { num: 2, ans: 'Lugo' }, { num: 3, ans: 'Ourense' },
+                    { num: 4, ans: 'Pontevedra' }, { num: 5, ans: 'Asturias' }, { num: 6, ans: 'Cantabria' },
+                    { num: 7, ans: 'Vizcaya' }, { num: 8, ans: 'Guipúzcoa' }, { num: 9, ans: 'Álava' },
+                    { num: 10, ans: 'Navarra' }, { num: 12, ans: 'León' }, { num: 13, ans: 'Palencia' },
+                    { num: 14, ans: 'Zamora' }, { num: 15, ans: 'Valladolid' }, { num: 16, ans: 'Burgos' },
+                    { num: 17, ans: 'Salamanca' }, { num: 18, ans: 'Ávila' }, { num: 19, ans: 'Segovia' },
+                    { num: 20, ans: 'La Rioja' }, { num: 21, ans: 'Huesca' }, { num: 22, ans: 'Zaragoza' },
+                    { num: 23, ans: 'Teruel' }, { num: 24, ans: 'Lleida' }, { num: 25, ans: 'Girona' },
+                    { num: 26, ans: 'Barcelona' }, { num: 27, ans: 'Tarragona' }, { num: 28, ans: 'Madrid' },
+                    { num: 29, ans: 'Guadalajara' }, { num: 30, ans: 'Cuenca' }, { num: 31, ans: 'Toledo' },
+                    { num: 32, ans: 'Ciudad Real' }, { num: 33, ans: 'Albacete' }, { num: 34, ans: 'Castellón' },
+                    { num: 35, ans: 'Valencia' }, { num: 36, ans: 'Alicante' }, { num: 37, ans: 'Murcia' },
+                    { num: 38, ans: 'Cáceres' }, { num: 39, ans: 'Badajoz' }, { num: 40, ans: 'Huelva' },
+                    { num: 41, ans: 'Sevilla' }, { num: 42, ans: 'Córdoba' }, { num: 43, ans: 'Jaén' },
+                    { num: 44, ans: 'Granada' }, { num: 45, ans: 'Málaga' }, { num: 46, ans: 'Almería' },
+                    { num: 48, ans: 'Cádiz' }, { num: 49, ans: 'Baleares' }, 
+                    { num: 50, ans: 'Santa Cruz de Tenerife' }, { num: 51, ans: 'Las Palmas' }
+                ]
+            },
+            {
+                id: 'mares',
+                title: 'Mares e Islas',
+                image: 'Mapa físico de la península ibérica con islas numeradas.png',
+                items: [
+                    { num: 1, ans: 'Mallorca' }, { num: 2, ans: 'Cabrera' }, { num: 3, ans: 'La Gomera' },
+                    { num: 4, ans: 'Gran Canaria' }, { num: 5, ans: 'Lanzarote' }, { num: 6, ans: 'El Hierro' },
+                    { num: 7, ans: 'Fuerteventura' }, { num: 8, ans: 'Tenerife' }, { num: 9, ans: 'Menorca' },
+                    { num: 10, ans: 'Ibiza' }, { num: 11, ans: 'La Palma' }, { num: 12, ans: 'Formentera' },
+                    { num: 13, ans: 'Mar Cantábrico' }, { num: 14, ans: 'Mar Mediterráneo' },
+                    { num: 15, ans: 'Mar Menor' }, { num: 16, ans: 'Océano Atlántico' }
+                ]
+            },
+            {
+                id: 'cabos',
+                title: 'Cabos y Golfos',
+                image: 'Mapa físico de España con puntos costeros.png',
+                items: [
+                    { num: 1, ans: 'Cabo de Peñas' }, { num: 2, ans: 'Cabo Finisterre' },
+                    { num: 3, ans: 'Cabo de Creus' }, { num: 4, ans: 'Golfo de Vizcaya' },
+                    { num: 5, ans: 'Cabo de la Nao' }, { num: 6, ans: 'Cabo de Palos' },
+                    { num: 7, ans: 'Cabo de Gata' }, { num: 8, ans: 'Golfo de Cádiz' }
+                ]
+            },
+            {
+                id: 'rios',
+                title: 'Ríos',
+                image: 'Mapa hidrográfico de España con ríos numerados.png',
+                items: [
+                    { num: 1, ans: 'Tinto' }, { num: 2, ans: 'Duero' }, { num: 3, ans: 'Guadalquivir' },
+                    { num: 4, ans: 'Guadiana' }, { num: 5, ans: 'Turia' }, { num: 6, ans: 'Navia' },
+                    { num: 7, ans: 'Segura' }, { num: 8, ans: 'Miño' }, { num: 9, ans: 'Júcar' },
+                    { num: 10, ans: 'Tajo' }, { num: 11, ans: 'Ebro' }
+                ]
+            }
+        ];
+
+        // Transforma 'Montaña' o 'MONTAÑA' en 'montana' para que el alumno no sea penalizado por formato
+        const normalizeText = (text) => {
+            return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+        };
+
+        // Función principal de inicialización de la interfaz
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabsContainer = document.getElementById('tabs-container');
+            const mapsContainer = document.getElementById('maps-container');
+
+            mapData.forEach((map, index) => {
+                const isActive = index === 0;
+
+                // 1. Crear el botón de la pestaña
+                const btn = document.createElement('button');
+                btn.className = `tab-btn px-6 py-2.5 font-bold rounded-full border transition-all duration-200 text-sm md:text-base ${isActive ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-800'}`;
+                btn.textContent = map.title;
+                btn.onclick = () => switchTab(map.id);
+                btn.id = `btn-${map.id}`;
+                tabsContainer.appendChild(btn);
+
+                // 2. Crear el contenedor de contenido para esta pestaña
+                const section = document.createElement('div');
+                section.id = `section-${map.id}`;
+                section.className = `tab-content ${isActive ? 'active' : ''}`;
+
+                // 3. Generar los inputs de respuestas
+                let inputsHTML = '';
+                
+                // Determinar columnas del grid basado en la cantidad de items (Provincias necesita más columnas)
+                const isDense = map.items.length > 20;
+                const gridClasses = isDense 
+                    ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
+                    : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+
+                map.items.forEach((item) => {
+                    inputsHTML += `
+                        <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200 shadow-sm focus-within:ring-2 focus-within:ring-blue-400 focus-within:border-transparent transition-all">
+                            <div class="w-8 h-8 flex-shrink-0 bg-slate-800 text-white rounded-md flex items-center justify-center font-bold text-sm shadow-inner">
+                                ${item.num}
+                            </div>
+                            <input type="text" 
+                                   data-answer="${item.ans}" 
+                                   data-attempts="3"
+                                   placeholder="Respuesta..."
+                                   autocomplete="off"
+                                   spellcheck="false"
+                                   class="geo-input flex-1 w-full p-2 text-sm md:text-base border-none bg-transparent focus:ring-0 outline-none text-slate-800 font-medium">
+                        </div>
+                    `;
+                });
+
+                // Ensamblar el HTML de la sección
+                section.innerHTML = `
+                    <div class="map-image-container relative w-full mb-10 bg-slate-100 rounded-xl overflow-hidden flex justify-center p-4 border border-slate-200">
+                        <img src="${map.image}" alt="Mapa de ${map.title}">
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-slate-800 border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Completa los nombres:
+                        </h3>
+                        <div class="grid gap-3 md:gap-4 ${gridClasses}">
+                            ${inputsHTML}
+                        </div>
+                    </div>
+                `;
+
+                mapsContainer.appendChild(section);
+            });
+
+            // Asignar eventos de validación después de crear los elementos en el DOM
+            setupValidationListeners();
+        });
+
+        function switchTab(activeId) {
+            // Actualizar botones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.id === `btn-${activeId}`) {
+                    btn.className = 'tab-btn px-6 py-2.5 font-bold rounded-full border transition-all duration-200 text-sm md:text-base bg-blue-600 text-white border-blue-600 shadow-md';
+                } else {
+                    btn.className = 'tab-btn px-6 py-2.5 font-bold rounded-full border transition-all duration-200 text-sm md:text-base bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-800';
+                }
+            });
+
+            // Actualizar vistas (secciones)
+            document.querySelectorAll('.tab-content').forEach(section => {
+                if (section.id === `section-${activeId}`) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+
+        function setupValidationListeners() {
+            const inputs = document.querySelectorAll('.geo-input');
+
+            inputs.forEach(input => {
+                const checkAnswer = function() {
+                    // Ignorar si el input ya ha sido resuelto y bloqueado
+                    if (this.disabled) return;
+                    
+                    const originalAnswer = this.getAttribute('data-answer');
+                    const correctAnswer = normalizeText(originalAnswer);
+                    const userAnswer = normalizeText(this.value);
+                    let attempts = parseInt(this.getAttribute('data-attempts'), 10);
+
+                    // Si el campo está vacío, no hacer nada
+                    if (userAnswer === '') return;
+
+                    // Limpiar clases de estado previo
+                    this.parentElement.classList.remove('input-incorrect', 'shake');
+
+                    if (userAnswer === correctAnswer) {
+                        // Respuesta Correcta
+                        this.parentElement.classList.add('input-correct');
+                        this.disabled = true;
+                        this.value = originalAnswer; // Sobrescribe con el texto con tildes y mayúsculas
+                        this.placeholder = "";
+                    } else {
+                        // Respuesta Incorrecta
+                        attempts--;
+                        this.setAttribute('data-attempts', attempts);
+                        
+                        if (attempts > 0) {
+                            // Aún le quedan intentos
+                            this.value = '';
+                            this.placeholder = `Quedan ${attempts} intento(s)`;
+                            
+                            // Forzar reflow para que la animación CSS se reinicie
+                            void this.parentElement.offsetWidth; 
+                            this.parentElement.classList.add('input-incorrect', 'shake');
+                            
+                            // Quitar el color rojo después de la animación para invitar a volver a intentar
+                            setTimeout(() => {
+                                if(!this.disabled) {
+                                    this.parentElement.classList.remove('input-incorrect');
+                                }
+                            }, 1000);
+                        } else {
+                            // Se acabaron los intentos: Mostrar solución
+                            this.parentElement.classList.add('input-revealed');
+                            this.disabled = true;
+                            this.value = originalAnswer;
+                            this.placeholder = "";
+                        }
+                    }
+                };
+
+                // Validar al presionar la tecla Enter
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault(); // Evita comportamiento por defecto
+                        checkAnswer.call(this);
+                    }
+                });
+
+                // Validar también cuando se pierde el foco (blur/change)
+                input.addEventListener('change', checkAnswer);
+            });
+        }
+    </script>
+</body>
+</html>
