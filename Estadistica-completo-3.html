@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Interactiva Estadística - Wisdom Corner Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #2d3748;
+        }
+        
+        /* Tema corporativo Wisdom Corner */
+        .wc-blue { color: #184e78; }
+        .wc-bg-blue { background-color: #184e78; }
+        .wc-border-blue { border-color: #184e78; }
+        .wc-gold { color: #c5a059; }
+        .wc-bg-gold { background-color: #c5a059; }
+        .wc-border-gold { border-color: #c5a059; }
+        
+        .header-banner {
+            border-bottom: 4px solid #c5a059;
+        }
+
+        .input-cell {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.25rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .input-cell:focus {
+            outline: none;
+            border-color: #184e78;
+            box-shadow: 0 0 0 2px rgba(24, 78, 120, 0.2);
+        }
+        .input-error {
+            border-color: #e53e3e;
+            background-color: #fff5f5;
+        }
+        .input-revealed {
+            border-color: #3182ce;
+            background-color: #ebf8ff;
+            color: #2b6cb0;
+            font-weight: bold;
+        }
+        .input-success {
+            border-color: #38a169;
+            background-color: #f0fff4;
+        }
+
+        select.header-select {
+            appearance: none;
+            background-color: #184e78;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid #184e78;
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+            width: 100%;
+            cursor: pointer;
+        }
+        select.header-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.8);
+        }
+        select.header-error {
+            border-color: #fc8181;
+            background-color: #c53030;
+        }
+        select.header-revealed {
+            background-color: #2b6cb0;
+            border-color: #63b3ed;
+        }
+
+        /* Boxplot visualization styles */
+        .boxplot-container {
+            position: relative;
+            height: 120px;
+            width: 100%;
+            margin-top: 2rem;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+        }
+        .bp-whisker {
+            position: absolute;
+            height: 2px;
+            background-color: #184e78;
+            top: 50%;
+        }
+        .bp-whisker-end {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: #184e78;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .bp-box {
+            position: absolute;
+            height: 40px;
+            border: 2px solid #184e78;
+            background-color: #ebf8ff;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .bp-median {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background-color: #e53e3e;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .bp-label {
+            position: absolute;
+            bottom: -35px;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #4a5568;
+            text-align: center;
+        }
+        .bp-label-top {
+            position: absolute;
+            top: -25px;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm header-banner mb-8">
+        <div class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="logo.png" alt="Wisdom Corner Logo" class="h-16 mr-4 object-contain">
+                <div>
+                    <h1 class="text-2xl font-bold wc-blue uppercase tracking-wider">Wisdom Corner Academy</h1>
+                    <h2 class="text-lg text-gray-600">Práctica Integral de Estadística Descriptiva</h2>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="inline-block wc-bg-blue text-white px-3 py-1 rounded text-sm font-bold" id="ex-counter">
+                    Ejercicio 1 / 10
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4">
+        
+        <!-- Instrucciones -->
+        <div class="bg-blue-50 border-l-4 wc-border-blue p-4 mb-8 rounded shadow-sm">
+            <h3 class="font-bold wc-blue flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                Instrucciones Estrictas
+            </h3>
+            <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 space-y-1">
+                <li><strong>1. Construye la tabla:</strong> Selecciona en la primera fila el encabezado correspondiente para cada columna en el orden estándar.</li>
+                <li><strong>2. Completa todos los cálculos:</strong> Debes rellenar TODAS las celdas de la tabla y TODOS los parámetros estadísticos antes de evaluar. Utiliza 2 decimales si el resultado no es entero (ej: 4.25).</li>
+                <li><strong>3. Sistema de Evaluación:</strong> No se corregirá celda por celda. Haz clic en "Evaluar Todo" al terminar.</li>
+                <li><strong>4. Intentos:</strong> Dispones de <strong>3 intentos</strong>. Si fallas 3 veces, el sistema revelará las respuestas de las celdas erróneas en azul para que puedas avanzar.</li>
+            </ul>
+        </div>
+
+        <!-- Contenedor del Ejercicio -->
+        <div id="exercise-container" class="bg-white p-6 md:p-8 rounded-lg shadow-md border border-gray-200">
+            
+            <div class="mb-6">
+                <h3 id="ex-title" class="text-xl font-bold wc-blue mb-2"></h3>
+                <p id="ex-desc" class="text-gray-700 mb-4"></p>
+                <div class="bg-gray-100 p-4 rounded text-center border border-gray-300">
+                    <span class="text-gray-500 text-sm block mb-1">Datos recogidos (desordenados):</span>
+                    <strong id="ex-data" class="text-lg tracking-widest text-indigo-900"></strong>
+                </div>
+            </div>
+
+            <!-- Tabla Interactiva -->
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full border-collapse" id="stat-table">
+                    <thead>
+                        <tr id="table-headers" class="bg-gray-50">
+                            <!-- Selects generados por JS -->
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Filas generadas por JS -->
+                    </tbody>
+                    <tfoot id="table-foot" class="bg-gray-50 font-bold">
+                        <!-- Totales generados por JS -->
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Parámetros Estadísticos -->
+            <h4 class="font-bold wc-gold text-lg mb-4 border-b pb-2">Parámetros Estadísticos y Dispersión</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="params-container">
+                <!-- Inputs generados por JS -->
+            </div>
+
+            <!-- Representación / Boxplot Feedback -->
+            <div id="boxplot-feedback" class="hidden mt-8 mb-8 p-6 bg-white border-2 wc-border-gold rounded-lg shadow-inner">
+                <h4 class="font-bold wc-blue text-center mb-2">Representación del Diagrama de Caja y Bigotes</h4>
+                <p class="text-center text-sm text-gray-500 mb-4">Generado automáticamente tras completar con éxito los cálculos matemáticos.</p>
+                <div id="boxplot-canvas" class="boxplot-container"></div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-200">
+                <div id="feedback-msg" class="text-sm font-bold flex-1"></div>
+                <button id="btn-evaluate" onclick="evaluateExercise()" class="wc-bg-blue hover:bg-blue-800 text-white font-bold py-2 px-6 rounded transition shadow hover:shadow-lg">
+                    Evaluar Todo
+                </button>
+                <button id="btn-next" onclick="nextExercise()" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition shadow hover:shadow-lg">
+                    Siguiente Ejercicio ➔
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // --- 1. DATOS DE LOS EJERCICIOS ---
+        const exercises = [
+            {
+                title: "Ejercicio 1: Notas de examen",
+                desc: "Se han recogido las calificaciones de un pequeño grupo de alumnos en el último examen de matemáticas.",
+                data: [5, 4, 6, 5, 3, 4, 6, 5]
+            },
+            {
+                title: "Ejercicio 2: Libros leídos",
+                desc: "Número de libros leídos durante el verano por un grupo de estudiantes de la academia.",
+                data: [2, 1, 4, 2, 3, 1, 5, 4, 2, 4]
+            },
+            {
+                title: "Ejercicio 3: Faltas de asistencia",
+                desc: "Faltas de asistencia acumuladas en un trimestre.",
+                data: [0, 1, 2, 0, 0, 3, 5, 1, 2]
+            },
+            {
+                title: "Ejercicio 4: Número de hermanos",
+                desc: "Se pregunta a varios alumnos cuántos hermanos tienen.",
+                data: [1, 2, 1, 3, 2, 4, 2, 1, 4, 3, 2]
+            },
+            {
+                title: "Ejercicio 5: Horas de deporte",
+                desc: "Horas semanales dedicadas al deporte.",
+                data: [5, 3, 2, 6, 4, 3, 8, 4, 5] 
+            },
+            {
+                title: "Ejercicio 6: Consumo de café",
+                desc: "Número de tazas de café consumidas al día por el profesorado.",
+                data: [1, 2, 0, 4, 1, 3, 8, 2, 4]
+            },
+            {
+                title: "Ejercicio 7: Mascotas",
+                desc: "Cantidad de mascotas en los hogares encuestados.",
+                data: [1, 0, 2, 1, 3, 4, 1, 0, 2, 7, 3]
+            },
+            {
+                title: "Ejercicio 8: Goles por partido",
+                desc: "Goles marcados por el equipo de fútbol del instituto en la temporada.",
+                data: [2, 1, 0, 3, 1, 4, 5, 2, 0, 9, 4]
+            },
+            {
+                title: "Ejercicio 9: Días de vacaciones",
+                desc: "Días que han viajado fuera de su ciudad las familias.",
+                data: [4, 2, 6, 3, 5, 7, 4, 6, 2, 10, 7]
+            },
+            {
+                title: "Ejercicio 10: Edad de primos",
+                desc: "Edades de los primos menores de un alumno.",
+                data: [6, 5, 8, 7, 5, 9, 4, 6, 15, 8, 9]
+            }
+        ];
+
+        // --- 2. MOTOR ESTADÍSTICO (WISDOM CORNER ACADEMY RULES) ---
+        function calculateExpected(rawData) {
+            const sortedData = [...rawData].sort((a, b) => a - b);
+            const N = sortedData.length;
+            
+            // Tabla de frecuencias
+            const freqMap = {};
+            sortedData.forEach(val => { freqMap[val] = (freqMap[val] || 0) + 1; });
+            
+            const uniqueVals = Object.keys(freqMap).map(Number).sort((a, b) => a - b);
+            const table = [];
+            
+            let Fi = 0;
+            let sumFi = 0, sumHi = 0, sumPerc = 0, sumXiFi = 0, sumXi2Fi = 0;
+            let maxFi = 0;
+            let moda = [];
+
+            uniqueVals.forEach(xi => {
+                let fi = freqMap[xi];
+                Fi += fi;
+                let hi = fi / N;
+                let perc = hi * 100;
+                let xifi = xi * fi;
+                let xi2fi = xi * xi * fi;
+                
+                table.push({
+                    xi: xi, fi: fi, Fi: Fi, hi: hi, perc: perc, xifi: xifi, xi2fi: xi2fi
+                });
+
+                sumFi += fi; sumHi += hi; sumPerc += perc; 
+                sumXiFi += xifi; sumXi2Fi += xi2fi;
+
+                if (fi > maxFi) { maxFi = fi; moda = [xi]; }
+                else if (fi === maxFi) { moda.push(xi); }
+            });
+
+            // Parámetros
+            const media = sumXiFi / N;
+            const varianza = (sumXi2Fi / N) - (media * media);
+            const dt = Math.sqrt(varianza);
+            const cv = (dt / media) * 100;
+
+            // Cuartiles (Método clásico de colegio: partición sin incluir mediana central si N impar)
+            const calcMedian = (arr) => {
+                const len = arr.length;
+                if (len === 0) return 0;
+                if (len % 2 === 0) return (arr[len/2 - 1] + arr[len/2]) / 2;
+                return arr[Math.floor(len/2)];
+            };
+
+            const q2 = calcMedian(sortedData);
+            
+            let lowerHalf, upperHalf;
+            if (N % 2 === 0) {
+                lowerHalf = sortedData.slice(0, N/2);
+                upperHalf = sortedData.slice(N/2);
+            } else {
+                lowerHalf = sortedData.slice(0, Math.floor(N/2));
+                upperHalf = sortedData.slice(Math.ceil(N/2));
+            }
+
+            const q1 = calcMedian(lowerHalf);
+            const q3 = calcMedian(upperHalf);
+
+            const min = sortedData[0];
+            const max = sortedData[N - 1];
+
+            return {
+                N, sortedData, table,
+                totals: { fi: sumFi, hi: sumHi, perc: sumPerc, xifi: sumXiFi, xi2fi: sumXi2Fi },
+                params: {
+                    moda: moda.join(", "),
+                    mediana: q2,
+                    media: media,
+                    varianza: varianza,
+                    dt: dt,
+                    cv: cv,
+                    min: min,
+                    q1: q1,
+                    q2: q2,
+                    q3: q3,
+                    max: max
+                }
+            };
+        }
+
+        // --- 3. GESTIÓN DEL ESTADO Y UI ---
+        let currentIndex = 0;
+        let attempts = 0;
+        let expected = null;
+        const maxAttempts = 3;
+
+        const headerOptions = [
+            { value: "", label: "Seleccionar..." },
+            { value: "xi", label: "xi" },
+            { value: "fi", label: "fi" },
+            { value: "Fi", label: "FI" },
+            { value: "hi", label: "hi" },
+            { value: "perc", label: "%" },
+            { value: "xifi", label: "xi·fi" },
+            { value: "xi2fi", label: "xi²·fi" }
+        ];
+
+        const paramFields = [
+            { id: "moda", label: "Moda (Mo)" },
+            { id: "mediana", label: "Mediana (Me)" },
+            { id: "media", label: "Media (x̄)" },
+            { id: "varianza", label: "Varianza (σ²)" },
+            { id: "dt", label: "Desv. Típica (σ)" },
+            { id: "cv", label: "Índice Variación (CV %)" },
+            { id: "min", label: "Mínimo" },
+            { id: "q1", label: "Cuartil 1 (Q₁)" },
+            { id: "q2", label: "Cuartil 2 (Q₂)" },
+            { id: "q3", label: "Cuartil 3 (Q₃)" },
+            { id: "max", label: "Máximo" }
+        ];
+
+        function initApp() {
+            loadExercise(0);
+        }
+
+        function loadExercise(index) {
+            const ex = exercises[index];
+            expected = calculateExpected(ex.data);
+            attempts = 0;
+            
+            document.getElementById("ex-counter").innerText = `Ejercicio ${index + 1} / 10`;
+            document.getElementById("ex-title").innerText = ex.title;
+            document.getElementById("ex-desc").innerText = ex.desc;
+            document.getElementById("ex-data").innerText = ex.data.join(" - ");
+            
+            document.getElementById("feedback-msg").innerHTML = "";
+            document.getElementById("btn-evaluate").classList.remove("hidden");
+            document.getElementById("btn-next").classList.add("hidden");
+            document.getElementById("boxplot-feedback").classList.add("hidden");
+
+            buildTable(expected.table.length);
+            buildParams();
+        }
+
+        function buildTable(rowsCount) {
+            const trHead = document.getElementById("table-headers");
+            const tbody = document.getElementById("table-body");
+            const tfoot = document.getElementById("table-foot");
+            
+            trHead.innerHTML = "";
+            tbody.innerHTML = "";
+            tfoot.innerHTML = "";
+
+            // Headers (Selects)
+            for(let i=0; i<7; i++) {
+                const th = document.createElement("th");
+                th.className = "p-2 border border-gray-300";
+                let selectHtml = `<select id="head_${i}" class="header-select">`;
+                headerOptions.forEach(opt => {
+                    selectHtml += `<option value="${opt.value}">${opt.label}</option>`;
+                });
+                selectHtml += `</select>`;
+                th.innerHTML = selectHtml;
+                trHead.appendChild(th);
+            }
+
+            // Body Rows
+            for(let r=0; r<rowsCount; r++) {
+                const tr = document.createElement("tr");
+                for(let c=0; c<7; c++) {
+                    const td = document.createElement("td");
+                    td.className = "p-1 border border-gray-300";
+                    td.innerHTML = `<input type="text" id="cell_${r}_${c}" class="input-cell" placeholder="-" autocomplete="off">`;
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+
+            // Foot Row (Totales)
+            const trFoot = document.createElement("tr");
+            trFoot.innerHTML = `
+                <td class="p-2 border border-gray-300 text-right pr-4 wc-blue">Totales (Σ)</td>
+                <td class="p-1 border border-gray-300"><input type="text" id="tot_fi" class="input-cell" autocomplete="off"></td>
+                <td class="p-1 border border-gray-300 bg-gray-200"></td>
+                <td class="p-1 border border-gray-300"><input type="text" id="tot_hi" class="input-cell" autocomplete="off"></td>
+                <td class="p-1 border border-gray-300"><input type="text" id="tot_perc" class="input-cell" autocomplete="off"></td>
+                <td class="p-1 border border-gray-300"><input type="text" id="tot_xifi" class="input-cell" autocomplete="off"></td>
+                <td class="p-1 border border-gray-300"><input type="text" id="tot_xi2fi" class="input-cell" autocomplete="off"></td>
+            `;
+            tfoot.appendChild(trFoot);
+        }
+
+        function buildParams() {
+            const container = document.getElementById("params-container");
+            container.innerHTML = "";
+            paramFields.forEach(pf => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <label class="block text-sm font-bold text-gray-700 mb-1">${pf.label}</label>
+                    <input type="text" id="param_${pf.id}" class="input-cell" placeholder="..." autocomplete="off">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- 4. VALIDACIÓN ---
+        function round2(num) {
+            return Math.round(num * 100) / 100;
+        }
+
+        function checkClose(val1, val2, tolerance = 0.02) {
+            const n1 = parseFloat(val1);
+            const n2 = parseFloat(val2);
+            if(isNaN(n1) || isNaN(n2)) return false;
+            return Math.abs(n1 - n2) <= tolerance;
+        }
+
+        function normalizeStr(str) {
+            return String(str).toLowerCase().replace(/\s+/g, '').replace(/,/, '.');
+        }
+
+        function evaluateExercise() {
+            // Pre-check completeness
+            let incomplete = false;
+            
+            for(let i=0; i<7; i++) {
+                if(!document.getElementById(`head_${i}`).value) incomplete = true;
+            }
+            
+            for(let r=0; r<expected.table.length; r++) {
+                for(let c=0; c<7; c++) {
+                    if(!document.getElementById(`cell_${r}_${c}`).value.trim()) incomplete = true;
+                }
+            }
+
+            paramFields.forEach(pf => {
+                if(!document.getElementById(`param_${pf.id}`).value.trim()) incomplete = true;
+            });
+
+            if(incomplete) {
+                alert("⚠ Cuidado: Debes rellenar TODAS las casillas de la tabla y los parámetros antes de evaluar el ejercicio.");
+                return;
+            }
+
+            attempts++;
+            let errorsCount = 0;
+            const isLastAttempt = (attempts >= maxAttempts);
+
+            document.querySelectorAll('.input-cell, .header-select').forEach(el => {
+                el.classList.remove('input-error', 'input-success', 'header-error');
+            });
+
+            // 1. Verify Headers
+            const expectedHeaders = ["xi", "fi", "Fi", "hi", "perc", "xifi", "xi2fi"];
+            for(let i=0; i<7; i++) {
+                const sel = document.getElementById(`head_${i}`);
+                if(sel.value !== expectedHeaders[i]) {
+                    sel.classList.add('header-error');
+                    errorsCount++;
+                    if(isLastAttempt) {
+                        sel.value = expectedHeaders[i];
+                        sel.classList.remove('header-error');
+                        sel.classList.add('header-revealed');
+                    }
+                }
+            }
+
+            // 2. Verify Table Body
+            for(let r=0; r<expected.table.length; r++) {
+                for(let c=0; c<7; c++) {
+                    const input = document.getElementById(`cell_${r}_${c}`);
+                    const expKey = expectedHeaders[c];
+                    const expVal = expected.table[r][expKey];
+                    
+                    if(!checkClose(input.value, expVal)) {
+                        input.classList.add('input-error');
+                        errorsCount++;
+                        if(isLastAttempt) {
+                            input.value = round2(expVal);
+                            input.classList.remove('input-error');
+                            input.classList.add('input-revealed');
+                        }
+                    } else {
+                        input.classList.add('input-success');
+                    }
+                }
+            }
+
+            // 3. Verify Totals
+            const totalsMapping = [
+                {id: 'tot_fi', key: 'fi'}, {id: 'tot_hi', key: 'hi'}, {id: 'tot_perc', key: 'perc'}, 
+                {id: 'tot_xifi', key: 'xifi'}, {id: 'tot_xi2fi', key: 'xi2fi'}
+            ];
+            totalsMapping.forEach(tm => {
+                const input = document.getElementById(tm.id);
+                const expVal = expected.totals[tm.key];
+                if(!checkClose(input.value, expVal)) {
+                    input.classList.add('input-error');
+                    errorsCount++;
+                    if(isLastAttempt) {
+                        input.value = round2(expVal);
+                        input.classList.remove('input-error');
+                        input.classList.add('input-revealed');
+                    }
+                } else {
+                    input.classList.add('input-success');
+                }
+            });
+
+            // 4. Verify Params
+            paramFields.forEach(pf => {
+                const input = document.getElementById(`param_${pf.id}`);
+                const expVal = expected.params[pf.id];
+                
+                let isCorrect = false;
+                if(pf.id === 'moda') {
+                    const uNorm = normalizeStr(input.value);
+                    const eNorm = normalizeStr(expVal);
+                    const uArr = uNorm.split('.').sort();
+                    const eArr = eNorm.split('.').sort();
+                    isCorrect = (uArr.join() === eArr.join());
+                } else {
+                    isCorrect = checkClose(input.value, expVal);
+                }
+
+                if(!isCorrect) {
+                    input.classList.add('input-error');
+                    errorsCount++;
+                    if(isLastAttempt) {
+                        input.value = typeof expVal === 'number' ? round2(expVal) : expVal;
+                        input.classList.remove('input-error');
+                        input.classList.add('input-revealed');
+                    }
+                } else {
+                    input.classList.add('input-success');
+                }
+            });
+
+            // Handle Result
+            const msgBox = document.getElementById("feedback-msg");
+            if(errorsCount === 0) {
+                msgBox.innerHTML = `<span class="text-green-600">¡Excelente! Todos los cálculos son correctos. 🎉</span>`;
+                successExercise();
+            } else {
+                if(isLastAttempt) {
+                    msgBox.innerHTML = `<span class="text-blue-600">Has agotado los 3 intentos. Las respuestas correctas han sido reveladas en azul. Analiza tus errores y avanza.</span>`;
+                    successExercise(); 
+                } else {
+                    msgBox.innerHTML = `<span class="text-red-600">Tienes ${errorsCount} errores marcados en rojo. Intento ${attempts} de 3. ¡Revisa tus fórmulas!</span>`;
+                }
+            }
+        }
+
+        function successExercise() {
+            document.getElementById("btn-evaluate").classList.add("hidden");
+            document.getElementById("btn-next").classList.remove("hidden");
+            drawBoxPlot();
+        }
+
+        function nextExercise() {
+            currentIndex++;
+            if(currentIndex < exercises.length) {
+                loadExercise(currentIndex);
+            } else {
+                document.getElementById("exercise-container").innerHTML = `
+                    <div class="text-center py-12">
+                        <h2 class="text-3xl font-bold wc-blue mb-4">¡Práctica Completada!</h2>
+                        <p class="text-xl text-gray-700 mb-8">Has superado con éxito los 10 ejercicios de estadística descriptiva nivel Wisdom Corner.</p>
+                        <svg class="w-32 h-32 mx-auto text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 5. RENDERIZADO DEL DIAGRAMA DE CAJA ---
+        function drawBoxPlot() {
+            const container = document.getElementById("boxplot-feedback");
+            container.classList.remove("hidden");
+            
+            const canvas = document.getElementById("boxplot-canvas");
+            canvas.innerHTML = ''; 
+
+            const p = expected.params;
+            const dataMin = p.min;
+            const dataMax = p.max;
+            
+            const range = (dataMax - dataMin) || 1;
+            const scaleMin = dataMin - (range * 0.1);
+            const scaleMax = dataMax + (range * 0.1);
+            const scaleRange = scaleMax - scaleMin;
+
+            const toPct = (val) => ((val - scaleMin) / scaleRange) * 100;
+
+            // Bigotes y extremos
+            const wStart = toPct(p.min);
+            const wEnd = toPct(p.max);
+            canvas.innerHTML += `<div class="bp-whisker" style="left: ${wStart}%; width: ${wEnd - wStart}%;"></div>`;
+            canvas.innerHTML += `<div class="bp-whisker-end" style="left: ${wStart}%;"></div>`;
+            canvas.innerHTML += `<div class="bp-whisker-end" style="left: ${wEnd}%;"></div>`;
+            
+            canvas.innerHTML += `<div class="bp-label" style="left: ${wStart}%;">${p.min}<br><span style="font-size:10px; font-weight:normal;">Mín</span></div>`;
+            canvas.innerHTML += `<div class="bp-label" style="left: ${wEnd}%;">${p.max}<br><span style="font-size:10px; font-weight:normal;">Máx</span></div>`;
+
+            // Caja
+            const bStart = toPct(p.q1);
+            const bWidth = toPct(p.q3) - toPct(p.q1);
+            canvas.innerHTML += `<div class="bp-box" style="left: ${bStart}%; width: ${bWidth}%;"></div>`;
+            
+            canvas.innerHTML += `<div class="bp-label-top" style="left: ${bStart}%;">Q₁=${p.q1}</div>`;
+            canvas.innerHTML += `<div class="bp-label-top" style="left: ${toPct(p.q3)}%;">Q₃=${p.q3}</div>`;
+
+            // Mediana
+            const mPos = toPct(p.q2);
+            canvas.innerHTML += `<div class="bp-median" style="left: ${mPos}%;"></div>`;
+            canvas.innerHTML += `<div class="bp-label" style="left: ${mPos}%; color: #e53e3e;">Me=${p.q2}</div>`;
+        }
+
+        // Initialize
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
