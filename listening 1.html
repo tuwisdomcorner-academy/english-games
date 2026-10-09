@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Vocabulario Semana 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b365d;
+            --primary-light: #2c4d7e;
+            --gold: #c59b27;
+            --gold-light: #dfb743;
+            --bg-grad: linear-gradient(135deg, #f0f4f9 0%, #e5edf7 100%);
+            --card-bg: #ffffff;
+            --text-dark: #222b45;
+            --text-muted: #5e6c84;
+            --border-color: #dce4ec;
+            --success: #2e7d32;
+            --error: #c62828;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-grad);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(27, 54, 93, 0.12);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: linear-gradient(180deg, #ffffff 0%, #fafcff 100%);
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 2px solid #eef2f6;
+        }
+
+        .academy-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content { padding: 30px; }
+        
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--primary); }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus { border-color: var(--primary); outline: none; }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-align: center;
+        }
+        .btn:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-gold { background: var(--gold); }
+        .btn-gold:hover { background: var(--gold-light); }
+        
+        .flex-btns { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+
+        /* Game Grid */
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .question-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .q-lang { font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+        .q-word { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .q-input { width: 100%; }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #f1f5f9;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .result-msg { text-align: center; margin: 20px 0; font-size: 20px; font-weight: 700; }
+        .pass { color: var(--success); }
+        .fail { color: var(--error); }
+
+        /* Leaderboard */
+        .leaderboard { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .leaderboard th, .leaderboard td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .leaderboard th { background: var(--primary); color: white; font-weight: 600; }
+        .leaderboard tr:nth-child(even) { background: #f8fafc; }
+
+        .correction {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+        .correction.show { display: block; }
+        .correct-text { color: var(--success); }
+        .incorrect-text { color: var(--error); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="academy-title">Wisdom Corner Academy</div>
+        <div class="subtitle">Vocabulary Check: Week 1</div>
+    </div>
+
+    <div class="content">
+        <!-- PANTALLA DE INICIO -->
+        <div id="screen-login" class="screen active">
+            <h2 style="margin-bottom: 20px; color: var(--primary); text-align: center;">Registro de Alumno</h2>
+            <div class="form-group">
+                <label for="firstName">Nombre:</label>
+                <input type="text" id="firstName" placeholder="Ej: Laura">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Apellidos:</label>
+                <input type="text" id="lastName" placeholder="Ej: García López">
+            </div>
+            <div class="flex-btns">
+                <button class="btn" onclick="startGame()">Empezar Juego</button>
+                <button class="btn btn-gold" onclick="showLeaderboard()">Ver Clasificación</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE JUEGO -->
+        <div id="screen-game" class="screen">
+            <div class="status-bar">
+                <span id="player-name-display"></span>
+                <span id="attempts-display">Intentos restantes: 3</span>
+            </div>
+            <div id="questions-container" class="question-grid"></div>
+            <div class="flex-btns">
+                <button class="btn btn-gold" onclick="checkAnswers()" id="btn-check">Comprobación</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS -->
+        <div id="screen-result" class="screen">
+            <h2 style="text-align: center; color: var(--primary);">Resultados</h2>
+            <div id="result-message" class="result-msg"></div>
+            <p style="text-align: center; margin-bottom: 20px; font-weight: 600;" id="score-details"></p>
+            <div class="flex-btns">
+                <button class="btn" id="btn-retry" onclick="retryGame()" style="display: none;">Intentar de nuevo</button>
+                <button class="btn btn-gold" id="btn-listening" onclick="startListening()" style="display: none;">Ir al Listening</button>
+                <button class="btn" onclick="showLeaderboard()">Ver Clasificación</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA CLASIFICACIÓN -->
+        <div id="screen-leaderboard" class="screen">
+            <h2 style="text-align: center; color: var(--primary);">Clasificación (Top 10)</h2>
+            <table class="leaderboard">
+                <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Alumno</th>
+                        <th>Aciertos</th>
+                        <th>Fallos</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+            <div class="flex-btns" style="margin-top: 30px;">
+                <button class="btn" onclick="showScreen('screen-login')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Vocabulario de la Semana 1
+    const vocabulary = [
+        { en: "teacher", es: "profesor" },
+        { en: "student", es: "alumno" },
+        { en: "city", es: "ciudad" },
+        { en: "beautiful", es: "bonito" },
+        { en: "smart", es: "inteligente" },
+        { en: "friendly", es: "amigable" },
+        { en: "weather", es: "clima" },
+        { en: "sunny", es: "soleado" },
+        { en: "hot", es: "caluroso" },
+        { en: "email address", es: "correo electronico" },
+        { en: "phone number", es: "numero de telefono" },
+        { en: "spell", es: "deletrear" },
+        { en: "right now", es: "ahora mismo" }
+    ];
+
+    let currentQuestions = [];
+    let currentPlayer = "";
+    let attemptsLeft = 3;
+
+    // Normalizar texto para evitar fallos por tildes o mayúsculas
+    function normalize(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGame() {
+        const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
+        
+        if (!first || !last) {
+            alert("Por favor, introduce tu nombre y apellidos.");
+            return;
+        }
+
+        currentPlayer = `${first} ${last}`;
+        attemptsLeft = 3;
+        document.getElementById('player-name-display').textContent = `Alumno: ${currentPlayer}`;
+        generateQuestions();
+        showScreen('screen-game');
+    }
+
+    function generateQuestions() {
+        document.getElementById('attempts-display').textContent = `Intentos restantes: ${attemptsLeft}`;
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+        
+        // Seleccionar TODAS las 13 palabras barajadas
+        let shuffled = [...vocabulary].sort(() => 0.5 - Math.random());
+        currentQuestions = [];
+
+        shuffled.forEach((word, index) => {
+            // Decidir dirección aleatoria (Inglés a Español o viceversa)
+            const isEngToSpa = Math.random() > 0.5;
+            const questionLang = isEngToSpa ? "Traduce al Español" : "Traduce al Inglés";
+            const questionWord = isEngToSpa ? word.en : word.es;
+            const answerWord = isEngToSpa ? word.es : word.en;
+
+            currentQuestions.push({
+                id: index,
+                expected: answerWord,
+                lang: questionLang,
+                qWord: questionWord
+            });
+
+            container.innerHTML += `
+                <div class="question-card" id="card-${index}">
+                    <div class="q-lang">${questionLang}</div>
+                    <div class="q-word">${questionWord.toUpperCase()}</div>
+                    <input type="text" class="q-input" id="input-${index}" placeholder="Escribe aquí...">
+                    <div class="correction" id="correction-${index}"></div>
+                </div>
+            `;
+        });
+        
+        // Reset botones
+        document.getElementById('btn-check').disabled = false;
+        document.getElementById('btn-check').textContent = "Comprobación";
+    }
+
+    function checkAnswers() {
+        let correctCount = 0;
+        
+        currentQuestions.forEach((q, index) => {
+            const userInput = normalize(document.getElementById(`input-${index}`).value);
+            const expected = normalize(q.expected);
+            const correctionDiv = document.getElementById(`correction-${index}`);
+            
+            if (userInput === expected) {
+                correctCount++;
+                correctionDiv.innerHTML = `<span class="correct-text">✓ ¡Correcto!</span>`;
+            } else {
+                correctionDiv.innerHTML = `<span class="incorrect-text">✗ Era: <b>${q.expected}</b></span>`;
+            }
+            correctionDiv.classList.add('show');
+            document.getElementById(`input-${index}`).disabled = true;
+        });
+
+        attemptsLeft--;
+        const totalQuestions = currentQuestions.length;
+        saveScore(correctCount, totalQuestions - correctCount);
+        showResults(correctCount, totalQuestions);
+    }
+
+    function showResults(score, totalQuestions) {
+        document.getElementById('btn-check').disabled = true;
+        
+        setTimeout(() => {
+            showScreen('screen-result');
+            const msgEl = document.getElementById('result-message');
+            const detailsEl = document.getElementById('score-details');
+            const btnRetry = document.getElementById('btn-retry');
+            const btnListen = document.getElementById('btn-listening');
+
+            detailsEl.textContent = `Puntuación: ${score}/${totalQuestions} (Aciertos: ${score} | Fallos: ${totalQuestions - score})`;
+
+            if (score >= 11) {
+                msgEl.textContent = "¡Excelente trabajo! Estás listo para el Listening.";
+                msgEl.className = "result-msg pass";
+                btnRetry.style.display = "none";
+                btnListen.style.display = "inline-block";
+            } else {
+                if (attemptsLeft > 0) {
+                    msgEl.textContent = "No has llegado al mínimo (11/13). ¡Inténtalo de nuevo!";
+                    msgEl.className = "result-msg fail";
+                    btnRetry.style.display = "inline-block";
+                    btnListen.style.display = "none";
+                } else {
+                    msgEl.textContent = "Te has quedado sin intentos. Revisa el vocabulario.";
+                    msgEl.className = "result-msg fail";
+                    btnRetry.style.display = "none";
+                    btnListen.style.display = "none";
+                }
+            }
+        }, 1500); // Mostrar resultados después de 1.5s de ver correcciones
+    }
+
+    function retryGame() {
+        generateQuestions();
+        showScreen('screen-game');
+    }
+
+    function startListening() {
+        alert("¡Genial! Ahora el profesor te indicará cómo iniciar el Listening de la Semana 1.");
+    }
+
+    function saveScore(hits, misses) {
+        let leaderboard = JSON.parse(localStorage.getItem('wisdom_corner_leaderboard_week1')) || [];
+        
+        // Buscar si el alumno ya existe y actualizar si la puntuación es mejor
+        const existingIndex = leaderboard.findIndex(entry => entry.name === currentPlayer);
+        
+        if (existingIndex > -1) {
+            if (hits > leaderboard[existingIndex].hits) {
+                leaderboard[existingIndex] = { name: currentPlayer, hits, misses };
+            }
+        } else {
+            leaderboard.push({ name: currentPlayer, hits, misses });
+        }
+
+        // Ordenar por aciertos (descendente) y quedarse con los 10 mejores
+        leaderboard.sort((a, b) => b.hits - a.hits);
+        leaderboard = leaderboard.slice(0, 10);
+
+        localStorage.setItem('wisdom_corner_leaderboard_week1', JSON.stringify(leaderboard));
+    }
+
+    function showLeaderboard() {
+        const tbody = document.getElementById('leaderboard-body');
+        const leaderboard = JSON.parse(localStorage.getItem('wisdom_corner_leaderboard_week1')) || [];
+        
+        tbody.innerHTML = '';
+        
+        if (leaderboard.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Aún no hay puntuaciones registradas.</td></tr>';
+        } else {
+            leaderboard.forEach((entry, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>#${index + 1}</strong></td>
+                        <td>${entry.name}</td>
+                        <td style="color: var(--success); font-weight: bold;">${entry.hits}</td>
+                        <td style="color: var(--error); font-weight: bold;">${entry.misses}</td>
+                    </tr>
+                `;
+            });
+        }
+        showScreen('screen-leaderboard');
+    }
+</script>
+</body>
+</html>
