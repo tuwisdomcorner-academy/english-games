@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Laboratorio de Palabras</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Teal muy claro */
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .word-font {
+            font-family: 'Space Mono', monospace;
+        }
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+        }
+        .input-incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-3xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-teal-100">
+        
+        <!-- Header -->
+        <div class="bg-teal-600 p-6 text-white text-center relative">
+            <h1 class="text-3xl font-bold mb-2"><i class="fa-solid fa-flask text-teal-200 mr-2"></i> Laboratorio de Palabras</h1>
+            <p class="text-teal-100 text-sm">Disecciona las palabras en sus morfemas correspondientes.</p>
+            
+            <div class="absolute top-4 right-4 bg-teal-800 bg-opacity-40 px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                <i class="fa-solid fa-star text-yellow-300 mr-2"></i> 
+                Puntos: <span id="scoreDisplay" class="ml-1 text-white">0</span> / 60
+            </div>
+        </div>
+
+        <!-- Instrucciones (se ocultan al empezar) -->
+        <div id="introScreen" class="p-8 text-center">
+            <h2 class="text-xl font-bold text-slate-800 mb-4">¡Bienvenido Científico!</h2>
+            <p class="text-slate-600 mb-6 max-w-lg mx-auto">
+                Tu misión es separar 15 palabras en sus componentes:<br>
+                <span class="font-semibold text-teal-700">Prefijo, Raíz, Sufijo Derivativo</span> y <span class="font-semibold text-teal-700">Afijo Flexivo</span>.<br><br>
+                <em>Nota: Si la palabra no tiene una de esas partes, simplemente deja la casilla en blanco. Escribe sin guiones.</em>
+            </p>
+            <button onclick="startGame()" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                <i class="fa-solid fa-play mr-2"></i> Comenzar Experimento
+            </button>
+        </div>
+
+        <div id="gameScreen" class="p-6 sm:p-8 hidden">
+            
+            <div class="flex justify-between items-center mb-6 text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                <span id="progressText">Palabra 1 de 15</span>
+                <div class="w-1/2 bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-teal-500 h-full w-0 transition-all duration-500"></div>
+                </div>
+            </div>
+
+            <!-- Visualización de la palabra -->
+            <div class="text-center mb-8 bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-inner">
+                <h2 id="currentWord" class="word-font text-4xl sm:text-5xl font-bold text-slate-800 tracking-wider">Posguerra</h2>
+            </div>
+
+            <!-- Formulario de entradas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                
+                <!-- Prefijo -->
+                <div class="flex flex-col">
+                    <label class="text-sm font-semibold text-slate-600 mb-1 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-blue-400 mr-2"></span> Prefijo
+                    </label>
+                    <input type="text" id="inputPrefijo" class="input-field border-2 border-slate-300 rounded-lg p-3 text-lg focus:outline-none focus:border-teal-500" placeholder="Ej: in, pre (o blanco)">
+                    <p id="msgPrefijo" class="text-xs text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <!-- Raíz -->
+                <div class="flex flex-col">
+                    <label class="text-sm font-semibold text-slate-600 mb-1 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-red-400 mr-2"></span> Raíz <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="text" id="inputRaiz" class="input-field border-2 border-slate-300 rounded-lg p-3 text-lg focus:outline-none focus:border-teal-500" placeholder="Raíz principal">
+                    <p id="msgRaiz" class="text-xs text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <!-- Sufijo -->
+                <div class="flex flex-col">
+                    <label class="text-sm font-semibold text-slate-600 mb-1 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-green-400 mr-2"></span> Sufijo Derivativo
+                    </label>
+                    <input type="text" id="inputSufijo" class="input-field border-2 border-slate-300 rounded-lg p-3 text-lg focus:outline-none focus:border-teal-500" placeholder="Ej: al, ero (o blanco)">
+                    <p id="msgSufijo" class="text-xs text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <!-- Afijo Flexivo -->
+                <div class="flex flex-col">
+                    <label class="text-sm font-semibold text-slate-600 mb-1 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-orange-400 mr-2"></span> Afijo Flexivo
+                    </label>
+                    <input type="text" id="inputFlexivo" class="input-field border-2 border-slate-300 rounded-lg p-3 text-lg focus:outline-none focus:border-teal-500" placeholder="Ej: a, os, amos (o blanco)">
+                    <p id="msgFlexivo" class="text-xs text-red-500 mt-1 hidden"></p>
+                </div>
+
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="text-center">
+                <button id="btnCheck" onclick="checkAnswer()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-transform transform hover:scale-105 w-full sm:w-auto">
+                    <i class="fa-solid fa-microscope mr-2"></i> Comprobar Análisis
+                </button>
+                <button id="btnNext" onclick="nextWord()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-transform transform hover:scale-105 w-full sm:w-auto">
+                    Siguiente Palabra <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="endScreen" class="p-8 text-center hidden">
+            <i class="fa-solid fa-award text-6xl text-yellow-400 mb-4"></i>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">¡Experimento Completado!</h2>
+            <p class="text-slate-600 mb-6">Has terminado de analizar todas las palabras.</p>
+            
+            <div class="bg-teal-50 border border-teal-200 rounded-xl p-6 mb-8 max-w-sm mx-auto shadow-inner">
+                <p class="text-sm text-teal-800 uppercase tracking-widest font-semibold mb-1">Puntuación Final</p>
+                <p class="text-5xl font-bold text-teal-600"><span id="finalScore">0</span> <span class="text-2xl text-teal-500">/ 60</span></p>
+            </div>
+
+            <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Volver a jugar
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Datos del juego
+        const wordsData = [
+            { word: "Posguerra", pre: "pos", raiz: "guerr", suf: "", flex: "a" },
+            { word: "Intercontinental", pre: "inter", raiz: "continent", suf: "al", flex: "" },
+            { word: "Hachazo", pre: "", raiz: "hach", suf: "azo", flex: "" },
+            { word: "Comemos", pre: "", raiz: "com", suf: "", flex: "emos" },
+            { word: "Ratones", pre: "", raiz: "rat", suf: "on", flex: "es" },
+            { word: "Casita", pre: "", raiz: "cas", suf: "it", flex: "a" },
+            { word: "Expresidente", pre: "ex", raiz: "presid", suf: "ente", flex: "" },
+            { word: "Brillante", pre: "", raiz: "brill", suf: "ante", flex: "" },
+            { word: "Deshacer", pre: "des", raiz: "hac", suf: "", flex: "er" },
+            { word: "Arboleda", pre: "", raiz: "arbol", suf: "eda", flex: "" },
+            { word: "Submarino", pre: "sub", raiz: "mar", suf: "in", flex: "o" },
+            { word: "Gata", pre: "", raiz: "gat", suf: "", flex: "a" },
+            { word: "Papelera", pre: "", raiz: "papel", suf: "er", flex: "a" },
+            { word: "Cantarán", pre: "", raiz: "cant", suf: "", flex: "aran" }, // Se quitan tildes en validación
+            { word: "Librero", pre: "", raiz: "libr", suf: "er", flex: "o" }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        // Para rastrear si un campo ya fue puntuado en la palabra actual
+        let scoredFields = { pre: false, raiz: false, suf: false, flex: false };
+
+        // Referencias del DOM
+        const screens = {
+            intro: document.getElementById('introScreen'),
+            game: document.getElementById('gameScreen'),
+            end: document.getElementById('endScreen')
+        };
+        const inputs = {
+            pre: document.getElementById('inputPrefijo'),
+            raiz: document.getElementById('inputRaiz'),
+            suf: document.getElementById('inputSufijo'),
+            flex: document.getElementById('inputFlexivo')
+        };
+        const msgs = {
+            pre: document.getElementById('msgPrefijo'),
+            raiz: document.getElementById('msgRaiz'),
+            suf: document.getElementById('msgSufijo'),
+            flex: document.getElementById('msgFlexivo')
+        };
+        const btnCheck = document.getElementById('btnCheck');
+        const btnNext = document.getElementById('btnNext');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const currentWordDisplay = document.getElementById('currentWord');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+
+        function startGame() {
+            screens.intro.classList.add('hidden');
+            screens.game.classList.remove('hidden');
+            loadWord();
+        }
+
+        function loadWord() {
+            const currentData = wordsData[currentIndex];
+            currentWordDisplay.textContent = currentData.word;
+            
+            // Reiniciar estado
+            scoredFields = { pre: false, raiz: false, suf: false, flex: false };
+            
+            // Actualizar progreso
+            progressText.textContent = `Palabra ${currentIndex + 1} de ${wordsData.length}`;
+            progressBar.style.width = `${((currentIndex) / wordsData.length) * 100}%`;
+
+            // Limpiar inputs y estilos
+            Object.keys(inputs).forEach(key => {
+                inputs[key].value = '';
+                inputs[key].disabled = false;
+                inputs[key].className = 'input-field border-2 border-slate-300 rounded-lg p-3 text-lg focus:outline-none focus:border-teal-500';
+                msgs[key].classList.add('hidden');
+            });
+
+            // Reset botones
+            btnCheck.classList.remove('hidden');
+            btnNext.classList.add('hidden');
+            inputs.pre.focus();
+        }
+
+        // Función para normalizar strings: quita guiones, espacios y acentos
+        function normalizeString(str) {
+            return str.toLowerCase()
+                      .replace(/-/g, '')
+                      .normalize("NFD")
+                      .replace(/[\u0300-\u036f]/g, "")
+                      .trim();
+        }
+
+        function checkAnswer() {
+            const currentData = wordsData[currentIndex];
+            let allCorrect = true;
+
+            const checkField = (key, correctValue) => {
+                const userVal = normalizeString(inputs[key].value);
+                const isCorrect = userVal === correctValue;
+
+                if (isCorrect) {
+                    inputs[key].classList.remove('border-slate-300', 'focus:border-teal-500', 'input-incorrect');
+                    inputs[key].classList.add('input-correct');
+                    inputs[key].disabled = true; // Bloquear si está correcto
+                    msgs[key].classList.add('hidden');
+                    
+                    // Sumar punto si no se había sumado antes
+                    if (!scoredFields[key]) {
+                        score += 1;
+                        scoredFields[key] = true;
+                        updateScore();
+                    }
+                } else {
+                    inputs[key].classList.remove('border-slate-300', 'focus:border-teal-500', 'input-correct');
+                    
+                    // Reiniciar animación quitando y poniendo la clase
+                    inputs[key].classList.remove('input-incorrect');
+                    void inputs[key].offsetWidth; // trigger reflow
+                    inputs[key].classList.add('input-incorrect');
+
+                    msgs[key].textContent = "Incorrecto, intenta de nuevo.";
+                    msgs[key].classList.remove('hidden');
+                    allCorrect = false;
+                }
+            };
+
+            checkField('pre', currentData.pre);
+            checkField('raiz', currentData.raiz);
+            checkField('suf', currentData.suf);
+            checkField('flex', currentData.flex);
+
+            if (allCorrect) {
+                btnCheck.classList.add('hidden');
+                btnNext.classList.remove('hidden');
+                progressBar.style.width = `${((currentIndex + 1) / wordsData.length) * 100}%`;
+                
+                // Efecto de acierto
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.8 },
+                    colors: ['#2dd4bf', '#0f766e']
+                });
+            }
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = score;
+        }
+
+        function nextWord() {
+            currentIndex++;
+            if (currentIndex < wordsData.length) {
+                loadWord();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screens.game.classList.add('hidden');
+            screens.end.classList.remove('hidden');
+            document.getElementById('finalScore').textContent = score;
+            
+            // Celebración final
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#2dd4bf', '#fbbf24', '#38bdf8']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#2dd4bf', '#fbbf24', '#38bdf8']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // Permitir usar "Enter" para comprobar
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                if (!screens.game.classList.contains('hidden')) {
+                    if (!btnCheck.classList.contains('hidden')) {
+                        checkAnswer();
+                    } else if (!btnNext.classList.contains('hidden')) {
+                        nextWord();
+                    }
+                } else if (!screens.intro.classList.contains('hidden')) {
+                    startGame();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
