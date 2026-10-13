@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Laboratorio de Morfología</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --navy: #0f172a; /* Slate 900 */
+            --navy-light: #1e293b; /* Slate 800 */
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: var(--navy);
+            background-image: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .bg-navy { background-color: var(--navy); }
+        .bg-navy-light { background-color: var(--navy-light); }
+        .text-navy { color: var(--navy); }
+        .text-gold { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        .border-gold { border-color: var(--gold); }
+        
+        .input-morf {
+            transition: all 0.3s ease;
+        }
+        .input-morf:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+        }
+        .input-incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+        
+        /* Modal Backdrop */
+        .modal-backdrop {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Diploma styling */
+        .diploma-border {
+            border: 12px solid var(--gold);
+            padding: 4px;
+            background: white;
+            position: relative;
+        }
+        .diploma-inner {
+            border: 2px solid var(--gold);
+            padding: 2rem;
+            text-align: center;
+            background-image: radial-gradient(circle, #ffffff 0%, #fdfbf7 100%);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 sm:p-8">
+
+    <!-- PANTALLA DE INICIO -->
+    <div id="screen-login" class="max-w-xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-gold">
+        <div class="bg-navy p-8 text-center">
+            <i class="fa-solid fa-graduation-cap text-5xl text-gold mb-4"></i>
+            <h1 class="text-3xl font-serif font-bold text-white tracking-wide">Wisdom Corner Academy</h1>
+            <p class="text-gold mt-2 font-medium tracking-widest uppercase text-sm">Laboratorio de Morfología</p>
+        </div>
+        <div class="p-8">
+            <p class="text-gray-600 mb-6 text-center">Bienvenido al simulador morfológico. Por favor, identifícate para comenzar tu sesión de 40 palabras.</p>
+            <form id="loginForm" onsubmit="startGame(event)" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-navy mb-1">Nombre</label>
+                    <input type="text" id="studentName" required class="w-full border-2 border-gray-200 rounded-lg p-3 focus:border-gold focus:ring-0 transition-colors" placeholder="Ej. Ana">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-navy mb-1">Apellido</label>
+                    <input type="text" id="studentSurname" required class="w-full border-2 border-gray-200 rounded-lg p-3 focus:border-gold focus:ring-0 transition-colors" placeholder="Ej. García">
+                </div>
+                <button type="submit" class="w-full bg-navy hover:bg-navy-light text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-transform transform hover:-translate-y-1 mt-4">
+                    Comenzar Evaluación <i class="fa-solid fa-arrow-right ml-2 text-gold"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE JUEGO -->
+    <div id="screen-game" class="max-w-4xl w-full hidden">
+        <!-- Header del juego -->
+        <div class="bg-navy text-white rounded-t-xl p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center shadow-lg border-b-4 border-gold">
+            <div class="flex items-center mb-4 sm:mb-0">
+                <i class="fa-solid fa-user-graduate text-gold text-2xl mr-3"></i>
+                <div>
+                    <p class="text-xs text-gray-300 uppercase tracking-wider">Alumno / Académico</p>
+                    <p id="ui-student-name" class="font-serif font-bold text-xl">Nombre Apellido</p>
+                </div>
+            </div>
+            <div class="flex gap-6 text-center">
+                <div>
+                    <p class="text-xs text-gray-300 uppercase tracking-wider">Progreso</p>
+                    <p class="font-bold text-lg"><span id="ui-progress" class="text-gold">1</span> / 40</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-300 uppercase tracking-wider">Puntuación</p>
+                    <p class="font-bold text-lg text-green-400"><span id="ui-score">0</span> pts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de Trabajo -->
+        <div class="bg-white rounded-b-xl shadow-xl p-6 sm:p-10 relative">
+            
+            <div class="text-center mb-10">
+                <p class="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-2">Palabra a analizar</p>
+                <h2 id="current-word" class="font-serif text-5xl sm:text-6xl font-bold text-navy tracking-wide bg-gray-50 py-6 rounded-lg border border-gray-100 shadow-inner">Palabra</h2>
+                <p class="text-xs text-gray-500 mt-3">Deja en blanco las casillas que no correspondan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                <!-- Inputs -->
+                <div class="relative">
+                    <label class="block text-sm font-bold text-navy mb-2"><i class="fa-solid fa-puzzle-piece text-blue-500 mr-1"></i> Prefijo</label>
+                    <input type="text" id="inp-pre" class="input-morf w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-gray-50" placeholder="Ej: in, pre...">
+                </div>
+                <div class="relative">
+                    <label class="block text-sm font-bold text-navy mb-2"><i class="fa-solid fa-seedling text-green-600 mr-1"></i> Raíz <span class="text-red-500">*</span></label>
+                    <input type="text" id="inp-raiz" class="input-morf w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-gray-50" placeholder="Raíz principal">
+                </div>
+                <div class="relative">
+                    <label class="block text-sm font-bold text-navy mb-2"><i class="fa-solid fa-link text-purple-500 mr-1"></i> Sufijo Derivativo</label>
+                    <input type="text" id="inp-suf" class="input-morf w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-gray-50" placeholder="Ej: ción, miente...">
+                </div>
+                <div class="relative">
+                    <label class="block text-sm font-bold text-navy mb-2"><i class="fa-solid fa-shapes text-orange-500 mr-1"></i> Afijo Flexivo</label>
+                    <input type="text" id="inp-flex" class="input-morf w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-gray-50" placeholder="Ej: s, as, amos...">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-center">
+                <button id="btn-check" onclick="verifyAnswer()" class="bg-navy hover:bg-navy-light text-white font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg w-full sm:w-auto">
+                    <i class="fa-solid fa-microscope mr-2 text-gold"></i> Comprobar Análisis
+                </button>
+                <button id="btn-next" onclick="loadNextWord()" class="hidden bg-gold hover:bg-yellow-600 text-navy font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg w-full sm:w-auto">
+                    Siguiente Palabra <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FEEDBACK (Explicación) -->
+    <div id="feedback-modal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+            <div class="bg-red-600 p-4 text-center">
+                <i class="fa-solid fa-circle-exclamation text-4xl text-white"></i>
+                <h3 class="text-xl font-bold text-white mt-2 font-serif">Análisis Incorrecto</h3>
+            </div>
+            <div class="p-6 sm:p-8">
+                <p class="text-gray-700 text-lg mb-6 leading-relaxed" id="feedback-explanation">Aquí va la explicación didáctica.</p>
+                
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-6">
+                    <h4 class="text-sm font-bold text-navy mb-3 uppercase tracking-wider border-b pb-2">Solución Correcta:</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <p><span class="font-semibold text-gray-500">Prefijo:</span> <span id="corr-pre" class="font-mono text-navy font-bold"></span></p>
+                        <p><span class="font-semibold text-gray-500">Raíz:</span> <span id="corr-raiz" class="font-mono text-navy font-bold"></span></p>
+                        <p><span class="font-semibold text-gray-500">Sufijo:</span> <span id="corr-suf" class="font-mono text-navy font-bold"></span></p>
+                        <p><span class="font-semibold text-gray-500">Flexivo:</span> <span id="corr-flex" class="font-mono text-navy font-bold"></span></p>
+                    </div>
+                </div>
+
+                <button onclick="closeFeedback()" class="w-full bg-navy hover:bg-navy-light text-white font-bold py-3 rounded-lg transition-colors">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA FINAL (DIPLOMA) -->
+    <div id="screen-end" class="max-w-3xl w-full hidden">
+        <div class="diploma-border shadow-2xl">
+            <div class="diploma-inner flex flex-col items-center">
+                <i class="fa-solid fa-building-columns text-6xl text-gold mb-4 mt-4"></i>
+                <h1 class="text-4xl font-serif font-bold text-navy mb-1 uppercase tracking-wider">Wisdom Corner Academy</h1>
+                <p class="text-gray-500 italic mb-8">Departamento de Lingüística y Morfología</p>
+                
+                <p class="text-lg text-navy mb-2">Se otorga el presente reconocimiento a:</p>
+                <h2 id="diploma-name" class="text-4xl font-serif font-bold text-gold border-b-2 border-gray-200 pb-2 px-12 mb-6">Nombre Apellido</h2>
+                
+                <p class="text-gray-600 max-w-lg mb-8 leading-relaxed">
+                    Por haber completado con éxito la evaluación morfológica de 40 palabras, demostrando capacidad analítica en la disección de prefijos, raíces, sufijos derivativos y afijos flexivos.
+                </p>
+                
+                <div class="bg-navy text-white px-8 py-4 rounded-lg mb-10 shadow-md">
+                    <p class="text-sm uppercase tracking-widest text-gold mb-1">Puntuación Final</p>
+                    <p class="text-5xl font-bold"><span id="diploma-score">0</span><span class="text-2xl text-gray-400 font-normal"> / 400</span></p>
+                </div>
+
+                <button onclick="location.reload()" class="bg-gold hover:bg-yellow-600 text-navy font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 mb-4">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Realizar Nueva Evaluación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // EL BANCO DE 100 PALABRAS DE WISDOM CORNER ACADEMY
+        const bancoPalabras = [
+            // Verbos con prefijos/sufijos
+            { w: "Deshacer", p: "des", r: "hac", s: "", f: "er", exp: "El prefijo 'des-' indica reversión. La raíz es 'hac' (de hacer) y '-er' es el afijo flexivo (desinencia verbal de infinitivo)." },
+            { w: "Reconstruir", p: "re", r: "constru", s: "", f: "ir", exp: "'Re-' es prefijo de repetición. 'constru' es la raíz y '-ir' es la desinencia verbal." },
+            { w: "Prever", p: "pre", r: "v", s: "", f: "er", exp: "Prefijo 'pre-' (antes). Raíz 'v' (de ver) y '-er' desinencia verbal." },
+            { w: "Sobrevivir", p: "sobre", r: "viv", s: "", f: "ir", exp: "'Sobre-' es prefijo, 'viv' la raíz y '-ir' la desinencia verbal." },
+            { w: "Contradecir", p: "contra", r: "dec", s: "", f: "ir", exp: "Prefijo 'contra-', raíz 'dec' (de decir) y flexivo verbal '-ir'." },
+            { w: "Empaquetar", p: "em", r: "paquet", s: "", f: "ar", exp: "Palabra parasintética. Prefijo 'em-', raíz 'paquet' (paquete) y flexivo '-ar'." },
+            { w: "Enrojecer", p: "en", r: "roj", s: "ec", f: "er", exp: "Prefijo 'en-', raíz 'roj' (rojo), sufijo verbalizador '-ec' y flexivo '-er'." },
+            { w: "Aterrizar", p: "a", r: "terr", s: "iz", f: "ar", exp: "Prefijo 'a-', raíz 'terr' (tierra), sufijo derivativo '-iz' y flexivo '-ar'." },
+            { w: "Subestimar", p: "sub", r: "estim", s: "", f: "ar", exp: "Prefijo 'sub-' (por debajo), raíz 'estim' y flexivo '-ar'." },
+            { w: "Desenterrar", p: "des", r: "terr", s: "", f: "ar", exp: "Prefijo 'des-' (quitado el 'en-' original), raíz 'terr' y flexivo '-ar'." },
+            // Sustantivos derivados
+            { w: "Panadería", p: "", r: "pan", s: "aderia", f: "", exp: "Raíz 'pan'. Sufijo derivativo '-adería' que indica establecimiento comercial." },
+            { w: "Carnicero", p: "", r: "carn", s: "icer", f: "o", exp: "Raíz 'carn' (carne), sufijo de oficio '-icer' (o -ic-) y afijo flexivo de género '-o'." },
+            { w: "Arboleda", p: "", r: "arbol", s: "eda", f: "", exp: "Raíz 'arbol', sufijo '-eda' que indica conjunto o abundancia." },
+            { w: "Rosal", p: "", r: "ros", s: "al", f: "", exp: "Raíz 'ros' (rosa) y sufijo '-al' que indica lugar poblado de." },
+            { w: "Librería", p: "", r: "libr", s: "eria", f: "", exp: "Raíz 'libr' (libro) y sufijo '-ería' para tienda." },
+            { w: "Relojero", p: "", r: "reloj", s: "er", f: "o", exp: "Raíz 'reloj', sufijo de oficio '-er' y afijo de género masculino '-o'." },
+            { w: "Zapatazo", p: "", r: "zapat", s: "azo", f: "", exp: "Raíz 'zapat' y sufijo aumentativo/golpe '-azo'." },
+            { w: "Cucharita", p: "", r: "cuchar", s: "it", f: "a", exp: "Raíz 'cuchar', sufijo diminutivo '-it' y flexivo de género '-a'." },
+            { w: "Perrera", p: "", r: "perr", s: "er", f: "a", exp: "Raíz 'perr', sufijo de lugar '-er' y flexivo '-a'." },
+            { w: "Bocadillo", p: "", r: "boc", s: "adill", f: "o", exp: "Raíz 'boc' (boca), sufijo diminutivo/lexicalizado '-adill' y flexivo '-o'." },
+            // Adjetivos derivados
+            { w: "Amable", p: "", r: "am", s: "able", f: "", exp: "Raíz 'am' (amar) y sufijo adjetivador '-able' (que puede ser)." },
+            { w: "Rojizo", p: "", r: "roj", s: "iz", f: "o", exp: "Raíz 'roj' (rojo), sufijo '-iz' (tendencia) y flexivo '-o'." },
+            { w: "Verdoso", p: "", r: "verd", s: "os", f: "o", exp: "Raíz 'verd' (verde), sufijo '-os' (abundancia/parecido) y flexivo '-o'." },
+            { w: "Inútil", p: "in", r: "util", s: "", f: "", exp: "Prefijo negativo 'in-' y raíz 'util'." },
+            { w: "Anormal", p: "a", r: "norm", s: "al", f: "", exp: "Prefijo privativo 'a-', raíz 'norm' (norma) y sufijo adjetivador '-al'." },
+            { w: "Bicolor", p: "bi", r: "color", s: "", f: "", exp: "Prefijo 'bi-' (dos) y raíz 'color'." },
+            { w: "Intocable", p: "in", r: "toc", s: "able", f: "", exp: "Prefijo negativo 'in-', raíz 'toc' (tocar) y sufijo '-able'." },
+            { w: "Desleal", p: "des", r: "leal", s: "", f: "", exp: "Prefijo 'des-' (negación) y raíz 'leal'." },
+            { w: "Prehistórico", p: "pre", r: "histori", s: "ic", f: "o", exp: "Prefijo 'pre-', raíz 'histori', sufijo '-ic' y flexivo '-o'." },
+            { w: "Intercontinental", p: "inter", r: "continent", s: "al", f: "", exp: "Prefijo 'inter-' (entre), raíz 'continent' y sufijo '-al'." },
+            // Plurales y géneros simples
+            { w: "Gatas", p: "", r: "gat", s: "", f: "as", exp: "Raíz 'gat', flexivo de género 'a' y número 's' (as)." },
+            { w: "Leones", p: "", r: "leon", s: "", f: "es", exp: "Raíz 'leon' y flexivo de número plural '-es'." },
+            { w: "Niños", p: "", r: "niñ", s: "", f: "os", exp: "Raíz 'niñ', flexivo masculino 'o' y plural 's' (os)." },
+            { w: "Abuelas", p: "", r: "abuel", s: "", f: "as", exp: "Raíz 'abuel', flexivo femenino 'a' y plural 's' (as)." },
+            { w: "Mesas", p: "", r: "mes", s: "", f: "as", exp: "Raíz 'mes' y afijo flexivo '-as'." },
+            { w: "Pájaros", p: "", r: "pajar", s: "", f: "os", exp: "Raíz 'pajar', flexivo 'o' y 's'." },
+            { w: "Reyes", p: "", r: "rey", s: "", f: "es", exp: "Raíz 'rey' y flexivo de número '-es'." },
+            { w: "Actrices", p: "", r: "actr", s: "ic", f: "es", exp: "Raíz 'actr', sufijo femenino '-ic' (o -iz) y flexivo '-es'." }, // Simplificado para el nivel
+            { w: "Lápices", p: "", r: "lapic", s: "", f: "es", exp: "Raíz 'lapic' (variante ortográfica de lápiz) y flexivo plural '-es'." },
+            { w: "Sillas", p: "", r: "sill", s: "", f: "as", exp: "Raíz 'sill' y afijo flexivo '-as'." },
+            // Flexiones verbales
+            { w: "Cantábamos", p: "", r: "cant", s: "", f: "abamos", exp: "Raíz 'cant' (cantar) y afijo flexivo (desinencia verbal) '-ábamos' (pret. imperfecto, 1ª p. pl)." },
+            { w: "Comeré", p: "", r: "com", s: "", f: "ere", exp: "Raíz 'com' y flexivo verbal '-eré' (futuro)." },
+            { w: "Vivían", p: "", r: "viv", s: "", f: "ian", exp: "Raíz 'viv' y flexivo verbal '-ían'." },
+            { w: "Saltas", p: "", r: "salt", s: "", f: "as", exp: "Raíz 'salt' y flexivo verbal '-as' (2ª persona singular)." },
+            { w: "Bebió", p: "", r: "beb", s: "", f: "io", exp: "Raíz 'beb' y flexivo verbal '-ió'." },
+            { w: "Estudiaréis", p: "", r: "estudi", s: "", f: "areis", exp: "Raíz 'estudi' y flexivo verbal '-aréis'." },
+            { w: "Pensaste", p: "", r: "pens", s: "", f: "aste", exp: "Raíz 'pens' y flexivo verbal '-aste'." },
+            { w: "Escribiendo", p: "", r: "escrib", s: "", f: "iendo", exp: "Raíz 'escrib' y afijo flexivo de gerundio '-iendo'." },
+            { w: "Llamado", p: "", r: "llam", s: "", f: "ado", exp: "Raíz 'llam' y afijo flexivo de participio '-ado'." },
+            { w: "Corren", p: "", r: "corr", s: "", f: "en", exp: "Raíz 'corr' y flexivo verbal '-en'." },
+            // Palabras compuestas/complejas
+            { w: "Submarino", p: "sub", r: "mar", s: "in", f: "o", exp: "Prefijo 'sub-', raíz 'mar', sufijo derivativo '-in' y flexivo de género '-o'." },
+            { w: "Internacional", p: "inter", r: "nacion", s: "al", f: "", exp: "Prefijo 'inter-', raíz 'nacion', sufijo '-al'." },
+            { w: "Desalmado", p: "des", r: "alm", s: "ad", f: "o", exp: "Prefijo 'des-', raíz 'alm' (alma), sufijo participial/adjetival '-ad' y flexivo '-o'." },
+            { w: "Impensable", p: "im", r: "pens", s: "able", f: "", exp: "Prefijo 'im-' (variante de in-), raíz 'pens' y sufijo '-able'." },
+            { w: "Extraterrestre", p: "extra", r: "terr", s: "estr", f: "e", exp: "Prefijo 'extra-', raíz 'terr', sufijo '-estr' y flexivo '-e'." },
+            { w: "Anticuerpo", p: "anti", r: "cuerpo", s: "", f: "", exp: "Prefijo 'anti-' y raíz 'cuerpo'." },
+            { w: "Multicolor", p: "multi", r: "color", s: "", f: "", exp: "Prefijo 'multi-' (muchos) y raíz 'color'." },
+            { w: "Supermercado", p: "super", r: "merc", s: "ad", f: "o", exp: "Prefijo 'super-', raíz 'merc', sufijo '-ad' y flexivo '-o'." },
+            { w: "Telecomunicación", p: "tele", r: "comunic", s: "acion", f: "", exp: "Prefijo (elemento compositivo) 'tele-', raíz 'comunic' y sufijo '-ación'." },
+            { w: "Autogobierno", p: "auto", r: "gobiern", s: "", f: "o", exp: "Prefijo 'auto-', raíz 'gobiern' y flexivo '-o'." },
+            // Sustantivos abstractos
+            { w: "Belleza", p: "", r: "bell", s: "eza", f: "", exp: "Raíz 'bell' (bello) y sufijo formador de sustantivos abstractos '-eza'." },
+            { w: "Fealdad", p: "", r: "fe", s: "aldad", f: "", exp: "Raíz 'fe' (feo) y sufijo '-aldad'." },
+            { w: "Blancura", p: "", r: "blanc", s: "ura", f: "", exp: "Raíz 'blanc' (blanco) y sufijo '-ura'." },
+            { w: "Esperanza", p: "", r: "esper", s: "anza", f: "", exp: "Raíz 'esper' (esperar) y sufijo abstracto '-anza'." },
+            { w: "Alegría", p: "", r: "alegr", s: "ia", f: "", exp: "Raíz 'alegr' y sufijo derivativo '-ía'." },
+            { w: "Tristeza", p: "", r: "trist", s: "eza", f: "", exp: "Raíz 'trist' y sufijo abstracto '-eza'." },
+            { w: "Amargura", p: "", r: "amarg", s: "ura", f: "", exp: "Raíz 'amarg' y sufijo '-ura'." },
+            { w: "Maldad", p: "", r: "mal", s: "dad", f: "", exp: "Raíz 'mal' y sufijo abstracto '-dad'." },
+            { w: "Suavidad", p: "", r: "suav", s: "idad", f: "", exp: "Raíz 'suav' y sufijo '-idad'." },
+            { w: "Locura", p: "", r: "loc", s: "ura", f: "", exp: "Raíz 'loc' (loco) y sufijo '-ura'." },
+            // Profesiones y Oficios
+            { w: "Pianista", p: "", r: "pian", s: "ista", f: "", exp: "Raíz 'pian' y sufijo de oficio/profesión '-ista'." },
+            { w: "Camionero", p: "", r: "camion", s: "er", f: "o", exp: "Raíz 'camion', sufijo '-er' y flexivo masculino '-o'." },
+            { w: "Futbolista", p: "", r: "futbol", s: "ista", f: "", exp: "Raíz 'futbol' y sufijo '-ista'." },
+            { w: "Jardinero", p: "", r: "jardin", s: "er", f: "o", exp: "Raíz 'jardin', sufijo de oficio '-er' y flexivo '-o'." },
+            { w: "Periodista", p: "", r: "period", s: "ista", f: "", exp: "Raíz 'period' y sufijo '-ista'." },
+            { w: "Cocinero", p: "", r: "cocin", s: "er", f: "o", exp: "Raíz 'cocin', sufijo '-er' y flexivo '-o'." },
+            { w: "Enfermera", p: "", r: "enferm", s: "er", f: "a", exp: "Raíz 'enferm' (enfermo), sufijo '-er' y flexivo femenino '-a'." },
+            { w: "Taxista", p: "", r: "tax", s: "ista", f: "", exp: "Raíz 'tax' (taxi) y sufijo '-ista'." },
+            { w: "Carpintero", p: "", r: "carpint", s: "er", f: "o", exp: "Raíz 'carpint', sufijo '-er' y flexivo '-o'." },
+            { w: "Dentista", p: "", r: "dent", s: "ista", f: "", exp: "Raíz 'dent' (diente) y sufijo '-ista'." },
+            // Misceláneos / Palabras Especiales
+            { w: "Antesala", p: "ante", r: "sala", s: "", f: "", exp: "Prefijo 'ante-' (delante de) y raíz 'sala'." },
+            { w: "Sobremesa", p: "sobre", r: "mes", s: "", f: "a", exp: "Prefijo 'sobre-', raíz 'mes' y flexivo '-a'." },
+            { w: "Hipermercado", p: "hiper", r: "merc", s: "ad", f: "o", exp: "Prefijo 'hiper-' (grandeza), raíz 'merc', sufijo '-ad', flexivo '-o'." },
+            { w: "Microscópico", p: "micro", r: "scop", s: "ic", f: "o", exp: "Prefijo 'micro-', raíz 'scop' (ver), sufijo '-ic' y flexivo '-o'." },
+            { w: "Despeinado", p: "des", r: "pein", s: "ad", f: "o", exp: "Prefijo 'des-', raíz 'pein', sufijo '-ad' y flexivo '-o'." },
+            { w: "Ilegal", p: "i", r: "legal", s: "", f: "", exp: "Prefijo 'i-' (variante de in-) y raíz 'legal'." },
+            { w: "Ateísmo", p: "a", r: "te", s: "ismo", f: "", exp: "Prefijo 'a-' (sin), raíz 'te' (dios) y sufijo '-ismo' (doctrina)." },
+            { w: "Moneda", p: "", r: "moned", s: "", f: "a", exp: "Raíz 'moned' y afijo flexivo '-a'." },
+            { w: "Exalumno", p: "ex", r: "alumn", s: "", f: "o", exp: "Prefijo 'ex-', raíz 'alumn' y flexivo '-o'." },
+            { w: "Bicameral", p: "bi", r: "camer", s: "al", f: "", exp: "Prefijo 'bi-', raíz 'camer' (cámara) y sufijo '-al'." },
+            // Relleno para llegar a 100
+            { w: "Vicepresidente", p: "vice", r: "presid", s: "ente", f: "", exp: "Prefijo 'vice-', raíz 'presid' y sufijo derivativo '-ente'." },
+            { w: "Inmortal", p: "in", r: "mort", s: "al", f: "", exp: "Prefijo 'in-', raíz 'mort' (muerte) y sufijo '-al'." },
+            { w: "Antibalas", p: "anti", r: "bal", s: "", f: "as", exp: "Prefijo 'anti-', raíz 'bal' (bala) y flexivo '-as'." },
+            { w: "Semicírculo", p: "semi", r: "circul", s: "", f: "o", exp: "Prefijo 'semi-', raíz 'circul' y flexivo '-o'." },
+            { w: "Desorden", p: "des", r: "orden", s: "", f: "", exp: "Prefijo 'des-' y raíz 'orden'." },
+            { w: "Convivir", p: "con", r: "viv", s: "", f: "ir", exp: "Prefijo 'con-', raíz 'viv' y desinencia '-ir'." },
+            { w: "Analfabeto", p: "an", r: "alfabet", s: "", f: "o", exp: "Prefijo privativo 'an-', raíz 'alfabet' y flexivo '-o'." },
+            { w: "Sinfín", p: "sin", r: "fin", s: "", f: "", exp: "Palabra formada por prefijo 'sin-' y raíz 'fin'." },
+            { w: "Amoroso", p: "", r: "amor", s: "os", f: "o", exp: "Raíz 'amor', sufijo '-os' (lleno de) y flexivo '-o'." },
+            { w: "Papelito", p: "", r: "papel", s: "it", f: "o", exp: "Raíz 'papel', sufijo diminutivo '-it' y flexivo '-o'." }
+        ];
+
+        // Asegurarnos de tener 100 elementos exactos para cumplir el requerimiento
+        // Como escribí exactamente 100, la variable bancoPalabras.length será 100.
+
+        const GAME_WORDS_COUNT = 40;
+        let selectedWords = [];
+        let currentIndex = 0;
+        let score = 0;
+        let currentWordPoints = 10; // Puntos por palabra correcta
+        let studentData = { name: '', surname: '' };
+
+        // DOM Elements
+        const screens = {
+            login: document.getElementById('screen-login'),
+            game: document.getElementById('screen-game'),
+            end: document.getElementById('screen-end')
+        };
+        const inputs = {
+            pre: document.getElementById('inp-pre'),
+            raiz: document.getElementById('inp-raiz'),
+            suf: document.getElementById('inp-suf'),
+            flex: document.getElementById('inp-flex')
+        };
+        const btnCheck = document.getElementById('btn-check');
+        const btnNext = document.getElementById('btn-next');
+        const feedbackModal = document.getElementById('feedback-modal');
+
+        
+        // 1. Iniciar Juego
+        function startGame(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('studentName').value.trim();
+            const surnameInput = document.getElementById('studentSurname').value.trim();
+
+            if (nameInput === '' || surnameInput === '') return;
+
+            studentData.name = nameInput;
+            studentData.surname = surnameInput;
+
+            // Actualizar UI con nombre
+            document.getElementById('ui-student-name').textContent = `${nameInput} ${surnameInput}`;
+            
+            // Seleccionar 40 palabras aleatorias
+            selectedWords = [...bancoPalabras].sort(() => 0.5 - Math.random()).slice(0, GAME_WORDS_COUNT);
+            
+            currentIndex = 0;
+            score = 0;
+            updateScoreUI();
+
+            screens.login.classList.add('hidden');
+            screens.game.classList.remove('hidden');
+            
+            loadWord();
+        }
+
+        // 2. Cargar Palabra
+        function loadWord() {
+            const currentData = selectedWords[currentIndex];
+            document.getElementById('current-word').textContent = currentData.w;
+            document.getElementById('ui-progress').textContent = currentIndex + 1;
+
+            // Limpiar inputs
+            Object.values(inputs).forEach(input => {
+                input.value = '';
+                input.disabled = false;
+                input.className = 'input-morf w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-gray-50';
+            });
+
+            btnCheck.classList.remove('hidden');
+            btnNext.classList.add('hidden');
+            inputs.pre.focus();
+        }
+
+        // Utilidad para normalizar texto (quitar tildes, espacios, guiones, minúsculas)
+        function normalizeStr(str) {
+            return str.toLowerCase()
+                      .replace(/[-]/g, '')
+                      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                      .trim();
+        }
+
+        // 3. Comprobar Respuesta
+        function verifyAnswer() {
+            const currentData = selectedWords[currentIndex];
+            let allCorrect = true;
+
+            const checkField = (key, correctValue) => {
+                const userVal = normalizeStr(inputs[key].value);
+                const targetVal = normalizeStr(correctValue);
+                
+                if (userVal === targetVal) {
+                    inputs[key].classList.remove('border-gray-200');
+                    inputs[key].classList.add('input-correct');
+                } else {
+                    inputs[key].classList.remove('border-gray-200');
+                    inputs[key].classList.add('input-incorrect');
+                    allCorrect = false;
+                }
+                inputs[key].disabled = true; // Bloquear tras comprobar
+            };
+
+            checkField('pre', currentData.p);
+            checkField('raiz', currentData.r);
+            checkField('suf', currentData.s);
+            checkField('flex', currentData.f);
+
+            btnCheck.classList.add('hidden');
+
+            if (allCorrect) {
+                // Acierto perfecto
+                score += currentWordPoints;
+                updateScoreUI();
+                btnNext.classList.remove('hidden');
+                
+                // Pequeño confeti de celebración
+                confetti({
+                    particleCount: 40,
+                    spread: 60,
+                    origin: { y: 0.8 },
+                    colors: ['#d4af37', '#f3e5ab', '#22c55e']
+                });
+            } else {
+                // Fallo: Mostrar feedback didáctico
+                showFeedback(currentData);
+            }
+        }
+
+        function showFeedback(data) {
+            document.getElementById('feedback-explanation').textContent = data.exp;
+            
+            // Llenar respuestas correctas (poner "-" si está vacío para mejor lectura)
+            document.getElementById('corr-pre').textContent = data.p || "-";
+            document.getElementById('corr-raiz').textContent = data.r || "-";
+            document.getElementById('corr-suf').textContent = data.s || "-";
+            document.getElementById('corr-flex').textContent = data.f || "-";
+            
+            feedbackModal.classList.remove('hidden');
+        }
+
+        function closeFeedback() {
+            feedbackModal.classList.add('hidden');
+            btnNext.classList.remove('hidden');
+        }
+
+        function loadNextWord() {
+            currentIndex++;
+            if (currentIndex < GAME_WORDS_COUNT) {
+                loadWord();
+            } else {
+                finishGame();
+            }
+        }
+
+        function updateScoreUI() {
+            document.getElementById('ui-score').textContent = score;
+        }
+
+        // 4. Finalizar Juego y mostrar Diploma
+        function finishGame() {
+            screens.game.classList.add('hidden');
+            screens.end.classList.remove('hidden');
+            
+            document.getElementById('diploma-name').textContent = `${studentData.name} ${studentData.surname}`;
+            document.getElementById('diploma-score').textContent = score;
+
+            // Gran fiesta de confeti
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#d4af37', '#0f172a', '#ffffff']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#d4af37', '#0f172a', '#ffffff']
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // Soporte de Enter para fluidez
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                if (!screens.game.classList.contains('hidden')) {
+                    if (!btnCheck.classList.contains('hidden')) {
+                        verifyAnswer();
+                    } else if (!btnNext.classList.contains('hidden') && feedbackModal.classList.contains('hidden')) {
+                        loadNextWord();
+                    }
+                } else if (!feedbackModal.classList.contains('hidden')) {
+                    closeFeedback();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
