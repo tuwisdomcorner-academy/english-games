@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Master - Wisdom Corner Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A192F; 
+            --secondary: #D4AF37; 
+            --bg-color: #F8F9FA;
+            --text-main: #333;
+            --error: #E63946;
+            --success: #2A9D8F;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        .input-group { margin-bottom: 25px; }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 20px auto;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        .section-title {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 30px 0 10px;
+        }
+
+        .instructions {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .instructions strong {
+            color: var(--primary);
+            font-style: normal;
+        }
+
+        .exercise-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f4f6f9;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .exercise-item.correct { border-left-color: var(--success); background: #eefaf6; }
+        .exercise-item.incorrect { border-left-color: var(--error); background: #fdf3f4; }
+
+        .feedback {
+            display: none;
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .exercise-item.incorrect .feedback { display: block; }
+
+        .inline-input {
+            width: 140px;
+            padding: 5px;
+            margin: 0 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: inline-block;
+        }
+
+        .inline-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        /* Estilos específicos para los huecos dentro del texto */
+        .text-input {
+            width: 80px;
+            padding: 0 2px;
+            margin: 0 4px;
+            border: none;
+            border-bottom: 2px solid #999;
+            background: transparent;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-bottom-color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .text-input.correct, .inline-input.correct { 
+            border-color: var(--success); 
+            border-bottom-color: var(--success);
+            color: var(--success);
+        }
+        
+        .text-input.incorrect, .inline-input.incorrect { 
+            border-color: var(--error); 
+            border-bottom-color: var(--error);
+            color: var(--error);
+        }
+
+        .text-exercise {
+            line-height: 2.2;
+            font-size: 1.1rem;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .verb-hint {
+            color: #666;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .distinction {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .oro { background: linear-gradient(135deg, #FFD700, #FDB931); color: #000; }
+        .plata { background: linear-gradient(135deg, #E0E0E0, #BDBDBD); color: #000; }
+        .bronce { background: linear-gradient(135deg, #CD7F32, #A0522D); color: #fff; }
+        .diamante { background: linear-gradient(135deg, #b9f2ff, #29c5f6); color: #000; }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .scrambled-words {
+            color: var(--secondary);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para el botón de acceso de profesor */
+        .teacher-login {
+            background: none;
+            border: none;
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            transition: color 0.3s;
+        }
+        
+        .teacher-login:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Wisdom Corner Academy</h1>
+        <p>Mastering English Tenses</p>
+    </div>
+
+    <div id="screen-start" class="screen active">
+        <h2 style="text-align: center; color: var(--primary);">Bienvenido al Reto Final</h2>
+        <p style="text-align: center;">Demuestra tu dominio del Presente Simple y Continuo. Deberás lograr la perfección para avanzar a la prueba mixta final.</p>
+        <div class="input-group" style="max-width: 400px; margin: 40px auto;">
+            <label for="student-name">Escribe tu nombre para comenzar:</label>
+            <input type="text" id="student-name" placeholder="Tu nombre y apellidos">
+        </div>
+        <button class="btn" onclick="startGame()">Comenzar Reto</button>
+        
+        <div style="text-align: center;">
+            <button class="teacher-login" onclick="accesoProfesor()">Acceso Profesor</button>
+        </div>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="progress-bar">
+            <span id="stage-title">Fase 1: Present Simple</span>
+            <span id="score-tracker"></span>
+        </div>
+        
+        <div id="exercises-container"></div>
+        
+        <div id="action-buttons" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <button class="btn" id="btn-reveal" style="display: none; background-color: var(--secondary); color: var(--primary);" onclick="mostrarRespuestasProfesor()">Mostrar Respuestas</button>
+            <button class="btn" id="btn-check" onclick="checkStage()">Corregir Fase</button>
+            <button class="btn" id="btn-next" style="display: none;" onclick="nextStage()">Siguiente Fase ➔</button>
+        </div>
+    </div>
+
+    <div id="screen-results" class="screen">
+        <h2 style="text-align: center; color: var(--primary);">¡Reto Completado!</h2>
+        <h3 id="final-name" style="text-align: center;"></h3>
+        <p id="final-stats" style="text-align: center; font-size: 1.2rem;"></p>
+        
+        <div id="distinction-badge" class="distinction"></div>
+        
+        <p id="final-message" style="text-align: center; margin-top: 30px; font-weight: bold; color: var(--success);">
+            Resultados enviados automáticamente a Wisdom Corner Academy.
+        </p>
+    </div>
+</div>
+
+<script>
+    const URL_GOOGLE_SCRIPT = "TU_URL_DE_APPS_SCRIPT_AQUI"; 
+
+    const stagesData = [
+        // FASE 1: PRESENT SIMPLE
+        {
+            title: "Fase 1: Present Simple",
+            requiredScore: 20, 
+            fill: [
+                { q: "___ you ___ <span class='verb-hint'>(like)</span> pizza?", a: "do/like", e: "Pregunta con 'You', usamos auxiliar 'Do' y el verbo en infinitivo." },
+                { q: "Where ___ she ___ <span class='verb-hint'>(work)</span>?", a: "does/work", e: "Pregunta con 'She', usamos auxiliar 'Does'." },
+                { q: "What time ___ the train ___ <span class='verb-hint'>(leave)</span>?", a: "does/leave", e: "'The train' es 'it', usamos auxiliar 'Does'." },
+                { q: "___ they ___ <span class='verb-hint'>(play)</span> football on Sundays?", a: "do/play", e: "Pregunta con 'They', usamos auxiliar 'Do'." },
+                { q: "How often ___ you ___ <span class='verb-hint'>(visit)</span> your grandparents?", a: "do/visit", e: "Pregunta con 'You', usamos auxiliar 'Do'." }
+            ],
+            order: [
+                { words: "usually / gets up / early / he", a: "he usually gets up early", e: "El adverbio de frecuencia (usually) va antes del verbo principal." },
+                { words: "do / where / live / you / ?", a: "where do you live", e: "Estructura de pregunta: Wh- + do/does + sujeto + verbo." },
+                { words: "doesn't / english / she / speak", a: "she does not speak english", e: "Sujeto + auxiliar negativo (doesn't) + verbo en infinitivo." },
+                { words: "school / go / they / to / everyday", a: "they go to school everyday", e: "Expresiones de tiempo (everyday) suelen ir al final de la frase." },
+                { words: "read / i / before bed / a book / always", a: "i always read a book before bed", e: "Sujeto + adverbio (always) + verbo + complementos." }
+            ],
+            text: {
+                content: "My name is Tom. I [1] <span class='verb-hint'>(be)</span> a teacher. I [2] <span class='verb-hint'>(work)</span> in a big school. Every morning, I [3] <span class='verb-hint'>(wake)</span> up at 7:00 AM. I [4] <span class='verb-hint'>(not / have)</span> a lot of time, so I [5] <span class='verb-hint'>(eat)</span> breakfast quickly. My wife [6] <span class='verb-hint'>(be)</span> a doctor. She [7] <span class='verb-hint'>(start)</span> work earlier than me. We [8] <span class='verb-hint'>(not / see)</span> each other in the mornings. At night, we [9] <span class='verb-hint'>(relax)</span> and [10] <span class='verb-hint'>(watch)</span> TV together.",
+                answers: ["am", "work", "wake", "do not have", "eat", "is", "starts", "do not see", "relax", "watch"],
+                explanations: ["Con 'I' el verbo to be es 'am'.", "Con 'I' el verbo se queda igual.", "Rutina habitual.", "Negativa con 'I' usa don't.", "Acción habitual.", "Con 'She' el verbo to be es 'is'.", "Tercera persona añade -s.", "Negativa de We es don't.", "Con We el verbo no cambia.", "Verbo regular con We."]
+            }
+        },
+        // FASE 2: PRESENT CONTINUOUS
+        {
+            title: "Fase 2: Present Continuous",
+            requiredScore: 20, 
+            fill: [
+                { q: "Look! The baby ___ <span class='verb-hint'>(walk)</span>.", a: "is walking", e: "'Look!' indica una acción ocurriendo ahora mismo. Baby = is + ing." },
+                { q: "I ___ <span class='verb-hint'>(study)</span> for my math exam at the moment.", a: "am studying", e: "'At the moment' requiere Present Continuous (am + ing)." },
+                { q: "They ___ <span class='verb-hint'>(not / watch)</span> TV right now.", a: "are not watching", e: "Negativa de 'They' en continuo es 'are not / aren't' + ing." },
+                { q: "___ you ___ <span class='verb-hint'>(listen)</span> to me?", a: "are/listening", e: "Pregunta en continuo separada: Verbo To Be + Sujeto + verbo-ing." },
+                { q: "She ___ <span class='verb-hint'>(stay)</span> in London this week.", a: "is staying", e: "Situación temporal ('this week') usa Present Continuous." }
+            ],
+            order: [
+                { words: "raining / is / it / heavily / now", a: "it is raining heavily now", e: "Sujeto (it) + is + verbo-ing + complementos." },
+                { words: "are / doing / what / you / ?", a: "what are you doing", e: "Wh- + are + sujeto + verbo-ing." },
+                { words: "not / i / am / sleeping", a: "i am not sleeping", e: "Negativa: I + am + not + verbo-ing." },
+                { words: "dinner / making / is / my dad", a: "my dad is making dinner", e: "Sujeto + is + verbo-ing." },
+                { words: "they / playing / outside / are", a: "they are playing outside", e: "Sujeto + are + verbo-ing + lugar." }
+            ],
+            text: {
+                content: "Right now, it [1] <span class='verb-hint'>(rain)</span> outside. I [2] <span class='verb-hint'>(sit)</span> in my living room. My brother [3] <span class='verb-hint'>(play)</span> video games on the sofa. He [4] <span class='verb-hint'>(not / do)</span> his homework. My parents [5] <span class='verb-hint'>(cook)</span> dinner in the kitchen. I can smell it! What [6] <span class='verb-hint'>(you / do)</span> right now? [7] <span class='verb-hint'>(you / read)</span> a book? Look, the dog [8] <span class='verb-hint'>(chase)</span> its tail. We [9] <span class='verb-hint'>(have)</span> a cozy evening. I [10] <span class='verb-hint'>(not / think)</span> about school right now.",
+                answers: ["is raining", "am sitting", "is playing", "is not doing", "are cooking", "are you doing", "are you reading", "is chasing", "are having", "am not thinking"],
+                explanations: ["Acción en el momento.", "I + am + ing.", "He + is + ing.", "Negativa: He is not doing.", "Parents = They = are + ing.", "Pregunta en progreso.", "Pregunta continua.", "The dog (it) + is + chasing.", "We + are + ing.", "Acción temporal de pensamiento activo."]
+            }
+        },
+        // FASE 3: MIXTO (Simple vs Continuo)
+        {
+            title: "Fase 3: Mixed (Simple vs Continuous)",
+            requiredScore: 20, // 80% de las 25 preguntas
+            fill: [
+                { q: "I normally drive to work, but today I ___ <span class='verb-hint'>(take)</span> the bus.", a: "am taking", e: "Contraste: Rutina (Simple) vs Situación temporal de hoy (Continuo)." },
+                { q: "Shh! The baby ___ <span class='verb-hint'>(sleep)</span>.", a: "is sleeping", e: "Shh! indica que la acción está ocurriendo AHORA (Continuo)." },
+                { q: "I ___ <span class='verb-hint'>(not / understand)</span> this math problem.", a: "do not understand", e: "'Understand' es un Stative Verb (Verbo de estado), NUNCA va en continuo." },
+                { q: "He ___ <span class='verb-hint'>(always / leave)</span> his dirty socks on the floor!", a: "is always leaving", e: "Queja sobre un hábito molesto: usamos 'always' con Presente Continuo." },
+                { q: "This soup ___ <span class='verb-hint'>(taste)</span> delicious.", a: "tastes", e: "'Taste' indicando sabor es verbo de estado (Presente Simple)." },
+                { q: "I ___ <span class='verb-hint'>(believe)</span> everything you say.", a: "believe", e: "'Believe' es un verbo de estado (Stative Verb). No usamos la forma -ing." },
+                { q: "She ___ <span class='verb-hint'>(love)</span> reading books on weekends.", a: "loves", e: "'Love' expresa un sentimiento/estado. Se usa Presente Simple y añade -s." },
+                { q: "We ___ <span class='verb-hint'>(know)</span> the answer to that question now.", a: "know", e: "Aunque diga 'now', 'Know' es un verbo de estado mental. NUNCA lleva -ing." },
+                { q: "I ___ <span class='verb-hint'>(need)</span> some help with my homework right now.", a: "need", e: "'Need' es estado. Aunque sea 'ahora mismo', no se puede decir 'I am needing'." },
+                { q: "He ___ <span class='verb-hint'>(want)</span> to buy a new car this year.", a: "wants", e: "'Want' es un verbo que indica deseo (Stative). Presente Simple con -s." }
+            ],
+            order: [
+                { words: "usually / play / tennis / we / on saturdays", a: "we usually play tennis on saturdays", e: "Rutina habitual = Presente Simple." },
+                { words: "is / she / waiting / for / the bus / now", a: "she is waiting for the bus now", e: "'Now' indica Presente Continuo." },
+                { words: "believe / you / do / in ghosts / ?", a: "do you believe in ghosts", e: "'Believe' es estado mental, se usa Presente Simple." },
+                { words: "dinner / having / they / are / right now", a: "they are having dinner right now", e: "Acción en el momento = Presente Continuo." },
+                { words: "never / coffee / drinks / my sister", a: "my sister never drinks coffee", e: "Hábito = Presente Simple. My sister (She) añade -s." }
+            ],
+            text: {
+                content: "Dear Diary, I [1] <span class='verb-hint'>(write)</span> to you from Spain. I usually [2] <span class='verb-hint'>(live)</span> in London, but this month I [3] <span class='verb-hint'>(study)</span> Spanish in Madrid. Every day, I [4] <span class='verb-hint'>(wake)</span> up early and go to classes. Right now, I [5] <span class='verb-hint'>(sit)</span> in a beautiful café. People outside [6] <span class='verb-hint'>(walk)</span> fast. The coffee here [7] <span class='verb-hint'>(smell)</span> amazing! I really [8] <span class='verb-hint'>(like)</span> the food here. Look! A street musician [9] <span class='verb-hint'>(play)</span> the guitar nearby. I [10] <span class='verb-hint'>(think)</span> it's time to go back to class now.",
+                answers: ["am writing", "live", "am studying", "wake", "am sitting", "are walking", "smells", "like", "is playing", "think"],
+                explanations: ["Acción en el momento de escribir.", "Hecho permanente / rutina.", "Situación temporal este mes.", "Rutina (Every day).", "Acción en curso (Right now).", "Acción visible en este momento.", "Stative verb (percepción sensorial).", "Stative verb (gusto).", "Look! Acción ocurriendo ahora.", "Stative verb (opinión) en este contexto."]
+            }
+        }
+    ];
+
+    let currentStage = 0;
+    let playerName = "";
+    let startTime = 0;
+    let isTeacherMode = false;
+
+    function normalizeStr(str) {
+        if (!str) return "";
+        return str.toLowerCase()
+                  .replace(/[.?!,]/g, '') 
+                  .replace(/\s+/g, ' ')   
+                  .replace(/\s*\/\s*/g, '/') 
+                  .trim()
+                  .replace(/aren't/g, 'are not')
+                  .replace(/isn't/g, 'is not')
+                  .replace(/don't/g, 'do not')
+                  .replace(/doesn't/g, 'does not')
+                  .replace(/can't/g, 'cannot')
+                  .replace(/won't/g, 'will not')
+                  .replace(/i'm/g, 'i am')
+                  .replace(/you're/g, 'you are')
+                  .replace(/we're/g, 'we are')
+                  .replace(/they're/g, 'they are')
+                  .replace(/he's/g, 'he is')
+                  .replace(/she's/g, 'she is')
+                  .replace(/it's/g, 'it is');
+    }
+
+    function accesoProfesor() {
+        const code = prompt("Introduce el código de profesor:");
+        if (code === "1234") {
+            isTeacherMode = true;
+            playerName = "Profesor";
+            document.getElementById("screen-start").classList.remove("active");
+            document.getElementById("screen-game").classList.add("active");
+            loadStage(0);
+        } else if (code !== null && code !== "") {
+            alert("Código incorrecto.");
+        }
+    }
+
+    function startGame() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") {
+            alert("Por favor, introduce tu nombre para comenzar en Wisdom Corner Academy.");
+            return;
+        }
+        playerName = nameInput;
+        isTeacherMode = false;
+        startTime = new Date().getTime();
+        
+        document.getElementById("screen-start").classList.remove("active");
+        document.getElementById("screen-game").classList.add("active");
+        
+        loadStage(currentStage);
+    }
+
+    function loadStage(stageIndex) {
+        const stage = stagesData[stageIndex];
+        
+        if (isTeacherMode) {
+            document.getElementById("stage-title").innerText = stage.title + " (Modo Profesor)";
+            document.getElementById("btn-next").style.display = "block";
+            document.getElementById("btn-reveal").style.display = "block";
+            document.getElementById("btn-check").style.display = "none";
+            document.getElementById("btn-next").innerText = "Siguiente Fase ➔";
+            if (stageIndex === stagesData.length - 1) {
+                document.getElementById("btn-next").innerText = "Ver Pantalla Final ➔";
+            }
+        } else {
+            document.getElementById("stage-title").innerText = stage.title;
+            document.getElementById("btn-check").style.display = "block";
+            document.getElementById("btn-next").style.display = "none";
+            document.getElementById("btn-reveal").style.display = "none";
+        }
+
+        const container = document.getElementById("exercises-container");
+        container.innerHTML = "";
+
+        let html = "";
+        let inputCounter = 0;
+
+        // 1. Fill in the blanks
+        html += `<h3 class="section-title">Parte 1: Rellena el hueco</h3>
+                 <p class="instructions">Escribe <strong>solo la forma verbal</strong> correcta (se aceptan contracciones).<br> 
+                 ⚠️ <strong>ATENCIÓN:</strong> Si la frase tiene dos huecos (ej: "___ you ___"), debes escribir ambas respuestas separadas por una barra en la caja. <br>
+                 <em>Ejemplo para dos huecos: <strong>do / sleep</strong></em></p>`;
+                 
+        stage.fill.forEach((item, idx) => {
+            html += `
+            <div class="exercise-item" id="ex-${inputCounter}">
+                <p><strong>${idx + 1}.</strong> ${item.q} 
+                <input type="text" class="inline-input" id="input-${inputCounter}" data-answer="${item.a}" placeholder="Escribe aquí"></p>
+                <div class="feedback" id="feedback-${inputCounter}">${item.e}</div>
+            </div>`;
+            inputCounter++;
+        });
+
+        // 2. Order the sentences
+        html += `<h3 class="section-title">Parte 2: Ordena la frase</h3>
+                 <p class="instructions">Escribe <strong>la frase completa</strong> en el orden correcto.</p>`;
+        stage.order.forEach((item, idx) => {
+            html += `
+            <div class="exercise-item" id="ex-${inputCounter}">
+                <p class="scrambled-words">${item.words}</p>
+                <input type="text" id="input-${inputCounter}" data-answer="${item.a}" placeholder="Escribe aquí la frase completa">
+                <div class="feedback" id="feedback-${inputCounter}">${item.e}</div>
+            </div>`;
+            inputCounter++;
+        });
+
+        // 3. Text completion
+        html += `<h3 class="section-title">Parte 3: Texto Completo</h3>
+                 <p class="instructions">Lee el texto e integra <strong>solo el verbo</strong> en el hueco correspondiente. Los huecos fluyen directamente con el texto.</p>`;
+        
+        let textHTML = stage.text.content;
+        for (let i = 0; i < 10; i++) {
+            textHTML = textHTML.replace(`[${i+1}]`, `<input type="text" class="text-input" id="input-${inputCounter}" data-answer="${stage.text.answers[i]}" data-exp="${stage.text.explanations[i]}">`);
+            inputCounter++;
+        }
+        
+        html += `
+        <div class="text-exercise" id="text-container">
+            ${textHTML}
+        </div>
+        <div id="text-feedbacks" style="margin-top: 15px;"></div>`;
+
+        container.innerHTML = html;
+        
+        // Si estamos en modo profesor, no mostramos puntuación por defecto
+        if (isTeacherMode) {
+            document.getElementById("score-tracker").innerText = `Respuestas requeridas: ${stage.requiredScore}`;
+        } else {
+            document.getElementById("score-tracker").innerText = ``;
+        }
+    }
+
+    function mostrarRespuestasProfesor() {
+        const inputs = document.querySelectorAll('#exercises-container input');
+        inputs.forEach(inp => {
+            inp.value = inp.getAttribute('data-answer');
+            inp.classList.add('correct');
+        });
+
+        // Mostrar explicaciones de las partes 1 y 2
+        const feedbacks = document.querySelectorAll('.feedback');
+        feedbacks.forEach(fb => {
+            fb.style.display = 'block';
+            fb.style.color = 'var(--primary)'; // Azul en lugar de rojo de error
+        });
+        
+        // Mostrar explicaciones de la parte 3 (texto)
+        const stage = stagesData[currentStage];
+        let textStartIndex = stage.fill.length + stage.order.length;
+        let textFeedbacks = "";
+        
+        for (let i = textStartIndex; i < textStartIndex + 10; i++) {
+            const inputEl = document.getElementById(`input-${i}`);
+            if (inputEl) {
+                const exp = inputEl.getAttribute("data-exp");
+                const numHueco = i - textStartIndex + 1;
+                textFeedbacks += `<div style="color: var(--primary); margin-bottom: 5px;"><strong>Hueco ${numHueco}:</strong> ${exp}</div>`;
+            }
+        }
+        
+        const fbContainer = document.getElementById("text-feedbacks");
+        if (fbContainer) fbContainer.innerHTML = textFeedbacks;
+    }
+
+    function checkStage() {
+        if (isTeacherMode) return; // En modo profesor no hace falta chequear
+        
+        const stage = stagesData[currentStage];
+        let correctCount = 0;
+        let totalInputs = stage.fill.length + stage.order.length + 10; 
+        let textStartIndex = stage.fill.length + stage.order.length;
+        let textFeedbacks = "";
+
+        for (let i = 0; i < totalInputs; i++) {
+            const inputEl = document.getElementById(`input-${i}`);
+            const userVal = normalizeStr(inputEl.value);
+            const correctVal = normalizeStr(inputEl.getAttribute("data-answer"));
+            const parentEx = document.getElementById(`ex-${i}`); 
+            
+            if (userVal === correctVal && userVal !== "") {
+                correctCount++;
+                inputEl.classList.add("correct");
+                inputEl.classList.remove("incorrect");
+                if (parentEx) {
+                    parentEx.classList.add("correct");
+                    parentEx.classList.remove("incorrect");
+                }
+            } else {
+                inputEl.classList.add("incorrect");
+                inputEl.classList.remove("correct");
+                if (parentEx) {
+                    parentEx.classList.add("incorrect");
+                    parentEx.classList.remove("correct");
+                }
+                
+                if (i >= textStartIndex) {
+                    const numHueco = i - textStartIndex + 1;
+                    const exp = inputEl.getAttribute("data-exp");
+                    textFeedbacks += `<div style="color: var(--error); margin-bottom: 5px;"><strong>Hueco ${numHueco}:</strong> ${exp}</div>`;
+                }
+            }
+            
+            if (inputEl.classList.contains("correct")) {
+                inputEl.disabled = true;
+            }
+        }
+
+        const fbContainer = document.getElementById("text-feedbacks");
+        if (fbContainer) fbContainer.innerHTML = textFeedbacks;
+
+        document.getElementById("score-tracker").innerText = `Puntuación: ${correctCount} / ${totalInputs}`;
+
+        if (correctCount >= stage.requiredScore) {
+            document.getElementById("btn-check").style.display = "none";
+            document.getElementById("btn-next").style.display = "block";
+            
+            if (currentStage === 2) {
+                document.getElementById("btn-next").innerText = "Ver Resultados Finales ➔";
+            }
+        } else {
+            alert(`Has conseguido ${correctCount}/${totalInputs}. Necesitas ${stage.requiredScore} para avanzar. Revisa las explicaciones en rojo, corrige los errores y vuelve a pulsar el botón.`);
+        }
+    }
+
+    function nextStage() {
+        currentStage++;
+        if (currentStage < stagesData.length) {
+            loadStage(currentStage);
+        } else {
+            finishGame();
+        }
+    }
+
+    function finishGame() {
+        document.getElementById("screen-game").classList.remove("active");
+        document.getElementById("screen-results").classList.add("active");
+        
+        if (isTeacherMode) {
+            document.getElementById("final-name").innerText = "Modo Profesor Completado";
+            document.getElementById("final-stats").innerText = "Has visualizado todas las fases.";
+            document.getElementById("distinction-badge").innerHTML = `<div class="diamante" style="background: var(--primary); color: white;"><h2>👨‍🏫 ACCESO PROFESOR 👩‍🏫</h2><p>Fin del recorrido.</p></div>`;
+            document.getElementById("final-message").innerText = "En modo profesor no se envían correos.";
+            return;
+        }
+
+        const endTime = new Date().getTime();
+        const timeInSeconds = Math.floor((endTime - startTime) / 1000);
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        
+        const stage3 = stagesData[2];
+        const totalStage3 = stage3.fill.length + stage3.order.length + 10; 
+        
+        const finalInputs = Array.from(document.querySelectorAll('#screen-game input'));
+        const stage3Inputs = finalInputs.slice(-totalStage3); 
+        let finalScore = stage3Inputs.filter(inp => inp.classList.contains("correct")).length;
+
+        if (finalScore < stage3.requiredScore) finalScore = stage3.requiredScore; 
+
+        document.getElementById("final-name").innerText = `${playerName}, ¡has superado el reto!`;
+        document.getElementById("final-stats").innerText = `Tiempo total: ${minutes}m ${seconds}s | Aciertos Mixto: ${finalScore}/${totalStage3}`;
+
+        let badgeHtml = "";
+        let badgeName = "";
+        
+        if (finalScore === 25 && timeInSeconds < 300) {  
+            badgeName = "Diamante (Master of Tenses)";
+            badgeHtml = `<div class="diamante"><h2>🏆 DISTINCIÓN: DIAMANTE 🏆</h2><p>¡Perfección absoluta a velocidad récord!</p></div>`;
+        } else if (finalScore === 25) {
+            badgeName = "Oro";
+            badgeHtml = `<div class="oro"><h2>🥇 DISTINCIÓN: ORO 🥇</h2><p>¡Gramática perfecta, gran trabajo!</p></div>`;
+        } else if (finalScore >= 22) { 
+            badgeName = "Plata";
+            badgeHtml = `<div class="plata"><h2>🥈 DISTINCIÓN: PLATA 🥈</h2><p>Muy buen nivel, casi perfecto.</p></div>`;
+        } else { 
+            badgeName = "Bronce";
+            badgeHtml = `<div class="bronce"><h2>🥉 DISTINCIÓN: BRONCE 🥉</h2><p>Aprobado sólido, sigue practicando.</p></div>`;
+        }
+
+        document.getElementById("distinction-badge").innerHTML = badgeHtml;
+
+        enviarResultados(playerName, finalScore, totalStage3, `${minutes}m ${seconds}s`, badgeName);
+    }
+
+    function enviarResultados(nombre, puntos, totalPuntos, tiempoJuego, medalla) {
+        if(URL_GOOGLE_SCRIPT === "TU_URL_DE_APPS_SCRIPT_AQUI") {
+            console.log("Aviso: Conecta tu URL de Google Script en el código para recibir los correos.");
+            return;
+        }
+
+        const datos = {
+            nombreJuego: "Grammar Master: Simple vs Continuous",
+            jugador: nombre,
+            puntuacion: puntos + "/" + totalPuntos,
+            tiempo: tiempoJuego,
+            extra: "Distinción lograda: " + medalla
+        };
+
+        fetch(URL_GOOGLE_SCRIPT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' }, 
+            body: JSON.stringify(datos)
+        })
+        .then(response => console.log("Resultados enviados correctamente al correo."))
+        .catch(error => console.error("Error al enviar resultados:", error));
+    }
+</script>
+</body>
+</html>
