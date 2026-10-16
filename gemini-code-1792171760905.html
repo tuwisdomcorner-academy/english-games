@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Vocabulario Semana 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b365d;
+            --primary-light: #2c4d7e;
+            --gold: #c59b27;
+            --gold-light: #dfb743;
+            --bg-grad: linear-gradient(135deg, #f0f4f9 0%, #e5edf7 100%);
+            --card-bg: #ffffff;
+            --text-dark: #222b45;
+            --text-muted: #5e6c84;
+            --error: #c62828;
+            --success: #2e7d32;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-grad); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); border-radius: 20px; box-shadow: 0 16px 40px rgba(27,54,93,0.12); overflow: hidden; padding: 30px; }
+        h1 { font-family: 'Playfair Display', serif; color: var(--gold); text-align: center; margin-bottom: 5px; font-size: 28px; text-transform: uppercase;}
+        h2 { font-size: 16px; color: var(--primary); text-align: center; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;}
+        h3 { color: var(--primary); margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;}
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
+        input[type="text"], select { width: 100%; padding: 12px; border: 2px solid #dce4ec; border-radius: 8px; font-size: 16px; font-family: inherit; transition: 0.3s; }
+        input[type="text"]:focus, select:focus { border-color: var(--primary); outline: none; }
+        input:disabled, select:disabled { opacity: 0.9; cursor: not-allowed; }
+        
+        .btn { background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: block; width: 100%; text-align: center; margin-top: 25px; transition: 0.2s;}
+        .btn:hover { background: var(--primary-light); }
+        .btn-gold { background: var(--gold); }
+        .btn-gold:hover { background: var(--gold-light); }
+        .btn-gray { background: #94a3b8; }
+        .btn-gray:hover { background: #64748b; }
+        .btn-group { display: flex; gap: 10px; }
+        
+        /* Layouts para Rondas */
+        .match-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #dce4ec;}
+        .match-word { font-weight: 700; font-size: 18px; color: var(--primary); width: 40%;}
+        .match-select { width: 55%; }
+        
+        .blank-row { background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 15px; line-height: 2.2; border: 1px solid #dce4ec;}
+        .blank-input { width: 120px !important; display: inline-block; padding: 8px !important; text-align: center;}
+        
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .photo-card { background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #dce4ec;}
+        .emoji { font-size: 60px; margin-bottom: 15px; }
+        
+        .feedback-box { background: #fff1f0; border-left: 5px solid var(--error); padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .feedback-item { margin-bottom: 10px; color: #333; line-height: 1.5; }
+        .correct-answer { color: var(--success); font-weight: 700; }
+        .wrong-answer { color: var(--error); font-weight: 700; text-decoration: line-through; }
+        .perfect-score { background: #f6ffed; border-left: 5px solid var(--success); padding: 20px; border-radius: 8px; margin-top: 20px; color: var(--success); font-weight: 700; text-align: center; font-size: 20px;}
+        
+        .score-display { text-align: center; font-size: 36px; font-weight: 800; color: var(--primary); margin: 20px 0;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Wisdom Corner Academy</h1>
+    <h2>Vocabulary Challenge: Week 2</h2>
+
+    <!-- INICIO -->
+    <div id="screen-login" class="screen active">
+        <h3>Identificación</h3>
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="fname" placeholder="Ej: Carlos">
+        </div>
+        <div class="form-group">
+            <label>Apellidos:</label>
+            <input type="text" id="lname" placeholder="Ej: Martínez">
+        </div>
+        <button class="btn btn-gold" onclick="switchScreen('screen-login', 'screen-r1')">Comenzar Reto</button>
+    </div>
+
+    <!-- RONDA 1: UNIR CON FLECHAS (DROPDOWNS) -->
+    <div id="screen-r1" class="screen">
+        <h3>Ronda 1: Selecciona el significado</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Elige la traducción correcta al español para cada palabra.</p>
+        
+        <div class="match-row">
+            <div class="match-word">Kind</div>
+            <select class="match-select" id="r1_1">
+                <option value="">-- Elige --</option>
+                <option value="Divertido">Divertido</option>
+                <option value="Amable">Amable</option>
+                <option value="Alto">Alto</option>
+                <option value="Parque">Parque</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Weekend</div>
+            <select class="match-select" id="r1_2">
+                <option value="">-- Elige --</option>
+                <option value="Hermana">Hermana</option>
+                <option value="Deportes">Deportes</option>
+                <option value="Fin de semana">Fin de semana</option>
+                <option value="Mascota">Mascota</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Short</div>
+            <select class="match-select" id="r1_3">
+                <option value="">-- Elige --</option>
+                <option value="Bajo / Corto">Bajo / Corto</option>
+                <option value="Pelo">Pelo</option>
+                <option value="Rizado">Rizado</option>
+                <option value="Ojos">Ojos</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Best friend</div>
+            <select class="match-select" id="r1_4">
+                <option value="">-- Elige --</option>
+                <option value="Madre">Madre</option>
+                <option value="Mejor amigo/a">Mejor amigo/a</option>
+                <option value="Padre">Padre</option>
+                <option value="Familia">Familia</option>
+            </select>
+        </div>
+        <!-- NUEVO VOCABULARIO R1 -->
+        <div class="match-row">
+            <div class="match-word">Brother</div>
+            <select class="match-select" id="r1_5">
+                <option value="">-- Elige --</option>
+                <option value="Hermano">Hermano</option>
+                <option value="Joven">Joven</option>
+                <option value="Primo">Primo</option>
+                <option value="Abuelo">Abuelo</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Young</div>
+            <select class="match-select" id="r1_6">
+                <option value="">-- Elige --</option>
+                <option value="Viejo">Viejo</option>
+                <option value="Joven">Joven</option>
+                <option value="Alto">Alto</option>
+                <option value="Amable">Amable</option>
+            </select>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn" onclick="switchScreen('screen-r1', 'screen-r2')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 2: RELLENAR HUECOS -->
+    <div id="screen-r2" class="screen">
+        <h3>Ronda 2: Completa las frases</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la palabra en <b>inglés</b> que corresponda a la pista entre paréntesis.</p>
+        
+        <div class="blank-row">
+            1. My <input type="text" id="r2_1" class="blank-input" placeholder="(madre)"> is 50 years old and she is very <input type="text" id="r2_2" class="blank-input" placeholder="(alta)">.
+        </div>
+        <div class="blank-row">
+            2. We have got a <input type="text" id="r2_3" class="blank-input" placeholder="(mascota)"> dog.
+        </div>
+        <div class="blank-row">
+            3. Mark has got <input type="text" id="r2_4" class="blank-input" placeholder="(rizado)"> dark hair.
+        </div>
+        <div class="blank-row">
+            4. We play <input type="text" id="r2_5" class="blank-input" placeholder="(deportes)"> in the <input type="text" id="r2_6" class="blank-input" placeholder="(parque)">.
+        </div>
+        <!-- NUEVO VOCABULARIO R2 -->
+        <div class="blank-row">
+            5. My grandfather is very <input type="text" id="r2_7" class="blank-input" placeholder="(mayor/viejo)">.
+        </div>
+        <div class="blank-row">
+            6. She has got <input type="text" id="r2_8" class="blank-input" placeholder="(liso)"> hair.
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r2', 'screen-r1')">⬅ Anterior</button>
+            <button class="btn" onclick="switchScreen('screen-r2', 'screen-r3')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 3: IMÁGENES -->
+    <div id="screen-r3" class="screen">
+        <h3>Ronda 3: ¿Qué es esto?</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la palabra en <b>inglés</b> basándote en la imagen visual.</p>
+        
+        <div class="photo-grid">
+            <div class="photo-card">
+                <div class="emoji">👓</div>
+                <input type="text" id="r3_1" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">👀</div>
+                <input type="text" id="r3_2" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">👨‍👩‍👧‍👦</div>
+                <input type="text" id="r3_3" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">😂</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Divertido/Gracioso)</p>
+                <input type="text" id="r3_4" placeholder="Escribe en inglés...">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r3', 'screen-r2')">⬅ Anterior</button>
+            <button class="btn btn-gold" id="btn-submit" onclick="finishGame()">¡Corregir Todo!</button>
+            <button class="btn btn-gold" id="btn-back-results" style="display:none;" onclick="switchScreen('screen-r3', 'screen-results')">Ver Resultados ➔</button>
+        </div>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="screen-results" class="screen">
+        <h3 id="result-title" style="text-align: center;">Resultados</h3>
+        <div class="score-display" id="final-score"></div>
+        <div id="feedback-container"></div>
+        
+        <button class="btn btn-gold" style="margin-top: 30px;" onclick="reviewTest()">⬅ Revisar mis respuestas paso a paso</button>
+        <button class="btn btn-gray" onclick="location.reload()">Volver a jugar</button>
+    </div>
+
+</div>
+
+<script>
+    let player = "";
+
+    function switchScreen(current, next) {
+        if (current === 'screen-login') {
+            const fname = document.getElementById('fname').value.trim();
+            const lname = document.getElementById('lname').value.trim();
+            if (!fname || !lname) {
+                alert("Por favor, introduce tu nombre y apellidos para continuar.");
+                return;
+            }
+            player = fname + " " + lname;
+        }
+        document.getElementById(current).classList.remove('active');
+        document.getElementById(next).classList.add('active');
+    }
+
+    function normalize(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function finishGame() {
+        const answers = {
+            // Ronda 1
+            r1_1: { expected: "amable", label: "Ronda 1 (Kind)" },
+            r1_2: { expected: "fin de semana", label: "Ronda 1 (Weekend)" },
+            r1_3: { expected: "bajo / corto", label: "Ronda 1 (Short)" },
+            r1_4: { expected: "mejor amigo/a", label: "Ronda 1 (Best friend)" },
+            r1_5: { expected: "hermano", label: "Ronda 1 (Brother)" },
+            r1_6: { expected: "joven", label: "Ronda 1 (Young)" },
+            // Ronda 2
+            r2_1: { expected: "mother", label: "Ronda 2 (madre)" },
+            r2_2: { expected: "tall", label: "Ronda 2 (alta)" },
+            r2_3: { expected: "pet", label: "Ronda 2 (mascota)" },
+            r2_4: { expected: "curly", label: "Ronda 2 (rizado)" },
+            r2_5: { expected: "sports", label: "Ronda 2 (deportes)" },
+            r2_6: { expected: "park", label: "Ronda 2 (parque)" },
+            r2_7: { expected: "old", label: "Ronda 2 (mayor)" },
+            r2_8: { expected: "straight", label: "Ronda 2 (liso)" },
+            // Ronda 3
+            r3_1: { expected: "glasses", label: "Ronda 3 (👓)" },
+            r3_2: { expected: "eyes", label: "Ronda 3 (👀)" },
+            r3_3: { expected: "family", label: "Ronda 3 (👨‍👩‍👧‍👦)" },
+            r3_4: { expected: "funny", label: "Ronda 3 (😂 Divertido)" }
+        };
+
+        let correct = 0;
+        let total = Object.keys(answers).length;
+        let errorsHTML = "";
+
+        for (let key in answers) {
+            const inputEl = document.getElementById(key);
+            let userVal = normalize(inputEl.value);
+            
+            // Caso especial
+            if(userVal === "bajo / corto" || userVal === "bajo/corto") userVal = "bajo / corto";
+
+            // Bloquear inputs para que no se puedan modificar al revisar
+            inputEl.disabled = true;
+
+            if (userVal === answers[key].expected) {
+                correct++;
+                inputEl.style.borderColor = "var(--success)";
+                inputEl.style.backgroundColor = "#f6ffed";
+            } else {
+                let displayUser = inputEl.value.trim() ? inputEl.value.trim() : "en blanco";
+                inputEl.style.borderColor = "var(--error)";
+                inputEl.style.backgroundColor = "#fff1f0";
+                
+                errorsHTML += `
+                    <div class="feedback-item">
+                        En <b>${answers[key].label}</b>, pusiste <span class="wrong-answer">"${displayUser}"</span>.<br>
+                        La respuesta correcta era: <span class="correct-answer">${answers[key].expected.toUpperCase()}</span>.
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('screen-r3').classList.remove('active');
+        document.getElementById('screen-results').classList.add('active');
+
+        document.getElementById('result-title').textContent = "Resultados de " + player;
+        document.getElementById('final-score').textContent = `${correct} / ${total} Aciertos`;
+
+        const feedbackContainer = document.getElementById('feedback-container');
+        if (correct === total) {
+            feedbackContainer.innerHTML = `<div class="perfect-score">¡Impresionante! Has acertado todo perfectamente. 🎉</div>`;
+        } else {
+            feedbackContainer.innerHTML = `
+                <div class="feedback-box">
+                    <h4 style="margin-bottom: 15px; color: var(--error);">Resumen de errores:</h4>
+                    ${errorsHTML}
+                </div>
+            `;
+        }
+    }
+
+    function reviewTest() {
+        // Ocultar pantalla de resultados y mostrar la ronda 1
+        document.getElementById('screen-results').classList.remove('active');
+        document.getElementById('screen-r1').classList.add('active');
+        
+        // Cambiar el botón final para que permita volver a resultados en vez de volver a corregir
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-back-results').style.display = 'block';
+    }
+</script>
+</body>
+</html>
