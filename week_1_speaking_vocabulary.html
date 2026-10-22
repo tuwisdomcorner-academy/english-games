@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 Speaking Vocabulary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .hidden-screen { display: none !important; }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Theme Colors: Navy Blue (#1e3a8a) and Gold (#eab308) */
+        .bg-navy { background-color: #1e3a8a; }
+        .text-navy { color: #1e3a8a; }
+        .border-navy { border-color: #1e3a8a; }
+        .bg-gold { background-color: #eab308; }
+        .text-gold { color: #eab308; }
+        .border-gold { border-color: #eab308; }
+        
+        /* Game 1: Matching Styles */
+        .match-btn { transition: all 0.2s; border: 2px solid #cbd5e1; }
+        .match-btn.selected { background-color: #1e3a8a; color: #eab308; border-color: #1e3a8a; transform: scale(1.02); }
+        .match-btn:disabled { opacity: 0; pointer-events: none; }
+        
+        .paired-item { display: inline-flex; align-items: center; background: #fef08a; color: #1e3a8a; padding: 8px 16px; border-radius: 999px; margin: 6px; font-weight: 600; border: 1px solid #eab308; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .paired-item button { margin-left: 12px; color: #b91c1c; font-weight: bold; cursor: pointer; background: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+        .paired-item button:hover { background-color: #fee2e2; }
+
+        /* General Inputs */
+        .game-input { border: 2px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; outline: none; transition: border-color 0.2s; width: 100%; color: #1e3a8a; font-weight: 500;}
+        .game-input:focus { border-color: #eab308; box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2); }
+        
+        .blank-select { appearance: none; background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 6px; padding: 6px 32px 6px 12px; font-weight: 600; color: #1e3a8a; cursor: pointer; outline: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231e3a8a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; background-size: 16px; }
+        .blank-select:focus { border-color: #eab308; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-navy shadow-lg border-b-4 border-gold sticky top-0 z-50 py-4">
+        <div class="max-w-5xl mx-auto px-4 text-center relative">
+            <!-- Exact Logo Placement as requested -->
+            <img src="Logo.png" alt="Wisdom Corner Academy Logo" class="h-24 w-auto object-contain mb-2 mx-auto">
+            <h1 class="text-white font-extrabold text-2xl tracking-wide uppercase">WEEK 1 SPEAKING VOCABULARY</h1>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 md:p-8 flex items-center justify-center w-full max-w-5xl mx-auto">
+        
+        <!-- ================= SCREEN 1: WELCOME ================= -->
+        <div id="screen-welcome" class="bg-white rounded-xl shadow-2xl p-8 md:p-12 text-center fade-in border border-slate-200 w-full max-w-lg">
+            <div class="mb-8">
+                <div class="w-20 h-20 bg-blue-50 text-navy rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-gold">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-navy mb-2">¡Bienvenido a la Prueba!</h2>
+                <p class="text-slate-500">Por favor, introduce tu nombre para comenzar.</p>
+            </div>
+            <div class="space-y-4">
+                <input type="text" id="student-name" placeholder="Tu nombre y apellidos..." class="game-input text-center text-lg font-medium">
+                <button id="btn-login" class="w-full bg-navy hover:bg-blue-800 text-gold font-bold text-lg py-4 rounded-xl shadow-md transition-all">
+                    Entrar a la Prueba
+                </button>
+                <p id="login-error" class="text-red-500 text-sm font-medium hidden">Debes escribir tu nombre para continuar.</p>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 2: STUDY ================= -->
+        <div id="screen-study" class="hidden-screen bg-white rounded-xl shadow-2xl p-6 md:p-10 fade-in border border-slate-200 w-full">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 border-b-2 border-slate-100 pb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-navy">Fase de Estudio</h2>
+                    <p class="text-slate-500 mt-1">Memoriza el vocabulario. Tienes 5 minutos, o haz clic en "Empezar".</p>
+                </div>
+                <div class="bg-navy border-2 border-gold text-white px-8 py-4 rounded-xl text-center shadow-lg">
+                    <p class="text-gold text-xs uppercase tracking-widest font-bold mb-1">Tiempo Restante</p>
+                    <p id="timer-display" class="text-4xl font-mono font-bold">05:00</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <!-- Structures -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-xl text-navy mb-4 border-b border-gold pb-2 inline-block">Key Structures</h3>
+                    <ul class="space-y-4">
+                        <li class="bg-white p-4 rounded shadow-sm border border-slate-100">
+                            <strong class="text-navy block mb-1">In this picture, I can see...</strong>
+                            <span class="text-slate-500 text-sm">En esta foto puedo ver...</span>
+                        </li>
+                        <li class="bg-white p-4 rounded shadow-sm border border-slate-100">
+                            <strong class="text-navy block mb-1">There is / There are...</strong>
+                            <span class="text-slate-500 text-sm">Hay (singular) / Hay (plural)</span>
+                        </li>
+                        <li class="bg-white p-4 rounded shadow-sm border border-slate-100">
+                            <strong class="text-navy block mb-1">He/She is wearing...</strong>
+                            <span class="text-slate-500 text-sm">Él/Ella lleva puesto...</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Vocabulary -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-xl text-navy mb-4 border-b border-gold pb-2 inline-block">Key Vocabulary</h3>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Parents</strong> <span class="text-slate-600">Padres</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Siblings</strong> <span class="text-slate-600">Hermanos</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Have dinner</strong> <span class="text-slate-600">Cenar</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Salad</strong> <span class="text-slate-600">Ensalada</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Sofa</strong> <span class="text-slate-600">Sofá</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Background</strong> <span class="text-slate-600">Fondo</span></li>
+                        <li class="flex justify-between items-center bg-white p-3 rounded shadow-sm border border-slate-100"><strong class="text-navy">Busy</strong> <span class="text-slate-600">Ocupado</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="btn-start-games" class="bg-gold hover:bg-yellow-400 text-navy font-bold py-4 px-10 rounded-xl shadow-lg transition-all text-lg border-2 border-transparent hover:border-navy">
+                    ¡Empezar los juegos!
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 3: GAMES ================= -->
+        <div id="screen-games" class="hidden-screen fade-in space-y-8 w-full">
+            <div class="bg-navy border-l-4 border-gold text-white p-6 rounded-xl shadow-md flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold">Vocabulary Practice</h2>
+                    <p class="text-blue-200 mt-1">Demuestra lo que has aprendido. No se puede volver atrás.</p>
+                </div>
+                <div class="text-4xl">🎓</div>
+            </div>
+
+            <!-- Game 1: Matching -->
+            <div class="bg-white rounded-xl shadow p-6 md:p-8 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gold text-navy font-bold w-8 h-8 flex items-center justify-center rounded-full text-lg">1</div>
+                    <h3 class="text-xl font-bold text-navy">Matching Game (5 points)</h3>
+                </div>
+                <p class="text-slate-500 mb-6">Haz clic en una palabra en inglés y luego en su significado en español para unirlas.</p>
+                
+                <div class="grid grid-cols-2 gap-4 md:gap-8 mb-6">
+                    <div id="col-eng" class="flex flex-col gap-3"></div>
+                    <div id="col-spa" class="flex flex-col gap-3"></div>
+                </div>
+                
+                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 min-h-[100px]">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-3 tracking-wider">Parejas Formadas:</p>
+                    <div id="paired-container" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
+            <!-- Game 2: Emojis -->
+            <div class="bg-white rounded-xl shadow p-6 md:p-8 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gold text-navy font-bold w-8 h-8 flex items-center justify-center rounded-full text-lg">2</div>
+                    <h3 class="text-xl font-bold text-navy">Emoji Translation (4 points)</h3>
+                </div>
+                <p class="text-slate-500 mb-6">Escribe la palabra en <strong class="text-navy">inglés</strong> correspondiente a cada icono.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="emoji-container">
+                    <!-- JS Generated -->
+                </div>
+            </div>
+
+            <!-- Game 3: Fill Blanks -->
+            <div class="bg-white rounded-xl shadow p-6 md:p-8 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gold text-navy font-bold w-8 h-8 flex items-center justify-center rounded-full text-lg">3</div>
+                    <h3 class="text-xl font-bold text-navy">Fill in the Blanks (4 points)</h3>
+                </div>
+                <p class="text-slate-500 mb-6">Elige la palabra correcta del desplegable para completar la frase.</p>
+                
+                <div class="space-y-4" id="blanks-container">
+                    <!-- JS Generated -->
+                </div>
+            </div>
+
+            <!-- Game 4: Scramble -->
+            <div class="bg-white rounded-xl shadow p-6 md:p-8 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gold text-navy font-bold w-8 h-8 flex items-center justify-center rounded-full text-lg">4</div>
+                    <h3 class="text-xl font-bold text-navy">Scrambled Words (5 points)</h3>
+                </div>
+                <p class="text-slate-500 mb-6">Ordena las letras para formar palabras en inglés.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="scramble-container">
+                    <!-- JS Generated -->
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center pt-4 pb-10">
+                <button id="btn-submit" class="bg-navy hover:bg-blue-800 text-gold font-bold text-xl py-5 px-12 rounded-xl shadow-xl transition-all border-2 border-transparent hover:border-gold">
+                    Entregar Prueba 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 4: RESULTS ================= -->
+        <div id="screen-results" class="hidden-screen fade-in w-full">
+            
+            <div class="bg-white rounded-xl shadow-xl p-8 md:p-12 text-center border border-slate-200 mb-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-3 bg-gold"></div>
+                <h2 class="text-3xl font-bold text-navy mb-2 mt-4">Resultados Finales</h2>
+                <p class="text-lg text-slate-600 mb-8">Estudiante: <span id="res-name" class="font-bold text-navy"></span></p>
+                
+                <div class="inline-block bg-slate-50 border-2 border-slate-100 rounded-2xl p-6 px-12 shadow-inner">
+                    <p class="text-sm text-slate-400 uppercase font-bold tracking-widest mb-2">Puntuación Total</p>
+                    <p class="text-6xl font-black text-navy"><span id="res-score"></span><span class="text-3xl text-slate-400">/18</span></p>
+                </div>
+            </div>
+
+            <!-- Mistakes Table -->
+            <div id="mistakes-section" class="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+                <h3 class="text-xl font-bold text-red-600 mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Áreas de Mejora
+                </h3>
+                <p class="text-slate-600 mb-6">A continuación se muestran únicamente las respuestas que debes repasar:</p>
+                
+                <div class="overflow-x-auto rounded-lg border border-slate-200">
+                    <table class="w-full text-left border-collapse bg-white">
+                        <thead>
+                            <tr class="bg-navy text-gold text-sm uppercase tracking-wide">
+                                <th class="py-4 px-4 font-semibold">Juego</th>
+                                <th class="py-4 px-4 font-semibold">Pregunta</th>
+                                <th class="py-4 px-4 font-semibold">Tu respuesta</th>
+                                <th class="py-4 px-4 font-semibold">Solución Correcta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mistakes-tbody" class="divide-y divide-slate-200 text-slate-700">
+                            <!-- JS Generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Perfect Score -->
+            <div id="perfect-score-msg" class="bg-green-50 border-2 border-green-200 text-green-800 rounded-xl p-8 text-center hidden shadow-sm">
+                <div class="text-6xl mb-4">🏆</div>
+                <h3 class="text-3xl font-bold mb-2">¡Puntuación Perfecta!</h3>
+                <p class="text-lg">No has cometido ningún error. ¡Enhorabuena, excelente trabajo!</p>
+            </div>
+
+            <div class="text-center mt-10 pb-12">
+                <button onclick="location.reload()" class="text-navy font-bold underline hover:text-gold transition-colors">Volver a empezar</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA ---
+        // 5 pts
+        const g1Data = [
+            { en: 'Parents', es: 'Padres' },
+            { en: 'Siblings', es: 'Hermanos' },
+            { en: 'Trousers', es: 'Pantalones' },
+            { en: 'Background', es: 'Fondo' },
+            { en: 'Busy', es: 'Ocupado' }
+        ];
+
+        // 4 pts
+        const g2Data = [
+            { emoji: '🥗', ans: 'salad' },
+            { emoji: '🎮', ans: 'video games' },
+            { emoji: '👓', ans: 'glasses' },
+            { emoji: '🛋️', ans: 'sofa' }
+        ];
+
+        // 4 pts
+        const g3Data = [
+            { id: 'g3_0', pre: '', post: ' is a big bowl of salad.', options: ['There', 'They', 'It'], ans: 'There' },
+            { id: 'g3_1', pre: 'They ', post: ' eating dinner.', options: ['is', 'are', 'do'], ans: 'are' },
+            { id: 'g3_2', pre: 'She is ', post: ' a pink shirt.', options: ['wear', 'wears', 'wearing'], ans: 'wearing' },
+            { id: 'g3_3', pre: '', post: ' the right, I see a boy.', options: ['In', 'On', 'At'], ans: 'On' }
+        ];
+
+        // 5 pts
+        const g4Data = [
+            { scramble: 'N I R E D N', ans: 'dinner' },
+            { scramble: 'U C S I M', ans: 'music' },
+            { scramble: 'D R E N C L I H', ans: 'children' },
+            { scramble: 'V E A H', ans: 'have' },
+            { scramble: 'O K O B', ans: 'book' }
+        ];
+
+        // --- STATE ---
+        let studentName = "";
+        let studyTimer;
+        let timeLeft = 300; // 5 mins
+        
+        let selectedEngBtn = null;
+        let selectedSpaBtn = null;
+        let pairedAnswers = {}; 
+
+        // --- DOM Elements ---
+        const scrWelcome = document.getElementById('screen-welcome');
+        const scrStudy = document.getElementById('screen-study');
+        const scrGames = document.getElementById('screen-games');
+        const scrResults = document.getElementById('screen-results');
+
+        // --- LOGIC ---
+        function showScreen(screen) {
+            scrWelcome.classList.add('hidden-screen');
+            scrStudy.classList.add('hidden-screen');
+            scrGames.classList.add('hidden-screen');
+            scrResults.classList.add('hidden-screen');
+            screen.classList.remove('hidden-screen');
+            window.scrollTo(0,0);
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Screen 1
+        document.getElementById('btn-login').addEventListener('click', () => {
+            const input = document.getElementById('student-name').value.trim();
+            if (input) {
+                studentName = input;
+                document.getElementById('res-name').innerText = studentName;
+                startStudy();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        // Permit enter key on input
+        document.getElementById('student-name').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('btn-login').click();
+        });
+
+        // Screen 2
+        function startStudy() {
+            showScreen(scrStudy);
+            updateTimerDisplay();
+            studyTimer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(studyTimer);
+                    initGames();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${m}:${s}`;
+        }
+
+        document.getElementById('btn-start-games').addEventListener('click', () => {
+            clearInterval(studyTimer);
+            initGames();
+        });
+
+        // Screen 3
+        function initGames() {
+            showScreen(scrGames);
+            buildGame1();
+            buildGame2();
+            buildGame3();
+            buildGame4();
+        }
+
+        function buildGame1() {
+            const colEng = document.getElementById('col-eng');
+            const colSpa = document.getElementById('col-spa');
+            
+            let engArr = shuffleArray([...g1Data]);
+            let spaArr = shuffleArray([...g1Data]);
+
+            engArr.forEach(item => {
+                let btn = document.createElement('button');
+                btn.className = 'match-btn bg-white rounded-lg p-3 md:p-4 text-sm md:text-base font-bold text-navy hover:bg-blue-50 w-full text-center shadow-sm';
+                btn.innerText = item.en;
+                btn.dataset.val = item.en;
+                btn.dataset.type = 'eng';
+                btn.addEventListener('click', () => selectMatch(btn));
+                colEng.appendChild(btn);
+            });
+
+            spaArr.forEach(item => {
+                let btn = document.createElement('button');
+                btn.className = 'match-btn bg-white rounded-lg p-3 md:p-4 text-sm md:text-base font-bold text-slate-700 hover:bg-slate-50 w-full text-center shadow-sm';
+                btn.innerText = item.es;
+                btn.dataset.val = item.es;
+                btn.dataset.type = 'spa';
+                btn.addEventListener('click', () => selectMatch(btn));
+                colSpa.appendChild(btn);
+            });
+        }
+
+        function selectMatch(btn) {
+            const type = btn.dataset.type;
+            if (type === 'eng') {
+                if (selectedEngBtn) selectedEngBtn.classList.remove('selected');
+                selectedEngBtn = btn;
+                btn.classList.add('selected');
+            } else {
+                if (selectedSpaBtn) selectedSpaBtn.classList.remove('selected');
+                selectedSpaBtn = btn;
+                btn.classList.add('selected');
+            }
+
+            if (selectedEngBtn && selectedSpaBtn) {
+                let enVal = selectedEngBtn.dataset.val;
+                let esVal = selectedSpaBtn.dataset.val;
+                pairedAnswers[enVal] = esVal;
+                
+                selectedEngBtn.disabled = true;
+                selectedEngBtn.classList.add('hidden');
+                selectedSpaBtn.disabled = true;
+                selectedSpaBtn.classList.add('hidden');
+                
+                createBadge(enVal, esVal, selectedEngBtn, selectedSpaBtn);
+                
+                selectedEngBtn = null;
+                selectedSpaBtn = null;
+            }
+        }
+
+        function createBadge(en, es, btnEn, btnEs) {
+            const container = document.getElementById('paired-container');
+            const badge = document.createElement('div');
+            badge.className = 'paired-item fade-in';
+            badge.innerHTML = `<span>${en} ↔ ${es}</span> <button aria-label="Deshacer">✕</button>`;
+            
+            badge.querySelector('button').addEventListener('click', () => {
+                delete pairedAnswers[en];
+                container.removeChild(badge);
+                btnEn.disabled = false;
+                btnEn.classList.remove('hidden', 'selected');
+                btnEs.disabled = false;
+                btnEs.classList.remove('hidden', 'selected');
+            });
+            container.appendChild(badge);
+        }
+
+        function buildGame2() {
+            const container = document.getElementById('emoji-container');
+            g2Data.forEach((item, idx) => {
+                container.innerHTML += `
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div class="text-4xl md:text-5xl w-16 text-center">${item.emoji}</div>
+                        <input type="text" id="g2_${idx}" placeholder="Inglés..." class="game-input text-lg" autocomplete="off">
+                    </div>
+                `;
+            });
+        }
+
+        function buildGame3() {
+            const container = document.getElementById('blanks-container');
+            g3Data.forEach(item => {
+                let opts = `<option value="" disabled selected>---</option>`;
+                item.options.forEach(o => opts += `<option value="${o}">${o}</option>`);
+                
+                container.innerHTML += `
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 text-lg">
+                        ${item.pre}
+                        <select id="${item.id}" class="blank-select mx-1">
+                            ${opts}
+                        </select>
+                        ${item.post}
+                    </div>
+                `;
+            });
+        }
+
+        function buildGame4() {
+            const container = document.getElementById('scramble-container');
+            g4Data.forEach((item, idx) => {
+                container.innerHTML += `
+                    <div class="flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div class="font-mono font-bold text-xl text-navy tracking-widest text-center py-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+                            ${item.scramble}
+                        </div>
+                        <input type="text" id="g4_${idx}" placeholder="Palabra..." class="game-input text-center text-lg" autocomplete="off">
+                    </div>
+                `;
+            });
+        }
+
+        // Screen 4 - Evaluation
+        document.getElementById('btn-submit').addEventListener('click', evaluateApp);
+
+        function evaluateApp() {
+            let totalScore = 0;
+            let mistakes = []; 
+
+            // Eval G1
+            g1Data.forEach(item => {
+                let uAns = pairedAnswers[item.en];
+                if (uAns === item.es) {
+                    totalScore++;
+                } else {
+                    mistakes.push({ game: 'Matching', q: item.en, u: uAns || '(Vacío)', c: item.es });
+                }
+            });
+
+            // Eval G2
+            g2Data.forEach((item, idx) => {
+                let uAns = document.getElementById(`g2_${idx}`).value.trim().toLowerCase();
+                if (uAns === item.ans.toLowerCase()) {
+                    totalScore++;
+                } else {
+                    mistakes.push({ game: 'Emojis', q: item.emoji, u: uAns || '(Vacío)', c: item.ans });
+                }
+            });
+
+            // Eval G3
+            g3Data.forEach(item => {
+                let uAns = document.getElementById(item.id).value;
+                if (uAns === item.ans) {
+                    totalScore++;
+                } else {
+                    mistakes.push({ game: 'Blanks', q: `...${item.post}`, u: uAns || '(Vacío)', c: item.ans });
+                }
+            });
+
+            // Eval G4
+            g4Data.forEach((item, idx) => {
+                let uAns = document.getElementById(`g4_${idx}`).value.trim().toLowerCase();
+                if (uAns === item.ans.toLowerCase()) {
+                    totalScore++;
+                } else {
+                    mistakes.push({ game: 'Scramble', q: item.scramble, u: uAns || '(Vacío)', c: item.ans });
+                }
+            });
+
+            // Render Results
+            document.getElementById('res-score').innerText = totalScore;
+            
+            if (mistakes.length > 0) {
+                const tbody = document.getElementById('mistakes-tbody');
+                tbody.innerHTML = '';
+                mistakes.forEach(m => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-red-50 transition-colors">
+                            <td class="py-3 px-4 border-b border-slate-100 font-medium">${m.game}</td>
+                            <td class="py-3 px-4 border-b border-slate-100">${m.q}</td>
+                            <td class="py-3 px-4 border-b border-slate-100 text-red-500 font-medium line-through decoration-2">${m.u}</td>
+                            <td class="py-3 px-4 border-b border-slate-100 text-green-600 font-bold">${m.c}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('mistakes-section').classList.remove('hidden');
+                document.getElementById('perfect-score-msg').classList.add('hidden');
+            } else {
+                document.getElementById('mistakes-section').classList.add('hidden');
+                document.getElementById('perfect-score-msg').classList.remove('hidden');
+            }
+
+            showScreen(scrResults);
+        }
+    </script>
+</body>
+</html>
