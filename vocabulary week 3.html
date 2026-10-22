@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Vocabulario Semana 3</title>
+    <style>
+        :root {
+            --primary: #1b365d;
+            --primary-light: #2c4d7e;
+            --gold: #c59b27;
+            --gold-light: #dfb743;
+            --bg-grad: linear-gradient(135deg, #f0f4f9 0%, #e5edf7 100%);
+            --card-bg: #ffffff;
+            --text-dark: #222b45;
+            --text-muted: #5e6c84;
+            --error: #c62828;
+            --success: #2e7d32;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-grad); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); border-radius: 20px; box-shadow: 0 16px 40px rgba(27,54,93,0.12); overflow: hidden; padding: 30px; }
+        
+        .academy-logo { display: block; margin: 0 auto 15px auto; max-width: 150px; height: auto; }
+        
+        h1 { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); text-align: center; margin-bottom: 5px; font-size: 28px; text-transform: uppercase;}
+        h2 { font-size: 16px; color: var(--primary); text-align: center; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;}
+        h3 { color: var(--primary); margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;}
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
+        input[type="text"], select { width: 100%; padding: 12px; border: 2px solid #dce4ec; border-radius: 8px; font-size: 16px; font-family: inherit; transition: 0.3s; }
+        input[type="text"]:focus, select:focus { border-color: var(--primary); outline: none; }
+        input:disabled, select:disabled { opacity: 0.9; cursor: not-allowed; }
+        
+        .btn { background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: block; width: 100%; text-align: center; margin-top: 25px; transition: 0.2s;}
+        .btn:hover { background: var(--primary-light); }
+        .btn-gold { background: var(--gold); }
+        .btn-gold:hover { background: var(--gold-light); }
+        .btn-gray { background: #94a3b8; }
+        .btn-gray:hover { background: #64748b; }
+        .btn-group { display: flex; gap: 10px; }
+        
+        /* Layouts para Rondas */
+        .match-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #dce4ec;}
+        .match-word { font-weight: 700; font-size: 18px; color: var(--primary); width: 40%;}
+        .match-select { width: 55%; }
+        
+        .blank-row { background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 15px; line-height: 2.2; border: 1px solid #dce4ec;}
+        .blank-input { width: 140px !important; display: inline-block; padding: 8px !important; text-align: center;}
+        
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .photo-card { background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #dce4ec;}
+        .emoji { font-size: 60px; margin-bottom: 15px; }
+        
+        .feedback-box { background: #fff1f0; border-left: 5px solid var(--error); padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .feedback-item { margin-bottom: 10px; color: #333; line-height: 1.5; }
+        .correct-answer { color: var(--success); font-weight: 700; }
+        .wrong-answer { color: var(--error); font-weight: 700; text-decoration: line-through; }
+        .perfect-score { background: #f6ffed; border-left: 5px solid var(--success); padding: 20px; border-radius: 8px; margin-top: 20px; color: var(--success); font-weight: 700; text-align: center; font-size: 20px;}
+        
+        .score-display { text-align: center; font-size: 36px; font-weight: 800; color: var(--primary); margin: 20px 0;}
+        
+        /* Estudio Vocabulario */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px; }
+        .vocab-item { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #dce4ec; font-size: 15px; }
+        .vocab-en { font-weight: 700; color: var(--primary); }
+        .timer-alert { font-size: 24px; font-weight: 800; color: var(--error); text-align: center; margin: 15px 0; font-variant-numeric: tabular-nums;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="logo.png" alt="Wisdom Corner Academy Logo" class="academy-logo" onerror="this.style.display='none'">
+    
+    <h1>Wisdom Corner Academy</h1>
+    <h2>Vocabulary Challenge: Week 3</h2>
+
+    <!-- INICIO -->
+    <div id="screen-login" class="screen active">
+        <h3>Identificación</h3>
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="fname" placeholder="Ej: Carlos">
+        </div>
+        <div class="form-group">
+            <label>Apellidos:</label>
+            <input type="text" id="lname" placeholder="Ej: Martínez">
+        </div>
+        <!-- Modificado para ir a la fase de estudio -->
+        <button class="btn btn-gold" onclick="startStudyPhase()">Comenzar Reto</button>
+    </div>
+
+    <!-- FASE DE ESTUDIO -->
+    <div id="screen-study" class="screen">
+        <h3 style="text-align: center;">Fase de Estudio</h3>
+        <p style="text-align: center; color: var(--text-muted);">Memoriza el vocabulario. El juego comenzará automáticamente cuando termine el tiempo. No podrás volver a esta pantalla.</p>
+        
+        <div class="timer-alert" id="study-timer">02:00</div>
+
+        <div class="vocab-grid">
+            <div class="vocab-item"><span class="vocab-en">Wake up:</span> Despertarse</div>
+            <div class="vocab-item"><span class="vocab-en">Get up:</span> Levantarse</div>
+            <div class="vocab-item"><span class="vocab-en">Breakfast:</span> Desayuno</div>
+            <div class="vocab-item"><span class="vocab-en">Have a shower:</span> Ducharse</div>
+            <div class="vocab-item"><span class="vocab-en">Get dressed:</span> Vestirse</div>
+            <div class="vocab-item"><span class="vocab-en">Go to work:</span> Ir al trabajo</div>
+            <div class="vocab-item"><span class="vocab-en">Start:</span> Empezar</div>
+            <div class="vocab-item"><span class="vocab-en">Finish:</span> Terminar</div>
+            <div class="vocab-item"><span class="vocab-en">Lunch:</span> Almuerzo / Comida</div>
+            <div class="vocab-item"><span class="vocab-en">Dinner:</span> Cena</div>
+            <div class="vocab-item"><span class="vocab-en">Read a book:</span> Leer un libro</div>
+            <div class="vocab-item"><span class="vocab-en">Watch TV:</span> Ver la televisión</div>
+            <div class="vocab-item"><span class="vocab-en">Go to bed:</span> Irse a la cama</div>
+            <div class="vocab-item"><span class="vocab-en">Tired:</span> Cansado/a</div>
+            <div class="vocab-item"><span class="vocab-en">Busy:</span> Ocupado/a</div>
+            <div class="vocab-item"><span class="vocab-en">Daily routine:</span> Rutina diaria</div>
+        </div>
+
+        <button class="btn" style="margin-top: 30px;" onclick="forceStartGame()">¡Ya me lo sé! Empezar ahora ➔</button>
+    </div>
+
+    <!-- RONDA 1: UNIR CON FLECHAS (DROPDOWNS) -->
+    <div id="screen-r1" class="screen">
+        <h3>Ronda 1: Selecciona el significado</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Elige la traducción correcta al español para cada palabra.</p>
+        
+        <div class="match-row">
+            <div class="match-word">Busy</div>
+            <select class="match-select" id="r1_1">
+                <option value="">-- Elige --</option>
+                <option value="Cansado/a">Cansado/a</option>
+                <option value="Ocupado/a">Ocupado/a</option>
+                <option value="Despertarse">Despertarse</option>
+                <option value="Empezar">Empezar</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Daily routine</div>
+            <select class="match-select" id="r1_2">
+                <option value="">-- Elige --</option>
+                <option value="Rutina diaria">Rutina diaria</option>
+                <option value="Fin de semana">Fin de semana</option>
+                <option value="Almuerzo">Almuerzo</option>
+                <option value="Tarde">Tarde</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Wake up</div>
+            <select class="match-select" id="r1_3">
+                <option value="">-- Elige --</option>
+                <option value="Acostarse">Acostarse</option>
+                <option value="Terminar">Terminar</option>
+                <option value="Levantarse">Levantarse</option>
+                <option value="Despertarse">Despertarse</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Tired</div>
+            <select class="match-select" id="r1_4">
+                <option value="">-- Elige --</option>
+                <option value="Ocupado/a">Ocupado/a</option>
+                <option value="Cansado/a">Cansado/a</option>
+                <option value="Ducharse">Ducharse</option>
+                <option value="Desayuno">Desayuno</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Start</div>
+            <select class="match-select" id="r1_5">
+                <option value="">-- Elige --</option>
+                <option value="Empezar">Empezar</option>
+                <option value="Terminar">Terminar</option>
+                <option value="Leer">Leer</option>
+                <option value="Comer">Comer</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Finish</div>
+            <select class="match-select" id="r1_6">
+                <option value="">-- Elige --</option>
+                <option value="Empezar">Empezar</option>
+                <option value="Terminar">Terminar</option>
+                <option value="Ver la tele">Ver la tele</option>
+                <option value="Despertarse">Despertarse</option>
+            </select>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn" onclick="switchScreen('screen-r1', 'screen-r2')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 2: RELLENAR HUECOS -->
+    <div id="screen-r2" class="screen">
+        <h3>Ronda 2: Completa las frases</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la palabra en <b>inglés</b> que corresponda a la pista entre paréntesis.</p>
+        
+        <div class="blank-row">
+            1. I eat <input type="text" id="r2_1" class="blank-input" placeholder="(desayuno)"> at 8:00 am.
+        </div>
+        <div class="blank-row">
+            2. I <input type="text" id="r2_2" class="blank-input" placeholder="(me visto)"> quickly in the morning.
+        </div>
+        <div class="blank-row">
+            3. We have <input type="text" id="r2_3" class="blank-input" placeholder="(almuerzo/comida)"> at 1:00 pm.
+        </div>
+        <div class="blank-row">
+            4. I <input type="text" id="r2_4" class="blank-input" placeholder="(voy al trabajo)"> by bus.
+        </div>
+        <div class="blank-row">
+            5. We eat <input type="text" id="r2_5" class="blank-input" placeholder="(cena)"> at home.
+        </div>
+        <div class="blank-row">
+            6. I <input type="text" id="r2_6" class="blank-input" placeholder="(me levanto)"> early every day.
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r2', 'screen-r1')">⬅ Anterior</button>
+            <button class="btn" onclick="switchScreen('screen-r2', 'screen-r3')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 3: IMÁGENES -->
+    <div id="screen-r3" class="screen">
+        <h3>Ronda 3: ¿Qué es esto?</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la frase o palabra en <b>inglés</b> basándote en el emoji.</p>
+        
+        <div class="photo-grid">
+            <div class="photo-card">
+                <div class="emoji">📖</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Leer un libro)</p>
+                <input type="text" id="r3_1" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">📺</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Ver la televisión)</p>
+                <input type="text" id="r3_2" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">🛌</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Irse a la cama)</p>
+                <input type="text" id="r3_3" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">🚿</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Ducharse)</p>
+                <input type="text" id="r3_4" placeholder="Escribe en inglés...">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r3', 'screen-r2')">⬅ Anterior</button>
+            <button class="btn btn-gold" id="btn-submit" onclick="finishGame()">¡Corregir Todo!</button>
+            <button class="btn btn-gold" id="btn-back-results" style="display:none;" onclick="switchScreen('screen-r3', 'screen-results')">Ver Resultados ➔</button>
+        </div>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="screen-results" class="screen">
+        <h3 id="result-title" style="text-align: center;">Resultados</h3>
+        <div class="score-display" id="final-score"></div>
+        <div id="feedback-container"></div>
+        
+        <button class="btn btn-gold" style="margin-top: 30px;" onclick="reviewTest()">⬅ Revisar mis respuestas paso a paso</button>
+        <button class="btn btn-gray" onclick="location.reload()">Volver a jugar</button>
+    </div>
+
+</div>
+
+<script>
+    let player = "";
+    let countdownInterval;
+    let timeRemaining = 120; // 2 minutos
+
+    function switchScreen(current, next) {
+        document.getElementById(current).classList.remove('active');
+        document.getElementById(next).classList.add('active');
+    }
+
+    function startStudyPhase() {
+        const fname = document.getElementById('fname').value.trim();
+        const lname = document.getElementById('lname').value.trim();
+        
+        if (!fname || !lname) {
+            alert("Por favor, introduce tu nombre y apellidos para continuar.");
+            return;
+        }
+        player = fname + " " + lname;
+        
+        // Cambiar a pantalla de estudio
+        switchScreen('screen-login', 'screen-study');
+        
+        // Iniciar temporizador
+        const timerDisplay = document.getElementById('study-timer');
+        countdownInterval = setInterval(() => {
+            timeRemaining--;
+            
+            let minutes = Math.floor(timeRemaining / 60);
+            let seconds = timeRemaining % 60;
+            
+            // Formatear a MM:SS
+            timerDisplay.textContent = 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+            
+            if (timeRemaining <= 0) {
+                clearInterval(countdownInterval);
+                forceStartGame();
+            }
+        }, 1000);
+    }
+
+    function forceStartGame() {
+        clearInterval(countdownInterval);
+        switchScreen('screen-study', 'screen-r1');
+    }
+
+    function normalize(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function finishGame() {
+        const answers = {
+            // Ronda 1
+            r1_1: { expected: "ocupado/a", label: "Ronda 1 (Busy)" },
+            r1_2: { expected: "rutina diaria", label: "Ronda 1 (Daily routine)" },
+            r1_3: { expected: "despertarse", label: "Ronda 1 (Wake up)" },
+            r1_4: { expected: "cansado/a", label: "Ronda 1 (Tired)" },
+            r1_5: { expected: "empezar", label: "Ronda 1 (Start)" },
+            r1_6: { expected: "terminar", label: "Ronda 1 (Finish)" },
+            // Ronda 2
+            r2_1: { expected: "breakfast", label: "Ronda 2 (desayuno)" },
+            r2_2: { expected: "get dressed", label: "Ronda 2 (me visto)" },
+            r2_3: { expected: "lunch", label: "Ronda 2 (almuerzo)" },
+            r2_4: { expected: "go to work", label: "Ronda 2 (voy al trabajo)" },
+            r2_5: { expected: "dinner", label: "Ronda 2 (cena)" },
+            r2_6: { expected: "get up", label: "Ronda 2 (me levanto)" },
+            // Ronda 3
+            r3_1: { expected: "read a book", label: "Ronda 3 (📖)" },
+            r3_2: { expected: "watch tv", label: "Ronda 3 (📺)" },
+            r3_3: { expected: "go to bed", label: "Ronda 3 (🛌)" },
+            r3_4: { expected: "have a shower", label: "Ronda 3 (🚿)" }
+        };
+
+        let correct = 0;
+        let total = Object.keys(answers).length;
+        let errorsHTML = "";
+
+        for (let key in answers) {
+            const inputEl = document.getElementById(key);
+            let userVal = normalize(inputEl.value);
+            
+            // Flexibilidad
+            if(userVal === "watch t.v." || userVal === "watch television") userVal = "watch tv";
+            if(userVal === "read book") userVal = "read a book";
+            if(userVal === "go work") userVal = "go to work";
+
+            inputEl.disabled = true;
+
+            if (userVal === answers[key].expected) {
+                correct++;
+                inputEl.style.borderColor = "var(--success)";
+                inputEl.style.backgroundColor = "#f6ffed";
+            } else {
+                let displayUser = inputEl.value.trim() ? inputEl.value.trim() : "en blanco";
+                inputEl.style.borderColor = "var(--error)";
+                inputEl.style.backgroundColor = "#fff1f0";
+                
+                errorsHTML += `
+                    <div class="feedback-item">
+                        En <b>${answers[key].label}</b>, pusiste <span class="wrong-answer">"${displayUser}"</span>.<br>
+                        La respuesta correcta era: <span class="correct-answer">${answers[key].expected.toUpperCase()}</span>.
+                    </div>
+                `;
+            }
+        }
+
+        switchScreen('screen-r3', 'screen-results');
+
+        document.getElementById('result-title').textContent = "Resultados de " + player;
+        document.getElementById('final-score').textContent = `${correct} / ${total} Aciertos`;
+
+        const feedbackContainer = document.getElementById('feedback-container');
+        if (correct === total) {
+            feedbackContainer.innerHTML = `<div class="perfect-score">¡Impresionante! Has acertado todo perfectamente. 🎉</div>`;
+        } else {
+            feedbackContainer.innerHTML = `
+                <div class="feedback-box">
+                    <h4 style="margin-bottom: 15px; color: var(--error);">Resumen de errores:</h4>
+                    ${errorsHTML}
+                </div>
+            `;
+        }
+    }
+
+    function reviewTest() {
+        switchScreen('screen-results', 'screen-r1');
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-back-results').style.display = 'block';
+    }
+</script>
+</body>
+</html>
