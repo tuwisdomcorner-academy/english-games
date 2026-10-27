@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisdom Corner Academy - Past Continuous Practice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              gold: '#d4af37',
+              goldDark: '#b89628',
+              goldLight: '#fef3c7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-brand-900 via-slate-900 to-brand-900 text-white shadow-xl border-b-4 border-amber-500 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <!-- Logo Wisdom Corner Academy -->
+        <div class="w-14 h-14 rounded-2xl bg-white/10 p-1 flex items-center justify-center border border-amber-400/50 shadow-inner overflow-hidden shrink-0">
+          <img src="Logo.png" alt="Wisdom Corner Academy Logo" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='Logo_3.png';">
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl md:text-2xl font-black tracking-wider uppercase text-amber-300">Wisdom Corner</span>
+            <span class="text-xs bg-amber-400 text-brand-900 font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">Academy</span>
+          </div>
+          <p class="text-xs text-sky-200">Interactive English Grammar Assessment • Past Continuous Practice</p>
+        </div>
+      </div>
+
+      <!-- Student Badge -->
+      <div id="student-badge" class="hidden sm:flex items-center gap-3 bg-brand-800/80 px-4 py-2 rounded-xl border border-amber-400/30">
+        <div class="w-7 h-7 rounded-lg bg-white/10 p-0.5 border border-amber-400/40 shrink-0 flex items-center justify-center">
+          <img src="Logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='Logo_3.png';">
+        </div>
+        <div class="text-right">
+          <p class="text-[11px] text-sky-200 uppercase tracking-wider font-semibold">Estudiante:</p>
+          <p id="badge-name" class="font-bold text-sm tracking-wide text-white"></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6 my-2">
+
+    <!-- STEP 1: Registration View -->
+    <div id="registration-view" class="max-w-xl mx-auto my-8 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-gradient-to-b from-brand-900 to-slate-900 p-8 text-white text-center flex flex-col items-center">
+        <!-- Logo Wisdom Corner Principal -->
+        <div class="w-28 h-28 mb-3 rounded-2xl bg-white/10 p-2 border-2 border-amber-400/60 shadow-lg flex items-center justify-center">
+          <img src="Logo.png" alt="Wisdom Corner Academy Logo" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='Logo_3.png';">
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-wide text-white">Wisdom Corner Academy</h2>
+        <p class="text-amber-400 font-semibold text-sm mt-1 uppercase tracking-wider">Registro de Examen Práctico</p>
+        <p class="text-sky-200 text-xs mt-1">Past Continuous Mastery (5 apartados • 100 ejercicios)</p>
+      </div>
+
+      <div class="p-6 md:p-8 space-y-6">
+        <div>
+          <label for="student-name-input" class="block text-sm font-bold text-slate-700 mb-2">
+            Nombre y Apellidos del alumno <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="student-name-input" placeholder="Introduce nombre y apellidos..." 
+            class="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition text-slate-800 font-semibold">
+          <p id="name-error" class="text-red-500 text-xs mt-2 hidden font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-circle-exclamation"></i> Por favor, introduce tu nombre y apellidos para continuar.
+          </p>
+        </div>
+
+        <div class="bg-amber-50/70 border-l-4 border-amber-500 p-4 rounded-r-2xl space-y-2">
+          <h4 class="font-bold text-amber-900 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-amber-600"></i> Estructura del examen de Past Continuous
+          </h4>
+          <ul class="text-xs text-amber-900/90 space-y-1.5 list-disc list-inside">
+            <li><strong>Apartado 1:</strong> Rellenar huecos (+, -, ?) [Opción múltiple].</li>
+            <li><strong>Apartado 2:</strong> Ordenar oraciones [Escribir frase completa].</li>
+            <li><strong>Apartado 3:</strong> Uso de Past Continuous, While y When [Opción múltiple].</li>
+            <li><strong>Apartado 4:</strong> Traducción de español a inglés [Escribir frase completa].</li>
+            <li><strong>Apartado 5:</strong> Formación de Verbos en -ing y Reglas Ortográficas [Opción múltiple].</li>
+          </ul>
+        </div>
+
+        <button onclick="startApp()" class="w-full bg-brand-900 hover:bg-slate-900 text-amber-400 hover:text-amber-300 font-bold py-4 px-6 rounded-xl shadow-xl transition-all duration-200 flex items-center justify-center gap-3 text-base border border-amber-500/40">
+          <span>Comenzar práctica interactiva</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Dashboard -->
+    <div id="dashboard-view" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-amber-600">Wisdom English Platform</span>
+          <h1 class="text-2xl font-black text-slate-900 mt-0.5">Bienvenido/a, <span id="display-user-name" class="text-brand-900"></span></h1>
+          <p class="text-slate-500 text-xs md:text-sm mt-1">Selecciona cualquiera de los apartados para realizar sus 20 ejercicios y obtener la corrección con explicaciones pedagógicas.</p>
+        </div>
+        <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 shrink-0">
+          <div class="text-center">
+            <span class="block text-2xl font-black text-brand-900" id="global-completed-count">0/5</span>
+            <span class="text-[11px] text-slate-500 font-semibold uppercase">Completados</span>
+          </div>
+          <div class="h-8 w-px bg-slate-300"></div>
+          <div class="text-center">
+            <span class="block text-2xl font-black text-amber-600" id="global-score-avg">0%</span>
+            <span class="text-[11px] text-slate-500 font-semibold uppercase">Promedio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="sections-grid">
+        <!-- Generado dinámicamente -->
+      </div>
+    </div>
+
+    <!-- STEP 3: Exercise View -->
+    <div id="exercise-view" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <button onclick="backToDashboard()" class="text-slate-500 hover:text-brand-800 p-2 rounded-xl hover:bg-slate-100 transition" title="Volver al menú">
+            <i class="fa-solid fa-arrow-left text-lg"></i>
+          </button>
+          <div>
+            <h2 id="current-section-title" class="text-lg md:text-xl font-bold text-slate-900"></h2>
+            <p id="current-section-desc" class="text-xs text-slate-500 mt-0.5"></p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="answered-badge" class="text-xs font-bold px-3 py-1.5 bg-amber-100 text-amber-900 rounded-full border border-amber-300">
+            0 / 20 contestadas
+          </span>
+        </div>
+      </div>
+
+      <div id="questions-container" class="space-y-4">
+        <!-- Preguntas inyectadas dinámicamente -->
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <button onclick="backToDashboard()" class="text-slate-600 hover:text-slate-900 font-semibold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-chevron-left"></i> Volver a los apartados
+        </button>
+        <button id="submit-section-btn" onclick="submitCurrentSection()" class="w-full sm:w-auto bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold py-3.5 px-8 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm border border-amber-500/30">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Finalizar y Corregir Apartado</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Results View -->
+    <div id="results-view" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-brand-900 via-slate-900 to-brand-900 p-6 md:p-8 text-white flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 p-1.5 border border-amber-400/50 shrink-0 flex items-center justify-center">
+              <img src="Logo.png" alt="Wisdom Corner Academy Logo" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='Logo_3.png';">
+            </div>
+            <div>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400">Informe Académico Oficial</span>
+              <h2 id="result-section-title" class="text-xl md:text-2xl font-black mt-0.5"></h2>
+              <p class="text-xs text-sky-200 mt-1">Estudiante evaluado: <span id="result-student-name" class="font-bold text-white"></span></p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 bg-brand-800/90 px-6 py-3.5 rounded-2xl border border-amber-400/40">
+            <div class="text-center">
+              <span id="result-score-number" class="text-3xl font-black text-amber-400">0</span>
+              <span class="text-[11px] block text-sky-200 uppercase font-semibold">Aciertos (de 20)</span>
+            </div>
+            <div class="h-10 w-px bg-slate-700"></div>
+            <div class="text-center">
+              <span id="result-score-percent" class="text-3xl font-black text-white">0%</span>
+              <span class="text-[11px] block text-sky-200 uppercase font-semibold">Calificación</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-4 text-sm">
+          <div class="flex gap-4">
+            <span class="flex items-center gap-1.5 text-emerald-700 font-bold">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> <span id="correct-count-badge">0</span> Aciertos
+            </span>
+            <span class="flex items-center gap-1.5 text-red-600 font-bold">
+              <i class="fa-solid fa-circle-xmark text-red-500"></i> <span id="incorrect-count-badge">0</span> Fallos
+            </span>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="retakeSection()" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold px-4 py-2 rounded-xl transition text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-rotate-right"></i> Repetir apartado
+            </button>
+            <button onclick="backToDashboard()" class="bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold px-5 py-2 rounded-xl transition text-xs flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-table-cells-large"></i> Menú de apartados
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-amber-600"></i>
+              Desglose detallado de fallos y justificaciones pedagógicas
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">
+              Comprueba qué has introducido tú, cuál es la solución correcta exigida y la regla del Past Continuous que justifica el resultado.
+            </p>
+          </div>
+
+          <div id="feedback-items-container" class="space-y-4">
+            <!-- Tarjetas de corrección dinámicas -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-amber-400">Wisdom Corner Academy</span>
+        <span>• English Department Excellence</span>
+      </div>
+      <div>
+        Past Continuous Educational Toolkit • Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    let studentName = "";
+    let currentSectionIdx = 0;
+    let userAnswers = {}; 
+    let sectionScores = {};
+
+    const SECTIONS = [
+      {
+        id: 1,
+        title: "Apartado 1: Rellenar Huecos",
+        subtitle: "Afirmativa, Negativa e Interrogativa (was / were + -ing)",
+        type: "choice",
+        description: "Elige la combinación auxiliar (was/were) y gerundio (-ing) correcta para completar la oración.",
+        questions: [
+          {
+            prompt: "At 8:00 PM yesterday, Emma _______ (read) a historical novel in the library.",
+            options: ["was reading", "were reading", "is reading", "was read"],
+            correct: 0,
+            explanation: "Para sujetos en 3ª persona singular (Emma = she), el Past Continuous se forma con 'was' + verbo en -ing ('was reading')."
+          },
+          {
+            prompt: "We _______ (not / sleep) when the fire alarm rang.",
+            options: ["weren't sleeping", "wasn't sleeping", "didn't sleeping", "weren't sleep"],
+            correct: 0,
+            explanation: "Para el pronombre 'we' el auxiliar negativo es 'were not' o 'weren't' seguido del verbo con terminación -ing."
+          },
+          {
+            prompt: "_______ you _______ (listen) to the teacher when she explained the project?",
+            options: ["Were / listening", "Was / listening", "Did / listening", "Were / listen"],
+            correct: 0,
+            explanation: "Las preguntas de Past Continuous con 'you' se forman con: Were + you + verbo en -ing ('Were you listening')."
+          },
+          {
+            prompt: "The children _______ (play) quietly in the garden all afternoon.",
+            options: ["were playing", "was playing", "are playing", "were play"],
+            correct: 0,
+            explanation: "'The children' es un sujeto plural (they), por lo que requiere el auxiliar 'were' + 'playing'."
+          },
+          {
+            prompt: "I _______ (not / drive) too fast when the police car stopped me.",
+            options: ["wasn't driving", "weren't driving", "didn't driving", "wasn't drive"],
+            correct: 0,
+            explanation: "Con el pronombre 'I', el auxiliar en pasado es 'was'. En negativa: 'wasn't driving'."
+          },
+          {
+            prompt: "What _______ Mark _______ (do) at this exact time yesterday morning?",
+            options: ["was / doing", "were / doing", "did / doing", "was / do"],
+            correct: 0,
+            explanation: "Estructura interrogativa con Wh-: What + was + sujeto singular (Mark) + doing?"
+          },
+          {
+            prompt: "They _______ (swim) in the lake while the sun was setting.",
+            options: ["were swimming", "was swimming", "were swiming", "are swimming"],
+            correct: 0,
+            explanation: "'They' requiere 'were'. Además, 'swim' duplica la consonante final 'm' antes de añadir -ing: 'swimming'."
+          },
+          {
+            prompt: "Lucy _______ (not / pay) attention to the road during the journey.",
+            options: ["wasn't paying", "weren't paying", "didn't paying", "wasn't pay"],
+            correct: 0,
+            explanation: "'Lucy' (she) se combina con 'was not' (wasn't) + gerundio ('paying')."
+          },
+          {
+            prompt: "_______ it _______ (snow) when you left the cabin this morning?",
+            options: ["Was / snowing", "Were / snowing", "Did / snowing", "Was / snow"],
+            correct: 0,
+            explanation: "Para el sujeto impersonal 'it' se utiliza el auxiliar 'was': 'Was it snowing?'."
+          },
+          {
+            prompt: "My parents _______ (travel) through Scotland during the whole month of July.",
+            options: ["were travelling", "was travelling", "were travel", "did travelling"],
+            correct: 0,
+            explanation: "'My parents' es plural (they), por lo que se utiliza 'were travelling' (o 'traveling' en US)."
+          },
+          {
+            prompt: "Tom and I _______ (not / watch) the football match at six o'clock.",
+            options: ["weren't watching", "wasn't watching", "didn't watching", "weren't watch"],
+            correct: 0,
+            explanation: "'Tom and I' equivale a 'we' (primera persona del plural), de modo que la forma negativa correcta es 'weren't watching'."
+          },
+          {
+            prompt: "Where _______ the students _______ (sit) during the lecture?",
+            options: ["were / sitting", "was / sitting", "were / siting", "did / sitting"],
+            correct: 0,
+            explanation: "'The students' es plural (were). 'Sit' es monosílabo consonante-vocal-consonante y duplica la 't': 'sitting'."
+          },
+          {
+            prompt: "The mechanic _______ (repair) my car while I waited in the cafeteria.",
+            options: ["was repairing", "were repairing", "was repair", "did repairing"],
+            correct: 0,
+            explanation: "'The mechanic' (he/she) es singular, por tanto corresponde 'was repairing'."
+          },
+          {
+            prompt: "I _______ (not / cook) dinner when the lights went out.",
+            options: ["wasn't cooking", "weren't cooking", "didn't cooking", "wasn't cook"],
+            correct: 0,
+            explanation: "El sujeto 'I' utiliza la forma 'wasn't' + verbo con -ing ('cooking')."
+          },
+          {
+            prompt: "Why _______ they _______ (shout) in the hallway outside the classroom?",
+            options: ["were / shouting", "was / shouting", "did / shouting", "were / shout"],
+            correct: 0,
+            explanation: "Pregunta con 'Why': Why + were + they + shouting?"
+          },
+          {
+            prompt: "The phone rang loudly while he _______ (take) a hot shower.",
+            options: ["was taking", "were taking", "was takeing", "is taking"],
+            correct: 0,
+            explanation: "Los verbos que terminan en 'e' muda como 'take' pierden la 'e' al añadir -ing: 'taking'. Sujeto 'he' -> 'was taking'."
+          },
+          {
+            prompt: "The security guards _______ (not / check) badges at the main gate.",
+            options: ["weren't checking", "wasn't checking", "didn't checking", "weren't check"],
+            correct: 0,
+            explanation: "'Guards' es plural (they), por lo que requiere 'weren't checking'."
+          },
+          {
+            prompt: "_______ Oliver _______ (study) for his chemistry exam all night?",
+            options: ["Was / studying", "Were / studying", "Did / studying", "Was / study"],
+            correct: 0,
+            explanation: "Oliver (he) -> 'Was Oliver studying?'."
+          },
+          {
+            prompt: "A cold northern wind _______ (blow) fiercely across the valley.",
+            options: ["was blowing", "were blowing", "was blow", "did blowing"],
+            correct: 0,
+            explanation: "'A wind' es singular (it), por tanto 'was blowing'."
+          },
+          {
+            prompt: "We _______ (not / expect) any visitors at that late hour.",
+            options: ["weren't expecting", "wasn't expecting", "didn't expecting", "weren't expect"],
+            correct: 0,
+            explanation: "'We' requiere la forma plural en pasado del auxiliar to be: 'weren't expecting'."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Apartado 2: Ordenar Frases Descolocadas",
+        subtitle: "Escribe la frase completa en Past Continuous",
+        type: "input",
+        description: "Escribe en la casilla la oración ordenada correctamente prestando atención a los sujetos, auxiliares (was/were) y verbos en -ing.",
+        questions: [
+          {
+            prompt: "Descolocada: [ reading / was / book / a / she / yesterday / afternoon ]",
+            correctAnswer: "She was reading a book yesterday afternoon.",
+            validAnswers: ["she was reading a book yesterday afternoon.", "she was reading a book yesterday afternoon", "yesterday afternoon she was reading a book.", "yesterday afternoon she was reading a book"],
+            explanation: "Sujeto (She) + was + verbo en -ing (reading) + objeto directo (a book) + expresión temporal (yesterday afternoon)."
+          },
+          {
+            prompt: "Descolocada: [ weren't / dinner / cooking / they / 8:00 / at ]",
+            correctAnswer: "They weren't cooking dinner at 8:00.",
+            validAnswers: ["they weren't cooking dinner at 8:00.", "they weren't cooking dinner at 8:00", "they were not cooking dinner at 8:00.", "they were not cooking dinner at 8:00"],
+            explanation: "Sujeto (They) + auxiliar negativo (weren't / were not) + -ing (cooking) + objeto (dinner) + hora (at 8:00)."
+          },
+          {
+            prompt: "Descolocada: [ you / were / what / doing / phoned / I / when / ? ]",
+            correctAnswer: "What were you doing when I phoned?",
+            validAnswers: ["what were you doing when i phoned?", "what were you doing when i phoned"],
+            explanation: "Partícula interrogativa (What) + were + sujeto (you) + gerundio (doing) + cláusula temporal (when I phoned)?"
+          },
+          {
+            prompt: "Descolocada: [ heavily / raining / it / was / morning / all ]",
+            correctAnswer: "It was raining heavily all morning.",
+            validAnswers: ["it was raining heavily all morning.", "it was raining heavily all morning", "all morning it was raining heavily.", "all morning it was raining heavily"],
+            explanation: "Sujeto (It) + was + lloviendo (raining) + adverbio (heavily) + tiempo continuo (all morning)."
+          },
+          {
+            prompt: "Descolocada: [ wasn't / teacher / the / listening / he / to ]",
+            correctAnswer: "He wasn't listening to the teacher.",
+            validAnswers: ["he wasn't listening to the teacher.", "he wasn't listening to the teacher", "he was not listening to the teacher.", "he was not listening to the teacher"],
+            explanation: "Sujeto (He) + wasn't + listening + preposición con objeto (to the teacher)."
+          },
+          {
+            prompt: "Descolocada: [ sleeping / baby / was / the / noise / when / the / occurred / ? ]",
+            correctAnswer: "Was the baby sleeping when the noise occurred?",
+            validAnswers: ["was the baby sleeping when the noise occurred?", "was the baby sleeping when the noise occurred"],
+            explanation: "Auxiliar inicial (Was) + sujeto (the baby) + verbo -ing (sleeping) + conector y acción puntual (when the noise occurred)?"
+          },
+          {
+            prompt: "Descolocada: [ working / computer / on / I / my / was / midnight / at ]",
+            correctAnswer: "I was working on my computer at midnight.",
+            validAnswers: ["i was working on my computer at midnight.", "i was working on my computer at midnight", "at midnight i was working on my computer.", "at midnight i was working on my computer"],
+            explanation: "Sujeto (I) + was + working on my computer + circunstancial de tiempo (at midnight)."
+          },
+          {
+            prompt: "Descolocada: [ were / why / so / you / fast / driving / ? ]",
+            correctAnswer: "Why were you driving so fast?",
+            validAnswers: ["why were you driving so fast?", "why were you driving so fast"],
+            explanation: "Why + were + you + driving + adverbio de modo (so fast)?"
+          },
+          {
+            prompt: "Descolocada: [ playing / park / the / in / children / were / the ]",
+            correctAnswer: "The children were playing in the park.",
+            validAnswers: ["the children were playing in the park.", "the children were playing in the park"],
+            explanation: "Sujeto plural (The children) + were + playing + lugar (in the park)."
+          },
+          {
+            prompt: "Descolocada: [ waiting / weren't / bus / we / the / for ]",
+            correctAnswer: "We weren't waiting for the bus.",
+            validAnswers: ["we weren't waiting for the bus.", "we weren't waiting for the bus", "we were not waiting for the bus.", "we were not waiting for the bus"],
+            explanation: "Sujeto (We) + weren't + verbo preposicional (waiting for) + the bus."
+          },
+          {
+            prompt: "Descolocada: [ looking / she / was / for / keys / her / room / in / her ]",
+            correctAnswer: "She was looking for her keys in her room.",
+            validAnswers: ["she was looking for her keys in her room.", "she was looking for her keys in her room"],
+            explanation: "Sujeto (She) + was + looking for (buscando) + objeto (her keys) + lugar (in her room)."
+          },
+          {
+            prompt: "Descolocada: [ arriving / were / guests / the / while / preparing / I / dinner / was ]",
+            correctAnswer: "The guests were arriving while I was preparing dinner.",
+            validAnswers: [
+              "the guests were arriving while i was preparing dinner.",
+              "the guests were arriving while i was preparing dinner",
+              "while i was preparing dinner the guests were arriving.",
+              "while i was preparing dinner the guests were arriving"
+            ],
+            explanation: "Dos acciones simultáneas en progreso conectadas por 'while'."
+          },
+          {
+            prompt: "Descolocada: [ you / were / who / talking / to / on / phone / the / ? ]",
+            correctAnswer: "Who were you talking to on the phone?",
+            validAnswers: ["who were you talking to on the phone?", "who were you talking to on the phone"],
+            explanation: "Partícula 'Who' + were + you + talking to + medio (on the phone)?"
+          },
+          {
+            prompt: "Descolocada: [ dog / the / barking / wasn't / postman / the / at ]",
+            correctAnswer: "The dog wasn't barking at the postman.",
+            validAnswers: ["the dog wasn't barking at the postman.", "the dog wasn't barking at the postman", "the dog was not barking at the postman.", "the dog was not barking at the postman"],
+            explanation: "Sujeto singular (The dog) + wasn't + barking + preposición y objeto (at the postman)."
+          },
+          {
+            prompt: "Descolocada: [ painting / fence / he / garden / the / in / was / the ]",
+            correctAnswer: "He was painting the fence in the garden.",
+            validAnswers: ["he was painting the fence in the garden.", "he was painting the fence in the garden"],
+            explanation: "Sujeto (He) + was + painting + objeto (the fence) + lugar (in the garden)."
+          },
+          {
+            prompt: "Descolocada: [ walking / were / home / they / started / when / it / rain / to ]",
+            correctAnswer: "They were walking home when it started to rain.",
+            validAnswers: ["they were walking home when it started to rain.", "they were walking home when it started to rain"],
+            explanation: "Acción en curso (They were walking home) interrumpida por una acción puntual (when it started to rain)."
+          },
+          {
+            prompt: "Descolocada: [ project / not / students / were / working / the / on / the ]",
+            correctAnswer: "The students were not working on the project.",
+            validAnswers: [
+              "the students were not working on the project.",
+              "the students were not working on the project",
+              "the students weren't working on the project.",
+              "the students weren't working on the project"
+            ],
+            explanation: "Sujeto plural (The students) + were not / weren't + working on the project."
+          },
+          {
+            prompt: "Descolocada: [ living / where / you / in / were / 2020 / ? ]",
+            correctAnswer: "Where were you living in 2020?",
+            validAnswers: ["where were you living in 2020?", "where were you living in 2020"],
+            explanation: "Where + were + you + living + fecha temporal puntual del pasado (in 2020)?"
+          },
+          {
+            prompt: "Descolocada: [ music / sister / listening / my / loud / was / to ]",
+            correctAnswer: "My sister was listening to loud music.",
+            validAnswers: ["my sister was listening to loud music.", "my sister was listening to loud music"],
+            explanation: "Sujeto (My sister) + was + listening to + loud music."
+          },
+          {
+            prompt: "Descolocada: [ shone / the / shining / sun / wasn't / morning / this ]",
+            correctAnswer: "The sun wasn't shining this morning.",
+            validAnswers: ["the sun wasn't shining this morning.", "the sun wasn't shining this morning", "the sun was not shining this morning.", "the sun was not shining this morning"],
+            explanation: "Sujeto (The sun) + wasn't / was not + gerundio (shining) + tiempo (this morning)."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Apartado 3: Uso y Contrastes",
+        subtitle: "Past Continuous, While vs When y Acción en Curso",
+        type: "choice",
+        description: "Demuestra cuándo usar Past Continuous frente a Past Simple y cómo conectar acciones simultáneas o interrumpidas.",
+        questions: [
+          {
+            prompt: "¿Cuál es la función primordial del Past Continuous?",
+            options: [
+              "Describir una acción que estaba en desarrollo o progreso en un momento concreto del pasado.",
+              "Indicar una acción terminada de la que sabemos la fecha exacta.",
+              "Hablar de un hábito pasado que ya no se realiza hoy en día.",
+              "Describir hechos universales y verdades generales permanentes."
+            ],
+            correct: 0,
+            explanation: "El Past Continuous enfoca la duración y desarrollo continuo de la acción en un punto temporal específico del pasado."
+          },
+          {
+            prompt: "En la frase 'I was cooking dinner when the phone rang', ¿cuál es la acción de fondo que fue interrumpida?",
+            options: [
+              "I was cooking dinner (Past Continuous).",
+              "The phone rang (Past Simple).",
+              "Ambas acciones ocurrieron a la vez sin interrupción.",
+              "Ninguna, ambas son del presente."
+            ],
+            correct: 0,
+            explanation: "El Past Continuous se utiliza para la acción de fondo más larga ('cooking') que es repentinamente interrumpida por una acción corta en Past Simple ('rang')."
+          },
+          {
+            prompt: "¿Qué conector se utiliza típicamente introduciendo una acción en Past Continuous (duración)?",
+            options: ["While (mientras)", "Suddenly (de repente)", "Ago (hace)", "Yesterday (ayer)"],
+            correct: 0,
+            explanation: "'While' suele introducir la oración con el verbo en Past Continuous (ej. 'While I was studying...')."
+          },
+          {
+            prompt: "¿Qué conector temporal introduce preferentemente la acción corta e interruptora en Past Simple?",
+            options: ["When (cuando)", "During", "While", "As long as"],
+            correct: 0,
+            explanation: "'When' introduce habitualmente la acción puntual y repentina en Past Simple (ej. '...when the door opened')."
+          },
+          {
+            prompt: "¿Cuál de las siguientes oraciones describe dos acciones paralelas y simultáneas que se desarrollaban al mismo tiempo?",
+            options: [
+              "While Peter was reading, Sarah was listening to music.",
+              "Peter finished reading and then Sarah listened to music.",
+              "Peter read the book when Sarah called him.",
+              "Peter was reading when the lights went out."
+            ],
+            correct: 0,
+            explanation: "Cuando dos acciones continuas ocurren paralelamente en el pasado, ambas se expresan en Past Continuous unidas por 'while'."
+          },
+          {
+            prompt: "¿Por qué es INCORRECTO decir: 'I was knowing the answer yesterday'?",
+            options: [
+              "Porque 'know' es un verbo de estado (stative verb) y no suele usarse en tiempos continuos.",
+              "Porque con 'I' siempre se usa 'were'.",
+              "Porque 'yesterday' prohíbe el uso de cualquier verbo en pasado.",
+              "Porque a 'know' no se le puede añadir -ing."
+            ],
+            correct: 0,
+            explanation: "Los 'stative verbs' (know, believe, understand, like, want, etc.) expresan estados y no procesos dinámicos, por lo que se conjugan en Past Simple ('I knew')."
+          },
+          {
+            prompt: "Elige la opción gramaticalmente correcta para: 'At 10:00 PM last night, we _______.'",
+            options: [
+              "were sleeping",
+              "slept",
+              "was sleeping",
+              "did sleep"
+            ],
+            correct: 0,
+            explanation: "Al señalar una hora exacta del pasado ('at 10:00 PM last night'), nos interesa describir qué actividad estaba en progreso continuo: 'were sleeping'."
+          },
+          {
+            prompt: "Completa la frase: 'She was walking in the park when she _______ (find) a gold ring.'",
+            options: ["found", "was finding", "were finding", "finded"],
+            correct: 0,
+            explanation: "La acción puntual que interrumpe o surge en medio del paseo va en Past Simple: 'found'."
+          },
+          {
+            prompt: "¿Cuál es el orden habitual al describir el trasfondo o la ambientación en una historia o narración?",
+            options: [
+              "Past Continuous para la escena de fondo y Past Simple para los eventos que suceden.",
+              "Past Simple para la ambientación y Present Continuous para los hechos.",
+              "Future Simple para el fondo y Past Continuous para los hechos.",
+              "Únicamente se utiliza la voz pasiva."
+            ],
+            correct: 0,
+            explanation: "En la literatura y narraciones, el Past Continuous describe el ambiente ('The sun was shining, birds were singing...') y el Past Simple hace avanzar la trama."
+          },
+          {
+            prompt: "Identifica la frase con error sintáctico o morfológico:",
+            options: [
+              "They was waiting for the train.",
+              "They were waiting for the train.",
+              "He wasn't feeling well yesterday.",
+              "Were you sleeping when I called?"
+            ],
+            correct: 0,
+            explanation: "'They was' es incorrecto; 'they' es un sujeto plural y debe concordar obligatoriamente con 'were'."
+          },
+          {
+            prompt: "¿Qué matiz expresa la frase 'He was always leaving his dirty dishes in the sink'?",
+            options: [
+              "Una queja o irritación del hablante ante un hábito reiterado y molesto del pasado.",
+              "Una acción completada que solo ocurrió una única vez.",
+              "Un plan futuro planificado de antemano.",
+              "Una pregunta formal sobre una tarea del hogar."
+            ],
+            correct: 0,
+            explanation: "El Past Continuous con 'always' o 'constantly' se utiliza enfáticamente para criticar hábitos pasados molestos y repetitivos."
+          },
+          {
+            prompt: "Completa adecuadamente: '_______ my brother was studying, my mother was cooking.'",
+            options: ["While", "When", "Then", "During"],
+            correct: 0,
+            explanation: "'While' es la conjunción adecuada para encabezar una cláusula temporal continua en progreso simultáneo."
+          },
+          {
+            prompt: "¿Cuál de estos verbos pertenece al grupo de 'stative verbs' y por tanto NO suele usarse en Past Continuous?",
+            options: ["Believe (creer)", "Drive (conducir)", "Dance (bailar)", "Build (construir)"],
+            correct: 0,
+            explanation: "'Believe' expresa una creencia o estado mental y se usa en Past Simple ('I believed'), no en continuo."
+          },
+          {
+            prompt: "Elige la opción correcta: 'What _______ you _______ when the accident happened?'",
+            options: ["were / doing", "was / doing", "did / do", "are / doing"],
+            correct: 0,
+            explanation: "La pregunta busca saber qué acción continua estaba desarrollando la persona ('you') en el momento puntual del accidente."
+          },
+          {
+            prompt: "¿Cómo se construye la forma interrogativa negativa con 'she'?",
+            options: [
+              "Wasn't she working?",
+              "Weren't she working?",
+              "Didn't she working?",
+              "Did she not working?"
+            ],
+            correct: 0,
+            explanation: "La contracción interrogativo-negativa correcta para 3ª persona del singular es 'Wasn't' + sujeto + gerundio ('Wasn't she working?')."
+          },
+          {
+            prompt: "Elige la oración donde la acción no fue completada debido a una interrupción:",
+            options: [
+              "I was writing an email when my laptop battery died.",
+              "I wrote the email and sent it to my boss.",
+              "I have written three emails this morning.",
+              "I will write the email tomorrow."
+            ],
+            correct: 0,
+            explanation: "El Past Continuous resalta que la redacción del correo estaba a medias y en proceso cuando la batería se agotó."
+          },
+          {
+            prompt: "Completa la oración: 'It was a dark night. The wind _______ and rain _______ against the windows.'",
+            options: [
+              "was howling / was beating",
+              "howled / beat",
+              "were howling / were beating",
+              "is howling / is beating"
+            ],
+            correct: 0,
+            explanation: "Ambas son descripciones de fondo atmosférico en paralelo: 'was howling' y 'was beating'."
+          },
+          {
+            prompt: "¿Cuál es la diferencia entre 'When the teacher entered, the students stood up' y 'When the teacher entered, the students were talking'?",
+            options: [
+              "En la primera se levantaron justo después; en la segunda ya estaban hablando antes de que entrara.",
+              "Ambas frases significan exactamente lo mismo.",
+              "En la primera los alumnos no hicieron nada.",
+              "En la segunda el profesor nunca llegó a entrar."
+            ],
+            correct: 0,
+            explanation: "Con Past Simple consecutivo (entered -> stood up) una acción sucede tras otra; con Past Continuous (were talking), la conversación ya estaba en marcha antes de la llegada del profesor."
+          },
+          {
+            prompt: "Elige la frase correcta con el verbo 'to have' usado en sentido dinámico (tomar/cenar):",
+            options: [
+              "We were having dinner when the doorbell rang.",
+              "We were having a car in 2015.",
+              "They were having a lot of money.",
+              "She was having blue eyes."
+            ],
+            correct: 0,
+            explanation: "Cuando 'have' significa comer/cenar ('have dinner') o ducharse ('have a shower') sí admite tiempos continuos porque es una acción dinámica, no posesión estática."
+          },
+          {
+            prompt: "¿Cuál de las siguientes formas verbales es adecuada para: 'No, I _______ (not / listen) to the radio'?",
+            options: [
+              "wasn't listening",
+              "weren't listening",
+              "didn't listening",
+              "not was listening"
+            ],
+            correct: 0,
+            explanation: "Para 'I' la negación correcta en Past Continuous es 'wasn't listening'."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Apartado 4: Crear y Traducir Frases",
+        subtitle: "Escribe la traducción exacta al inglés en Past Continuous",
+        type: "input",
+        description: "Traduce al inglés utilizando la estructura correspondiente del Past Continuous (was/were + -ing).",
+        questions: [
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Yo estaba estudiando para el examen a las diez de la noche.'",
+            correctAnswer: "I was studying for the exam at ten o'clock at night.",
+            validAnswers: [
+              "i was studying for the exam at ten o'clock at night.",
+              "i was studying for the exam at ten at night.",
+              "i was studying for the exam at 10 pm.",
+              "i was studying for the exam at 10:00 pm.",
+              "i was studying for the exam at 10 o'clock.",
+              "at 10 pm i was studying for the exam.",
+              "at ten o'clock at night i was studying for the exam."
+            ],
+            explanation: "Sujeto 'I' + 'was studying' + complemento."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Ellos no estaban durmiendo cuando llegué.'",
+            correctAnswer: "They weren't sleeping when I arrived.",
+            validAnswers: [
+              "they weren't sleeping when i arrived.",
+              "they were not sleeping when i arrived.",
+              "when i arrived they weren't sleeping.",
+              "when i arrived they were not sleeping."
+            ],
+            explanation: "'They weren't sleeping' (Past Continuous) conectado con 'when I arrived' (Past Simple)."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Qué estabas haciendo ayer a las cuatro?'",
+            correctAnswer: "What were you doing yesterday at four o'clock?",
+            validAnswers: [
+              "what were you doing yesterday at four o'clock?",
+              "what were you doing at four o'clock yesterday?",
+              "what were you doing yesterday at 4?",
+              "what were you doing yesterday at 4:00?",
+              "what were you doing at 4 yesterday?",
+              "what were you doing at four yesterday?"
+            ],
+            explanation: "Pregunta con Wh-: What were you doing + hora y día?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Ella estaba conduciendo a casa mientras llovía.'",
+            correctAnswer: "She was driving home while it was raining.",
+            validAnswers: [
+              "she was driving home while it was raining.",
+              "while it was raining she was driving home."
+            ],
+            explanation: "Dos acciones en progreso continuo enlazadas por 'while': was driving / was raining."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Nosotros no estábamos prestando atención a la película.'",
+            correctAnswer: "We weren't paying attention to the film.",
+            validAnswers: [
+              "we weren't paying attention to the film.",
+              "we were not paying attention to the film.",
+              "we weren't paying attention to the movie.",
+              "we were not paying attention to the movie."
+            ],
+            explanation: "Sujeto 'We' + weren't paying attention + to the film/movie."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Estaba él trabajando en la oficina anoche?'",
+            correctAnswer: "Was he working in the office last night?",
+            validAnswers: [
+              "was he working in the office last night?",
+              "was he working at the office last night?"
+            ],
+            explanation: "Pregunta con 'he': Was he + working + in/at the office last night?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'El sol estaba brillando y los pájaros estaban cantando.'",
+            correctAnswer: "The sun was shining and the birds were singing.",
+            validAnswers: [
+              "the sun was shining and the birds were singing.",
+              "the sun was shining and birds were singing."
+            ],
+            explanation: "Ambientación narrativa: 'The sun was shining' (singular) y 'the birds were singing' (plural)."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'David no estaba comiendo nada cuando le vi.'",
+            correctAnswer: "David wasn't eating anything when I saw him.",
+            validAnswers: [
+              "david wasn't eating anything when i saw him.",
+              "david was not eating anything when i saw him.",
+              "when i saw him david wasn't eating anything."
+            ],
+            explanation: "David wasn't eating anything (sin doble negación) + when I saw him."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Dónde estabais viviendo en 2018?'",
+            correctAnswer: "Where were you living in 2018?",
+            validAnswers: [
+              "where were you living in 2018?"
+            ],
+            explanation: "Where were you living + in 2018?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Los niños estaban jugando al fútbol en el parque.'",
+            correctAnswer: "The children were playing football in the park.",
+            validAnswers: [
+              "the children were playing football in the park.",
+              "the children were playing soccer in the park.",
+              "the kids were playing football in the park.",
+              "the kids were playing soccer in the park."
+            ],
+            explanation: "Sujeto plural 'The children' + were playing + football/soccer in the park."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Yo no estaba usando mi teléfono durante la reunión.'",
+            correctAnswer: "I wasn't using my phone during the meeting.",
+            validAnswers: [
+              "i wasn't using my phone during the meeting.",
+              "i was not using my phone during the meeting."
+            ],
+            explanation: "I wasn't using (pierde la 'e') my phone during the meeting."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Por qué estabas llorando en tu habitación?'",
+            correctAnswer: "Why were you crying in your room?",
+            validAnswers: [
+              "why were you crying in your room?"
+            ],
+            explanation: "Why were you + crying + in your room?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Mi madre estaba cocinando mientras mi padre leía el periódico.'",
+            correctAnswer: "My mother was cooking while my father was reading the newspaper.",
+            validAnswers: [
+              "my mother was cooking while my father was reading the newspaper.",
+              "my mother was cooking while my father read the newspaper.",
+              "while my father was reading the newspaper my mother was cooking."
+            ],
+            explanation: "Acciones continuas simultáneas conectadas por 'while'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'El perro no estaba ladrando anoche.'",
+            correctAnswer: "The dog wasn't barking last night.",
+            validAnswers: [
+              "the dog wasn't barking last night.",
+              "the dog was not barking last night."
+            ],
+            explanation: "The dog (it) -> wasn't barking last night."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Estabas esperando a María en la estación?'",
+            correctAnswer: "Were you waiting for Maria at the station?",
+            validAnswers: [
+              "were you waiting for maria at the station?",
+              "were you waiting for mary at the station?"
+            ],
+            explanation: "Were you waiting for + nombre + at the station?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Estaba nevando fuertemente en las montañas.'",
+            correctAnswer: "It was snowing heavily in the mountains.",
+            validAnswers: [
+              "it was snowing heavily in the mountains.",
+              "it was snowing hard in the mountains."
+            ],
+            explanation: "Sujeto impersonal 'It' + was snowing heavily in the mountains."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Ellas no estaban escuchando las instrucciones del profesor.'",
+            correctAnswer: "They weren't listening to the teacher's instructions.",
+            validAnswers: [
+              "they weren't listening to the teacher's instructions.",
+              "they were not listening to the teacher's instructions.",
+              "they weren't listening to the instructions of the teacher."
+            ],
+            explanation: "They weren't listening to + complemento."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Con quién estabas hablando por teléfono?'",
+            correctAnswer: "Who were you talking to on the phone?",
+            validAnswers: [
+              "who were you talking to on the phone?",
+              "who were you speaking to on the phone?",
+              "whom were you talking to on the phone?"
+            ],
+            explanation: "Who were you talking/speaking to on the phone?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Nosotros estábamos cenando cuando se cortó la luz.'",
+            correctAnswer: "We were having dinner when the lights went out.",
+            validAnswers: [
+              "we were having dinner when the lights went out.",
+              "we were eating dinner when the lights went out.",
+              "when the lights went out we were having dinner.",
+              "when the lights went out we were eating dinner."
+            ],
+            explanation: "Past Continuous (were having/eating dinner) interrumpido por Past Simple (when the lights went out)."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Tomás no estaba conduciendo el coche cuando ocurrió el accidente.'",
+            correctAnswer: "Thomas wasn't driving the car when the accident happened.",
+            validAnswers: [
+              "thomas wasn't driving the car when the accident happened.",
+              "thomas was not driving the car when the accident happened.",
+              "tomas wasn't driving the car when the accident happened.",
+              "tomas was not driving the car when the accident happened.",
+              "thomas wasn't driving the car when the accident occurred.",
+              "tomas wasn't driving the car when the accident occurred."
+            ],
+            explanation: "Sujeto singular + wasn't driving + the car when the accident happened."
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Apartado 5: Ortografía y Formación en -ing",
+        subtitle: "Reglas de adición del sufijo -ing",
+        type: "choice",
+        description: "Identifica la correcta formación de gerundios (-ing) aplicando las reglas de duplicación consonántica y pérdida de 'e'.",
+        questions: [
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Run'?",
+            options: ["running", "runing", "runnnig", "runnig"],
+            correct: 0,
+            explanation: "'Run' es monosílabo con estructura Consonante-Vocal-Consonante (CVC), por lo que duplica la consonante final: 'running'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Make'?",
+            options: ["making", "makeing", "makking", "makenig"],
+            correct: 0,
+            explanation: "Los verbos que terminan en una sola 'e' muda la eliminan antes de añadir el sufijo -ing: 'making'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Lie' (mentir/tumbarse)?",
+            options: ["lying", "lieing", "liing", "lyeing"],
+            correct: 0,
+            explanation: "Los verbos terminados en '-ie' sustituyen ambas vocales por 'y' antes de añadir -ing: lie -> 'lying'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Swim'?",
+            options: ["swimming", "swiming", "swimmin", "swimeng"],
+            correct: 0,
+            explanation: "Estructura CVC con acento en la vocal: se dobla la 'm' final -> 'swimming'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Die' (morir)?",
+            options: ["dying", "dieing", "diing", "dyeing"],
+            correct: 0,
+            explanation: "Terminación en '-ie' cambia a 'y' + -ing = 'dying' ('dyeing' proviene del verbo dye, teñir)."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Stop'?",
+            options: ["stopping", "stoping", "stoppin", "stopeng"],
+            correct: 0,
+            explanation: "Verbo monosílabo CVC: duplica la consonante 'p' -> 'stopping'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Study'?",
+            options: ["studying", "studing", "studyying", "studdying"],
+            correct: 0,
+            explanation: "A diferencia del pasado simple, en la formación de -ing NUNCA se elimina la 'y', simplemente se añade -ing: 'studying'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Write'?",
+            options: ["writing", "writting", "writeing", "writeign"],
+            correct: 0,
+            explanation: "'Write' pierde la 'e' final y NO duplica la 't' porque la vocal precedente es un diptongo largo /aɪ/: 'writing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Travel' (en inglés británico)?",
+            options: ["travelling", "traveling", "traveleng", "travellin"],
+            correct: 0,
+            explanation: "En inglés británico estándar, los verbos terminados en vocal + 'l' siempre duplican la 'l': 'travelling'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Begin'?",
+            options: ["beginning", "begining", "begginning", "beginign"],
+            correct: 0,
+            explanation: "Verbo bisílabo con acento en la segunda sílaba (be-GÍN) y terminación CVC: duplica la 'n' -> 'beginning'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Tie' (atar)?",
+            options: ["tying", "tieing", "tiing", "tyeing"],
+            correct: 0,
+            explanation: "Terminación en '-ie': tie -> 'tying'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Agree' (estar de acuerdo)?",
+            options: ["agreeing", "agreing", "agreeying", "agreeign"],
+            correct: 0,
+            explanation: "Los verbos terminados en doble 'ee' conservan ambas vocales y simplemente añaden -ing: 'agreeing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Sit'?",
+            options: ["sitting", "siting", "sittin", "siteng"],
+            correct: 0,
+            explanation: "Verbo monosílabo CVC: duplica la consonante final 't' -> 'sitting'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Happen'?",
+            options: ["happening", "happennig", "happenning", "happenin"],
+            correct: 0,
+            explanation: "En 'happen' el acento recae en la primera sílaba (HÁP-pen); por tanto, NO se duplica la consonante final: 'happening'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Dance'?",
+            options: ["dancing", "danceing", "danccing", "dansing"],
+            correct: 0,
+            explanation: "Elimina la 'e' muda final: dance -> 'dancing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Fix'?",
+            options: ["fixing", "fixxing", "fixin", "fixeng"],
+            correct: 0,
+            explanation: "Las consonantes 'w', 'x' e 'y' NUNCA se duplican en inglés: fix -> 'fixing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Play'?",
+            options: ["playing", "plaing", "playying", "playeng"],
+            correct: 0,
+            explanation: "La terminación vocal + 'y' añade directamente -ing sin sufrir modificaciones: 'playing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Cut'?",
+            options: ["cutting", "cuting", "cuttin", "cutign"],
+            correct: 0,
+            explanation: "Monosílabo CVC con vocal corta: duplica la consonante final 't' -> 'cutting'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'See'?",
+            options: ["seeing", "seing", "seeying", "seign"],
+            correct: 0,
+            explanation: "Verbo acabado en doble 'ee': se añade directamente -ing -> 'seeing'."
+          },
+          {
+            prompt: "¿Cuál es la forma correcta con -ing del verbo 'Forget'?",
+            options: ["forgetting", "forgeting", "forgettign", "forgettin"],
+            correct: 0,
+            explanation: "Bisílabo con acento en la última sílaba (for-GÉT): se duplica la 't' final -> 'forgetting'."
+          }
+        ]
+      }
+    ];
+
+    function normalizeText(str) {
+      if (!str) return "";
+      return str
+        .toLowerCase()
+        .replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function isTextAnswerCorrect(userText, questionObj) {
+      if (!userText || userText.trim() === "") return false;
+      const cleanUser = normalizeText(userText);
+      const cleanCanonical = normalizeText(questionObj.correctAnswer);
+      if (cleanUser === cleanCanonical) return true;
+
+      if (questionObj.validAnswers && questionObj.validAnswers.length > 0) {
+        return questionObj.validAnswers.some(ans => normalizeText(ans) === cleanUser);
+      }
+      return false;
+    }
+
+    function startApp() {
+      const input = document.getElementById('student-name-input');
+      const errorMsg = document.getElementById('name-error');
+      const val = input.value.trim();
+
+      if (val.length < 3) {
+        errorMsg.classList.remove('hidden');
+        input.focus();
+        return;
+      }
+
+      errorMsg.classList.add('hidden');
+      studentName = val;
+
+      document.getElementById('badge-name').innerText = studentName;
+      document.getElementById('student-badge').classList.remove('hidden');
+      document.getElementById('display-user-name').innerText = studentName;
+
+      document.getElementById('registration-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      const grid = document.getElementById('sections-grid');
+      grid.innerHTML = "";
+
+      let completedCount = 0;
+      let totalScoreAccum = 0;
+
+      SECTIONS.forEach((sec, idx) => {
+        const hasCompleted = sectionScores[idx] !== undefined;
+        if (hasCompleted) {
+          completedCount++;
+          totalScoreAccum += (sectionScores[idx].score / 20) * 100;
+        }
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-slate-200 flex flex-col justify-between";
+
+        let scoreHtml = "";
+        if (hasCompleted) {
+          const sc = sectionScores[idx].score;
+          const badgeColor = sc >= 16 ? "bg-emerald-100 text-emerald-800" : (sc >= 10 ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800");
+          scoreHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500 font-medium">Última calificación:</span>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${badgeColor}">
+                ${sc} / 20 (${(sc/20*100).toFixed(0)}%)
+              </span>
+            </div>
+          `;
+        } else {
+          scoreHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+              <span>Estado: Pendiente</span>
+              <span class="font-medium text-amber-700">${sec.type === 'input' ? 'Redacción libre' : 'Opción múltiple'}</span>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-slate-900 p-1 flex items-center justify-center mb-4 border border-amber-400/30">
+              <img src="Logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='Logo_3.png';">
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black text-amber-600 tracking-wider uppercase">Apartado ${sec.id}</span>
+              ${sec.type === 'input' ? '<span class="text-[10px] bg-sky-100 text-brand-900 font-bold px-2 py-0.5 rounded">Escribir</span>' : '<span class="text-[10px] bg-slate-100 text-slate-700 font-semibold px-2 py-0.5 rounded">Test</span>'}
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">${sec.title.split(':')[1] || sec.title}</h3>
+            <p class="text-xs font-semibold text-brand-700 mt-0.5">${sec.subtitle}</p>
+            <p class="text-xs text-slate-500 mt-2 leading-relaxed">${sec.description}</p>
+          </div>
+          <div>
+            ${scoreHtml}
+            <button onclick="openSection(${idx})" class="w-full mt-4 bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+              <span>${hasCompleted ? 'Ver resultados / Repetir' : 'Realizar apartado'}</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('global-completed-count').innerText = `${completedCount}/5`;
+      const avg = completedCount > 0 ? (totalScoreAccum / completedCount).toFixed(0) : 0;
+      document.getElementById('global-score-avg').innerText = `${avg}%`;
+    }
+
+    function openSection(idx) {
+      currentSectionIdx = idx;
+      const sec = SECTIONS[idx];
+
+      if (!userAnswers[idx]) {
+        userAnswers[idx] = {};
+      }
+
+      document.getElementById('current-section-title').innerText = `${sec.title}: ${sec.subtitle}`;
+      document.getElementById('current-section-desc').innerText = sec.description;
+
+      renderQuestions(idx);
+
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('results-view').classList.add('hidden');
+      document.getElementById('exercise-view').classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestions(secIdx) {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = "";
+      const sec = SECTIONS[secIdx];
+
+      sec.questions.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.id = `q-card-${qIndex}`;
+        card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm transition";
+
+        const currentAnswer = userAnswers[secIdx][qIndex];
+        let contentHtml = "";
+
+        if (sec.type === 'choice') {
+          let optionsHtml = q.options.map((opt, optIndex) => {
+            const isSelected = currentAnswer === optIndex;
+            const letter = String.fromCharCode(65 + optIndex);
+            return `
+              <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm ${isSelected ? 'border-brand-700 bg-sky-50 text-brand-900 font-semibold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'}">
+                <input type="radio" name="question_${qIndex}" value="${optIndex}" ${isSelected ? 'checked' : ''} onchange="selectOption(${secIdx}, ${qIndex}, ${optIndex})" class="w-4 h-4 text-brand-700 border-slate-300 focus:ring-brand-500">
+                <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0 border border-slate-200">${letter}</span>
+                <span class="flex-grow">${escapeHtml(opt)}</span>
+              </label>
+            `;
+          }).join('');
+
+          contentHtml = `
+            <p class="text-slate-900 font-bold text-base mb-3">${escapeHtml(q.prompt)}</p>
+            <div class="grid grid-cols-1 gap-2.5">
+              ${optionsHtml}
+            </div>
+          `;
+        } else {
+          const val = currentAnswer !== undefined ? currentAnswer : "";
+          contentHtml = `
+            <p class="text-slate-900 font-bold text-base mb-2">${escapeHtml(q.prompt)}</p>
+            <div class="mt-3">
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Escribe tu frase en inglés a continuación:</label>
+              <input type="text" id="text-input-${qIndex}" value="${escapeHtml(val)}" 
+                placeholder="Escribe aquí la oración completa..." 
+                oninput="recordTextInput(${secIdx}, ${qIndex}, this.value)"
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800 text-sm font-medium">
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <span class="text-xs font-black px-2.5 py-1 rounded bg-slate-100 text-brand-900">
+              Ejercicio ${qIndex + 1} de 20
+            </span>
+          </div>
+          ${contentHtml}
+        `;
+        container.appendChild(card);
+      });
+
+      updateAnsweredBadge(secIdx);
+    }
+
+    function selectOption(secIdx, qIdx, optIdx) {
+      userAnswers[secIdx][qIdx] = optIdx;
+      updateAnsweredBadge(secIdx);
+      const card = document.getElementById(`q-card-${qIdx}`);
+      if (card) {
+        const labels = card.querySelectorAll('label');
+        labels.forEach((lbl, index) => {
+          if (index === optIdx) {
+            lbl.className = "flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm border-brand-700 bg-sky-50 text-brand-900 font-semibold";
+          } else {
+            lbl.className = "flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm border-slate-200 hover:bg-slate-50 text-slate-700";
+          }
+        });
+      }
+    }
+
+    function recordTextInput(secIdx, qIdx, textVal) {
+      if (textVal.trim().length > 0) {
+        userAnswers[secIdx][qIdx] = textVal;
+      } else {
+        delete userAnswers[secIdx][qIdx];
+      }
+      updateAnsweredBadge(secIdx);
+    }
+
+    function updateAnsweredBadge(secIdx) {
+      const count = Object.keys(userAnswers[secIdx] || {}).length;
+      document.getElementById('answered-badge').innerText = `${count} / 20 contestadas`;
+    }
+
+    function submitCurrentSection() {
+      const secIdx = currentSectionIdx;
+      const sec = SECTIONS[secIdx];
+      const answers = userAnswers[secIdx] || {};
+      const answeredCount = Object.keys(answers).length;
+
+      if (answeredCount < 20) {
+        const confirmSubmit = confirm(`Has contestado ${answeredCount} de las 20 preguntas. Las que dejes vacías contarán como fallo. ¿Deseas corregir el apartado?`);
+        if (!confirmSubmit) return;
+      }
+
+      let correctCount = 0;
+
+      sec.questions.forEach((q, qIndex) => {
+        const userVal = answers[qIndex];
+        if (sec.type === 'choice') {
+          if (userVal === q.correct) correctCount++;
+        } else {
+          if (isTextAnswerCorrect(userVal, q)) correctCount++;
+        }
+      });
+
+      sectionScores[secIdx] = {
+        score: correctCount,
+        total: 20
+      };
+
+      showResults(secIdx);
+    }
+
+    function showResults(secIdx) {
+      const sec = SECTIONS[secIdx];
+      const answers = userAnswers[secIdx] || {};
+      const resultData = sectionScores[secIdx];
+
+      document.getElementById('exercise-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('results-view').classList.remove('hidden');
+
+      document.getElementById('result-section-title').innerText = sec.title;
+      document.getElementById('result-student-name').innerText = studentName;
+      document.getElementById('result-score-number').innerText = `${resultData.score}`;
+      document.getElementById('result-score-percent').innerText = `${((resultData.score / 20) * 100).toFixed(0)}%`;
+
+      document.getElementById('correct-count-badge').innerText = resultData.score;
+      document.getElementById('incorrect-count-badge').innerText = 20 - resultData.score;
+
+      const container = document.getElementById('feedback-items-container');
+      container.innerHTML = "";
+
+      sec.questions.forEach((q, qIndex) => {
+        const userVal = answers[qIndex];
+        let isCorrect = false;
+        let userDisplay = "";
+        let correctDisplay = "";
+
+        if (sec.type === 'choice') {
+          isCorrect = userVal === q.correct;
+          userDisplay = userVal !== undefined ? `${String.fromCharCode(65 + userVal)}: ${escapeHtml(q.options[userVal])}` : '<span class="italic text-red-600">Sin contestar</span>';
+          correctDisplay = `${String.fromCharCode(65 + q.correct)}: ${escapeHtml(q.options[q.correct])}`;
+        } else {
+          isCorrect = isTextAnswerCorrect(userVal, q);
+          userDisplay = userVal !== undefined && userVal.trim() !== "" ? escapeHtml(userVal) : '<span class="italic text-red-600">Dejado en blanco</span>';
+          correctDisplay = escapeHtml(q.correctAnswer);
+        }
+
+        const card = document.createElement('div');
+        card.className = `p-5 rounded-2xl border ${isCorrect ? 'bg-emerald-50/50 border-emerald-300' : 'bg-red-50/50 border-red-300'} transition`;
+
+        const statusIcon = isCorrect 
+          ? `<span class="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-600 text-white px-3 py-1 rounded-full"><i class="fa-solid fa-check"></i> Correcto</span>`
+          : `<span class="inline-flex items-center gap-1.5 text-xs font-bold bg-red-600 text-white px-3 py-1 rounded-full"><i class="fa-solid fa-xmark"></i> Fallado</span>`;
+
+        card.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="text-xs font-black text-slate-500 uppercase">Ejercicio ${qIndex + 1}</span>
+            ${statusIcon}
+          </div>
+
+          <p class="text-slate-900 font-bold text-sm md:text-base mb-3">${escapeHtml(q.prompt)}</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs mb-3">
+            <div class="p-3 rounded-xl ${isCorrect ? 'bg-emerald-100/70 border border-emerald-300 text-emerald-950' : 'bg-red-100/70 border border-red-300 text-red-950'}">
+              <span class="font-bold block text-[11px] uppercase tracking-wider mb-1">Lo que escribiste:</span>
+              <span class="font-medium">${userDisplay}</span>
+            </div>
+            <div class="p-3 rounded-xl bg-sky-100/70 border border-sky-300 text-sky-950">
+              <span class="font-bold block text-[11px] uppercase tracking-wider mb-1">Respuesta esperada:</span>
+              <span class="font-semibold">${correctDisplay}</span>
+            </div>
+          </div>
+
+          <div class="bg-white/90 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed shadow-sm">
+            <strong class="text-brand-900 block mb-1 flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb text-amber-500"></i> Explicación pedagógica de Wisdom Corner:
+            </strong>
+            ${q.explanation}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function retakeSection() {
+      userAnswers[currentSectionIdx] = {};
+      openSection(currentSectionIdx);
+    }
+
+    function backToDashboard() {
+      document.getElementById('exercise-view').classList.add('hidden');
+      document.getElementById('results-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      renderDashboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+  </script>
+</body>
+</html>
