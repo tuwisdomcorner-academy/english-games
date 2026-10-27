@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisdom Corner Academy - Past Simple Practice</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              gold: '#d4af37',
+              goldDark: '#b89628',
+              goldLight: '#fef3c7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header & Academy Branding -->
+  <header class="bg-gradient-to-r from-brand-900 via-slate-900 to-brand-900 text-white shadow-xl border-b-4 border-amber-500 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <!-- Logo Wisdom Corner Academy sustituyendo el sombrero -->
+        <div class="w-14 h-14 rounded-2xl bg-white/10 p-1 flex items-center justify-center border border-amber-400/50 shadow-inner overflow-hidden">
+          <img src="Logo.png" alt="Wisdom Corner Academy" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>📖</text></svg>';">
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl md:text-2xl font-black tracking-wider uppercase text-amber-300">Wisdom Corner</span>
+            <span class="text-xs bg-amber-400 text-brand-900 font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">Academy</span>
+          </div>
+          <p class="text-xs text-sky-200">Interactive English Grammar Assessment • Past Simple Practice</p>
+        </div>
+      </div>
+
+      <!-- Student Badge Info -->
+      <div id="student-badge" class="hidden sm:flex items-center gap-3 bg-brand-800/80 px-4 py-2 rounded-xl border border-amber-400/30">
+        <i class="fa-solid fa-user-pen text-amber-400 text-lg"></i>
+        <div class="text-right">
+          <p class="text-[11px] text-sky-200 uppercase tracking-wider font-semibold">Estudiante:</p>
+          <p id="badge-name" class="font-bold text-sm tracking-wide text-white"></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6 my-2">
+
+    <!-- STEP 1: Registration View -->
+    <div id="registration-view" class="max-w-xl mx-auto my-8 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-gradient-to-b from-brand-900 to-slate-900 p-8 text-white text-center flex flex-col items-center">
+        <!-- Logo Principal -->
+        <div class="w-24 h-24 mb-3 rounded-2xl bg-white/10 p-2 border-2 border-amber-400/60 shadow-lg flex items-center justify-center">
+          <img src="Logo.png" alt="Wisdom Corner Academy" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>📖</text></svg>';">
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-wide text-white">Wisdom Corner Academy</h2>
+        <p class="text-amber-400 font-semibold text-sm mt-1 uppercase tracking-wider">Registro de Examen Práctico</p>
+        <p class="text-sky-200 text-xs mt-1">Past Simple Mastery (5 apartados • 100 ejercicios)</p>
+      </div>
+
+      <div class="p-6 md:p-8 space-y-6">
+        <div>
+          <label for="student-name-input" class="block text-sm font-bold text-slate-700 mb-2">
+            Nombre y Apellidos del alumno <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+              <i class="fa-solid fa-id-card"></i>
+            </span>
+            <input type="text" id="student-name-input" placeholder="Ej. Alex Smith" 
+              class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition text-slate-800 font-semibold">
+          </div>
+          <p id="name-error" class="text-red-500 text-xs mt-2 hidden font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-circle-exclamation"></i> Por favor, introduce tu nombre y apellidos para continuar.
+          </p>
+        </div>
+
+        <div class="bg-amber-50/70 border-l-4 border-amber-500 p-4 rounded-r-2xl space-y-2">
+          <h4 class="font-bold text-amber-900 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-amber-600"></i> Estructura y modalidad de ejercicios
+          </h4>
+          <ul class="text-xs text-amber-900/90 space-y-1.5 list-disc list-inside">
+            <li><strong>Apartado 1:</strong> Rellenar huecos (+, -, ?) [Opción múltiple].</li>
+            <li><strong>Apartado 2:</strong> Ordenar oraciones [Escribir frase completa].</li>
+            <li><strong>Apartado 3:</strong> Uso gramatical y marcadores temporales [Opción múltiple].</li>
+            <li><strong>Apartado 4:</strong> Traducción de español a inglés [Escribir frase completa].</li>
+            <li><strong>Apartado 5:</strong> Transformación de verbos (Presente ➔ Pasado) [Opción múltiple].</li>
+          </ul>
+        </div>
+
+        <button onclick="startApp()" class="w-full bg-brand-900 hover:bg-slate-900 text-amber-400 hover:text-amber-300 font-bold py-4 px-6 rounded-xl shadow-xl transition-all duration-200 flex items-center justify-center gap-3 text-base border border-amber-500/40">
+          <span>Comenzar práctica interactiva</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Dashboard & Sections Selection -->
+    <div id="dashboard-view" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-amber-600">Wisdom English Platform</span>
+          <h1 class="text-2xl font-black text-slate-900 mt-0.5">Bienvenido/a, <span id="display-user-name" class="text-brand-900"></span></h1>
+          <p class="text-slate-500 text-xs md:text-sm mt-1">Elige un apartado para resolver los 20 ejercicios y recibir tu corrección con explicaciones detalladas.</p>
+        </div>
+        <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 shrink-0">
+          <div class="text-center">
+            <span class="block text-2xl font-black text-brand-900" id="global-completed-count">0/5</span>
+            <span class="text-[11px] text-slate-500 font-semibold uppercase">Completados</span>
+          </div>
+          <div class="h-8 w-px bg-slate-300"></div>
+          <div class="text-center">
+            <span class="block text-2xl font-black text-amber-600" id="global-score-avg">0%</span>
+            <span class="text-[11px] text-slate-500 font-semibold uppercase">Promedio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="sections-grid">
+        <!-- Generado dinámicamente -->
+      </div>
+    </div>
+
+    <!-- STEP 3: Active Exercise View -->
+    <div id="exercise-view" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <button onclick="backToDashboard()" class="text-slate-500 hover:text-brand-800 p-2 rounded-xl hover:bg-slate-100 transition" title="Volver al menú">
+            <i class="fa-solid fa-arrow-left text-lg"></i>
+          </button>
+          <div>
+            <h2 id="current-section-title" class="text-lg md:text-xl font-bold text-slate-900"></h2>
+            <p id="current-section-desc" class="text-xs text-slate-500 mt-0.5"></p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="answered-badge" class="text-xs font-bold px-3 py-1.5 bg-amber-100 text-amber-900 rounded-full border border-amber-300">
+            0 / 20 contestadas
+          </span>
+        </div>
+      </div>
+
+      <div id="questions-container" class="space-y-4">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <button onclick="backToDashboard()" class="text-slate-600 hover:text-slate-900 font-semibold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-chevron-left"></i> Volver a los apartados
+        </button>
+        <button id="submit-section-btn" onclick="submitCurrentSection()" class="w-full sm:w-auto bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold py-3.5 px-8 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm border border-amber-500/30">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Finalizar y Corregir Apartado</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Results & Detailed Feedback View -->
+    <div id="results-view" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-brand-900 via-slate-900 to-brand-900 p-6 md:p-8 text-white flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 p-1.5 border border-amber-400/50 shrink-0 flex items-center justify-center">
+              <img src="Logo.png" alt="Wisdom Corner Academy" class="w-full h-full object-contain drop-shadow" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>📖</text></svg>';">
+            </div>
+            <div>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400">Informe Académico Oficial</span>
+              <h2 id="result-section-title" class="text-xl md:text-2xl font-black mt-0.5"></h2>
+              <p class="text-xs text-sky-200 mt-1">Estudiante evaluado: <span id="result-student-name" class="font-bold text-white"></span></p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 bg-brand-800/90 px-6 py-3.5 rounded-2xl border border-amber-400/40">
+            <div class="text-center">
+              <span id="result-score-number" class="text-3xl font-black text-amber-400">0</span>
+              <span class="text-[11px] block text-sky-200 uppercase font-semibold">Aciertos (de 20)</span>
+            </div>
+            <div class="h-10 w-px bg-slate-700"></div>
+            <div class="text-center">
+              <span id="result-score-percent" class="text-3xl font-black text-white">0%</span>
+              <span class="text-[11px] block text-sky-200 uppercase font-semibold">Calificación</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-4 text-sm">
+          <div class="flex gap-4">
+            <span class="flex items-center gap-1.5 text-emerald-700 font-bold">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> <span id="correct-count-badge">0</span> Aciertos
+            </span>
+            <span class="flex items-center gap-1.5 text-red-600 font-bold">
+              <i class="fa-solid fa-circle-xmark text-red-500"></i> <span id="incorrect-count-badge">0</span> Fallos
+            </span>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="retakeSection()" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold px-4 py-2 rounded-xl transition text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-rotate-right"></i> Repetir apartado
+            </button>
+            <button onclick="backToDashboard()" class="bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold px-5 py-2 rounded-xl transition text-xs flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-table-cells-large"></i> Menú de apartados
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-amber-600"></i>
+              Desglose detallado de fallos y justificaciones pedagógicas
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">
+              Comprueba qué has introducido tú, cuál es la solución correcta exigida y la regla del Past Simple que justifica el resultado.
+            </p>
+          </div>
+
+          <div id="feedback-items-container" class="space-y-4">
+            <!-- Dynamic Feedback Cards -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-amber-400">Wisdom Corner Academy</span>
+        <span>• English Department Excellence</span>
+      </div>
+      <div>
+        Past Simple Educational Toolkit • Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Data -->
+  <script>
+    let studentName = "";
+    let currentSectionIdx = 0;
+    let userAnswers = {}; 
+    let sectionScores = {};
+
+    // 5 SECTIONS x 20 QUESTIONS = 100 EXERCISES
+    const SECTIONS = [
+      {
+        id: 1,
+        title: "Apartado 1: Rellenar Huecos",
+        subtitle: "Afirmativa, Negativa e Interrogativa",
+        type: "choice",
+        description: "Elige la opción correcta para completar la oración en pasado simple con su forma verbal adecuada.",
+        icon: "fa-pencil",
+        questions: [
+          {
+            prompt: "Yesterday, Sarah _______ (visit) her grandparents in Oxford.",
+            options: ["visited", "visits", "did visit", "visitted"],
+            correct: 0,
+            explanation: "'Visit' es un verbo regular. En la afirmativa del pasado simple simplemente añadimos '-ed' (visited). No se duplica la consonante porque el acento recae en la primera sílaba (VÍ-sit)."
+          },
+          {
+            prompt: "We _______ (not / go) to the cinema last night because we were exhausted.",
+            options: ["didn't went", "didn't go", "not went", "weren't go"],
+            correct: 1,
+            explanation: "Para la negación en Past Simple usamos el auxiliar 'did not' (didn't) seguido del verbo base en infinitivo ('go'). Decir 'didn't went' es un error de doble pasado."
+          },
+          {
+            prompt: "_______ you _______ (see) the total solar eclipse last week?",
+            options: ["Did / saw", "Did / see", "Were / see", "Have / saw"],
+            correct: 1,
+            explanation: "En oraciones interrogativas del pasado simple, la estructura es: Did + sujeto + verbo en infinitivo ('Did you see'). El verbo principal no se pone en pasado."
+          },
+          {
+            prompt: "They _______ (buy) a beautiful Victorian house in the suburbs two years ago.",
+            options: ["buyed", "bought", "baught", "did bought"],
+            correct: 1,
+            explanation: "'Buy' es un verbo irregular. Su forma afirmativa en pasado simple es 'bought', nunca 'buyed'."
+          },
+          {
+            prompt: "Tom _______ (not / finish) the engineering report on time.",
+            options: ["didn't finished", "didn't finish", "not finished", "wasn't finish"],
+            correct: 1,
+            explanation: "Con el auxiliar negativo 'didn't', el verbo principal siempre permanece en su forma base (infinitivo sin to): 'didn't finish'."
+          },
+          {
+            prompt: "Where _______ your sister _______ (stay) during her vacation in Rome?",
+            options: ["did / stayed", "did / stay", "was / stayed", "does / stay"],
+            correct: 1,
+            explanation: "Estructura interrogativa Wh-: Partícula interrogativa (Where) + did + sujeto (your sister) + infinitivo (stay)?"
+          },
+          {
+            prompt: "I _______ (study) very hard for the Cambridge exam last weekend.",
+            options: ["studyed", "studied", "did studied", "studying"],
+            correct: 1,
+            explanation: "Verbos acabados en consonante + 'y' como 'study' sustituyen la 'y' por 'i' antes de añadir '-ed' -> 'studied'."
+          },
+          {
+            prompt: "Marcus _______ (not / know) the answer to the professor's question.",
+            options: ["didn't knew", "didn't know", "didn't known", "not knew"],
+            correct: 1,
+            explanation: "El auxiliar 'didn't' ya señala el tiempo pasado; el verbo 'know' debe ir en forma base, nunca en pasado ('knew')."
+          },
+          {
+            prompt: "What time _______ the conference _______ (start) this morning?",
+            options: ["did / started", "did / start", "was / start", "does / started"],
+            correct: 1,
+            explanation: "Fórmula de pregunta con auxiliar: 'Did + sujeto + start (infinitivo)'."
+          },
+          {
+            prompt: "The train _______ (stop) suddenly just before entering the station tunnel.",
+            options: ["stoped", "stopped", "did stoped", "stop"],
+            correct: 1,
+            explanation: "'Stop' es un verbo monosílabo con terminación consonante-vocal-consonante (CVC). Por ello duplica la consonante final: 'stopped'."
+          },
+          {
+            prompt: "She _______ (not / hear) her alarm clock ring this morning.",
+            options: ["didn't heard", "didn't hear", "not heard", "wasn't hear"],
+            correct: 1,
+            explanation: "Negación en pasado simple: 'didn't' + infinitivo 'hear'."
+          },
+          {
+            prompt: "_______ you _______ (sleep) well in the hotel bed?",
+            options: ["Did / sleep", "Did / slept", "Were / slept", "Did / sleeped"],
+            correct: 0,
+            explanation: "'Sleep' es irregular (sleep-slept-slept), pero en preguntas acompañadas del auxiliar 'did' se utiliza el infinitivo: 'Did you sleep'."
+          },
+          {
+            prompt: "We _______ (eat) dinner at an authentic Italian trattoria on Friday.",
+            options: ["eated", "ate", "aten", "did ate"],
+            correct: 1,
+            explanation: "El pasado afirmativo del verbo irregular 'eat' es 'ate'."
+          },
+          {
+            prompt: "Lucas and Clara _______ (not / like) the modern art exhibition.",
+            options: ["didn't liked", "didn't like", "weren't like", "not liked"],
+            correct: 1,
+            explanation: "Con el auxiliar 'didn't', el verbo principal no lleva '-d' ni '-ed': 'didn't like'."
+          },
+          {
+            prompt: "Why _______ she _______ (leave) the party so early last night?",
+            options: ["did / left", "did / leave", "was / left", "did / leaved"],
+            correct: 1,
+            explanation: "Pregunta con 'Why': Why + did + she + leave (infinitivo)?"
+          },
+          {
+            prompt: "He _______ (carry) all the heavy grocery bags up to the fifth floor.",
+            options: ["carried", "carryed", "carred", "did carried"],
+            correct: 0,
+            explanation: "Verbo regular que termina en consonante + 'y' ('carry'): la 'y' se convierte en 'i' + '-ed' = 'carried'."
+          },
+          {
+            prompt: "The students _______ (not / understand) the complex grammar rule at first.",
+            options: ["didn't understood", "didn't understand", "not understood", "weren't understand"],
+            correct: 1,
+            explanation: "Uso obligatorio de 'didn't' + infinitivo 'understand'."
+          },
+          {
+            prompt: "How many books _______ you _______ (read) during the summer holidays?",
+            options: ["did / read", "did / readed", "did / red", "were / read"],
+            correct: 0,
+            explanation: "El verbo 'read' se escribe con la misma grafía en infinitivo y en pasado. Con 'did' usamos su infinitivo 'read'."
+          },
+          {
+            prompt: "My father _______ (teach) mathematics at the local high school for thirty years.",
+            options: ["teached", "taught", "thought", "did teach"],
+            correct: 1,
+            explanation: "'Teach' es irregular. Su pasado simple es 'taught' (no 'thought', que proviene de think)."
+          },
+          {
+            prompt: "I am sorry, but I _______ (not / receive) your email confirmation yesterday.",
+            options: ["didn't receive", "didn't received", "not received", "didn't recived"],
+            correct: 0,
+            explanation: "'Didn't' + infinitivo 'receive'."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Apartado 2: Ordenar Frases Descolocadas",
+        subtitle: "Escribe la frase completa en orden correcto",
+        type: "input",
+        description: "Escribe en la casilla la oración ordenada correctamente respetando mayúsculas, sujetos, verbos y complementos.",
+        icon: "fa-shuffle",
+        questions: [
+          {
+            prompt: "Descolocada: [ cinema / they / to / go / did / the / Friday / last / ? ]",
+            correctAnswer: "Did they go to the cinema last Friday?",
+            validAnswers: ["did they go to the cinema last friday?", "did they go to the cinema last friday"],
+            explanation: "Estructura interrogativa: Auxiliar (Did) + Sujeto (they) + Verbo infinitivo (go) + Complemento de lugar (to the cinema) + Tiempo (last Friday)?"
+          },
+          {
+            prompt: "Descolocada: [ yesterday / meet / I / in / park / didn't / the / him ]",
+            correctAnswer: "I didn't meet him in the park yesterday.",
+            validAnswers: ["i didn't meet him in the park yesterday.", "i didn't meet him in the park yesterday", "i did not meet him in the park yesterday.", "i did not meet him in the park yesterday"],
+            explanation: "Estructura negativa: Sujeto (I) + didn't + Verbo base (meet) + Objeto directo (him) + Lugar (in the park) + Tiempo (yesterday)."
+          },
+          {
+            prompt: "Descolocada: [ wonderful / she / a / speech / conference / gave / the / at ]",
+            correctAnswer: "She gave a wonderful speech at the conference.",
+            validAnswers: ["she gave a wonderful speech at the conference.", "she gave a wonderful speech at the conference"],
+            explanation: "Sujeto (She) + Verbo irregular pasado (gave) + Objeto directo (a wonderful speech) + Complemento circunstancial de lugar (at the conference)."
+          },
+          {
+            prompt: "Descolocada: [ you / where / keys / your / find / did / ? ]",
+            correctAnswer: "Where did you find your keys?",
+            validAnswers: ["where did you find your keys?", "where did you find your keys"],
+            explanation: "Pregunta Wh-: Where + did + sujeto (you) + infinitivo (find) + objeto (your keys)?"
+          },
+          {
+            prompt: "Descolocada: [ train / station / the / arrived / at / 8:00 / the / at ]",
+            correctAnswer: "The train arrived at the station at 8:00.",
+            validAnswers: ["the train arrived at the station at 8:00.", "the train arrived at the station at 8:00", "the train arrived at the station at 8."],
+            explanation: "Sujeto (The train) + Verbo (arrived) + Lugar (at the station) + Tiempo/Hora (at 8:00)."
+          },
+          {
+            prompt: "Descolocada: [ last / night / homework / we / do / our / didn't ]",
+            correctAnswer: "We didn't do our homework last night.",
+            validAnswers: ["we didn't do our homework last night.", "we didn't do our homework last night", "we did not do our homework last night.", "we did not do our homework last night"],
+            explanation: "Sujeto (We) + didn't + verbo léxico en infinitivo (do) + objeto (our homework) + tiempo (last night)."
+          },
+          {
+            prompt: "Descolocada: [ guitar / played / the / brother / very / my / well ]",
+            correctAnswer: "My brother played the guitar very well.",
+            validAnswers: ["my brother played the guitar very well.", "my brother played the guitar very well"],
+            explanation: "Sujeto (My brother) + Verbo (played) + Objeto (the guitar) + Adverbio de modo (very well)."
+          },
+          {
+            prompt: "Descolocada: [ why / call / me / didn't / you / morning / this / ? ]",
+            correctAnswer: "Why didn't you call me this morning?",
+            validAnswers: ["why didn't you call me this morning?", "why didn't you call me this morning", "why did you not call me this morning?", "why did you not call me this morning"],
+            explanation: "Pregunta negativa con Wh-: Why + didn't + sujeto (you) + verbo infinitivo (call) + objeto (me) + tiempo (this morning)?"
+          },
+          {
+            prompt: "Descolocada: [ bought / a / brand-new / car / father / my ]",
+            correctAnswer: "My father bought a brand-new car.",
+            validAnswers: ["my father bought a brand-new car.", "my father bought a brand-new car", "my father bought a brand new car.", "my father bought a brand new car"],
+            explanation: "Sujeto (My father) + Verbo en pasado (bought) + Objeto directo (a brand-new car)."
+          },
+          {
+            prompt: "Descolocada: [ party / enjoy / they / didn't / birthday / the ]",
+            correctAnswer: "They didn't enjoy the birthday party.",
+            validAnswers: ["they didn't enjoy the birthday party.", "they didn't enjoy the birthday party", "they did not enjoy the birthday party.", "they did not enjoy the birthday party"],
+            explanation: "Sujeto (They) + auxiliar negativo (didn't) + verbo base (enjoy) + objeto (the birthday party)."
+          },
+          {
+            prompt: "Descolocada: [ did / what / lunch / have / you / for / ? ]",
+            correctAnswer: "What did you have for lunch?",
+            validAnswers: ["what did you have for lunch?", "what did you have for lunch"],
+            explanation: "Partícula interrogativa (What) + did + sujeto (you) + verbo base (have) + complemento (for lunch)?"
+          },
+          {
+            prompt: "Descolocada: [ lost / purse / street / in / her / she / the ]",
+            correctAnswer: "She lost her purse in the street.",
+            validAnswers: ["she lost her purse in the street.", "she lost her purse in the street"],
+            explanation: "Sujeto (She) + Verbo (lost) + Objeto (her purse) + Lugar (in the street)."
+          },
+          {
+            prompt: "Descolocada: [ early / wake / up / morning / didn't / this / David ]",
+            correctAnswer: "David didn't wake up early this morning.",
+            validAnswers: ["david didn't wake up early this morning.", "david didn't wake up early this morning", "david did not wake up early this morning.", "david did not wake up early this morning"],
+            explanation: "Sujeto (David) + didn't + infinitivo (wake up) + adverbio (early) + tiempo (this morning)."
+          },
+          {
+            prompt: "Descolocada: [ team / championship / won / our / match / the / final ]",
+            correctAnswer: "Our team won the final championship match.",
+            validAnswers: ["our team won the final championship match.", "our team won the final championship match"],
+            explanation: "Sujeto (Our team) + Verbo irregular pasado (won) + Objeto (the final championship match)."
+          },
+          {
+            prompt: "Descolocada: [ how / money / did / spend / much / you / ? ]",
+            correctAnswer: "How much money did you spend?",
+            validAnswers: ["how much money did you spend?", "how much money did you spend"],
+            explanation: "Partícula cuantitativa (How much money) + did + sujeto (you) + infinitivo (spend)?"
+          },
+          {
+            prompt: "Descolocada: [ cake / delicious / baked / chocolate / a / my / mother ]",
+            correctAnswer: "My mother baked a delicious chocolate cake.",
+            validAnswers: ["my mother baked a delicious chocolate cake.", "my mother baked a delicious chocolate cake"],
+            explanation: "Sujeto (My mother) + Verbo (baked) + Objeto (a delicious chocolate cake)."
+          },
+          {
+            prompt: "Descolocada: [ museum / visit / weekend / didn't / we / the / last ]",
+            correctAnswer: "We didn't visit the museum last weekend.",
+            validAnswers: ["we didn't visit the museum last weekend.", "we didn't visit the museum last weekend", "we did not visit the museum last weekend.", "we did not visit the museum last weekend"],
+            explanation: "Sujeto (We) + didn't + infinitivo (visit) + objeto (the museum) + expresión temporal (last weekend)."
+          },
+          {
+            prompt: "Descolocada: [ plane / when / airport / did / the / at / land / the / ? ]",
+            correctAnswer: "When did the plane land at the airport?",
+            validAnswers: ["when did the plane land at the airport?", "when did the plane land at the airport"],
+            explanation: "When + did + sujeto (the plane) + infinitivo (land) + lugar (at the airport)?"
+          },
+          {
+            prompt: "Descolocada: [ letter / an / wrote / apology / of / he / manager / the / to ]",
+            correctAnswer: "He wrote a letter of apology to the manager.",
+            validAnswers: ["he wrote a letter of apology to the manager.", "he wrote a letter of apology to the manager"],
+            explanation: "Sujeto (He) + Verbo pasado (wrote) + Objeto (a letter of apology) + Destinatario (to the manager)."
+          },
+          {
+            prompt: "Descolocada: [ umbrella / rain / because / took / an / it / I ]",
+            correctAnswer: "I took an umbrella because it rained.",
+            validAnswers: ["i took an umbrella because it rained.", "i took an umbrella because it rained"],
+            explanation: "Oración principal (I took an umbrella) seguida de la conjunción causal y oración subordinada (because it rained)."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Apartado 3: Uso del Past Simple",
+        subtitle: "Contextos, Expresiones Temporales y Reglas",
+        type: "choice",
+        description: "Demuestra cuándo y por qué se utiliza el Past Simple frente a otros tiempos y sus marcadores obligatorios.",
+        icon: "fa-compass",
+        questions: [
+          {
+            prompt: "¿Cuál es la función principal del Past Simple en inglés?",
+            options: [
+              "Expresar acciones finalizadas que ocurrieron en un momento específico del pasado.",
+              "Describir acciones que acaban de ocurrir hace un instante y tienen relevancia ahora.",
+              "Hablar de acciones que todavía continúan desarrollándose en el presente.",
+              "Expresar planes e intenciones para el futuro próximo."
+            ],
+            correct: 0,
+            explanation: "El Past Simple se utiliza para acciones completadas en un periodo de tiempo ya terminado y delimitado en el pasado."
+          },
+          {
+            prompt: "¿Cuál de las siguientes expresiones temporales es un marcador característico del Past Simple?",
+            options: ["yesterday", "since 2015", "for three hours now", "at the moment"],
+            correct: 0,
+            explanation: "'Yesterday' (ayer) sitúa la acción en un tiempo cerrado y terminado, exigiendo Past Simple. 'Since' suele exigir Present Perfect."
+          },
+          {
+            prompt: "¿Qué marcador temporal indica una cantidad de tiempo transcurrida hacia atrás desde el presente?",
+            options: ["ago (e.g. three days ago)", "already", "just", "yet"],
+            correct: 0,
+            explanation: "'Ago' se coloca después del periodo de tiempo (ej. 'two weeks ago') e indica inequívocamente el uso del Past Simple."
+          },
+          {
+            prompt: "Elige la oración que expresa una serie de acciones consecutivas y completadas en el pasado:",
+            options: [
+              "He opened the door, took off his coat, and sat down.",
+              "He is opening the door and taking off his coat.",
+              "He was opening the door while sitting down.",
+              "He opens the door and has sat down."
+            ],
+            correct: 0,
+            explanation: "Una de las funciones esenciales del Past Simple es relatar secuencias de acciones en una narración (una acción tras otra)."
+          },
+          {
+            prompt: "¿Por qué es INCORRECTA la frase: 'I didn't went to the doctor'?",
+            options: [
+              "Porque el auxiliar 'didn't' ya porta el pasado, por lo que el verbo debe estar en infinitivo (go).",
+              "Porque con el pronombre 'I' se debe usar 'doesn't'.",
+              "Porque 'went' no es un verbo en pasado.",
+              "Porque a las oraciones negativas se les añade siempre '-ed'."
+            ],
+            correct: 0,
+            explanation: "Regla de oro: El auxiliar 'did/didn't' absorbe el tiempo pasado. El verbo léxico debe permanecer en forma base (bare infinitive): 'didn't go'."
+          },
+          {
+            prompt: "¿Cómo se formula la negativa en pasado del verbo 'to be' para el sujeto 'They'?",
+            options: ["They weren't (were not)", "They didn't be", "They wasn't", "They didn't were"],
+            correct: 0,
+            explanation: "El verbo 'to be' no utiliza el auxiliar 'did' para negar ni preguntar; forma su propio pasado con 'was/were' -> 'They were not / weren't'."
+          },
+          {
+            prompt: "¿Cuál de estas oraciones está en Past Simple con un hábito o estado pasado que ya terminó?",
+            options: [
+              "When I was a child, I lived in a small fishing village.",
+              "I am living in a small village right now.",
+              "I have lived in this village all my life.",
+              "I will live in a small village next year."
+            ],
+            correct: 0,
+            explanation: "El Past Simple describe estados o rutinas del pasado que ya no ocurren en el presente."
+          },
+          {
+            prompt: "Elige la opción correcta para completar: 'Shakespeare _______ (write) Hamlet in 1601.'",
+            options: ["wrote", "has written", "writes", "was written"],
+            correct: 0,
+            explanation: "Como el autor ha fallecido y se menciona una fecha histórica concreta ('in 1601'), es obligatorio usar Past Simple ('wrote')."
+          },
+          {
+            prompt: "¿Qué ocurre con los verbos regulares acabados en 'vocal corta acentuada + una sola consonante' al pasar a Past Simple?",
+            options: [
+              "Se duplica la consonante final y se añade '-ed' (ej. stop -> stopped).",
+              "Se elimina la consonante y se pone '-ed'.",
+              "Se añade únicamente una '-s'.",
+              "No se añade nada, queda igual."
+            ],
+            correct: 0,
+            explanation: "Es la regla CVC (Consonante-Vocal-Consonante) tónica: duplica la consonante final (plan -> planned, rob -> robbed)."
+          },
+          {
+            prompt: "¿Cuál es la forma interrogativa correcta para el verbo 'to be' con 'She'?",
+            options: ["Was she at home yesterday?", "Did she be at home yesterday?", "Were she at home yesterday?", "Did she was at home yesterday?"],
+            correct: 0,
+            explanation: "Con 'to be' se invierte el orden Sujeto-Verbo: 'Was she...?', nunca con el auxiliar 'did'."
+          },
+          {
+            prompt: "¿Cuál de las siguientes frases contiene un error gramatical?",
+            options: [
+              "Did you watched television last night?",
+              "She walked to work this morning.",
+              "We didn't have enough time.",
+              "They were very happy with the results."
+            ],
+            correct: 0,
+            explanation: "'Did you watched' es incorrecto porque tras 'did' el verbo debe permanecer en infinitivo ('Did you watch')."
+          },
+          {
+            prompt: "Completa con el marcador adecuado: 'I graduated from university three years _______.'",
+            options: ["ago", "before", "since", "yet"],
+            correct: 0,
+            explanation: "'Ago' se usa al final de la expresión de tiempo transcurrido en Past Simple: 'three years ago' (hace tres años)."
+          },
+          {
+            prompt: "¿Qué opción muestra la pronunciación correcta del sufijo '-ed' como /ɪd/ o /əd/?",
+            options: [
+              "Verbos terminados en sonido /t/ o /d/ (ej. decided, waited).",
+              "Verbos terminados en sonido sordo como /p/ o /k/ (ej. stopped, worked).",
+              "Verbos terminados en sonido sonoro como /l/ o /m/ (ej. called, cleaned).",
+              "Todos los verbos regulares del inglés sin excepción."
+            ],
+            correct: 0,
+            explanation: "La terminación '-ed' solo se pronuncia como sílaba extra /ɪd/ cuando el infinitivo del verbo termina en sonido 't' o 'd' (wanted, needed)."
+          },
+          {
+            prompt: "Elige la opción correcta: 'Last year, we _______ (not / travel) abroad.'",
+            options: ["didn't travel", "didn't traveled", "haven't traveled", "weren't travel"],
+            correct: 0,
+            explanation: "'Last year' delimita un periodo finalizado; se usa la forma negativa del Past Simple: 'didn't travel'."
+          },
+          {
+            prompt: "¿Cuál es la forma afirmativa en pasado simple del verbo 'read'?",
+            options: [
+              "read (se escribe igual pero se pronuncia /red/)",
+              "readed",
+              "red",
+              "rood"
+            ],
+            correct: 0,
+            explanation: "El verbo 'read' es irregular y mantiene su ortografía idéntica en pasado, aunque su pronunciación cambia fonéticamente a /red/."
+          },
+          {
+            prompt: "¿Qué pregunta averigua el SUJETO de la acción en pasado simple sin usar auxiliar 'did'?",
+            options: [
+              "Who broke the living room window?",
+              "Who did break the living room window?",
+              "Who did broke the living room window?",
+              "Who was broke the living room window?"
+            ],
+            correct: 0,
+            explanation: "En las 'Subject Questions' donde 'Who' o 'What' pregunta directamente por el sujeto ejecutor, NO se usa auxiliar 'did', sino el verbo conjugado directamente en pasado."
+          },
+          {
+            prompt: "En la narración de cuentos ('Once upon a time, there _______ a brave knight...'), ¿qué tiempo verbal predomina?",
+            options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+            correct: 0,
+            explanation: "El Past Simple es el tiempo narrativo por excelencia para relatar eventos y cuentos."
+          },
+          {
+            prompt: "¿Cuál es el pasado simple del verbo modal 'can'?",
+            options: ["could", "canned", "would can", "was can"],
+            correct: 0,
+            explanation: "La forma en pasado de 'can' es 'could' (para habilidad o posibilidad general en el pasado)."
+          },
+          {
+            prompt: "¿Cuál de estas oraciones está correctamente estructurada en pasado?",
+            options: [
+              "Did they arrive on time for the meeting?",
+              "Did they arrived on time for the meeting?",
+              "They did arrived on time for the meeting?",
+              "Were they arrive on time for the meeting?"
+            ],
+            correct: 0,
+            explanation: "Estructura correcta: Auxiliar 'Did' + sujeto 'they' + infinitivo 'arrive'."
+          },
+          {
+            prompt: "Elige la opción que explica por qué decimos 'I saw that film yesterday' y NO 'I have seen that film yesterday':",
+            options: [
+              "Porque 'yesterday' es un punto específico y cerrado en el tiempo, lo que exige Past Simple.",
+              "Porque 'saw' es más formal que 'have seen'.",
+              "Porque las películas siempre van en pasado simple.",
+              "Porque el Present Perfect no se puede usar con pronombres en primera persona."
+            ],
+            correct: 0,
+            explanation: "En inglés, no se pueden combinar marcadores de tiempo cerrado definido (yesterday, last night, in 1999) con el Present Perfect."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Apartado 4: Crear y Traducir Frases",
+        subtitle: "Escribe la traducción exacta al inglés (+, -, ?)",
+        type: "input",
+        description: "Lee la oración en español y redacta tú mismo la frase completa en inglés en afirmativa, negativa o interrogativa según se pida.",
+        icon: "fa-language",
+        questions: [
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Ayer compré una chaqueta nueva en el centro.'",
+            correctAnswer: "Yesterday, I bought a new jacket in the city centre.",
+            validAnswers: [
+              "yesterday, i bought a new jacket in the city centre.",
+              "yesterday i bought a new jacket in the city centre.",
+              "i bought a new jacket in the city centre yesterday.",
+              "i bought a new jacket in the city center yesterday.",
+              "yesterday, i bought a new jacket in the city center.",
+              "yesterday i bought a new jacket in the city center.",
+              "yesterday, i bought a new jacket downtown.",
+              "i bought a new jacket downtown yesterday."
+            ],
+            explanation: "'Compré' es el pasado simple irregular de 'buy' ('bought'). En oraciones afirmativas nunca se usa el auxiliar 'did'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Ellos no vinieron a la fiesta el sábado pasado.'",
+            correctAnswer: "They didn't come to the party last Saturday.",
+            validAnswers: [
+              "they didn't come to the party last saturday.",
+              "they did not come to the party last saturday.",
+              "last saturday they didn't come to the party.",
+              "last saturday they did not come to the party."
+            ],
+            explanation: "Estructura negativa: Sujeto + didn't + infinitivo 'come' (nunca 'came') + to the party last Saturday."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Viste las noticias esta mañana?'",
+            correctAnswer: "Did you watch the news this morning?",
+            validAnswers: [
+              "did you watch the news this morning?",
+              "did you see the news this morning?"
+            ],
+            explanation: "Estructura interrogativa: Did + sujeto (you) + infinitivo (watch/see) + the news this morning?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Mi hermano perdió su pasaporte en el aeropuerto.'",
+            correctAnswer: "My brother lost his passport at the airport.",
+            validAnswers: [
+              "my brother lost his passport at the airport.",
+              "my brother lost his passport in the airport."
+            ],
+            explanation: "El pasado de 'lose' es irregular: 'lost'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Nosotros no entendimos la lección de ayer.'",
+            correctAnswer: "We didn't understand yesterday's lesson.",
+            validAnswers: [
+              "we didn't understand yesterday's lesson.",
+              "we did not understand yesterday's lesson.",
+              "we didn't understand the lesson yesterday.",
+              "we did not understand the lesson yesterday."
+            ],
+            explanation: "Con el auxiliar 'didn't', el verbo léxico debe ir en infinitivo: 'understand'."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿A qué hora te despertaste hoy?'",
+            correctAnswer: "What time did you wake up today?",
+            validAnswers: [
+              "what time did you wake up today?",
+              "at what time did you wake up today?"
+            ],
+            explanation: "Pregunta con Wh-: What time + did + you + wake up (infinitivo) + today?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Ella me dijo un secreto importante anoche.'",
+            correctAnswer: "She told me an important secret last night.",
+            validAnswers: [
+              "she told me an important secret last night.",
+              "she told an important secret to me last night."
+            ],
+            explanation: "Cuando indicamos a la persona que recibe la información ('me'), el verbo correcto es 'tell', cuyo pasado es 'told me'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Yo no comí nada para desayunar.'",
+            correctAnswer: "I didn't eat anything for breakfast.",
+            validAnswers: [
+              "i didn't eat anything for breakfast.",
+              "i did not eat anything for breakfast.",
+              "i ate nothing for breakfast."
+            ],
+            explanation: "En inglés no se utiliza la doble negación con didn't: se usa 'didn't eat anything' (y no 'didn't eat nothing')."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Adónde fueron ellos de vacaciones el verano pasado?'",
+            correctAnswer: "Where did they go on holiday last summer?",
+            validAnswers: [
+              "where did they go on holiday last summer?",
+              "where did they go on vacation last summer?",
+              "where did they go for vacation last summer?",
+              "where did they go on holidays last summer?"
+            ],
+            explanation: "Partícula 'Where' + did + they + go (infinitivo) + on holiday/vacation last summer?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'El profesor nos dio mucha tarea el viernes.'",
+            correctAnswer: "The teacher gave us a lot of homework on Friday.",
+            validAnswers: [
+              "the teacher gave us a lot of homework on friday.",
+              "the teacher gave us much homework on friday.",
+              "the teacher gave us lots of homework on friday."
+            ],
+            explanation: "El pasado simple de 'give' es 'gave'. 'Homework' es incontable."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Él no durmió bien anoche.'",
+            correctAnswer: "He didn't sleep well last night.",
+            validAnswers: [
+              "he didn't sleep well last night.",
+              "he did not sleep well last night."
+            ],
+            explanation: "Uso de 'didn't' + infinitivo 'sleep' + adverbio 'well'."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Por qué no me llamaste antes?'",
+            correctAnswer: "Why didn't you call me earlier?",
+            validAnswers: [
+              "why didn't you call me earlier?",
+              "why did you not call me earlier?",
+              "why didn't you call me before?",
+              "why did you not call me before?"
+            ],
+            explanation: "Pregunta interrogativa-negativa: Why + didn't + you + call (infinitivo) + me earlier?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Nosotros nos conocimos en la universidad hace diez años.'",
+            correctAnswer: "We met at university ten years ago.",
+            validAnswers: [
+              "we met at university ten years ago.",
+              "we met at college ten years ago.",
+              "we met at the university ten years ago."
+            ],
+            explanation: "Para 'conocer a alguien por primera vez' se emplea 'meet', cuyo pasado simple es 'met'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Clara no envió la carta esta mañana.'",
+            correctAnswer: "Clara didn't send the letter this morning.",
+            validAnswers: [
+              "clara didn't send the letter this morning.",
+              "clara did not send the letter this morning."
+            ],
+            explanation: "Con el auxiliar 'didn't' se usa la forma en infinitivo 'send' (con 'd')."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Encontraste tus llaves ayer?'",
+            correctAnswer: "Did you find your keys yesterday?",
+            validAnswers: [
+              "did you find your keys yesterday?"
+            ],
+            explanation: "Estructura correcta: Did you + find (infinitivo) + your keys yesterday?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'El concierto empezó a las ocho en punto.'",
+            correctAnswer: "The concert started at eight o'clock.",
+            validAnswers: [
+              "the concert started at eight o'clock.",
+              "the concert started at 8 o'clock.",
+              "the concert began at eight o'clock.",
+              "the concert began at 8 o'clock.",
+              "the concert started at 8:00.",
+              "the concert began at 8:00."
+            ],
+            explanation: "Se puede usar 'started' (regular) o 'began' (irregular). Con la hora se usa la preposición 'at'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Mis padres no vendieron su coche viejo.'",
+            correctAnswer: "My parents didn't sell their old car.",
+            validAnswers: [
+              "my parents didn't sell their old car.",
+              "my parents did not sell their old car."
+            ],
+            explanation: "Sujeto (My parents) + didn't + infinitivo (sell) + posesivo (their) + old car."
+          },
+          {
+            prompt: "Traduce al inglés (Interrogativa): '¿Cuánto costó ese billete de avión?'",
+            correctAnswer: "How much did that plane ticket cost?",
+            validAnswers: [
+              "how much did that plane ticket cost?",
+              "how much did that flight ticket cost?"
+            ],
+            explanation: "How much + did + that plane ticket + cost (infinitivo invariable)?"
+          },
+          {
+            prompt: "Traduce al inglés (Afirmativa): 'Ayer me sentí muy cansado después del gimnasio.'",
+            correctAnswer: "Yesterday, I felt very tired after the gym.",
+            validAnswers: [
+              "yesterday, i felt very tired after the gym.",
+              "yesterday i felt very tired after the gym.",
+              "i felt very tired after the gym yesterday."
+            ],
+            explanation: "El pasado de 'feel' es irregular: 'felt'."
+          },
+          {
+            prompt: "Traduce al inglés (Negativa): 'Ellos no pagaron la factura de la luz a tiempo.'",
+            correctAnswer: "They didn't pay the electricity bill on time.",
+            validAnswers: [
+              "they didn't pay the electricity bill on time.",
+              "they did not pay the electricity bill on time.",
+              "they didn't pay the light bill on time.",
+              "they did not pay the light bill on time."
+            ],
+            explanation: "Didn't + infinitivo 'pay' + the electricity bill on time."
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Apartado 5: Verbos Presente a Pasado",
+        subtitle: "Regulares e Irregulares",
+        type: "choice",
+        description: "Transforma el verbo dado en presente simple a su forma correspondiente en Past Simple.",
+        icon: "fa-bolt",
+        questions: [
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Go'?",
+            options: ["went", "goed", "gone", "wented"],
+            correct: 0,
+            explanation: "'Go' es un verbo completamente irregular cuya forma de pasado afirmativo es 'went'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Catch'?",
+            options: ["caught", "catched", "caughted", "cotched"],
+            correct: 0,
+            explanation: "'Catch' pasa a 'caught' (/kɔːt/)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Try'?",
+            options: ["tried", "tryed", "tred", "triend"],
+            correct: 0,
+            explanation: "Verbo regular que finaliza en consonante + 'y': se sustituye la 'y' por 'i' + '-ed' ('tried')."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Bring'?",
+            options: ["brought", "brang", "bringed", "bought"],
+            correct: 0,
+            explanation: "'Bring' se transforma en 'brought' (no confundir con 'bought', que es el pasado de buy)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Choose'?",
+            options: ["chose", "choosed", "chosen", "chossen"],
+            correct: 0,
+            explanation: "'Choose' pierde una 'o' en su pasado simple: 'chose' (chosen es el participio pasado)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Drive'?",
+            options: ["drove", "drived", "driven", "droved"],
+            correct: 0,
+            explanation: "'Drive' cambia su vocal interna a 'o': 'drove'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Fall'?",
+            options: ["fell", "falled", "fallen", "felt"],
+            correct: 0,
+            explanation: "'Fall' (caer) pasa a 'fell'. 'Felt' es el pasado de 'feel' (sentir)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Plan'?",
+            options: ["planned", "planed", "plannied", "plant"],
+            correct: 0,
+            explanation: "Verbo monosílabo consonante-vocal-consonante: duplica la 'n' final antes de añadir '-ed' ('planned')."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Fly'?",
+            options: ["flew", "flied", "flown", "flyed"],
+            correct: 0,
+            explanation: "'Fly' es irregular y su forma de pasado simple es 'flew'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Forget'?",
+            options: ["forgot", "forgetted", "forgotten", "forgat"],
+            correct: 0,
+            explanation: "'Forget' cambia a 'forgot' (forgotten es el participio pasado)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Grow'?",
+            options: ["grew", "growed", "grown", "growt"],
+            correct: 0,
+            explanation: "'Grow' se transforma en 'grew' en el pasado simple."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Hear'?",
+            options: ["heard", "heared", "heart", "hard"],
+            correct: 0,
+            explanation: "A 'hear' solo se le añade una 'd' al final para formar 'heard' (/hɜːd/)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Keep'?",
+            options: ["kept", "keeped", "keepen", "kepped"],
+            correct: 0,
+            explanation: "'Keep' es un verbo irregular que acorta la vocal y añade 't': 'kept'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Leave'?",
+            options: ["left", "leaved", "leafed", "leaven"],
+            correct: 0,
+            explanation: "'Leave' cambia radicalmente a 'left'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Lose'?",
+            options: ["lost", "losed", "loosed", "losted"],
+            correct: 0,
+            explanation: "'Lose' forma su pasado simple como 'lost'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Pay'?",
+            options: ["paid", "payed", "peid", "paided"],
+            correct: 0,
+            explanation: "'Pay' cambia irregularmente la 'y' por 'i' seguida de 'd': 'paid'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Run'?",
+            options: ["ran", "runned", "ron", "roan"],
+            correct: 0,
+            explanation: "'Run' cambia su vocal interna a 'a' en pasado simple: 'ran'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Sleep'?",
+            options: ["slept", "sleeped", "slap", "slepted"],
+            correct: 0,
+            explanation: "'Sleep' acorta su vocal y añade 't': 'slept'."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Speak'?",
+            options: ["spoke", "speaked", "spoken", "spakt"],
+            correct: 0,
+            explanation: "'Speak' pasa a 'spoke' en pasado simple (spoken es el participio)."
+          },
+          {
+            prompt: "¿Cuál es el Past Simple de: 'Wear'?",
+            options: ["wore", "weared", "worn", "woared"],
+            correct: 0,
+            explanation: "'Wear' se convierte en 'wore' en pasado simple (worn es el participio)."
+          }
+        ]
+      }
+    ];
+
+    function normalizeText(str) {
+      if (!str) return "";
+      return str
+        .toLowerCase()
+        .replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function isTextAnswerCorrect(userText, questionObj) {
+      if (!userText || userText.trim() === "") return false;
+      const cleanUser = normalizeText(userText);
+      const cleanCanonical = normalizeText(questionObj.correctAnswer);
+      if (cleanUser === cleanCanonical) return true;
+
+      if (questionObj.validAnswers && questionObj.validAnswers.length > 0) {
+        return questionObj.validAnswers.some(ans => normalizeText(ans) === cleanUser);
+      }
+      return false;
+    }
+
+    function startApp() {
+      const input = document.getElementById('student-name-input');
+      const errorMsg = document.getElementById('name-error');
+      const val = input.value.trim();
+
+      if (val.length < 3) {
+        errorMsg.classList.remove('hidden');
+        input.focus();
+        return;
+      }
+
+      errorMsg.classList.add('hidden');
+      studentName = val;
+
+      document.getElementById('badge-name').innerText = studentName;
+      document.getElementById('student-badge').classList.remove('hidden');
+      document.getElementById('display-user-name').innerText = studentName;
+
+      document.getElementById('registration-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      const grid = document.getElementById('sections-grid');
+      grid.innerHTML = "";
+
+      let completedCount = 0;
+      let totalScoreAccum = 0;
+
+      SECTIONS.forEach((sec, idx) => {
+        const hasCompleted = sectionScores[idx] !== undefined;
+        if (hasCompleted) {
+          completedCount++;
+          totalScoreAccum += (sectionScores[idx].score / 20) * 100;
+        }
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-slate-200 flex flex-col justify-between";
+
+        let scoreHtml = "";
+        if (hasCompleted) {
+          const sc = sectionScores[idx].score;
+          const badgeColor = sc >= 16 ? "bg-emerald-100 text-emerald-800" : (sc >= 10 ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800");
+          scoreHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500 font-medium">Última calificación:</span>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${badgeColor}">
+                ${sc} / 20 (${(sc/20*100).toFixed(0)}%)
+              </span>
+            </div>
+          `;
+        } else {
+          scoreHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+              <span>Estado: Pendiente</span>
+              <span class="font-medium text-amber-700">${sec.type === 'input' ? 'Redacción libre' : 'Opción múltiple'}</span>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center text-xl mb-4 font-bold border border-amber-400/30">
+              <i class="fa-solid ${sec.icon}"></i>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black text-amber-600 tracking-wider uppercase">Apartado ${sec.id}</span>
+              ${sec.type === 'input' ? '<span class="text-[10px] bg-sky-100 text-brand-900 font-bold px-2 py-0.5 rounded">Escribir</span>' : '<span class="text-[10px] bg-slate-100 text-slate-700 font-semibold px-2 py-0.5 rounded">Test</span>'}
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">${sec.title.split(':')[1] || sec.title}</h3>
+            <p class="text-xs font-semibold text-brand-700 mt-0.5">${sec.subtitle}</p>
+            <p class="text-xs text-slate-500 mt-2 leading-relaxed">${sec.description}</p>
+          </div>
+          <div>
+            ${scoreHtml}
+            <button onclick="openSection(${idx})" class="w-full mt-4 bg-brand-900 hover:bg-slate-900 text-amber-400 font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+              <span>${hasCompleted ? 'Ver resultados / Repetir' : 'Realizar apartado'}</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('global-completed-count').innerText = `${completedCount}/5`;
+      const avg = completedCount > 0 ? (totalScoreAccum / completedCount).toFixed(0) : 0;
+      document.getElementById('global-score-avg').innerText = `${avg}%`;
+    }
+
+    function openSection(idx) {
+      currentSectionIdx = idx;
+      const sec = SECTIONS[idx];
+
+      if (!userAnswers[idx]) {
+        userAnswers[idx] = {};
+      }
+
+      document.getElementById('current-section-title').innerText = `${sec.title}: ${sec.subtitle}`;
+      document.getElementById('current-section-desc').innerText = sec.description;
+
+      renderQuestions(idx);
+
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('results-view').classList.add('hidden');
+      document.getElementById('exercise-view').classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestions(secIdx) {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = "";
+      const sec = SECTIONS[secIdx];
+
+      sec.questions.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.id = `q-card-${qIndex}`;
+        card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm transition";
+
+        const currentAnswer = userAnswers[secIdx][qIndex];
+        let contentHtml = "";
+
+        if (sec.type === 'choice') {
+          let optionsHtml = q.options.map((opt, optIndex) => {
+            const isSelected = currentAnswer === optIndex;
+            const letter = String.fromCharCode(65 + optIndex);
+            return `
+              <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm ${isSelected ? 'border-brand-700 bg-sky-50 text-brand-900 font-semibold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'}">
+                <input type="radio" name="question_${qIndex}" value="${optIndex}" ${isSelected ? 'checked' : ''} onchange="selectOption(${secIdx}, ${qIndex}, ${optIndex})" class="w-4 h-4 text-brand-700 border-slate-300 focus:ring-brand-500">
+                <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0 border border-slate-200">${letter}</span>
+                <span class="flex-grow">${escapeHtml(opt)}</span>
+              </label>
+            `;
+          }).join('');
+
+          contentHtml = `
+            <p class="text-slate-900 font-bold text-base mb-3">${escapeHtml(q.prompt)}</p>
+            <div class="grid grid-cols-1 gap-2.5">
+              ${optionsHtml}
+            </div>
+          `;
+        } else {
+          const val = currentAnswer !== undefined ? currentAnswer : "";
+          contentHtml = `
+            <p class="text-slate-900 font-bold text-base mb-2">${escapeHtml(q.prompt)}</p>
+            <div class="mt-3">
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Escribe tu frase en inglés a continuación:</label>
+              <input type="text" id="text-input-${qIndex}" value="${escapeHtml(val)}" 
+                placeholder="Escribe aquí la oración completa..." 
+                oninput="recordTextInput(${secIdx}, ${qIndex}, this.value)"
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800 text-sm font-medium">
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <span class="text-xs font-black px-2.5 py-1 rounded bg-slate-100 text-brand-900">
+              Ejercicio ${qIndex + 1} de 20
+            </span>
+          </div>
+          ${contentHtml}
+        `;
+        container.appendChild(card);
+      });
+
+      updateAnsweredBadge(secIdx);
+    }
+
+    function selectOption(secIdx, qIdx, optIdx) {
+      userAnswers[secIdx][qIdx] = optIdx;
+      updateAnsweredBadge(secIdx);
+      const card = document.getElementById(`q-card-${qIdx}`);
+      if (card) {
+        const labels = card.querySelectorAll('label');
+        labels.forEach((lbl, index) => {
+          if (index === optIdx) {
+            lbl.className = "flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm border-brand-700 bg-sky-50 text-brand-900 font-semibold";
+          } else {
+            lbl.className = "flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition text-sm border-slate-200 hover:bg-slate-50 text-slate-700";
+          }
+        });
+      }
+    }
+
+    function recordTextInput(secIdx, qIdx, textVal) {
+      if (textVal.trim().length > 0) {
+        userAnswers[secIdx][qIdx] = textVal;
+      } else {
+        delete userAnswers[secIdx][qIdx];
+      }
+      updateAnsweredBadge(secIdx);
+    }
+
+    function updateAnsweredBadge(secIdx) {
+      const count = Object.keys(userAnswers[secIdx] || {}).length;
+      document.getElementById('answered-badge').innerText = `${count} / 20 contestadas`;
+    }
+
+    function submitCurrentSection() {
+      const secIdx = currentSectionIdx;
+      const sec = SECTIONS[secIdx];
+      const answers = userAnswers[secIdx] || {};
+      const answeredCount = Object.keys(answers).length;
+
+      if (answeredCount < 20) {
+        const confirmSubmit = confirm(`Has contestado ${answeredCount} de las 20 preguntas. Las que dejes vacías contarán como fallo. ¿Deseas corregir el apartado?`);
+        if (!confirmSubmit) return;
+      }
+
+      let correctCount = 0;
+
+      sec.questions.forEach((q, qIndex) => {
+        const userVal = answers[qIndex];
+        if (sec.type === 'choice') {
+          if (userVal === q.correct) correctCount++;
+        } else {
+          if (isTextAnswerCorrect(userVal, q)) correctCount++;
+        }
+      });
+
+      sectionScores[secIdx] = {
+        score: correctCount,
+        total: 20
+      };
+
+      showResults(secIdx);
+    }
+
+    function showResults(secIdx) {
+      const sec = SECTIONS[secIdx];
+      const answers = userAnswers[secIdx] || {};
+      const resultData = sectionScores[secIdx];
+
+      document.getElementById('exercise-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('results-view').classList.remove('hidden');
+
+      document.getElementById('result-section-title').innerText = sec.title;
+      document.getElementById('result-student-name').innerText = studentName;
+      document.getElementById('result-score-number').innerText = `${resultData.score}`;
+      document.getElementById('result-score-percent').innerText = `${((resultData.score / 20) * 100).toFixed(0)}%`;
+
+      document.getElementById('correct-count-badge').innerText = resultData.score;
+      document.getElementById('incorrect-count-badge').innerText = 20 - resultData.score;
+
+      const container = document.getElementById('feedback-items-container');
+      container.innerHTML = "";
+
+      sec.questions.forEach((q, qIndex) => {
+        const userVal = answers[qIndex];
+        let isCorrect = false;
+        let userDisplay = "";
+        let correctDisplay = "";
+
+        if (sec.type === 'choice') {
+          isCorrect = userVal === q.correct;
+          userDisplay = userVal !== undefined ? `${String.fromCharCode(65 + userVal)}: ${escapeHtml(q.options[userVal])}` : '<span class="italic text-red-600">Sin contestar</span>';
+          correctDisplay = `${String.fromCharCode(65 + q.correct)}: ${escapeHtml(q.options[q.correct])}`;
+        } else {
+          isCorrect = isTextAnswerCorrect(userVal, q);
+          userDisplay = userVal !== undefined && userVal.trim() !== "" ? escapeHtml(userVal) : '<span class="italic text-red-600">Dejado en blanco</span>';
+          correctDisplay = escapeHtml(q.correctAnswer);
+        }
+
+        const card = document.createElement('div');
+        card.className = `p-5 rounded-2xl border ${isCorrect ? 'bg-emerald-50/50 border-emerald-300' : 'bg-red-50/50 border-red-300'} transition`;
+
+        const statusIcon = isCorrect 
+          ? `<span class="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-600 text-white px-3 py-1 rounded-full"><i class="fa-solid fa-check"></i> Correcto</span>`
+          : `<span class="inline-flex items-center gap-1.5 text-xs font-bold bg-red-600 text-white px-3 py-1 rounded-full"><i class="fa-solid fa-xmark"></i> Fallado</span>`;
+
+        card.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="text-xs font-black text-slate-500 uppercase">Ejercicio ${qIndex + 1}</span>
+            ${statusIcon}
+          </div>
+
+          <p class="text-slate-900 font-bold text-sm md:text-base mb-3">${escapeHtml(q.prompt)}</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs mb-3">
+            <div class="p-3 rounded-xl ${isCorrect ? 'bg-emerald-100/70 border border-emerald-300 text-emerald-950' : 'bg-red-100/70 border border-red-300 text-red-950'}">
+              <span class="font-bold block text-[11px] uppercase tracking-wider mb-1">Lo que escribiste:</span>
+              <span class="font-medium">${userDisplay}</span>
+            </div>
+            <div class="p-3 rounded-xl bg-sky-100/70 border border-sky-300 text-sky-950">
+              <span class="font-bold block text-[11px] uppercase tracking-wider mb-1">Respuesta esperada:</span>
+              <span class="font-semibold">${correctDisplay}</span>
+            </div>
+          </div>
+
+          <div class="bg-white/90 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed shadow-sm">
+            <strong class="text-brand-900 block mb-1 flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb text-amber-500"></i> Explicación pedagógica de Wisdom Corner:
+            </strong>
+            ${q.explanation}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function retakeSection() {
+      userAnswers[currentSectionIdx] = {};
+      openSection(currentSectionIdx);
+    }
+
+    function backToDashboard() {
+      document.getElementById('exercise-view').classList.add('hidden');
+      document.getElementById('results-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      renderDashboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+  </script>
+</body>
+</html>
