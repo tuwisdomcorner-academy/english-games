@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Práctica de Gramática</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input:focus {
+            outline: none;
+            border-color: #eab308; /* yellow-500 */
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.3);
+        }
+        /* Custom scrollbar for an elegant look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a8a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #172554; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-blue-900 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <header class="w-full bg-blue-900 shadow-md border-b-4 border-yellow-500 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <img src="Logo.png" alt="Logotipo de Wisdom Corner Academy" class="h-12 object-contain bg-white rounded p-1" onerror="this.onerror=null; this.src='https://placehold.co/150x48/ffffff/1e3a8a?text=Wisdom+Corner';">
+            <h1 class="text-xl md:text-2xl font-bold text-white hidden sm:block">
+                Wisdom Corner Academy <span class="text-yellow-500 font-normal">| Gramática</span>
+            </h1>
+        </div>
+        <div id="user-display" class="hidden text-white font-semibold flex items-center gap-2">
+            <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <span id="display-name">Estudiante</span>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8">
+        
+        <!-- View 1: Login Screen -->
+        <div id="view-login" class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-gray-200 text-center transition-all duration-300">
+            <img src="Logo_2.png" alt="Logotipo de Wisdom Corner Academy" class="h-24 mx-auto mb-6 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/200x96/ffffff/1e3a8a?text=Wisdom+Corner';">
+            <h2 class="text-2xl font-bold text-blue-900 mb-2">Bienvenido a la Práctica</h2>
+            <p class="text-gray-500 mb-8">Por favor, introduce tu nombre para empezar.</p>
+            
+            <input type="text" id="student-name-input" placeholder="Ejemplo: Carlos" autocomplete="off"
+                class="w-full text-center text-lg px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-yellow-500 transition-colors mb-6">
+            
+            <button onclick="login()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold text-lg px-6 py-3 rounded-lg shadow-md transform transition active:scale-95 border-b-4 border-yellow-500">
+                Empezar a Aprender
+            </button>
+        </div>
+
+        <!-- View 2: Dashboard -->
+        <div id="view-dashboard" class="w-full max-w-4xl hidden transition-all duration-300">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+                <h2 class="text-3xl font-bold text-blue-900 mb-2">¡Bienvenido/a, <span id="welcome-name" class="text-yellow-600"></span>!</h2>
+                <p class="text-gray-600 mb-8 text-lg">Selecciona un tema de gramática para practicar. Cada sección contiene 20 ejercicios.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <button onclick="startQuiz('comparatives')" class="group flex flex-col items-center justify-center p-6 bg-blue-50 rounded-xl border-2 border-blue-100 hover:border-yellow-500 hover:shadow-lg transition-all text-blue-900">
+                        <span class="text-2xl font-bold mb-2 group-hover:text-yellow-600 transition-colors">Comparativos</span>
+                        <span class="text-sm text-gray-500">Práctica "-er than" & "more ... than"</span>
+                    </button>
+                    
+                    <button onclick="startQuiz('superlatives')" class="group flex flex-col items-center justify-center p-6 bg-blue-50 rounded-xl border-2 border-blue-100 hover:border-yellow-500 hover:shadow-lg transition-all text-blue-900">
+                        <span class="text-2xl font-bold mb-2 group-hover:text-yellow-600 transition-colors">Superlativos</span>
+                        <span class="text-sm text-gray-500">Práctica "the -est" & "the most"</span>
+                    </button>
+                    
+                    <button onclick="startQuiz('asas')" class="group flex flex-col items-center justify-center p-6 bg-blue-50 rounded-xl border-2 border-blue-100 hover:border-yellow-500 hover:shadow-lg transition-all text-blue-900">
+                        <span class="text-2xl font-bold mb-2 group-hover:text-yellow-600 transition-colors">Tan ... Como</span>
+                        <span class="text-sm text-gray-500">Práctica comparaciones de igualdad</span>
+                    </button>
+
+                    <button onclick="startQuiz('lessthan')" class="group flex flex-col items-center justify-center p-6 bg-blue-50 rounded-xl border-2 border-blue-100 hover:border-yellow-500 hover:shadow-lg transition-all text-blue-900">
+                        <span class="text-2xl font-bold mb-2 group-hover:text-yellow-600 transition-colors">Menos ... Que</span>
+                        <span class="text-sm text-gray-500">Práctica comparaciones de inferioridad</span>
+                    </button>
+
+                    <button onclick="startQuiz('mixed')" class="group flex flex-col items-center justify-center p-6 bg-yellow-50 rounded-xl border-2 border-yellow-200 hover:border-blue-900 hover:shadow-lg transition-all text-blue-900 lg:col-span-2">
+                        <span class="text-2xl font-bold mb-2 group-hover:text-blue-700 transition-colors">Repaso Mixto</span>
+                        <span class="text-sm text-gray-600">Un test completo de todos los tipos</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: Quiz Area -->
+        <div id="view-quiz" class="w-full max-w-4xl hidden transition-all duration-300">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <div class="bg-blue-900 text-white p-6 border-b-4 border-yellow-500 flex justify-between items-center">
+                    <div>
+                        <h2 id="quiz-title" class="text-2xl font-bold">Tema</h2>
+                        <p class="text-blue-200 text-sm mt-1">Rellena el hueco con la forma correcta. No olvides palabras como "than", "the" o "as" si son necesarias.</p>
+                    </div>
+                    <button onclick="showDashboard()" class="text-sm bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded border border-blue-600 transition">Salir</button>
+                </div>
+                
+                <div class="p-6 md:p-8">
+                    <form id="quiz-form" onsubmit="submitQuiz(event)" class="space-y-6">
+                        <div id="questions-container" class="space-y-6">
+                            <!-- Questions injected here by JS -->
+                        </div>
+                        
+                        <div class="pt-8 mt-8 border-t border-gray-200">
+                            <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold text-xl px-6 py-4 rounded-xl shadow-lg transform transition active:scale-95">
+                                Enviar Respuestas
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 4: Results -->
+        <div id="view-results" class="w-full max-w-4xl hidden transition-all duration-300">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <div class="bg-blue-900 text-white p-8 text-center relative border-b-4 border-yellow-500">
+                    <h2 class="text-3xl font-bold mb-2">Resultados del Test</h2>
+                    <p id="result-message" class="text-xl text-yellow-400 font-semibold mb-6">¡Buen esfuerzo!</p>
+                    
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                        <div class="relative">
+                            <svg class="w-32 h-32 transform -rotate-90">
+                                <circle cx="64" cy="64" r="56" fill="transparent" stroke="#1e3a8a" stroke-width="12"></circle>
+                                <circle id="score-circle" cx="64" cy="64" r="56" fill="transparent" stroke="#eab308" stroke-width="12" stroke-dasharray="351.85" stroke-dashoffset="351.85" class="transition-all duration-1000 ease-out"></circle>
+                            </svg>
+                            <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                <span id="final-score" class="text-3xl font-bold">0/20</span>
+                            </div>
+                        </div>
+                        
+                        <img id="avatar-img" src="" alt="Teacher Feedback" class="h-32 object-contain drop-shadow-xl">
+                    </div>
+                </div>
+                
+                <div class="p-6 md:p-8 bg-gray-50">
+                    <h3 class="text-xl font-bold text-blue-900 mb-6 border-b border-gray-300 pb-2">Revisión Detallada</h3>
+                    <div id="review-container" class="space-y-4">
+                        <!-- Review items injected here -->
+                    </div>
+                    
+                    <div class="mt-8 text-center">
+                        <button onclick="showDashboard()" class="bg-blue-900 hover:bg-blue-800 text-white font-bold text-lg px-8 py-3 rounded-lg shadow-md transform transition active:scale-95 border-b-4 border-yellow-500">
+                            Volver al Menú
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATASET: 100 Unique Questions (20 per category) ---
+        const quizData = {
+            comparatives: [
+                { q: "Alice is ___ (tall) her brother.", a: "taller than" },
+                { q: "This sofa is ___ (comfortable) the old one.", a: "more comfortable than" },
+                { q: "Today the weather is ___ (bad) yesterday.", a: "worse than" },
+                { q: "My laptop is ___ (fast) yours.", a: "faster than" },
+                { q: "That movie was ___ (interesting) the book.", a: "more interesting than" },
+                { q: "A tiger is ___ (dangerous) a dog.", a: "more dangerous than" },
+                { q: "Bob is ___ (old) Charlie.", a: "older than" },
+                { q: "This test is ___ (easy) the last one.", a: "easier than" },
+                { q: "Fiona's house is ___ (far) from the school my house.", a: ["further than", "farther than"] },
+                { q: "Gold is ___ (expensive) silver.", a: "more expensive than" },
+                { q: "My dog is ___ (big) your dog.", a: "bigger than" },
+                { q: "Zack's car is ___ (good) my car.", a: "better than" },
+                { q: "The river is ___ (wide) the stream.", a: "wider than" },
+                { q: "Yasmine is ___ (happy) today she was yesterday.", a: "happier than" },
+                { q: "This box is ___ (heavy) that one.", a: "heavier than" },
+                { q: "A Ferrari is ___ (fast) a bicycle.", a: "faster than" },
+                { q: "The new building is ___ (modern) the old library.", a: "more modern than" },
+                { q: "Winter in Canada is ___ (cold) winter in Spain.", a: "colder than" },
+                { q: "Learning Japanese is ___ (difficult) learning English.", a: "more difficult than" },
+                { q: "Oliver's phone is ___ (thin) mine.", a: "thinner than" }
+            ],
+            superlatives: [
+                { q: "Alice is ___ (tall) girl in the class.", a: "the tallest" },
+                { q: "This is ___ (comfortable) bed I have ever slept in.", a: "the most comfortable" },
+                { q: "That was ___ (bad) mistake of my life.", a: "the worst" },
+                { q: "The cheetah is ___ (fast) land animal.", a: "the fastest" },
+                { q: "It is ___ (interesting) museum in the city.", a: "the most interesting" },
+                { q: "The mosquito is considered ___ (dangerous) insect.", a: "the most dangerous" },
+                { q: "Bob is ___ (old) person in our family.", a: "the oldest" },
+                { q: "That was ___ (easy) exam I have ever taken.", a: "the easiest" },
+                { q: "Pluto is one of ___ (far) planets from the sun.", a: ["the furthest", "the farthest"] },
+                { q: "This is ___ (expensive) restaurant in town.", a: "the most expensive" },
+                { q: "The blue whale is ___ (big) animal on Earth.", a: "the biggest" },
+                { q: "Fiona is ___ (good) singer in the choir.", a: "the best" },
+                { q: "The Amazon is one of ___ (wide) rivers.", a: "the widest" },
+                { q: "Yesterday was ___ (happy) day of my life.", a: "the happiest" },
+                { q: "This is ___ (heavy) box in the truck.", a: "the heaviest" },
+                { q: "Zack is ___ (smart) student I know.", a: "the smartest" },
+                { q: "That is ___ (modern) building in the capital.", a: "the most modern" },
+                { q: "Antarctica is ___ (cold) place on Earth.", a: "the coldest" },
+                { q: "This is ___ (difficult) problem in the math book.", a: "the most difficult" },
+                { q: "Yasmine bought ___ (thin) laptop available.", a: "the thinnest" }
+            ],
+            asas: [
+                { q: "Alice is ___ (tall) her mother.", a: "as tall as" },
+                { q: "This chair is ___ (comfortable) the sofa.", a: "as comfortable as" },
+                { q: "The sequel was ___ (bad) the first movie.", a: "as bad as" },
+                { q: "A lion is not ___ (fast) a cheetah.", a: "as fast as" },
+                { q: "History is ___ (interesting) geography.", a: "as interesting as" },
+                { q: "A shark is ___ (dangerous) a crocodile.", a: "as dangerous as" },
+                { q: "Bob is ___ (old) my cousin.", a: "as old as" },
+                { q: "The second task is ___ (easy) the first one.", a: "as easy as" },
+                { q: "My house is ___ (far) from the park yours.", a: "as far as" },
+                { q: "A silver ring is not ___ (expensive) a gold ring.", a: "as expensive as" },
+                { q: "My room is ___ (big) your room.", a: "as big as" },
+                { q: "Fiona's painting is ___ (good) mine.", a: "as good as" },
+                { q: "The road here is ___ (wide) the highway.", a: "as wide as" },
+                { q: "Zack is ___ (happy) Yasmine.", a: "as happy as" },
+                { q: "Feathers are not ___ (heavy) stones.", a: "as heavy as" },
+                { q: "A leopard is almost ___ (fast) a cheetah.", a: "as fast as" },
+                { q: "His design is ___ (modern) hers.", a: "as modern as" },
+                { q: "Autumn is not ___ (cold) winter.", a: "as cold as" },
+                { q: "English is not ___ (difficult) Chinese.", a: "as difficult as" },
+                { q: "The tablet is ___ (thin) a magazine.", a: "as thin as" }
+            ],
+            lessthan: [
+                { q: "A village is ___ (crowded) a city.", a: "less crowded than" },
+                { q: "This hotel is ___ (luxurious) the one in Paris.", a: "less luxurious than" },
+                { q: "The new rules are ___ (complicated) the old ones.", a: "less complicated than" },
+                { q: "A bicycle is ___ (expensive) a car.", a: "less expensive than" },
+                { q: "This movie is ___ (popular) the blockbuster.", a: "less popular than" },
+                { q: "A domestic cat is ___ (dangerous) a lion.", a: "less dangerous than" },
+                { q: "Alice is ___ (interested) in sports her brother.", a: "less interested than" },
+                { q: "The exam was ___ (difficult) I expected.", a: "less difficult than" },
+                { q: "This area is ___ (polluted) the industrial zone.", a: "less polluted than" },
+                { q: "Silver is ___ (valuable) gold.", a: "less valuable than" },
+                { q: "Bob's explanation was ___ (confusing) the book's.", a: "less confusing than" },
+                { q: "The bus is ___ (comfortable) the train.", a: "less comfortable than" },
+                { q: "This game is ___ (addictive) the last one.", a: "less addictive than" },
+                { q: "Zack is ___ (patient) Yasmine.", a: "less patient than" },
+                { q: "The second chapter is ___ (important) the first.", a: "less important than" },
+                { q: "Today's lecture was ___ (boring) yesterday's.", a: "less boring than" },
+                { q: "A smartphone is ___ (heavy) a laptop.", a: "less heavy than" },
+                { q: "The countryside is ___ (noisy) the capital.", a: "less noisy than" },
+                { q: "Fiona is ___ (stressed) today she was yesterday.", a: "less stressed than" },
+                { q: "This restaurant is ___ (famous) the one downtown.", a: "less famous than" }
+            ],
+            mixed: [
+                { q: "Mount Everest is ___ (high) mountain in the world.", a: "the highest" },
+                { q: "A turtle is ___ (slow) a rabbit.", a: "slower than" },
+                { q: "My coffee is not ___ (hot) yours.", a: "as hot as" },
+                { q: "This exercise is ___ (complicated) the previous one.", a: "less complicated than" },
+                { q: "Who is ___ (good) player on the team?", a: "the best" },
+                { q: "Your bag is ___ (heavy) mine.", a: "heavier than" },
+                { q: "The blue whale is ___ (large) animal alive.", a: "the largest" },
+                { q: "Today is ___ (windy) yesterday.", a: "as windy as" },
+                { q: "This neighborhood is ___ (dangerous) it used to be.", a: "less dangerous than" },
+                { q: "She is ___ (polite) person I have met.", a: "the most polite" },
+                { q: "A train is usually ___ (cheap) a plane.", a: "cheaper than" },
+                { q: "This test is ___ (important) the final exam.", a: "as important as" },
+                { q: "Winter is ___ (bad) season for driving.", a: "the worst" },
+                { q: "He is ___ (stubborn) his father.", a: "more stubborn than" },
+                { q: "This book is ___ (popular) the author's first one.", a: "less popular than" },
+                { q: "I ran ___ (far) you did.", a: ["further than", "farther than"] },
+                { q: "It is ___ (beautiful) painting in the gallery.", a: "the most beautiful" },
+                { q: "A lemon is not ___ (sweet) an orange.", a: "as sweet as" },
+                { q: "Walking is ___ (stressful) driving in traffic.", a: "less stressful than" },
+                { q: "Yesterday was ___ (hot) day of the year.", a: "the hottest" }
+            ]
+        };
+
+        // --- STATE VARIABLES ---
+        let currentStudentName = "";
+        let currentCategory = "";
+        let currentQuestions = [];
+
+        // --- NAVIGATION FUNCTIONS ---
+        function hideAllViews() {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-results').classList.add('hidden');
+        }
+
+        function login() {
+            const nameInput = document.getElementById('student-name-input');
+            if (nameInput.value.trim() === "") {
+                nameInput.classList.add('border-red-500');
+                nameInput.focus();
+                return;
+            }
+            nameInput.classList.remove('border-red-500');
+            currentStudentName = nameInput.value.trim();
+            
+            document.getElementById('welcome-name').innerText = currentStudentName;
+            document.getElementById('display-name').innerText = currentStudentName;
+            document.getElementById('user-display').classList.remove('hidden');
+            
+            showDashboard();
+        }
+
+        // Allow 'Enter' key for login
+        document.getElementById('student-name-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        function showDashboard() {
+            hideAllViews();
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function startQuiz(categoryKey) {
+            currentCategory = categoryKey;
+            currentQuestions = quizData[categoryKey];
+            
+            // Set Titles
+            const titles = {
+                comparatives: "Repaso de Comparativos",
+                superlatives: "Repaso de Superlativos",
+                asas: "Repaso de Tan ... Como",
+                lessthan: "Repaso de Menos ... Que",
+                mixed: "Repaso de Gramática Mixta"
+            };
+            document.getElementById('quiz-title').innerText = titles[categoryKey];
+
+            // Render Questions
+            const container = document.getElementById('questions-container');
+            container.innerHTML = ''; // Clear old
+
+            currentQuestions.forEach((item, index) => {
+                const qParts = item.q.split('___');
+                
+                const questionHTML = `
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center gap-4 transition focus-within:ring-2 focus-within:ring-yellow-500">
+                        <span class="font-bold text-blue-900 w-8 flex-shrink-0">${index + 1}.</span>
+                        <div class="flex-grow text-lg text-gray-800 leading-loose">
+                            ${qParts[0]}
+                            <input type="text" id="ans-${index}" autocomplete="off" class="mx-2 px-3 py-1 w-48 text-center text-blue-900 font-semibold border-b-2 border-blue-900 bg-white shadow-inner focus:border-yellow-500 rounded-sm">
+                            ${qParts[1]}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHTML;
+            });
+
+            hideAllViews();
+            document.getElementById('view-quiz').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // --- EVALUATION LOGIC ---
+        function submitQuiz(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            let score = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            currentQuestions.forEach((item, index) => {
+                const userInput = document.getElementById(`ans-${index}`).value.trim().toLowerCase();
+                
+                // Handle multiple correct answers (array) or single (string)
+                let isCorrect = false;
+                let correctDisplay = "";
+                
+                if (Array.isArray(item.a)) {
+                    isCorrect = item.a.map(a => a.toLowerCase()).includes(userInput);
+                    correctDisplay = item.a[0]; // Just show the first acceptable answer
+                } else {
+                    isCorrect = userInput === item.a.toLowerCase();
+                    correctDisplay = item.a;
+                }
+
+                if (isCorrect) score++;
+
+                // Build detailed review row
+                const qParts = item.q.split('___');
+                const userTextClass = isCorrect ? 'text-green-600 font-bold' : 'text-red-600 font-bold line-through decoration-red-500';
+                const icon = isCorrect 
+                    ? `<svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
+                    : `<svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+
+                const correctionHTML = !isCorrect 
+                    ? `<span class="ml-2 text-green-600 font-bold break-words bg-green-50 px-2 py-1 rounded">➔ ${correctDisplay}</span>` 
+                    : ``;
+
+                const reviewRow = `
+                    <div class="flex items-start gap-4 bg-white p-4 rounded-lg shadow-sm border ${isCorrect ? 'border-green-200' : 'border-red-200'}">
+                        ${icon}
+                        <div class="text-gray-800 text-lg flex-grow">
+                            ${qParts[0]}
+                            <span class="${userTextClass} mx-1">${userInput || '(vacío)'}</span>
+                            ${correctionHTML}
+                            ${qParts[1]}
+                        </div>
+                    </div>
+                `;
+                reviewContainer.innerHTML += reviewRow;
+            });
+
+            // Display Results View
+            showResults(score);
+        }
+
+        function showResults(score) {
+            hideAllViews();
+            document.getElementById('view-results').classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // Animate Score Circle
+            const scoreText = document.getElementById('final-score');
+            scoreText.innerText = `${score}/20`;
+            
+            const circle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 56; // r=56
+            const percent = score / 20;
+            const offset = circumference - (percent * circumference);
+            
+            // Slight delay to trigger CSS transition
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+                // Color mapping based on score
+                if (percent >= 0.8) circle.style.stroke = '#22c55e'; // green
+                else if (percent >= 0.5) circle.style.stroke = '#eab308'; // yellow
+                else circle.style.stroke = '#ef4444'; // red
+            }, 100);
+
+            // Avatar and Message Logic
+            const avatarImg = document.getElementById('avatar-img');
+            const resultMessage = document.getElementById('result-message');
+            
+            if (percent >= 0.8) { // > 80% (16-20)
+                avatarImg.src = 'alegre.png';
+                avatarImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/128x128/22c55e/ffffff?text=Feliz';");
+                resultMessage.innerText = "¡Excelente trabajo! ¡Lo has dominado!";
+                resultMessage.className = "text-xl text-green-500 font-semibold mb-6";
+            } else if (percent >= 0.5) { // 50-75% (10-15)
+                avatarImg.src = 'consejo.png';
+                avatarImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/128x128/eab308/ffffff?text=Pensando';");
+                resultMessage.innerText = "¡Buen trabajo, pero sigue practicando!";
+                resultMessage.className = "text-xl text-yellow-500 font-semibold mb-6";
+            } else { // < 50% (0-9)
+                avatarImg.src = 'triste.png';
+                avatarImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/128x128/ef4444/ffffff?text=Triste';");
+                resultMessage.innerText = "Necesitas más práctica. ¡No te rindas!";
+                resultMessage.className = "text-xl text-red-500 font-semibold mb-6";
+            }
+        }
+    </script>
+</body>
+</html>
