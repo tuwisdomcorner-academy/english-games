@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas de Repaso: La Geosfera - Wisdom Corner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#000040',
+                            900: '#000022',
+                        },
+                        gold: {
+                            400: '#FFD700',
+                            500: '#D4AF37',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000022 0%, #000040 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilos para el efecto 3D de las tarjetas */
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .flashcard-front {
+            background-color: white;
+            color: #000040;
+            border: 4px solid #FFD700;
+        }
+
+        .flashcard-back {
+            background-color: #000040;
+            color: white;
+            transform: rotateY(180deg);
+            border: 4px solid #FFD700;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .card-image-container {
+            height: 55%;
+            width: 100%;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-bottom: 3px solid #e5e7eb;
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        
+        .card-image:hover {
+            opacity: 1;
+        }
+
+        .card-question {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            background-color: #FFD700;
+            color: #000022;
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="py-8 px-4 sm:px-6">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-gold-400 drop-shadow-lg mb-2">
+            Tarjetas de Repaso
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300">Unidad: La Geosfera (1º ESO)</p>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center gap-8 w-full max-w-4xl mx-auto">
+        
+        <!-- Indicador de progreso -->
+        <div class="bg-navy-800 border border-gold-400/50 rounded-full px-6 py-2 text-gold-400 font-bold tracking-wider">
+            Tarjeta <span id="current-card">1</span> de <span id="total-cards">8</span>
+        </div>
+
+        <!-- Contenedor de la Tarjeta Interactiva -->
+        <div class="flashcard-container" onclick="flipCard()">
+            <div id="flashcard" class="flashcard">
+                
+                <!-- Parte Delantera (Pregunta e Imagen) -->
+                <div class="flashcard-front">
+                    <div class="card-image-container">
+                        <img id="card-img" src="" alt="Imagen de la lección" class="card-image" onerror="this.src='https://placehold.co/600x400/000040/FFD700?text=Geosfera'">
+                    </div>
+                    <div class="card-question">
+                        <p id="card-question-text">¿Pregunta?</p>
+                    </div>
+                    <div class="text-center pb-4 text-sm text-gray-400 font-medium">
+                        Haz clic para ver la respuesta ↺
+                    </div>
+                </div>
+
+                <!-- Parte Trasera (Respuesta) -->
+                <div class="flashcard-back relative">
+                    <div class="absolute top-4 right-4 text-gold-400 text-3xl opacity-20">💡</div>
+                    <h3 class="text-xl text-gold-400 mb-4 font-bold uppercase tracking-wider">Respuesta</h3>
+                    <p id="card-answer-text" class="text-xl md:text-2xl leading-relaxed font-medium">
+                        Respuesta detallada aquí.
+                    </p>
+                    <div class="absolute bottom-4 text-sm text-gray-400 font-medium">
+                        Haz clic para volver a la pregunta ↺
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Controles de Navegación -->
+        <div class="flex gap-4 w-full max-w-md justify-between">
+            <button id="btn-prev" onclick="prevCard()" class="nav-button flex-1 bg-navy-800 border-2 border-gold-400 text-gold-400 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2">
+                <span>&larr;</span> Anterior
+            </button>
+            <button id="btn-next" onclick="nextCard()" class="nav-button flex-1 bg-navy-800 border-2 border-gold-400 text-gold-400 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2">
+                Siguiente <span>&rarr;</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Script de lógica de las tarjetas -->
+    <script>
+        // Datos extraídos de las imágenes proporcionadas (1.jpg a 8.jpg) y ampliados para repasar la unidad completa
+        const flashcardsData = [
+            {
+                img: "1.jpg",
+                question: "¿Cuáles son las tres capas principales que forman la geosfera?",
+                answer: "La corteza (capa exterior rocosa), el manto (capa intermedia de rocas sólidas y magma) y el núcleo (capa interior formada por minerales como el hierro)."
+            },
+            {
+                img: "2.jpg",
+                question: "¿En qué dos partes se divide la corteza, la capa más delgada de la Tierra?",
+                answer: "En corteza continental (forma los continentes) y corteza oceánica (forma el fondo de los mares y océanos)."
+            },
+            {
+                img: "3.jpg",
+                question: "¿Qué cuatro características principales tienen los minerales?",
+                answer: "Son materiales naturales, puros (una sola sustancia), sólidos e inertes (no tienen vida)."
+            },
+            {
+                img: "4.jpeg",
+                question: "¿Cuáles son las tres propiedades principales para distinguir unos minerales de otros?",
+                answer: "La dureza (resistencia a ser rayado), el color y el brillo (cómo reflejan la luz)."
+            },
+            {
+                img: "5.jpg",
+                question: "¿De qué están compuestas las rocas de la corteza terrestre?",
+                answer: "Las rocas están compuestas por uno o varios minerales distintos."
+            },
+            {
+                img: "6.jpg",
+                question: "Menciona tres usos diferentes que los seres humanos le dan a las rocas.",
+                answer: "Se usan para la construcción (mármol, granito), para fabricar cemento y ladrillos (caliza, arcilla), para producir energía (carbón, petróleo) o para la alimentación (sal)."
+            },
+            {
+                img: "7.jpg",
+                question: "¿Cuál es la diferencia principal entre una cantera y una mina?",
+                answer: "Las canteras están al aire libre (para extraer rocas de construcción), mientras que las minas suelen estar bajo tierra (para extraer carbón o minerales como el oro)."
+            },
+            {
+                img: "8.jpg",
+                question: "¿Qué efectos negativos puede provocar la extracción excesiva de rocas y minerales?",
+                answer: "Puede provocar el agotamiento de los recursos, destrucción del paisaje y la vegetación, contaminación de la atmósfera y peligros para la salud de los mineros."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Mineral+vs+Roca",
+                question: "¿Cuál es la principal diferencia entre un mineral y una roca?",
+                answer: "Un mineral es una sola sustancia pura y natural. Una roca es un agregado formado por la unión de uno o varios minerales distintos."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Escala+de+Mohs",
+                question: "¿Qué es la Escala de Mohs y para qué sirve?",
+                answer: "Es una escala graduada del 1 al 10 que se utiliza para medir la dureza de los minerales (su resistencia a ser rayados)."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Extremos+de+Mohs",
+                question: "Según la escala de Mohs, ¿cuál es el mineral más blando y cuál es el más duro?",
+                answer: "El más blando (nivel 1) es el talco y se raya con la uña. El más duro (nivel 10) es el diamante, que solo puede ser rayado por otro diamante."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=La+Raya",
+                question: "¿Qué es la 'raya' de un mineral?",
+                answer: "Es el color del polvillo que deja un mineral cuando lo frotamos o rayamos contra una placa de porcelana blanca no esmaltada."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Exfoliacion",
+                question: "¿En qué consiste la propiedad de 'exfoliación' de algunos minerales?",
+                answer: "Es la capacidad que tienen algunos minerales (como la mica) de romperse de forma regular a lo largo de superficies planas, creando láminas o figuras geométricas."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Rocas+Igneas",
+                question: "¿Cómo se forman las rocas magmáticas o ígneas?",
+                answer: "Se forman cuando el magma (roca fundida del interior de la Tierra) se enfría y se vuelve sólido."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Ejemplos+Igneas",
+                question: "Menciona dos ejemplos de rocas magmáticas (ígneas).",
+                answer: "El granito (que se enfría lentamente bajo tierra) y el basalto (que se enfría rápidamente cuando el magma sale por un volcán)."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Rocas+Sedimentarias",
+                question: "¿Cómo se forman las rocas sedimentarias?",
+                answer: "Se forman por la acumulación, compactación y cementación de sedimentos (fragmentos de otras rocas o restos de seres vivos) en cuencas, ríos o mares."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Ejemplos+Sedimentarias",
+                question: "Menciona tres ejemplos de rocas sedimentarias.",
+                answer: "La arcilla, la caliza, y rocas de origen orgánico como el carbón y el petróleo."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Rocas+Metamorficas",
+                question: "¿Cómo se forman las rocas metamórficas?",
+                answer: "Se forman a partir de otras rocas que sufren grandes cambios de presión y temperatura en el interior de la Tierra, pero sin llegar a fundirse."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Ejemplos+Metamorficas",
+                question: "Menciona dos ejemplos de rocas metamórficas y de qué roca provienen.",
+                answer: "La pizarra (que proviene de la arcilla) y el mármol (que proviene de la caliza)."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=El+Nucleo+Terrestre",
+                question: "¿Qué diferencia de estado hay entre el núcleo externo y el núcleo interno de la Tierra?",
+                answer: "El núcleo externo está en estado líquido debido a las altísimas temperaturas, mientras que el núcleo interno es sólido por la inmensa presión que soporta."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Metales",
+                question: "¿De qué mineral se extrae principalmente el plomo?",
+                answer: "El plomo se extrae de un mineral llamado galena."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Metales+Hierro",
+                question: "¿De qué minerales se extrae el hierro?",
+                answer: "El hierro se suele extraer de minerales como la magnetita, el oligisto o la pirita."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Metales+Mercurio",
+                question: "¿De qué mineral se extrae el mercurio?",
+                answer: "El mercurio se extrae de un mineral llamado cinabrio, que tiene un llamativo color rojo."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Mena+y+Ganga",
+                question: "En minería, ¿qué diferencia hay entre la MENA y la GANGA?",
+                answer: "La MENA es el mineral útil del que sacamos un beneficio (ej. hierro). La GANGA son los minerales y rocas que acompañan a la mena y que no sirven, por lo que se desechan."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Yacimiento",
+                question: "¿Qué es un yacimiento geológico?",
+                answer: "Es un lugar en la corteza terrestre donde hay una concentración natural y elevada de un mineral o roca que es rentable extraer para el ser humano."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Magma+vs+Lava",
+                question: "¿Qué diferencia hay entre el MAGMA y la LAVA?",
+                answer: "El magma es roca fundida en el interior de la Tierra (manto). Cuando este magma sale a la superficie exterior a través de un volcán, pasa a llamarse lava."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Uso+del+Cuarzo",
+                question: "¿Para qué se utiliza el mineral llamado cuarzo?",
+                answer: "El cuarzo se utiliza para fabricar vidrio, y también se emplea en tecnología (relojes, placas solares, ordenadores) por sus propiedades físicas."
+            },
+            {
+                img: "https://placehold.co/600x400/000040/FFD700?text=Energia",
+                question: "¿Qué dos rocas sedimentarias de origen orgánico se utilizan como combustible para generar energía?",
+                answer: "El carbón (formado por restos de plantas) y el petróleo (formado por restos de microorganismos marinos planctónicos)."
+            }
+        ];
+
+        let currentIndex = 0;
+        const cardElement = document.getElementById('flashcard');
+        const imgElement = document.getElementById('card-img');
+        const questionElement = document.getElementById('card-question-text');
+        const answerElement = document.getElementById('card-answer-text');
+        const currentCardIndicator = document.getElementById('current-card');
+        const totalCardsIndicator = document.getElementById('total-cards');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        // Inicializar
+        totalCardsIndicator.textContent = flashcardsData.length;
+        loadCard(currentIndex);
+
+        function loadCard(index) {
+            // Si la tarjeta está girada, la devolvemos a su posición frontal primero
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+                // Esperamos a que termine la animación antes de cambiar el contenido
+                setTimeout(() => updateContent(index), 300);
+            } else {
+                updateContent(index);
+            }
+        }
+
+        function updateContent(index) {
+            const data = flashcardsData[index];
+            imgElement.src = data.img;
+            imgElement.alt = "Imagen de la página " + (index + 1);
+            questionElement.textContent = data.question;
+            answerElement.textContent = data.answer;
+            
+            currentCardIndicator.textContent = index + 1;
+            
+            // Actualizar estado de botones
+            btnPrev.disabled = index === 0;
+            btnNext.disabled = index === flashcardsData.length - 1;
+        }
+
+        function flipCard() {
+            cardElement.classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            if (currentIndex < flashcardsData.length - 1) {
+                currentIndex++;
+                loadCard(currentIndex);
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadCard(currentIndex);
+            }
+        }
+        
+        // Soporte para navegar con flechas del teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                flipCard();
+            }
+        });
+    </script>
+</body>
+</html>
