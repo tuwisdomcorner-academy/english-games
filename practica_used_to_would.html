@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy — Used to & Would (Nivel A2–B1)</title>
+
+  <!-- Google Fonts: Playfair Display (títulos académicos) + Plus Jakarta Sans (lectura limpia) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: '#FAF8F5',
+            cream: '#F3EFE6',
+            ink: '#1E293B',
+            navy: {
+              DEFAULT: '#1B365D',
+              dark: '#122644',
+              light: '#2A4E82'
+            },
+            forest: {
+              DEFAULT: '#2D5A4C',
+              light: '#3E7A67',
+              soft: '#EBF4F0'
+            },
+            gold: {
+              DEFAULT: '#C59B27',
+              light: '#E3C565',
+              soft: '#FBF5E6'
+            },
+            borderWarm: '#E5DFD3'
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            card: '0 4px 20px -2px rgba(27, 54, 93, 0.06), 0 1px 4px rgba(27, 54, 93, 0.04)',
+            soft: '0 2px 10px rgba(27, 54, 93, 0.05)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Estilos de apoyo sutiles para animaciones y precisión de flechas SVG */
+    body {
+      background-color: #FAF8F5;
+      color: #1E293B;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .word-tile {
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.15s ease;
+    }
+    .word-tile:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+    .word-tile:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    /* Input estilo académico subrayado/cajetín */
+    .gap-input {
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .gap-input:focus {
+      outline: none;
+      border-color: #1B365D;
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.14);
+    }
+
+    /* Contenedor SVG de flechas */
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-gold-soft selection:text-navy">
+
+  <!-- ==================== CABECERA WISDOM CORNER ==================== -->
+  <header class="bg-navy text-white shadow-md sticky top-0 z-30 border-b-2 border-gold/60">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <!-- Marca e identidad con logo oficial -->
+        <div class="flex items-center gap-4">
+          <div class="shrink-0 flex items-center justify-center">
+            <img
+              src="Logo.png"
+              alt="Wisdom Corner Academy Logo"
+              class="h-[74px] sm:h-[82px] w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+              onerror="this.onerror=null; this.src='https://placehold.co/84x84/1B365D/E3C565?text=WC';"
+            />
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white leading-none">Wisdom Corner Academy</h1>
+              <span class="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-gold/20 text-gold-light border border-gold/40">Nivel A2–B1</span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1">Gramática Inglesa · Práctica completa de <strong class="text-white font-semibold">used to</strong> y <strong class="text-white font-semibold">would</strong></p>
+          </div>
+        </div>
+
+        <!-- Marcador Global (60 ejercicios) -->
+        <div class="bg-navy-dark/80 border border-white/15 rounded-xl px-4 py-2 flex items-center gap-4 min-w-[230px]">
+          <div class="flex-1">
+            <div class="flex items-center justify-between text-xs text-slate-300 mb-1">
+              <span class="font-medium">Progreso global</span>
+              <span id="global-score-text" class="font-bold text-gold-light">0 / 60 aciertos</span>
+            </div>
+            <div class="w-full h-2 bg-white/15 rounded-full overflow-hidden">
+              <div id="global-progress-bar" class="h-full bg-gradient-to-r from-gold to-gold-light rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="text-right border-l border-white/15 pl-3">
+            <div id="global-percent" class="font-serif text-lg font-bold text-white leading-none">0%</div>
+            <div class="text-[10px] text-slate-300 uppercase tracking-wide mt-0.5">Nota</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por Pestañas -->
+      <nav class="mt-3.5 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 -mx-1 px-1" aria-label="Secciones de práctica">
+        <button data-tab="theory" class="tab-btn active flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white text-navy shadow-sm">
+          <span>📖</span>
+          <span>Guía Wisdom Corner</span>
+        </button>
+        <button data-tab="usedto" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>1. Used to</span>
+          <span id="badge-usedto" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+        <button data-tab="would" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>2. Would</span>
+          <span id="badge-would" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+        <button data-tab="mixed" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>3. Mixto (Used to vs Would)</span>
+          <span id="badge-mixed" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-7 space-y-8">
+
+    <!-- ========================================================== -->
+    <!-- PESTAÑA 0: GUÍA WISDOM CORNER (TEORÍA)                     -->
+    <!-- ========================================================== -->
+    <section id="panel-theory" class="tab-panel active space-y-6">
+      <!-- Banner de bienvenida -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 sm:p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-gold-soft rounded-bl-full opacity-70 pointer-events-none"></div>
+        <div class="relative z-10">
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-gold bg-gold-soft px-3 py-1 rounded-full border border-gold/30 mb-3">
+            ✦ Guía de Gramática Inglesa · Nivel A2–B1
+          </span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-navy">¿Cuándo usamos <span class="italic text-forest">used to</span> y cuándo usamos <span class="italic text-gold">would</span>?</h2>
+          <p class="text-slate-600 mt-2.5 max-w-3xl leading-relaxed text-sm sm:text-base">
+            En inglés utilizamos <strong>used to</strong> y <strong>would</strong> para hablar de <strong>hábitos y rutinas del pasado</strong> que ya no ocurren en el presente. Sin embargo, tienen una diferencia fundamental que debes dominar: los <strong>verbos de estado</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Comparativa: USED TO vs WOULD -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Tarjeta USED TO -->
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 flex flex-col justify-between border-t-4 border-t-navy">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-serif text-xl font-bold text-navy">1. USED TO</h3>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-navy/10 text-navy">Hábitos + Estados</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              Sirve para hablar tanto de <strong>acciones repetidas</strong> como de <strong>estados o situaciones</strong> que eran verdad en el pasado y ya no lo son.
+            </p>
+            <div class="space-y-3">
+              <div class="bg-parchment rounded-xl p-3.5 border border-borderWarm">
+                <p class="text-xs font-bold uppercase tracking-wide text-forest mb-1">✓ Acciones repetidas (hábitos)</p>
+                <p class="text-sm text-ink"><em>I <strong>used to play</strong> tennis every Saturday.</em></p>
+                <p class="text-xs text-slate-500 mt-0.5">Solía jugar al tenis todos los sábados.</p>
+              </div>
+              <div class="bg-parchment rounded-xl p-3.5 border border-borderWarm">
+                <p class="text-xs font-bold uppercase tracking-wide text-navy mb-1">✓ Estados pasados (Stative Verbs)</p>
+                <p class="text-sm text-ink"><em>We <strong>used to live</strong> in a small flat.</em></p>
+                <p class="text-sm text-ink mt-1"><em>She <strong>used to have</strong> long hair.</em></p>
+                <p class="text-xs text-slate-500 mt-1">Verbos de estado frecuentes: <span class="font-semibold text-navy">be, live, have (posesión), like, love, hate, know, want, believe</span>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta WOULD -->
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 flex flex-col justify-between border-t-4 border-t-gold">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-serif text-xl font-bold text-navy">2. WOULD</h3>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-soft text-amber-800 border border-gold/30">Solo acciones repetidas</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              Se usa <strong>ÚNICAMENTE para acciones repetidas</strong> y recuerdos habituales en el pasado, normalmente acompañados de un <strong>marco temporal claro</strong> (<em>Every summer, When I was a child, On Sundays...</em>).
+            </p>
+            <div class="space-y-3">
+              <div class="bg-forest-soft/70 rounded-xl p-3.5 border border-forest/20">
+                <p class="text-xs font-bold uppercase tracking-wide text-forest mb-1">✓ Acciones repetidas con contexto pasado</p>
+                <p class="text-sm text-ink"><em>Every summer, we <strong>would swim</strong> in the river.</em></p>
+                <p class="text-xs text-slate-500 mt-0.5">Cada verano nadábamos en el río.</p>
+              </div>
+              <div class="bg-red-50 rounded-xl p-3.5 border border-red-200">
+                <p class="text-xs font-bold uppercase tracking-wide text-red-700 mb-1">✕ NUNCA con verbos de estado</p>
+                <p class="text-sm text-red-900 line-through"><em>I would live in Madrid.</em></p>
+                <p class="text-sm text-forest font-semibold mt-0.5">✓ <em>I <strong>used to live</strong> in Madrid.</em></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Estructuras -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card overflow-hidden">
+        <div class="px-6 py-4 bg-cream/70 border-b border-borderWarm flex items-center justify-between flex-wrap gap-2">
+          <h3 class="font-serif text-lg sm:text-xl font-bold text-navy">Estructuras: Afirmativa, Negativa e Interrogativa</h3>
+          <span class="text-xs text-slate-500 font-medium">Recuerda: siempre seguidos de verbo en infinitivo (sin <em>to</em> tras <em>would</em>)</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-parchment border-b border-borderWarm text-xs uppercase tracking-wider text-slate-500">
+                <th class="py-3.5 px-5 font-bold">Forma</th>
+                <th class="py-3.5 px-5 font-bold text-navy">USED TO</th>
+                <th class="py-3.5 px-5 font-bold text-amber-800">WOULD</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-borderWarm">
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-forest whitespace-nowrap">Afirmativa (+)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Sujeto + used to + infinitivo</div>
+                  <div class="text-slate-600 italic mt-0.5">I <strong>used to watch</strong> cartoons.</div>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">Sujeto + would ('d) + infinitivo</div>
+                  <div class="text-slate-600 italic mt-0.5">Every Sunday, we <strong>would visit</strong> grandma.</div>
+                </td>
+              </tr>
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-red-700 whitespace-nowrap">Negativa (−)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Sujeto + didn't <span class="underline decoration-gold decoration-2">use to</span> + infinitivo</div>
+                  <div class="text-slate-600 italic mt-0.5">She <strong>didn't use to like</strong> broccoli.</div>
+                  <span class="inline-block mt-1 text-[11px] bg-gold-soft text-amber-900 px-2 py-0.5 rounded font-semibold">¡Atención! Pierde la «-d» porque «didn't» ya está en pasado.</span>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">Sujeto + wouldn't + infinitivo</div>
+                  <div class="text-slate-600 italic mt-0.5">He <strong>wouldn't eat</strong> fish when he was little.</div>
+                </td>
+              </tr>
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-navy whitespace-nowrap">Interrogativa (?)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Did + sujeto + <span class="underline decoration-gold decoration-2">use to</span> + infinitivo?</div>
+                  <div class="text-slate-600 italic mt-0.5"><strong>Did</strong> you <strong>use to have</strong> a pet?</div>
+                  <span class="inline-block mt-1 text-[11px] bg-gold-soft text-amber-900 px-2 py-0.5 rounded font-semibold">¡Sin «-d» en «use to» porque ya está «Did»!</span>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">Would + sujeto + infinitivo?</div>
+                  <div class="text-slate-600 italic mt-0.5"><strong>Would</strong> your dad <strong>tell</strong> you stories?</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Errores típicos -->
+      <div class="bg-gold-soft/70 rounded-2xl border border-gold/40 p-5 sm:p-6">
+        <h3 class="font-serif text-lg font-bold text-navy flex items-center gap-2 mb-3">
+          <span>⚠️</span> Errores típicos que debes evitar en tu examen
+        </h3>
+        <ul class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-sm">
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-red-700 text-xs uppercase mb-1">Error 1: La "-d" en negativa/pregunta</p>
+            <p class="text-slate-500 line-through">I didn't used to play.</p>
+            <p class="text-forest font-semibold">✓ I didn't <u>use to</u> play.</p>
+          </li>
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-red-700 text-xs uppercase mb-1">Error 2: "Would" con estados</p>
+            <p class="text-slate-500 line-through">She would be very shy.</p>
+            <p class="text-forest font-semibold">✓ She <u>used to be</u> very shy.</p>
+          </li>
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-red-700 text-xs uppercase mb-1">Error 3: "Would to" (¡nunca lleva "to"!)</p>
+            <p class="text-slate-500 line-through">We would to go to the park.</p>
+            <p class="text-forest font-semibold">✓ We <u>would go</u> to the park.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Botón rápido para empezar -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button onclick="switchTab('usedto')" class="px-6 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white font-semibold text-sm shadow-md transition-all flex items-center gap-2">
+          <span>Empezar Sección 1: Used to</span>
+          <span>→</span>
+        </button>
+        <button onclick="switchTab('would')" class="px-5 py-3 rounded-xl bg-white hover:bg-cream text-navy border border-borderWarm font-semibold text-sm shadow-soft transition-all">
+          Ir a Sección 2: Would
+        </button>
+        <button onclick="switchTab('mixed')" class="px-5 py-3 rounded-xl bg-forest hover:bg-forest-light text-white font-semibold text-sm shadow-soft transition-all">
+          Ir a Sección 3: Mixto
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- PESTAÑAS DE PRÁCTICA (RENDERIZADAS DINÁMICAMENTE POR JS)   -->
+    <!-- ========================================================== -->
+    <section id="panel-usedto" class="tab-panel space-y-6"></section>
+    <section id="panel-would" class="tab-panel space-y-6"></section>
+    <section id="panel-mixed" class="tab-panel space-y-6"></section>
+
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="border-t border-borderWarm bg-white/80 py-5 mt-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-3">
+        <div class="bg-navy rounded-lg p-1.5 shadow-soft border border-gold/40 shrink-0">
+          <img
+            src="Logo.png"
+            alt="Wisdom Corner Academy Logo"
+            class="h-8 w-auto object-contain"
+            onerror="this.onerror=null; this.src='https://placehold.co/40x40/1B365D/E3C565?text=WC';"
+          />
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="font-serif font-bold text-navy text-sm">Wisdom Corner Academy</span>
+          <span>·</span>
+          <span>Gramática Inglesa · Nivel A2–B1</span>
+        </div>
+      </div>
+      <div>60 ejercicios totales · Corrección detallada al completar cada sección</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL DE CONFIRMACIÓN PERSONALIZADO ==================== -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-dark/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl border border-borderWarm shadow-xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gold-soft text-amber-700 flex items-center justify-center text-lg font-bold">↺</div>
+        <div>
+          <h3 class="font-serif text-lg font-bold text-navy">¿Reiniciar esta sección?</h3>
+          <p class="text-xs text-slate-500">Se borrarán tus respuestas y la corrección actual de esta pestaña.</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2.5 pt-2">
+        <button id="modal-cancel" class="px-4 py-2 rounded-xl border border-borderWarm text-slate-600 hover:bg-parchment text-sm font-semibold transition">Cancelar</button>
+        <button id="modal-confirm" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold shadow-sm transition">Sí, reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. UTILIDADES DE NORMALIZACIÓN Y VALIDACIÓN FLEXIBLE
+       ========================================================================= */
+    function normalizeText(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/[’‘`´]/g, "'")          // Unificar apóstrofos
+        .toLowerCase()
+        .replace(/[.,?!;:"()]/g, ' ')    // Ignorar puntuación innecesaria
+        .replace(/\s+/g, ' ')            // Colapsar espacios múltiples
+        .trim();
+    }
+
+    function isMatchAny(userVal, acceptedArray) {
+      const normUser = normalizeText(userVal);
+      if (!normUser) return false;
+      return acceptedArray.some(acc => normalizeText(acc) === normUser);
+    }
+
+    /* =========================================================================
+       2. BANCO COMPLETO DE 60 EJERCICIOS (20 USED TO + 20 WOULD + 20 MIXTO)
+       ========================================================================= */
+    const SECTIONS_DATA = {
+      /* -----------------------------------------------------------------------
+         SECCIÓN 1: USED TO (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      usedto: {
+        id: 'usedto',
+        title: 'Sección 1: Practica "USED TO"',
+        subtitle: '20 ejercicios sobre hábitos y estados pasados en afirmativa, negativa e interrogativa.',
+        accent: 'navy',
+        blocks: [
+          {
+            id: 'u-block-a',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Rellenar huecos (Ejercicios 1 al 6)',
+            instruction: 'Completa las frases usando la forma correcta de <strong>used to</strong> (afirmativa, negativa o interrogativa) con el verbo entre paréntesis.',
+            items: [
+              {
+                num: 1,
+                parts: ['When I was a child, I ', ' (play) hide-and-seek with my cousins every afternoon.'],
+                gaps: [{ accepted: ['used to play'], display: 'used to play' }],
+                explanation: 'Es una frase afirmativa sobre un hábito del pasado: usamos «used to + infinitivo» (used to play).'
+              },
+              {
+                num: 2,
+                parts: ['My grandfather ', ' (have) a red bicycle when he was young.'],
+                gaps: [{ accepted: ['used to have'], display: 'used to have' }],
+                explanation: '«Have» (tener) expresa una posesión/estado en el pasado. En afirmativa se construye con «used to + infinitivo» (used to have).'
+              },
+              {
+                num: 3,
+                parts: ['She ', ' (not / like) vegetables, but now she loves salads.'],
+                gaps: [{ accepted: ["didn't use to like", 'did not use to like'], display: "didn't use to like" }],
+                explanation: 'En negativa usamos «didn\'t use to + infinitivo». Recuerda que «use» pierde la «-d» final porque el auxiliar «didn\'t» ya marca el pasado.'
+              },
+              {
+                num: 4,
+                parts: ['We ', ' (not / live) near the beach before we moved to Valencia.'],
+                gaps: [{ accepted: ["didn't use to live", 'did not use to live'], display: "didn't use to live" }],
+                explanation: 'Negativa con verbo de estado («live»): «didn\'t use to live» (o «did not use to live»). ¡Cuidado de no escribir «used» tras «didn\'t»!'
+              },
+              {
+                num: 5,
+                parts: ['', ' you ', ' (watch) cartoons on Saturday mornings?'],
+                gaps: [
+                  { accepted: ['did'], display: 'Did', width: 'w-20' },
+                  { accepted: ['use to watch'], display: 'use to watch', width: 'w-44' }
+                ],
+                explanation: 'En interrogativa seguimos el orden: «Did + sujeto + use to + infinitivo?» → «Did you use to watch...?». Sin «-d» en «use».'
+              },
+              {
+                num: 6,
+                parts: ['Where ', ' your parents ', ' (go) on holiday in the 1990s?'],
+                gaps: [
+                  { accepted: ['did'], display: 'did', width: 'w-20' },
+                  { accepted: ['use to go'], display: 'use to go', width: 'w-40' }
+                ],
+                explanation: 'Con partícula interrogativa (Where): «Where + did + sujeto + use to + infinitivo?» → «Where did your parents use to go...?».'
+              }
+            ]
+          },
+          {
+            id: 'u-block-b',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas (Ejercicios 7 al 11)',
+            instruction: 'Haz clic en un inicio de frase de la columna izquierda y después en su continuación correcta de la columna derecha para trazar la flecha.',
+            pairs: [
+              {
+                num: 7,
+                leftId: 'u7',
+                left: 'I used to be afraid of the dark,',
+                rightId: 'ur1',
+                right: 'so I always slept with the light on.',
+                explanation: '«I used to be afraid of the dark» (solía tener miedo a la oscuridad) conecta lógicamente con dormir con la luz encendida.'
+              },
+              {
+                num: 8,
+                leftId: 'u8',
+                left: "He didn't use to wear glasses,",
+                rightId: 'ur2',
+                right: 'but now he needs them to read.',
+                explanation: 'Contraste pasado vs presente: antes no llevaba gafas («didn\'t use to wear glasses»), pero ahora las necesita para leer.'
+              },
+              {
+                num: 9,
+                leftId: 'u9',
+                left: 'Did they use to live in London',
+                rightId: 'ur3',
+                right: 'before they moved to Madrid?',
+                explanation: 'Es la única interrogativa de la columna izquierda, por lo que encaja con el final que lleva signo de interrogación («before they moved to Madrid?»).'
+              },
+              {
+                num: 10,
+                leftId: 'u10',
+                left: 'My sister used to collect stickers',
+                rightId: 'ur4',
+                right: 'when she was in primary school.',
+                explanation: 'Coleccionar pegatinas es un hábito típico de cuando estaba en el colegio («when she was in primary school»).'
+              },
+              {
+                num: 11,
+                leftId: 'u11',
+                left: "We didn't use to have smartphones,",
+                rightId: 'ur5',
+                right: 'so we played outside much more.',
+                explanation: 'Como antes no teníamos teléfonos móviles («didn\'t use to have smartphones»), jugábamos mucho más en la calle.'
+              }
+            ],
+            rightOrder: ['ur3', 'ur5', 'ur1', 'ur4', 'ur2']
+          },
+          {
+            id: 'u-block-c',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 12 al 16)',
+            instruction: 'Haz clic en las fichas de palabras en el orden correcto para construir frases con <strong>used to</strong>. Haz clic en una ficha colocada si quieres quitarla.',
+            items: [
+              {
+                num: 12,
+                words: ['guitar.', 'play', 'My', 'used', 'brother', 'the', 'to'],
+                accepted: ['My brother used to play the guitar'],
+                display: 'My brother used to play the guitar.',
+                explanation: 'Orden afirmativo: Sujeto (My brother) + used to + infinitivo (play) + complemento (the guitar).'
+              },
+              {
+                num: 13,
+                words: ['coffee.', 'to', "didn't", 'drink', 'I', 'use'],
+                accepted: ["I didn't use to drink coffee"],
+                display: "I didn't use to drink coffee.",
+                explanation: 'Orden negativo: Sujeto (I) + didn\'t + use to + infinitivo (drink) + complemento (coffee).'
+              },
+              {
+                num: 14,
+                words: ['have', 'Did', 'pet?', 'use', 'a', 'you', 'to'],
+                accepted: ['Did you use to have a pet'],
+                display: 'Did you use to have a pet?',
+                explanation: 'Orden interrogativo: Did + sujeto (you) + use to + infinitivo (have) + complemento (a pet)?'
+              },
+              {
+                num: 15,
+                words: ['cinema', 'used', 'be', 'here.', 'a', 'There', 'to'],
+                accepted: ['There used to be a cinema here'],
+                display: 'There used to be a cinema here.',
+                explanation: 'Para decir «solía haber» usamos la estructura fija «There used to be + sustantivo».'
+              },
+              {
+                num: 16,
+                words: ['French.', 'use', 'They', 'study', "didn't", 'to'],
+                accepted: ["They didn't use to study French"],
+                display: "They didn't use to study French.",
+                explanation: 'Negativa con sujeto plural: «They didn\'t use to study French.» Recuerda «use to» sin «-d».'
+              }
+            ]
+          },
+          {
+            id: 'u-block-d',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés (Ejercicios 17 al 20)',
+            instruction: 'Traduce estas frases al inglés utilizando <strong>used to</strong>.',
+            items: [
+              {
+                num: 17,
+                prompt: 'Yo solía vivir en un pueblo pequeño.',
+                accepted: [
+                  'I used to live in a small town',
+                  'I used to live in a small village',
+                  'I used to live in a little town',
+                  'I used to live in a little village'
+                ],
+                display: 'I used to live in a small town. / I used to live in a small village.',
+                explanation: 'Verbo de estado «live» en afirmativa: «I used to live in a small town / village.»'
+              },
+              {
+                num: 18,
+                prompt: 'Ella no solía llevar gafas.',
+                accepted: [
+                  "She didn't use to wear glasses",
+                  'She did not use to wear glasses'
+                ],
+                display: "She didn't use to wear glasses.",
+                explanation: 'En negativa usamos «didn\'t use to» (sin «-d») + «wear glasses» (llevar gafas).'
+              },
+              {
+                num: 19,
+                prompt: '¿Solías jugar al fútbol en el colegio?',
+                accepted: [
+                  'Did you use to play football at school',
+                  'Did you use to play soccer at school',
+                  'Did you use to play football in school',
+                  'Did you use to play soccer in school'
+                ],
+                display: 'Did you use to play football at school?',
+                explanation: 'Pregunta en pasado con «used to»: «Did + you + use to + play football at school?»'
+              },
+              {
+                num: 20,
+                prompt: 'Nosotros solíamos tener un perro negro.',
+                accepted: [
+                  'We used to have a black dog'
+                ],
+                display: 'We used to have a black dog.',
+                explanation: 'Posesión en el pasado: «We used to have a black dog.» Recuerda que en inglés el adjetivo (black) va antes del sustantivo (dog).'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         SECCIÓN 2: WOULD (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      would: {
+        id: 'would',
+        title: 'Sección 2: Practica "WOULD"',
+        subtitle: '20 ejercicios sobre acciones repetidas y recuerdos habituales del pasado usando would, wouldn\'t y Would...?',
+        accent: 'gold',
+        blocks: [
+          {
+            id: 'w-block-a',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Rellenar huecos (Ejercicios 1 al 6)',
+            instruction: 'Completa los recuerdos del pasado usando <strong>would</strong>, <strong>wouldn\'t</strong> o <strong>Would...</strong> + el verbo entre paréntesis.',
+            items: [
+              {
+                num: 1,
+                parts: ['Every summer, we ', " (swim) in the river behind my uncle's house."],
+                gaps: [{ accepted: ['would swim', "'d swim"], display: 'would swim' }],
+                explanation: 'Acción repetida en el pasado con marco temporal («Every summer»): «would + infinitivo» (sin «to») → «would swim».'
+              },
+              {
+                num: 2,
+                parts: ['When I was little, my dad ', ' (tell) me funny stories before bed.'],
+                gaps: [{ accepted: ['would tell', "'d tell"], display: 'would tell' }],
+                explanation: 'Hábito repetido en la infancia («When I was little»): «would tell». Recuerda nunca añadir «to» después de «would».'
+              },
+              {
+                num: 3,
+                parts: ['On rainy days, we ', ' (not / go) to the park; we stayed indoors.'],
+                gaps: [{ accepted: ["wouldn't go", 'would not go'], display: "wouldn't go" }],
+                explanation: 'Forma negativa de «would»: «wouldn\'t + infinitivo» (o «would not go»).'
+              },
+              {
+                num: 4,
+                parts: ['My little brother ', ' (not / eat) his soup unless it was warm.'],
+                gaps: [{ accepted: ["wouldn't eat", 'would not eat'], display: "wouldn't eat" }],
+                explanation: 'Negativa para un hábito/negativa repetida en el pasado: «wouldn\'t eat» (o «would not eat»).'
+              },
+              {
+                num: 5,
+                parts: ['', ' your grandmother ', ' (bake) cakes for you on Sundays?'],
+                gaps: [
+                  { accepted: ['would'], display: 'Would', width: 'w-24' },
+                  { accepted: ['bake'], display: 'bake', width: 'w-32' }
+                ],
+                explanation: 'Interrogativa con «would»: invertimos el orden → «Would + sujeto + infinitivo?» («Would your grandmother bake...?»).'
+              },
+              {
+                num: 6,
+                parts: ['What games ', ' you ', ' (play) during the school break?'],
+                gaps: [
+                  { accepted: ['would'], display: 'would', width: 'w-24' },
+                  { accepted: ['play'], display: 'play', width: 'w-32' }
+                ],
+                explanation: 'Con palabra interrogativa (What games): «What games + would + sujeto + infinitivo?» → «What games would you play...?».'
+              }
+            ]
+          },
+          {
+            id: 'w-block-b',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas (Ejercicios 7 al 11)',
+            instruction: 'Une cada situación temporal del pasado (izquierda) con el hábito correspondiente usando <strong>would</strong> (derecha).',
+            pairs: [
+              {
+                num: 7,
+                leftId: 'w7',
+                left: 'Every Friday evening,',
+                rightId: 'wr1',
+                right: 'my family would order pizza and watch a film.',
+                explanation: 'Los viernes por la noche («Every Friday evening») encaja con pedir pizza y ver una película en familia.'
+              },
+              {
+                num: 8,
+                leftId: 'w8',
+                left: 'When it snowed in winter,',
+                rightId: 'wr2',
+                right: 'the children would build a huge snowman.',
+                explanation: 'Cuando nevaba en invierno («When it snowed in winter»), los niños construían un muñeco de nieve.'
+              },
+              {
+                num: 9,
+                leftId: 'w9',
+                left: 'During our summer holidays,',
+                rightId: 'wr3',
+                right: "we wouldn't wake up before ten o'clock.",
+                explanation: 'Durante las vacaciones de verano no nos despertábamos antes de las diez («wouldn\'t wake up»).'
+              },
+              {
+                num: 10,
+                leftId: 'w10',
+                left: 'Would your teacher give you',
+                rightId: 'wr4',
+                right: 'extra homework on Mondays?',
+                explanation: 'Es una pregunta iniciada con «Would your teacher give you...», que se completa con «extra homework on Mondays?».'
+              },
+              {
+                num: 11,
+                leftId: 'w11',
+                left: 'After school, my friends and I',
+                rightId: 'wr5',
+                right: 'would ride our bikes to the square.',
+                explanation: '«After school, my friends and I» ya tiene el sujeto, así que necesita el verbo «would ride our bikes to the square».'
+              }
+            ],
+            rightOrder: ['wr4', 'wr2', 'wr5', 'wr1', 'wr3']
+          },
+          {
+            id: 'w-block-c',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 12 al 16)',
+            instruction: 'Ordena las palabras haciendo clic en las fichas para formar frases correctas con <strong>would</strong>.',
+            items: [
+              {
+                num: 12,
+                words: ['grandparents.', 'would', 'Sunday', 'visit', 'we', 'Every', 'our'],
+                accepted: [
+                  'Every Sunday we would visit our grandparents',
+                  'We would visit our grandparents every Sunday'
+                ],
+                display: 'Every Sunday we would visit our grandparents.',
+                explanation: 'Estructura: Marcador temporal (Every Sunday) + sujeto (we) + would + infinitivo (visit) + objeto (our grandparents).'
+              },
+              {
+                num: 13,
+                words: ['garden.', "wouldn't", 'in', 'dog', 'My', 'sleep', 'the'],
+                accepted: ["My dog wouldn't sleep in the garden"],
+                display: "My dog wouldn't sleep in the garden.",
+                explanation: 'Negativa con «would»: Sujeto (My dog) + wouldn\'t + infinitivo (sleep) + lugar (in the garden).'
+              },
+              {
+                num: 14,
+                words: ['day?', 'school', 'you', 'walk', 'every', 'Would', 'to'],
+                accepted: ['Would you walk to school every day'],
+                display: 'Would you walk to school every day?',
+                explanation: 'Interrogativa: Would + sujeto (you) + infinitivo (walk) + complemento (to school every day)?'
+              },
+              {
+                num: 15,
+                words: ['cream.', 'summer', 'eat', 'would', 'ice', 'In', 'they'],
+                accepted: [
+                  'In summer they would eat ice cream',
+                  'They would eat ice cream in summer'
+                ],
+                display: 'In summer they would eat ice cream.',
+                explanation: 'Acción repetida en verano: «In summer they would eat ice cream.» (También es correcto colocar «in summer» al final).'
+              },
+              {
+                num: 16,
+                words: ['music.', 'to', "wouldn't", 'rock', 'She', 'listen'],
+                accepted: ["She wouldn't listen to rock music"],
+                display: "She wouldn't listen to rock music.",
+                explanation: 'Negativa: «She wouldn\'t listen to rock music.» Recuerda que el verbo «listen» siempre lleva la preposición «to» antes de lo que escuchas.'
+              }
+            ]
+          },
+          {
+            id: 'w-block-d',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés (Ejercicios 17 al 20)',
+            instruction: 'Traduce estas frases de hábitos pasados al inglés usando <strong>would</strong> o <strong>wouldn\'t</strong>.',
+            items: [
+              {
+                num: 17,
+                prompt: 'Cada verano, nosotros nadábamos en el mar.',
+                accepted: [
+                  'Every summer we would swim in the sea',
+                  'We would swim in the sea every summer',
+                  "Every summer we'd swim in the sea",
+                  "We'd swim in the sea every summer"
+                ],
+                display: 'Every summer, we would swim in the sea.',
+                explanation: 'Acción repetida en verano: «Every summer, we would swim in the sea.» (También se acepta «we\'d swim» o poner «every summer» al final).'
+              },
+              {
+                num: 18,
+                prompt: 'Los domingos, mi abuelo cocinaba pasta.',
+                accepted: [
+                  'On Sundays my grandfather would cook pasta',
+                  'On Sundays my grandpa would cook pasta',
+                  'On Sundays my grandad would cook pasta',
+                  'My grandfather would cook pasta on Sundays',
+                  'My grandpa would cook pasta on Sundays',
+                  'My grandad would cook pasta on Sundays',
+                  'On Sundays my grandfather would make pasta',
+                  'On Sundays my grandpa would make pasta'
+                ],
+                display: 'On Sundays, my grandfather would cook pasta.',
+                explanation: 'Para los días de la semana en plural usamos «On Sundays» + sujeto + «would cook pasta».'
+              },
+              {
+                num: 19,
+                prompt: 'Ella no veía películas de miedo por la noche.',
+                accepted: [
+                  "She wouldn't watch scary films at night",
+                  "She wouldn't watch scary movies at night",
+                  "She wouldn't watch horror films at night",
+                  "She wouldn't watch horror movies at night",
+                  'She would not watch scary films at night',
+                  'She would not watch scary movies at night',
+                  'She would not watch horror films at night',
+                  'She would not watch horror movies at night'
+                ],
+                display: "She wouldn't watch scary films at night.",
+                explanation: 'Negativa con «wouldn\'t» + «watch» (ver películas) + «scary/horror films (o movies)» + «at night».'
+              },
+              {
+                num: 20,
+                prompt: '¿Jugabas a las cartas con tus primos?',
+                accepted: [
+                  'Would you play cards with your cousins'
+                ],
+                display: 'Would you play cards with your cousins?',
+                explanation: 'Pregunta de hábito pasado con «would»: «Would + sujeto (you) + play cards with your cousins?»'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         SECCIÓN 3: MIXTO - USED TO vs WOULD (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      mixed: {
+        id: 'mixed',
+        title: 'Sección 3: Práctica MIXTA — "USED TO" vs "WOULD"',
+        subtitle: '20 ejercicios combinados para distinguir verbos de estado (solo used to) de acciones repetidas (would), incluyendo un texto completo.',
+        accent: 'forest',
+        blocks: [
+          {
+            id: 'm-block-a',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Rellenar huecos: decide entre USED TO y WOULD (Ejercicios 1 al 4)',
+            instruction: 'Escribe <strong>would / wouldn\'t</strong> para acciones repetidas cuando sea posible, y <strong>used to / didn\'t use to / Did... use to</strong> obligatoriamente cuando el verbo sea de <strong>estado</strong>.',
+            items: [
+              {
+                num: 1,
+                parts: ['My aunt ', ' (be) a fantastic piano teacher when she was younger.'],
+                gaps: [{ accepted: ['used to be'], display: 'used to be' }],
+                explanation: '«Be» (ser/estar) es un verbo de estado: NUNCA se puede usar con «would». La única opción correcta es «used to be».'
+              },
+              {
+                num: 2,
+                parts: ['Every Saturday morning, my dad ', ' (make) pancakes for the whole family.'],
+                gaps: [{ accepted: ['would make', "'d make", 'used to make'], display: 'would make' }],
+                explanation: '«Make» es una acción repetida con un marco temporal claro («Every Saturday morning»), por lo que usamos «would make» (aunque «used to make» también es gramaticalmente válido).'
+              },
+              {
+                num: 3,
+                parts: ['I ', ' (not / know) how to swim until I was nine years old.'],
+                gaps: [{ accepted: ["didn't use to know", 'did not use to know'], display: "didn't use to know" }],
+                explanation: '«Know» (saber) es un verbo de estado, así que NO admite «wouldn\'t». Usamos la negativa «didn\'t use to know» (sin «-d» en «use»).'
+              },
+              {
+                num: 4,
+                parts: ['', ' you ', ' (have) long hair when you were in primary school?'],
+                gaps: [
+                  { accepted: ['did'], display: 'Did', width: 'w-20' },
+                  { accepted: ['use to have'], display: 'use to have', width: 'w-44' }
+                ],
+                explanation: '«Have» (tener pelo largo) expresa un estado/posesión, nunca una acción repetida. Por eso NO vale «Would you have», sino «Did you use to have...?».'
+              }
+            ]
+          },
+          {
+            id: 'm-block-b',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas: identifica la regla (Ejercicios 5 al 8)',
+            instruction: 'Une cada frase de la izquierda con la explicación gramatical correcta de la derecha.',
+            pairs: [
+              {
+                num: 5,
+                leftId: 'm5',
+                left: '"I used to love chocolate when I was little."',
+                rightId: 'mr1',
+                right: 'Verbo de estado (love): SOLO admite "used to".',
+                explanation: '«Love» es un verbo de sentimiento/estado; nunca podemos decir «I would love» para un gusto permanente del pasado.'
+              },
+              {
+                num: 6,
+                leftId: 'm6',
+                left: '"Every winter, we would ski in the Pyrenees."',
+                rightId: 'mr2',
+                right: 'Acción repetida con marco temporal: admite "would".',
+                explanation: '«Ski» es una acción y «Every winter» fija el contexto pasado repetido, situación ideal para «would».'
+              },
+              {
+                num: 7,
+                leftId: 'm7',
+                left: '"She didn\'t use to live in Seville."',
+                rightId: 'mr3',
+                right: 'Negativa de estado (live): "didn\'t use to" (sin -d).',
+                explanation: '«Live» es verbo de estado y en negativa requiere «didn\'t use to» perdiendo la «-d» final.'
+              },
+              {
+                num: 8,
+                leftId: 'm8',
+                left: '"Would your cousins visit you in August?"',
+                rightId: 'mr4',
+                right: 'Pregunta de acción repetida: "Would + sujeto + inf.".',
+                explanation: '«Visit» es una acción repetida cada agosto; la pregunta se forma con «Would + sujeto + infinitivo».'
+              }
+            ],
+            rightOrder: ['mr3', 'mr1', 'mr4', 'mr2']
+          },
+          {
+            id: 'm-block-c',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 9 al 11)',
+            instruction: 'Ordena las fichas de palabras para formar frases correctas combinando <strong>used to</strong> y <strong>would</strong>.',
+            items: [
+              {
+                num: 9,
+                words: ['house.', 'used', 'a', 'live', 'I', 'in', 'big', 'to'],
+                accepted: ['I used to live in a big house'],
+                display: 'I used to live in a big house.',
+                explanation: 'Verbo de estado «live» → «I used to live in a big house.»'
+              },
+              {
+                num: 10,
+                words: ['camping.', 'summer', 'would', 'Every', 'go', 'we'],
+                accepted: [
+                  'Every summer we would go camping',
+                  'We would go camping every summer'
+                ],
+                display: 'Every summer we would go camping.',
+                explanation: 'Acción repetida con marco temporal → «Every summer we would go camping.»'
+              },
+              {
+                num: 11,
+                words: ['broccoli.', 'use', 'He', 'like', "didn't", 'to'],
+                accepted: ["He didn't use to like broccoli"],
+                display: "He didn't use to like broccoli.",
+                explanation: 'Negativa con verbo de estado «like» → «He didn\'t use to like broccoli.»'
+              }
+            ]
+          },
+          {
+            id: 'm-block-d',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés (Ejercicios 12 al 14)',
+            instruction: 'Traduce al inglés prestando mucha atención a si es un <strong>verbo de estado</strong> (obligatorio <em>used to</em>) o una <strong>acción repetida</strong> (usa <em>would</em>).',
+            items: [
+              {
+                num: 12,
+                prompt: 'Yo solía ser muy tímido.',
+                accepted: ['I used to be very shy'],
+                display: 'I used to be very shy.',
+                explanation: '«Ser» (be) es un verbo de estado: NUNCA se puede traducir con «would». Debe ser «I used to be very shy.»'
+              },
+              {
+                num: 13,
+                prompt: 'Cada tarde, nosotros jugábamos en el parque.',
+                accepted: [
+                  'Every afternoon we would play in the park',
+                  'We would play in the park every afternoon',
+                  "Every afternoon we'd play in the park",
+                  "We'd play in the park every afternoon",
+                  'Every afternoon we used to play in the park',
+                  'We used to play in the park every afternoon'
+                ],
+                display: 'Every afternoon, we would play in the park.',
+                explanation: 'Es una acción repetida («play») con marco temporal («Every afternoon»), así que «would play» es perfecto (y «used to play» también es gramaticalmente correcto).'
+              },
+              {
+                num: 14,
+                prompt: '¿Tenías un perro cuando eras pequeño?',
+                accepted: [
+                  'Did you use to have a dog when you were little',
+                  'Did you use to have a dog when you were young',
+                  'Did you use to have a dog when you were small',
+                  'Did you use to have a dog when you were a child'
+                ],
+                display: 'Did you use to have a dog when you were little?',
+                explanation: '«Tener un perro» es posesión (estado), por lo que NO se puede usar «Would». La pregunta correcta es «Did you use to have a dog when you were little / young?».'
+              }
+            ]
+          },
+          {
+            id: 'm-block-e',
+            type: 'cloze',
+            letter: 'Bloque E',
+            title: 'Texto en contexto: Cloze Test (Ejercicios 15 al 20)',
+            instruction: 'Completa la historia con los verbos entre paréntesis. <strong>Regla del texto:</strong> usa <strong>used to</strong> para los verbos de estado (<em>live, be, have</em>) y <strong>would / wouldn\'t</strong> siempre que sea posible para las acciones repetidas del pasado.',
+            storyTitle: "Summers at my Grandparents' House",
+            segments: [
+              { text: 'When I was a child, my grandparents ' },
+              {
+                num: 15,
+                verb: 'live',
+                accepted: ['used to live'],
+                display: 'used to live',
+                explanation: 'Hueco 15: «live» (vivir) es un verbo de estado que describe dónde vivían. No admite «would»; debe ser «used to live».'
+              },
+              { text: ' in a quiet village in the mountains. Their house ' },
+              {
+                num: 16,
+                verb: 'be',
+                accepted: ['used to be'],
+                display: 'used to be',
+                explanation: 'Hueco 16: «be» (ser) es un verbo de estado. Nunca usamos «would» con «be»; la respuesta correcta es «used to be».'
+              },
+              { text: ' very old, and it ' },
+              {
+                num: 17,
+                verb: 'have',
+                accepted: ['used to have'],
+                display: 'used to have',
+                explanation: 'Hueco 17: «have» (tener un jardín) indica posesión/característica (estado). Solo admite «used to have».'
+              },
+              { text: ' a huge garden full of apple trees. Every July, my sister and I ' },
+              {
+                num: 18,
+                verb: 'spend',
+                accepted: ['would spend', "'d spend", 'used to spend'],
+                display: 'would spend (o used to spend)',
+                explanation: 'Hueco 18: «spend» (pasar tres semanas) es una acción repetida cada julio («Every July»), por lo que «would spend» es ideal (y «used to spend» también es gramaticalmente válido).'
+              },
+              { text: ' three weeks there. In the mornings, we ' },
+              {
+                num: 19,
+                verb: 'not / wake up',
+                accepted: ["wouldn't wake up", 'would not wake up', "didn't use to wake up", 'did not use to wake up'],
+                display: "wouldn't wake up (o didn't use to wake up)",
+                explanation: 'Hueco 19: «wake up» es una acción repetida en negativa («In the mornings»): «wouldn\'t wake up» es la opción recomendada (también se admite «didn\'t use to wake up»).'
+              },
+              { text: ' late because my grandfather always made fresh orange juice at eight o\'clock! After breakfast, we ' },
+              {
+                num: 20,
+                verb: 'ride',
+                accepted: ['would ride', "'d ride", 'used to ride'],
+                display: 'would ride (o used to ride)',
+                explanation: 'Hueco 20: «ride» (montar en bici hasta el río) es una acción repetida después de desayunar («After breakfast»): «would ride» encaja perfectamente (y «used to ride» también es válido).'
+              },
+              { text: ' our bikes down to the river. I loved those summers!' }
+            ]
+          }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       3. ESTADO DE LA APLICACIÓN
+       ========================================================================= */
+    const appState = {
+      activeTab: 'theory',
+      scores: {
+        usedto: null, // null = no corregida aún; número 0..20 = corregida
+        would: null,
+        mixed: null
+      },
+      // Estado de emparejamientos (flechas): { [blockId]: { selectedLeft: null | leftId, links: { [leftId]: rightId }, graded: false } }
+      matches: {},
+      // Estado de fichas de palabras: { [exKey]: { placed: [wordIdx, ...] } }
+      builds: {},
+      pendingResetSection: null
+    };
+
+    const resizeObservers = [];
+
+    /* =========================================================================
+       4. RENDERIZADO DE SECCIONES
+       ========================================================================= */
+    function renderSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      const container = document.getElementById(`panel-${sectionId}`);
+      if (!sec || !container) return;
+
+      const accentBorder =
+        sec.accent === 'gold'
+          ? 'border-t-gold'
+          : sec.accent === 'forest'
+          ? 'border-t-forest'
+          : 'border-t-navy';
+
+      let html = `
+        <!-- Cabecera de Sección -->
+        <div class="bg-white rounded-2xl border border-borderWarm border-t-4 ${accentBorder} shadow-card p-5 sm:p-7">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-navy">${sec.title}</h2>
+              <p class="text-sm text-slate-600 mt-1">${sec.subtitle}</p>
+            </div>
+            <div class="inline-flex items-center gap-2 self-start sm:self-center px-3.5 py-1.5 rounded-full bg-parchment border border-borderWarm text-xs font-bold text-navy shrink-0">
+              <span>📝</span>
+              <span>20 ejercicios</span>
+            </div>
+          </div>
+          <!-- Tarjeta de Resumen (oculta hasta corregir) -->
+          <div id="summary-${sectionId}" class="hidden mt-5"></div>
+        </div>
+      `;
+
+      sec.blocks.forEach(block => {
+        html += renderBlock(sectionId, block);
+      });
+
+      // Barra de botones de corrección y reinicio al final de la sección
+      html += `
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-sm text-slate-600 text-center sm:text-left">
+            <strong class="text-navy">¿Has terminado los 20 ejercicios?</strong> Pulsa el botón para corregir y ver las explicaciones.
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-3 w-full sm:w-auto">
+            <button type="button" onclick="openResetModal('${sectionId}')" class="px-4 py-2.5 rounded-xl border border-borderWarm bg-parchment hover:bg-cream text-slate-700 font-semibold text-sm transition flex items-center gap-2">
+              <span>↺</span>
+              <span>Reiniciar sección</span>
+            </button>
+            <button type="button" onclick="gradeSection('${sectionId}')" class="px-6 py-2.5 rounded-xl bg-navy hover:bg-navy-dark text-white font-semibold text-sm shadow-md transition flex items-center gap-2">
+              <span>✓</span>
+              <span>Corregir esta sección</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      // Inicializar estados interactivos de bloques de flechas y construcción
+      sec.blocks.forEach(block => {
+        if (block.type === 'match') {
+          initMatchBlock(block);
+        } else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            appState.builds[key] = { placed: [] };
+            renderBuildExercise(sectionId, item);
+          });
+        }
+      });
+    }
+
+    function renderBlock(sectionId, block) {
+      let bodyHtml = '';
+
+      if (block.type === 'fill') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          let sentenceHtml = '';
+          item.parts.forEach((part, idx) => {
+            sentenceHtml += `<span>${part}</span>`;
+            if (idx < item.gaps.length) {
+              const widthClass = item.gaps[idx].width || 'w-44 sm:w-52';
+              sentenceHtml += `<input type="text" id="${exId}-gap-${idx}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input inline-block ${widthClass} mx-1 px-2.5 py-1 rounded-lg border-2 border-borderWarm bg-parchment/70 text-navy font-semibold text-sm align-baseline" />`;
+            }
+          });
+
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm sm:text-[15px] leading-8 text-ink">${sentenceHtml}</div>
+                  <div id="${exId}-feedback" class="hidden mt-3"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'match') {
+        const rightMap = {};
+        block.pairs.forEach(p => { rightMap[p.rightId] = p; });
+        const orderedRight = block.rightOrder.map(id => rightMap[id]);
+
+        bodyHtml = `
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 bg-parchment px-3.5 py-2 rounded-xl border border-borderWarm">
+              <span>💡 Haz clic en una tarjeta de la <strong>izquierda</strong> y luego en su pareja de la <strong>derecha</strong>. Haz clic en una tarjeta ya unida para cambiar su flecha.</span>
+              <button type="button" onclick="clearMatchBlock('${block.id}')" class="text-navy font-semibold hover:underline shrink-0">Limpiar flechas</button>
+            </div>
+
+            <div id="match-wrap-${block.id}" class="relative py-1">
+              <svg id="match-svg-${block.id}" class="match-svg">
+                <defs>
+                  <marker id="arrow-pending-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C59B27" />
+                  </marker>
+                  <marker id="arrow-correct-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#16A34A" />
+                  </marker>
+                  <marker id="arrow-wrong-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#DC2626" />
+                  </marker>
+                </defs>
+                <g id="match-lines-${block.id}"></g>
+              </svg>
+
+              <div class="grid grid-cols-2 gap-6 sm:gap-14 md:gap-20 relative z-20">
+                <!-- Columna izquierda -->
+                <div class="space-y-3">
+                  ${block.pairs.map(p => `
+                    <button type="button" id="left-${block.id}-${p.leftId}" data-block="${block.id}" data-left="${p.leftId}"
+                      onclick="handleMatchLeftClick('${block.id}', '${p.leftId}')"
+                      class="match-left-btn w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-borderWarm bg-white hover:border-gold transition-all shadow-soft flex items-start gap-2.5">
+                      <span class="w-6 h-6 rounded-md bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${p.num}</span>
+                      <span class="text-xs sm:text-sm font-medium text-ink leading-snug">${p.left}</span>
+                    </button>
+                  `).join('')}
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="space-y-3">
+                  ${orderedRight.map((p, idx) => `
+                    <button type="button" id="right-${block.id}-${p.rightId}" data-block="${block.id}" data-right="${p.rightId}"
+                      onclick="handleMatchRightClick('${block.id}', '${p.rightId}')"
+                      class="match-right-btn w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-borderWarm bg-parchment/60 hover:border-navy transition-all shadow-soft flex items-start gap-2.5">
+                      <span class="w-6 h-6 rounded-md bg-white text-slate-600 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${String.fromCharCode(65 + idx)}</span>
+                      <span class="text-xs sm:text-sm text-ink leading-snug">${p.right}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedback individual de los pares tras corregir -->
+            <div id="match-feedback-${block.id}" class="hidden space-y-2.5 pt-2"></div>
+          </div>
+        `;
+      }
+
+      else if (block.type === 'build') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0 space-y-3">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tu frase:</span>
+                    <button type="button" onclick="clearBuildExercise('${sectionId}', ${item.num})" class="text-xs font-semibold text-slate-500 hover:text-navy">Limpiar frase</button>
+                  </div>
+                  <!-- Zona de respuesta -->
+                  <div id="${sectionId}-build-zone-${item.num}" class="min-h-[48px] p-2.5 rounded-xl border-2 border-dashed border-borderWarm bg-parchment/70 flex flex-wrap gap-2 items-center"></div>
+                  <!-- Banco de fichas -->
+                  <div id="${sectionId}-build-bank-${item.num}" class="flex flex-wrap gap-2"></div>
+                  <div id="${exId}-feedback" class="hidden mt-2"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'translate') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0 space-y-2.5">
+                  <p class="text-sm sm:text-[15px] font-semibold text-navy">«${item.prompt}»</p>
+                  <input type="text" id="${exId}-input" autocomplete="off" spellcheck="false" placeholder="Escribe la traducción en inglés..."
+                    class="gap-input w-full px-3.5 py-2.5 rounded-xl border-2 border-borderWarm bg-parchment/60 text-ink text-sm font-medium" />
+                  <div id="${exId}-feedback" class="hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'cloze') {
+        let storyHtml = '';
+        block.segments.forEach(seg => {
+          if (seg.text) {
+            storyHtml += `<span>${seg.text}</span>`;
+          } else {
+            storyHtml += `
+              <span class="inline-flex items-baseline flex-wrap gap-1 mx-0.5 my-1">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-navy text-white text-[11px] font-bold align-middle">${seg.num}</span>
+                <input type="text" id="${sectionId}-cloze-${seg.num}" autocomplete="off" spellcheck="false" placeholder="..."
+                  class="gap-input w-36 sm:w-44 px-2.5 py-1 rounded-lg border-2 border-borderWarm bg-white text-navy font-semibold text-sm" />
+                <span class="text-xs font-semibold text-forest bg-forest-soft px-1.5 py-0.5 rounded">(${seg.verb})</span>
+              </span>
+            `;
+          }
+        });
+
+        bodyHtml = `
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-borderWarm bg-parchment/80 p-5 sm:p-6 shadow-inner">
+              <h4 class="font-serif text-lg sm:text-xl font-bold text-navy mb-3 flex items-center gap-2">
+                <span>📜</span>
+                <span>${block.storyTitle}</span>
+              </h4>
+              <p class="text-sm sm:text-[15.5px] leading-9 text-ink">${storyHtml}</p>
+            </div>
+            <div id="${sectionId}-cloze-feedback" class="hidden space-y-2.5"></div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-5 sm:p-6 space-y-4">
+          <div class="border-b border-borderWarm pb-3.5">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gold bg-gold-soft px-2.5 py-0.5 rounded-full border border-gold/30">${block.letter}</span>
+            <h3 class="font-serif text-lg sm:text-xl font-bold text-navy mt-1.5">${block.title}</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">${block.instruction}</p>
+          </div>
+          ${bodyHtml}
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       5. INTERACTIVIDAD DE FLECHAS SVG (UNIR CON FLECHAS)
+       ========================================================================= */
+    function initMatchBlock(block) {
+      appState.matches[block.id] = {
+        selectedLeft: null,
+        links: {}, // { leftId: rightId }
+        graded: false,
+        results: {} // { leftId: boolean }
+      };
+
+      const wrap = document.getElementById(`match-wrap-${block.id}`);
+      if (wrap && typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => {
+          drawMatchLines(block.id);
+        });
+        ro.observe(wrap);
+        resizeObservers.push(ro);
+      }
+    }
+
+    function handleMatchLeftClick(blockId, leftId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+
+      // Si se pulsa el mismo que estaba seleccionado, se deselecciona
+      if (state.selectedLeft === leftId) {
+        state.selectedLeft = null;
+      } else {
+        state.selectedLeft = leftId;
+      }
+      state.graded = false;
+      updateMatchVisuals(blockId);
+    }
+
+    function handleMatchRightClick(blockId, rightId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+
+      // Si hay un elemento izquierdo seleccionado, crear la conexión
+      if (state.selectedLeft) {
+        // Asegurar relación 1 a 1: si otro izquierdo apuntaba a este derecho, liberarlo
+        Object.keys(state.links).forEach(lId => {
+          if (state.links[lId] === rightId) {
+            delete state.links[lId];
+          }
+        });
+        state.links[state.selectedLeft] = rightId;
+        state.selectedLeft = null;
+        state.graded = false;
+        updateMatchVisuals(blockId);
+      } else {
+        // Si no hay izquierdo seleccionado pero este derecho ya tiene flecha, permitir desconectarlo con un clic
+        const connectedLeft = Object.keys(state.links).find(lId => state.links[lId] === rightId);
+        if (connectedLeft) {
+          delete state.links[connectedLeft];
+          state.graded = false;
+          updateMatchVisuals(blockId);
+        }
+      }
+    }
+
+    function clearMatchBlock(blockId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+      state.selectedLeft = null;
+      state.links = {};
+      state.graded = false;
+      state.results = {};
+      const fb = document.getElementById(`match-feedback-${blockId}`);
+      if (fb) {
+        fb.innerHTML = '';
+        fb.classList.add('hidden');
+      }
+      updateMatchVisuals(blockId);
+    }
+
+    function updateMatchVisuals(blockId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      if (!wrap) return;
+
+      const usedRights = new Set(Object.values(state.links));
+
+      wrap.querySelectorAll('.match-left-btn').forEach(btn => {
+        const lId = btn.dataset.left;
+        btn.classList.remove(
+          'border-gold', 'bg-gold-soft/70', 'ring-2', 'ring-gold/40',
+          'border-navy', 'bg-navy/5',
+          'border-green-500', 'bg-green-50',
+          'border-red-400', 'bg-red-50', 'border-borderWarm', 'bg-white'
+        );
+
+        if (state.graded) {
+          if (state.results[lId]) {
+            btn.classList.add('border-green-500', 'bg-green-50');
+          } else {
+            btn.classList.add('border-red-400', 'bg-red-50');
+          }
+        } else if (state.selectedLeft === lId) {
+          btn.classList.add('border-gold', 'bg-gold-soft/70', 'ring-2', 'ring-gold/40');
+        } else if (state.links[lId]) {
+          btn.classList.add('border-navy', 'bg-navy/5');
+        } else {
+          btn.classList.add('border-borderWarm', 'bg-white');
+        }
+      });
+
+      wrap.querySelectorAll('.match-right-btn').forEach(btn => {
+        const rId = btn.dataset.right;
+        btn.classList.remove(
+          'border-navy', 'bg-navy/5', 'border-borderWarm', 'bg-parchment/60',
+          'border-green-500', 'bg-green-50', 'border-red-400', 'bg-red-50'
+        );
+
+        if (state.graded) {
+          const linkedLeft = Object.keys(state.links).find(lId => state.links[lId] === rId);
+          if (linkedLeft && state.results[linkedLeft]) {
+            btn.classList.add('border-green-500', 'bg-green-50');
+          } else if (linkedLeft && !state.results[linkedLeft]) {
+            btn.classList.add('border-red-400', 'bg-red-50');
+          } else {
+            btn.classList.add('border-borderWarm', 'bg-parchment/60');
+          }
+        } else if (usedRights.has(rId)) {
+          btn.classList.add('border-navy', 'bg-navy/5');
+        } else {
+          btn.classList.add('border-borderWarm', 'bg-parchment/60');
+        }
+      });
+
+      drawMatchLines(blockId);
+    }
+
+    function drawMatchLines(blockId) {
+      const state = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      const linesGroup = document.getElementById(`match-lines-${blockId}`);
+      if (!state || !wrap || !linesGroup) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      if (wrapRect.width === 0 || wrapRect.height === 0) return;
+
+      linesGroup.innerHTML = '';
+
+      Object.entries(state.links).forEach(([leftId, rightId]) => {
+        const leftEl = document.getElementById(`left-${blockId}-${leftId}`);
+        const rightEl = document.getElementById(`right-${blockId}-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left - wrapRect.left - 3;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+
+        const dx = Math.max(24, (x2 - x1) * 0.45);
+        const pathData = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        let strokeColor = '#C59B27';
+        let markerId = `arrow-pending-${blockId}`;
+        if (state.graded) {
+          if (state.results[leftId]) {
+            strokeColor = '#16A34A';
+            markerId = `arrow-correct-${blockId}`;
+          } else {
+            strokeColor = '#DC2626';
+            markerId = `arrow-wrong-${blockId}`;
+          }
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', strokeColor);
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('marker-end', `url(#${markerId})`);
+        linesGroup.appendChild(path);
+
+        // Punto inicial elegante
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x1);
+        dot.setAttribute('cy', y1);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', strokeColor);
+        linesGroup.appendChild(dot);
+      });
+    }
+
+    function redrawAllMatches() {
+      Object.keys(appState.matches).forEach(blockId => {
+        drawMatchLines(blockId);
+      });
+    }
+
+    /* =========================================================================
+       6. INTERACTIVIDAD DE CONSTRUIR FRASES (WORD TILES)
+       ========================================================================= */
+    function renderBuildExercise(sectionId, item) {
+      const key = `${sectionId}-build-${item.num}`;
+      const state = appState.builds[key];
+      const zone = document.getElementById(`${sectionId}-build-zone-${item.num}`);
+      const bank = document.getElementById(`${sectionId}-build-bank-${item.num}`);
+      if (!state || !zone || !bank) return;
+
+      // Zona de respuesta
+      if (state.placed.length === 0) {
+        zone.innerHTML = `<span class="text-xs text-slate-400 italic select-none">Haz clic en las palabras de abajo para formar la frase...</span>`;
+      } else {
+        zone.innerHTML = state.placed
+          .map((wordIdx, pos) => `
+            <button type="button" onclick="removeWordTile('${sectionId}', ${item.num}, ${pos})"
+              class="word-tile px-3 py-1.5 rounded-lg bg-navy text-white text-sm font-semibold shadow-sm hover:bg-navy-light">
+              ${item.words[wordIdx]}
+            </button>
+          `)
+          .join('');
+      }
+
+      // Banco de palabras
+      bank.innerHTML = item.words
+        .map((word, idx) => {
+          const isUsed = state.placed.includes(idx);
+          return `
+            <button type="button" ${isUsed ? 'disabled' : ''} onclick="addWordTile('${sectionId}', ${item.num}, ${idx})"
+              class="word-tile px-3 py-1.5 rounded-lg text-sm font-semibold border transition ${
+                isUsed
+                  ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed'
+                  : 'bg-white text-navy border-borderWarm hover:border-gold hover:bg-gold-soft/40 shadow-soft'
+              }">
+              ${word}
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function findBuildItem(sectionId, num) {
+      const sec = SECTIONS_DATA[sectionId];
+      for (const b of sec.blocks) {
+        if (b.type === 'build') {
+          const found = b.items.find(i => i.num === num);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+
+    function addWordTile(sectionId, num, wordIdx) {
+      const key = `${sectionId}-build-${num}`;
+      const state = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!state || !item || state.placed.includes(wordIdx)) return;
+      state.placed.push(wordIdx);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function removeWordTile(sectionId, num, pos) {
+      const key = `${sectionId}-build-${num}`;
+      const state = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!state || !item) return;
+      state.placed.splice(pos, 1);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function clearBuildExercise(sectionId, num) {
+      const key = `${sectionId}-build-${num}`;
+      const item = findBuildItem(sectionId, num);
+      if (!appState.builds[key] || !item) return;
+      appState.builds[key].placed = [];
+      renderBuildExercise(sectionId, item);
+    }
+
+    /* =========================================================================
+       7. SISTEMA DE CORRECCIÓN INTELIGENTE Y FEEDBACK PEDAGÓGICO
+       ========================================================================= */
+    function renderFeedbackBox(isCorrect, correctDisplay, explanation) {
+      if (isCorrect) {
+        return `
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-green-800 bg-green-50 border border-green-200 rounded-xl px-3.5 py-2">
+            <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center text-xs shrink-0">✓</span>
+            <span>¡Correcto! Muy bien hecho.</span>
+          </div>
+        `;
+      }
+      return `
+        <div class="text-xs sm:text-sm bg-red-50/90 border border-red-200 rounded-xl p-3.5 space-y-1.5">
+          <div class="flex items-start gap-2 text-red-800 font-semibold">
+            <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5">✕</span>
+            <div>
+              <span>Respuesta correcta: </span>
+              <span class="underline decoration-red-300 font-bold text-red-950">${correctDisplay}</span>
+            </div>
+          </div>
+          <div class="pl-7 text-slate-700 leading-relaxed">
+            <span class="font-bold text-navy">Explicación:</span> ${explanation}
+          </div>
+        </div>
+      `;
+    }
+
+    function setCardStatus(el, isCorrect) {
+      if (!el) return;
+      el.classList.remove('border-borderWarm', 'bg-white', 'border-green-400', 'bg-green-50/30', 'border-red-300', 'bg-red-50/25');
+      if (isCorrect) {
+        el.classList.add('border-green-400', 'bg-green-50/30');
+      } else {
+        el.classList.add('border-red-300', 'bg-red-50/25');
+      }
+    }
+
+    function gradeSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      if (!sec) return;
+
+      let score = 0;
+      const total = 20;
+
+      sec.blocks.forEach(block => {
+        /* --- BLOQUE A: RELLENAR HUECOS --- */
+        if (block.type === 'fill') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            let allGapsOk = true;
+
+            item.gaps.forEach((gap, idx) => {
+              const input = document.getElementById(`${exId}-gap-${idx}`);
+              const ok = input ? isMatchAny(input.value, gap.accepted) : false;
+              if (!ok) allGapsOk = false;
+              if (input) {
+                input.classList.remove('border-borderWarm', 'border-green-500', 'bg-green-50', 'border-red-400', 'bg-red-50');
+                input.classList.add(ok ? 'border-green-500' : 'border-red-400', ok ? 'bg-green-50' : 'bg-red-50');
+              }
+            });
+
+            if (allGapsOk) score++;
+            setCardStatus(card, allGapsOk);
+            const displayAns = item.gaps.map(g => g.display).join(' ... ');
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(allGapsOk, displayAns, item.explanation);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE B: UNIR CON FLECHAS --- */
+        else if (block.type === 'match') {
+          const state = appState.matches[block.id];
+          const fbContainer = document.getElementById(`match-feedback-${block.id}`);
+          state.selectedLeft = null;
+          state.graded = true;
+          state.results = {};
+
+          let fbHtml = '';
+          block.pairs.forEach(pair => {
+            const chosenRight = state.links[pair.leftId];
+            const ok = chosenRight === pair.rightId;
+            state.results[pair.leftId] = ok;
+            if (ok) score++;
+
+            if (ok) {
+              fbHtml += `
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-green-800 bg-green-50 border border-green-200 rounded-xl px-3.5 py-2">
+                  <span class="font-bold">✓ Ej. ${pair.num}:</span>
+                  <span>¡Unión correcta!</span>
+                </div>
+              `;
+            } else {
+              fbHtml += `
+                <div class="text-xs sm:text-sm bg-red-50 border border-red-200 rounded-xl p-3 space-y-1">
+                  <div class="font-semibold text-red-800">
+                    ✕ Ej. ${pair.num} — Pareja correcta: <span class="text-red-950 font-bold">${pair.left} ${pair.right}</span>
+                  </div>
+                  <div class="text-slate-700"><strong class="text-navy">Explicación:</strong> ${pair.explanation}</div>
+                </div>
+              `;
+            }
+          });
+
+          updateMatchVisuals(block.id);
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+
+        /* --- BLOQUE C: CONSTRUIR FRASES --- */
+        else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const placed = appState.builds[key]?.placed || [];
+            const userSentence = placed.map(idx => item.words[idx]).join(' ');
+            const ok = isMatchAny(userSentence, item.accepted);
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE D: TRADUCIR --- */
+        else if (block.type === 'translate') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const input = document.getElementById(`${exId}-input`);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const ok = input ? isMatchAny(input.value, item.accepted) : false;
+
+            if (input) {
+              input.classList.remove('border-borderWarm', 'border-green-500', 'bg-green-50', 'border-red-400', 'bg-red-50');
+              input.classList.add(ok ? 'border-green-500' : 'border-red-400', ok ? 'bg-green-50' : 'bg-red-50');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE E: TEXTO CLOZE --- */
+        else if (block.type === 'cloze') {
+          const fbContainer = document.getElementById(`${sectionId}-cloze-feedback`);
+          let fbHtml = '';
+
+          block.segments.forEach(seg => {
+            if (!seg.num) return;
+            const input = document.getElementById(`${sectionId}-cloze-${seg.num}`);
+            const ok = input ? isMatchAny(input.value, seg.accepted) : false;
+            if (input) {
+              input.classList.remove('border-borderWarm', 'border-green-500', 'bg-green-50', 'border-red-400', 'bg-red-50');
+              input.classList.add(ok ? 'border-green-500' : 'border-red-400', ok ? 'bg-green-50' : 'bg-red-50');
+            }
+
+            if (ok) {
+              score++;
+              fbHtml += `
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-green-800 bg-green-50 border border-green-200 rounded-xl px-3.5 py-2">
+                  <span class="font-bold">✓ Hueco ${seg.num} (${seg.verb}):</span>
+                  <span>¡Correcto! (${seg.display})</span>
+                </div>
+              `;
+            } else {
+              fbHtml += `
+                <div class="text-xs sm:text-sm bg-red-50 border border-red-200 rounded-xl p-3 space-y-1">
+                  <div class="font-semibold text-red-800">
+                    ✕ Hueco ${seg.num} (${seg.verb}) — Respuesta correcta: <span class="text-red-950 font-bold">${seg.display}</span>
+                  </div>
+                  <div class="text-slate-700"><strong class="text-navy">Explicación:</strong> ${seg.explanation}</div>
+                </div>
+              `;
+            }
+          });
+
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+      });
+
+      // Guardar puntuación y mostrar resumen
+      appState.scores[sectionId] = score;
+      showSectionSummary(sectionId, score, total);
+      updateGlobalProgress();
+
+      // Desplazar suavemente hacia la tarjeta de resumen de la sección
+      const summaryEl = document.getElementById(`summary-${sectionId}`);
+      if (summaryEl) {
+        summaryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function showSectionSummary(sectionId, score, total) {
+      const el = document.getElementById(`summary-${sectionId}`);
+      if (!el) return;
+
+      const pct = Math.round((score / total) * 100);
+      let badgeColor = 'bg-amber-100 text-amber-900 border-amber-300';
+      let barColor = 'from-gold to-gold-light';
+      let message = '¡Buen intento! Revisa las explicaciones en rojo y vuelve a intentarlo para dominar esta sección.';
+
+      if (pct >= 90) {
+        badgeColor = 'bg-green-100 text-green-900 border-green-300';
+        barColor = 'from-forest to-green-500';
+        message = '¡Sobresaliente, digno de Wisdom Corner! Dominas esta estructura con total soltura.';
+      } else if (pct >= 70) {
+        badgeColor = 'bg-emerald-50 text-forest border-forest/30';
+        barColor = 'from-forest to-emerald-500';
+        message = '¡Muy buen trabajo! Tienes una base sólida; repasa los pequeños fallos para llegar al 100%.';
+      } else if (pct < 50) {
+        badgeColor = 'bg-red-50 text-red-900 border-red-200';
+        barColor = 'from-red-500 to-amber-500';
+        message = 'Te recomendamos echar un vistazo a la pestaña «Guía Wisdom Corner» y revisar cada explicación debajo.';
+      }
+
+      el.innerHTML = `
+        <div class="rounded-xl border p-4 sm:p-5 ${badgeColor} space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider opacity-80">Resultado de la sección</div>
+              <div class="font-serif text-2xl font-bold mt-0.5">${score} / ${total} aciertos <span class="text-base font-sans font-semibold">(${pct}%)</span></div>
+            </div>
+            <p class="text-xs sm:text-sm max-w-md leading-relaxed font-medium">${message}</p>
+          </div>
+          <div class="w-full h-2.5 bg-white/70 rounded-full overflow-hidden border border-black/5">
+            <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+          </div>
+        </div>
+      `;
+      el.classList.remove('hidden');
+    }
+
+    function updateGlobalProgress() {
+      const sections = ['usedto', 'would', 'mixed'];
+      let totalCorrect = 0;
+
+      sections.forEach(secId => {
+        const sc = appState.scores[secId];
+        const badge = document.getElementById(`badge-${secId}`);
+        if (sc !== null) {
+          totalCorrect += sc;
+          if (badge) {
+            badge.textContent = `${sc}/20`;
+            badge.className = 'text-[11px] px-1.5 py-0.5 rounded-md font-bold ' + (sc >= 14 ? 'bg-green-500/25 text-green-200' : 'bg-gold/30 text-gold-light');
+          }
+        } else if (badge) {
+          badge.textContent = '20';
+          badge.className = 'text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200';
+        }
+      });
+
+      const pct = Math.round((totalCorrect / 60) * 100);
+      document.getElementById('global-score-text').textContent = `${totalCorrect} / 60 aciertos`;
+      document.getElementById('global-percent').textContent = `${pct}%`;
+      document.getElementById('global-progress-bar').style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       8. REINICIO DE SECCIÓN (MODAL PERSONALIZADO SIN CONFIRM())
+       ========================================================================= */
+    function openResetModal(sectionId) {
+      appState.pendingResetSection = sectionId;
+      const modal = document.getElementById('reset-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeResetModal() {
+      appState.pendingResetSection = null;
+      const modal = document.getElementById('reset-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmResetSection() {
+      const secId = appState.pendingResetSection;
+      closeResetModal();
+      if (!secId) return;
+
+      appState.scores[secId] = null;
+      renderSection(secId);
+      updateGlobalProgress();
+      requestAnimationFrame(() => redrawAllMatches());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================================
+       9. NAVEGACIÓN POR PESTAÑAS Y EVENTOS GLOBALES
+       ========================================================================= */
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `panel-${tabId}`);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isActive = btn.dataset.tab === tabId;
+        btn.classList.toggle('active', isActive);
+        if (isActive) {
+          btn.classList.remove('bg-white/10', 'text-slate-200', 'hover:bg-white/20');
+          btn.classList.add('bg-white', 'text-navy', 'shadow-sm');
+        } else {
+          btn.classList.remove('bg-white', 'text-navy', 'shadow-sm');
+          btn.classList.add('bg-white/10', 'text-slate-200', 'hover:bg-white/20');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Recalcular flechas SVG una vez la pestaña es visible
+      requestAnimationFrame(() => {
+        redrawAllMatches();
+        setTimeout(redrawAllMatches, 120);
+      });
+    }
+
+    // Inicialización al cargar el DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSection('usedto');
+      renderSection('would');
+      renderSection('mixed');
+      updateGlobalProgress();
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('modal-cancel').addEventListener('click', closeResetModal);
+      document.getElementById('modal-confirm').addEventListener('click', confirmResetSection);
+      document.getElementById('reset-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'reset-modal') closeResetModal();
+      });
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(redrawAllMatches);
+      });
+    });
+  </script>
+</body>
+</html>
