@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy — Verbs + -ing vs. Nouns (Nivel A2–B1)</title>
+
+  <!-- Google Fonts: Playfair Display (títulos elegantes) + Plus Jakarta Sans (lectura e interfaz) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: '#FAF8F5',
+            cream: '#F3EFE6',
+            ink: '#1E293B',
+            navy: {
+              DEFAULT: '#1B365D',
+              dark: '#122644',
+              light: '#2A4E82'
+            },
+            forest: {
+              DEFAULT: '#2D5A4C',
+              light: '#3E7A67',
+              soft: '#EBF4F0'
+            },
+            gold: {
+              DEFAULT: '#C59B27',
+              light: '#E3C565',
+              soft: '#FBF5E6'
+            },
+            errRed: {
+              DEFAULT: '#C0392B',
+              soft: '#FDF2F2',
+              border: '#F2B8B5'
+            },
+            okGreen: {
+              DEFAULT: '#1E8449',
+              soft: '#ECFDF3',
+              border: '#A7DFC0'
+            },
+            borderWarm: '#E5DFD3'
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            card: '0 4px 20px -2px rgba(27, 54, 93, 0.06), 0 1px 4px rgba(27, 54, 93, 0.04)',
+            soft: '0 2px 10px rgba(27, 54, 93, 0.05)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF8F5;
+      color: #1E293B;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Resalte dorado sutil para el logo oficial sobre azul marino */
+    .logo-glow {
+      filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.32));
+    }
+
+    .word-tile {
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.15s ease;
+    }
+    .word-tile:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+    .word-tile:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .gap-input {
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .gap-input:focus {
+      outline: none;
+      border-color: #1B365D;
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.14);
+    }
+
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-gold-soft selection:text-navy">
+
+  <!-- ==================== CABECERA WISDOM CORNER ACADEMY ==================== -->
+  <header class="bg-navy text-white shadow-md sticky top-0 z-30 border-b-2 border-gold/70">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3.5">
+        <!-- Logo Oficial + Títulos -->
+        <div class="flex items-center gap-3.5">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-navy-dark/70 border border-gold/45 flex items-center justify-center shrink-0 p-1 shadow-inner overflow-hidden">
+            <img
+              src="Logo.png"
+              alt="Wisdom Corner Academy"
+              class="w-full h-full object-contain logo-glow"
+              onerror="this.style.display='none'; document.getElementById('header-logo-fallback').classList.remove('hidden');"
+            />
+            <!-- Fallback SVG elegante si Logo.png no se encuentra en local -->
+            <div id="header-logo-fallback" class="hidden flex flex-col items-center justify-center text-gold-light">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 6.5C2 5.4 2.9 4.5 4 4.5h5.5c1.4 0 2.5 1.1 2.5 2.5v12.5c0-1.1-.9-2-2-2H4c-1.1 0-2-.9-2-2V6.5z"/>
+                <path d="M22 6.5c0-1.1-.9-2-2-2h-5.5C13.1 4.5 12 5.6 12 7v12.5c0-1.1.9-2 2-2h6c1.1 0 2-.9 2-2V6.5z"/>
+                <circle cx="12" cy="3" r="1" fill="#E3C565" stroke="none"/>
+              </svg>
+              <span class="text-[8px] font-serif font-bold tracking-wider uppercase mt-0.5">WCA</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-gold-light">Wisdom Corner Academy</span>
+              <span class="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-gold/20 text-gold-light border border-gold/40">Nivel A2–B1</span>
+            </div>
+            <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight mt-0.5">Verbs + -ing vs. Nouns</h1>
+            <p class="text-xs sm:text-sm text-slate-300">Gramática Inglesa · Nivel A2–B1</p>
+          </div>
+        </div>
+
+        <!-- Marcador Global (60 ejercicios) -->
+        <div class="bg-navy-dark/80 border border-white/15 rounded-xl px-4 py-2.5 flex items-center gap-4 min-w-[235px]">
+          <div class="flex-1">
+            <div class="flex items-center justify-between text-xs text-slate-300 mb-1.5">
+              <span class="font-medium">Puntuación global</span>
+              <span id="global-score-text" class="font-bold text-gold-light">0 / 60</span>
+            </div>
+            <div class="w-full h-2 bg-white/15 rounded-full overflow-hidden">
+              <div id="global-progress-bar" class="h-full bg-gradient-to-r from-gold to-gold-light rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="text-right border-l border-white/15 pl-3">
+            <div id="global-percent" class="font-serif text-lg font-bold text-white leading-none">0%</div>
+            <div class="text-[10px] text-slate-300 uppercase tracking-wide mt-0.5">Nota</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por Pestañas -->
+      <nav class="mt-3.5 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 -mx-1 px-1" aria-label="Módulos de práctica">
+        <button data-tab="theory" class="tab-btn active flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white text-navy shadow-sm">
+          <span>📖</span>
+          <span>Guía de Teoría</span>
+        </button>
+        <button data-tab="mod1" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>Módulo 1: Verbo + -ing</span>
+          <span id="badge-mod1" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+        <button data-tab="mod2" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>Módulo 2: Sustantivo vs. -ing</span>
+          <span id="badge-mod2" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+        <button data-tab="mod3" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all bg-white/10 text-slate-200 hover:bg-white/20">
+          <span>Módulo 3: Mixto</span>
+          <span id="badge-mod3" class="text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">20</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-7 space-y-8">
+
+    <!-- ========================================================== -->
+    <!-- PESTAÑA 0: GUÍA DE TEORÍA VISUAL                           -->
+    <!-- ========================================================== -->
+    <section id="panel-theory" class="tab-panel active space-y-6">
+
+      <!-- Banner Introductorio -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 sm:p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-44 h-44 bg-gold-soft rounded-bl-full opacity-75 pointer-events-none"></div>
+        <div class="relative z-10">
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-gold bg-gold-soft px-3 py-1 rounded-full border border-gold/35 mb-3">
+            ✦ Guía de Gramática · Nivel A2–B1
+          </span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-navy">
+            Verbos seguidos de <span class="italic text-forest">-ing</span> frente a <span class="italic text-gold">sustantivos</span>
+          </h2>
+          <p class="text-slate-600 mt-2.5 max-w-3xl leading-relaxed text-sm sm:text-base">
+            En inglés existe un grupo muy importante de verbos de <strong>gusto, preferencia y acción</strong> que, cuando van seguidos de otro <strong>verbo (acción)</strong>, exigen obligatoriamente la terminación <strong>-ing</strong> (gerundio). En cambio, cuando van seguidos de una <strong>cosa, persona o idea (sustantivo)</strong>, ¡el sustantivo nunca lleva <em>-ing</em>!
+          </p>
+        </div>
+      </div>
+
+      <!-- 1. Lista de los 11 verbos objetivo -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card overflow-hidden">
+        <div class="px-6 py-4 bg-cream/70 border-b border-borderWarm flex items-center justify-between flex-wrap gap-2">
+          <h3 class="font-serif text-lg sm:text-xl font-bold text-navy">1. Los 11 verbos esenciales</h3>
+          <span class="text-xs font-semibold text-forest bg-forest-soft px-2.5 py-1 rounded-full">Verbo + -ing / Verbo + sustantivo</span>
+        </div>
+        <div class="p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 text-sm">
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">enjoy</strong>
+              <span class="text-xs text-slate-500 font-medium">disfrutar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">I enjoy <strong>reading</strong> novels.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">like</strong>
+              <span class="text-xs text-slate-500 font-medium">gustar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">She likes <strong>swimming</strong> in the sea.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">dislike</strong>
+              <span class="text-xs text-slate-500 font-medium">no gustar / disgustar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">He dislikes <strong>waking</strong> up early.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">love</strong>
+              <span class="text-xs text-slate-500 font-medium">encantar / amar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">We love <strong>cooking</strong> together.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">hate</strong>
+              <span class="text-xs text-slate-500 font-medium">odiar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">They hate <strong>waiting</strong> in queues.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">can't stand</strong>
+              <span class="text-xs text-slate-500 font-medium">no soportar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">I can't stand <strong>cleaning</strong> my room.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">fancy</strong>
+              <span class="text-xs text-slate-500 font-medium">apetecer</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">Do you fancy <strong>going</strong> out tonight?</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">suggest</strong>
+              <span class="text-xs text-slate-500 font-medium">sugerir</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">She suggested <strong>watching</strong> a film.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">imagine</strong>
+              <span class="text-xs text-slate-500 font-medium">imaginar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">Imagine <strong>living</strong> on an island!</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">stop</strong>
+              <span class="text-xs text-slate-500 font-medium">dejar de / parar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">Please stop <strong>talking</strong> during class.</p>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment/60 p-3.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-navy text-base">carry on</strong>
+              <span class="text-xs text-slate-500 font-medium">seguir / continuar</span>
+            </div>
+            <p class="text-xs text-slate-600 italic mt-1">He carried on <strong>working</strong> until 8 pm.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tabla de Estructuras (Afirmativa, Negativa, Interrogativa + Can't stand) -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card overflow-hidden">
+        <div class="px-6 py-4 bg-cream/70 border-b border-borderWarm flex items-center justify-between flex-wrap gap-2">
+          <h3 class="font-serif text-lg sm:text-xl font-bold text-navy">2. Estructuras: Afirmativa, Negativa e Interrogativa</h3>
+          <span class="text-xs text-slate-500 font-medium">El primer verbo se conjuga; el segundo siempre va en <strong>-ing</strong></span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-parchment border-b border-borderWarm text-xs uppercase tracking-wider text-slate-500">
+                <th class="py-3.5 px-5 font-bold">Forma</th>
+                <th class="py-3.5 px-5 font-bold text-navy">Verbos regulares (Present Simple)</th>
+                <th class="py-3.5 px-5 font-bold text-amber-800">Caso especial: CAN'T STAND</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-borderWarm">
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-okGreen whitespace-nowrap">Afirmativa (+)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Sujeto + verbo (-s en he/she/it) + V-ing</div>
+                  <div class="text-slate-600 italic mt-0.5">She <strong>enjoys painting</strong> landscapes.</div>
+                  <div class="text-slate-600 italic">We <strong>carry on studying</strong> after dinner.</div>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">Sujeto + can't stand + V-ing / sustantivo</div>
+                  <div class="text-slate-600 italic mt-0.5">I <strong>can't stand getting</strong> up early.</div>
+                  <span class="inline-block mt-1 text-[11px] bg-gold-soft text-amber-900 px-2 py-0.5 rounded font-semibold">Aunque lleva «can't», expresa «no soportar». No lleva «-s» en he/she/it.</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-errRed whitespace-nowrap">Negativa (−)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Sujeto + don't / doesn't + verbo base + V-ing</div>
+                  <div class="text-slate-600 italic mt-0.5">He <strong>doesn't fancy cooking</strong> tonight.</div>
+                  <div class="text-slate-600 italic">They <strong>don't like doing</strong> homework.</div>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">«can't stand» ya es negativo</div>
+                  <div class="text-slate-600 italic mt-0.5">She <strong>can't stand</strong> loud music.</div>
+                  <div class="text-xs text-slate-500 mt-0.5">(No se dice <em>doesn't can't stand</em>).</div>
+                </td>
+              </tr>
+              <tr class="hover:bg-parchment/50">
+                <td class="py-4 px-5 font-bold text-navy whitespace-nowrap">Interrogativa (?)</td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-navy">Do / Does + sujeto + verbo base + V-ing?</div>
+                  <div class="text-slate-600 italic mt-0.5"><strong>Do</strong> you <strong>fancy going</strong> to the cinema?</div>
+                  <div class="text-slate-600 italic"><strong>Does</strong> she <strong>enjoy running</strong>?</div>
+                </td>
+                <td class="py-4 px-5">
+                  <div class="font-semibold text-amber-900">Can + sujeto + stand + V-ing / sustantivo?</div>
+                  <div class="text-slate-600 italic mt-0.5"><strong>Can</strong> you <strong>stand waiting</strong> in the rain?</div>
+                  <div class="text-slate-600 italic"><strong>Can</strong> he <strong>stand</strong> spicy food?</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Reglas ortográficas rápidas del -ing -->
+      <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 space-y-4">
+        <h3 class="font-serif text-lg sm:text-xl font-bold text-navy">3. Reglas ortográficas rápidas para añadir <span class="text-forest">-ing</span></h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div class="rounded-xl border border-borderWarm bg-parchment p-4">
+            <div class="text-xs font-bold uppercase tracking-wide text-navy mb-1">1. Quitar la «-e» muda</div>
+            <p class="text-xs text-slate-600 mb-2">Si el verbo termina en <strong>-e</strong> muda, la quitamos antes de añadir <em>-ing</em>.</p>
+            <div class="space-y-1 font-semibold text-forest">
+              <div>make → mak<span class="underline">ing</span></div>
+              <div>dance → danc<span class="underline">ing</span></div>
+              <div>live → liv<span class="underline">ing</span></div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment p-4">
+            <div class="text-xs font-bold uppercase tracking-wide text-navy mb-1">2. Doblar la consonante final</div>
+            <p class="text-xs text-slate-600 mb-2">Verbos cortos de 1 sílaba acabados en <strong>C + V + C</strong> (excepto w, x, y).</p>
+            <div class="space-y-1 font-semibold text-forest">
+              <div>stop → sto<span class="underline">pping</span></div>
+              <div>run → ru<span class="underline">nning</span></div>
+              <div>swim → swi<span class="underline">mming</span></div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-borderWarm bg-parchment p-4">
+            <div class="text-xs font-bold uppercase tracking-wide text-navy mb-1">3. Terminados en «-ie» → «-ying»</div>
+            <p class="text-xs text-slate-600 mb-2">Cambiamos <strong>-ie</strong> por <strong>-y</strong> antes de añadir <em>-ing</em>.</p>
+            <div class="space-y-1 font-semibold text-forest">
+              <div>lie → l<span class="underline">ying</span></div>
+              <div>die → d<span class="underline">ying</span></div>
+              <div>tie → t<span class="underline">ying</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Diferencia clave: Verbo + -ing vs. Verbo + Sustantivo -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 border-t-4 border-t-forest">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-serif text-xl font-bold text-navy">Verbo + <span class="text-forest">-ing</span></h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-forest-soft text-forest">Sigue una ACCIÓN</span>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed mb-4">
+            Cuando detrás de estos verbos aparece <strong>otro verbo (una acción)</strong>, ese verbo debe llevar <strong>-ing</strong>.
+          </p>
+          <div class="space-y-2.5 text-sm">
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>I love <strong>cooking</strong>.</em> <span class="text-xs text-slate-500">(Me encanta cocinar)</span>
+            </div>
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>She suggested <strong>watching</strong> a film.</em> <span class="text-xs text-slate-500">(Sugirió ver una película)</span>
+            </div>
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>He can't stand <strong>getting</strong> up on Mondays.</em> <span class="text-xs text-slate-500">(No soporta levantarse los lunes)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-6 border-t-4 border-t-gold">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-serif text-xl font-bold text-navy">Verbo + <span class="text-gold">Sustantivo</span></h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-soft text-amber-900 border border-gold/30">Sigue una COSA / IDEA</span>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed mb-4">
+            Cuando lo que sigue es un <strong>sustantivo</strong> (una cosa, persona, comida, lugar o idea), va directamente detrás del verbo <strong>sin añadir -ing</strong>.
+          </p>
+          <div class="space-y-2.5 text-sm">
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>I love <strong>pasta</strong>.</em> <span class="text-xs text-slate-500">(Me encanta la pasta)</span>
+            </div>
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>She suggested <strong>a good restaurant</strong>.</em> <span class="text-xs text-slate-500">(Sugirió un buen restaurante)</span>
+            </div>
+            <div class="bg-parchment rounded-xl p-3 border border-borderWarm">
+              <em>He can't stand <strong>Mondays</strong>.</em> <span class="text-xs text-slate-500">(No soporta los lunes)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Errores típicos -->
+      <div class="bg-gold-soft/75 rounded-2xl border border-gold/40 p-5 sm:p-6">
+        <h3 class="font-serif text-lg font-bold text-navy flex items-center gap-2 mb-3">
+          <span>⚠️</span> Errores típicos que debes evitar
+        </h3>
+        <ul class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-sm">
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-errRed text-xs uppercase mb-1">Error 1: Usar «to + infinitivo»</p>
+            <p class="text-slate-500 line-through">I enjoy to play tennis.</p>
+            <p class="text-okGreen font-semibold">✓ I enjoy <u>playing</u> tennis.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Nunca uses <em>to</em> tras enjoy, fancy, suggest, carry on, imagine o dislike.</p>
+          </li>
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-errRed text-xs uppercase mb-1">Error 2: Añadir «-ing» a sustantivos</p>
+            <p class="text-slate-500 line-through">She loves musicking / coffeeing.</p>
+            <p class="text-okGreen font-semibold">✓ She loves <u>music</u> / <u>coffee</u>.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Solo los verbos (acciones) llevan terminación <em>-ing</em>.</p>
+          </li>
+          <li class="bg-white rounded-xl p-3.5 border border-gold/30 shadow-soft">
+            <p class="font-bold text-errRed text-xs uppercase mb-1">Error 3: Olvidar «do / does»</p>
+            <p class="text-slate-500 line-through">Fancy you going out?</p>
+            <p class="text-okGreen font-semibold">✓ <u>Do</u> you fancy going out?</p>
+            <p class="text-[11px] text-slate-500 mt-1">En Present Simple necesitas <em>do/does</em> (salvo con <em>Can you stand...?</em>).</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Botones de acceso rápido -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+        <button type="button" onclick="switchTab('mod1')" class="px-6 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white font-semibold text-sm shadow-md transition-all flex items-center gap-2">
+          <span>Empezar Módulo 1: Verbo + -ing</span>
+          <span>→</span>
+        </button>
+        <button type="button" onclick="switchTab('mod2')" class="px-5 py-3 rounded-xl bg-white hover:bg-cream text-navy border border-borderWarm font-semibold text-sm shadow-soft transition-all">
+          Ir al Módulo 2: Sustantivo vs. -ing
+        </button>
+        <button type="button" onclick="switchTab('mod3')" class="px-5 py-3 rounded-xl bg-forest hover:bg-forest-light text-white font-semibold text-sm shadow-soft transition-all">
+          Ir al Módulo 3: Mixto
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- PESTAÑAS DE PRÁCTICA (RENDERIZADAS POR JAVASCRIPT)         -->
+    <!-- ========================================================== -->
+    <section id="panel-mod1" class="tab-panel space-y-6"></section>
+    <section id="panel-mod2" class="tab-panel space-y-6"></section>
+    <section id="panel-mod3" class="tab-panel space-y-6"></section>
+
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="border-t border-borderWarm bg-white/90 py-5 mt-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center p-1 shrink-0">
+          <img
+            src="Logo.png"
+            alt="Wisdom Corner Academy"
+            class="w-full h-full object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+          />
+          <span class="hidden text-[9px] font-serif font-bold text-gold-light">WCA</span>
+        </div>
+        <div>
+          <span class="font-serif font-bold text-navy text-sm">Wisdom Corner Academy</span>
+          <span class="mx-1.5">·</span>
+          <span>Gramática Inglesa · Nivel A2–B1</span>
+        </div>
+      </div>
+      <div class="text-center sm:text-right">60 ejercicios interactivos · Corrección inteligente por módulo</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL DE REINICIO (SIN CONFIRM()) ==================== -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-dark/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl border border-borderWarm shadow-xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gold-soft text-amber-800 flex items-center justify-center text-lg font-bold">↺</div>
+        <div>
+          <h3 class="font-serif text-lg font-bold text-navy">¿Reiniciar esta sección?</h3>
+          <p class="text-xs text-slate-500">Se borrarán tus respuestas y la puntuación actual de este módulo.</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2.5 pt-2">
+        <button id="modal-cancel" type="button" class="px-4 py-2 rounded-xl border border-borderWarm text-slate-600 hover:bg-parchment text-sm font-semibold transition">Cancelar</button>
+        <button id="modal-confirm" type="button" class="px-4 py-2 rounded-xl bg-errRed hover:opacity-90 text-white text-sm font-semibold shadow-sm transition">Sí, reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. NORMALIZACIÓN Y VALIDACIÓN FLEXIBLE
+       ========================================================================= */
+    function normalizeText(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/[’‘`´]/g, "'")          // Unificar apóstrofos y tildes usadas como apóstrofo
+        .toLowerCase()
+        .replace(/\bdo not\b/g, "don't")
+        .replace(/\bdoes not\b/g, "doesn't")
+        .replace(/\bcannot\b/g, "can't")
+        .replace(/\bcan not\b/g, "can't")
+        .replace(/\bdid not\b/g, "didn't")
+        .replace(/[.,?!;:"()]/g, ' ')    // Ignorar signos de puntuación finales o internos
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function isMatchAny(userVal, acceptedArray) {
+      const normUser = normalizeText(userVal);
+      if (!normUser) return false;
+      return acceptedArray.some(acc => normalizeText(acc) === normUser);
+    }
+
+    /* Diagnóstico inteligente adicional cuando el alumno falla */
+    function getDiagnosticTip(userVal, expectedDisplay, contextType) {
+      const norm = normalizeText(userVal);
+      if (!norm) {
+        return 'Has dejado el ejercicio en blanco.';
+      }
+      if (/\bto\s+[a-z]+\b/.test(norm) && !/\bto\s+(the|a|an|my|your|his|her|our|their|music|school|bed|work|japan)\b/.test(norm)) {
+        if (contextType === 'ing') {
+          return 'Recuerda que tras estos verbos NO usamos «to + infinitivo», sino el verbo terminado en «-ing».';
+        }
+      }
+      if (contextType === 'noun' && /\b[a-z]+ing\b/.test(norm)) {
+        return 'Cuidado: aquí el complemento es un sustantivo (una cosa/idea), por lo que NO debe llevar «-ing».';
+      }
+      return '';
+    }
+
+    /* =========================================================================
+       2. BANCO COMPLETO DE 60 EJERCICIOS (20 + 20 + 20)
+       ========================================================================= */
+    const SECTIONS_DATA = {
+      /* -----------------------------------------------------------------------
+         MÓDULO 1: VERBO + -ING (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      mod1: {
+        id: 'mod1',
+        title: 'Módulo 1: Verbo + -ing',
+        subtitle: '20 ejercicios para dominar los 11 verbos seguidos de gerundio (-ing) en afirmativa, negativa e interrogativa.',
+        accent: 'navy',
+        blocks: [
+          {
+            id: 'm1-fill',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Rellenar huecos (Ejercicios 1 al 7)',
+            instruction: 'Completa las frases con la forma correcta en <strong>-ing</strong> (y el auxiliar cuando haya dos huecos). Presta atención a las reglas ortográficas.',
+            items: [
+              {
+                num: 1,
+                contextType: 'ing',
+                parts: ['Do you fancy ', ' (go) to the cinema this evening?'],
+                gaps: [{ accepted: ['going'], display: 'going' }],
+                explanation: 'El verbo «fancy» (apetecer) siempre va seguido de verbo en -ing: «Do you fancy going...?». Nunca se usa «to go».'
+              },
+              {
+                num: 2,
+                contextType: 'ing',
+                parts: ["She doesn't enjoy ", ' (wake) up early on winter mornings.'],
+                gaps: [{ accepted: ['waking'], display: 'waking' }],
+                explanation: 'Tras «enjoy» usamos -ing. Además, «wake» termina en «-e» muda, así que la eliminamos antes de añadir -ing: «waking».'
+              },
+              {
+                num: 3,
+                contextType: 'ing',
+                parts: ['Even after the bell rang, the teacher carried on ', ' (talk).'],
+                gaps: [{ accepted: ['talking'], display: 'talking' }],
+                explanation: '«Carry on» (seguir/continuar) exige siempre gerundio (-ing): «carried on talking».'
+              },
+              {
+                num: 4,
+                contextType: 'ing',
+                parts: ['Please stop ', ' (run) in the corridor; you might fall!'],
+                gaps: [{ accepted: ['running'], display: 'running' }],
+                explanation: '«Stop + -ing» significa «dejar de hacer algo». «Run» es un verbo corto (C+V+C), por lo que dobla la «n»: «running».'
+              },
+              {
+                num: 5,
+                contextType: 'ing',
+                parts: ['My brother ', ' (dislike / study) in noisy places.'],
+                gaps: [{ accepted: ['dislikes studying'], display: 'dislikes studying' }],
+                explanation: '«My brother» es 3ª persona del singular (he), así que «dislike» lleva «-s» (dislikes) y el segundo verbo va en -ing (studying).'
+              },
+              {
+                num: 6,
+                contextType: 'ing',
+                parts: ['', ' you ', ' (can / stand / lie) on the beach all day?'],
+                gaps: [
+                  { accepted: ['can'], display: 'Can', width: 'w-20' },
+                  { accepted: ['stand lying'], display: 'stand lying', width: 'w-44' }
+                ],
+                explanation: 'La interrogativa de «can\'t stand» se forma con «Can + sujeto + stand + V-ing?». Además, «lie» acaba en «-ie», que cambia a «-ying»: «lying».'
+              },
+              {
+                num: 7,
+                contextType: 'ing',
+                parts: ['We ', ' (not / like / make) mistakes in our exams.'],
+                gaps: [{ accepted: ["don't like making", 'do not like making'], display: "don't like making" }],
+                explanation: 'Negativa en Present Simple con «we»: «don\'t like» + «making» (quitamos la «-e» muda de «make» antes de añadir -ing).'
+              }
+            ]
+          },
+          {
+            id: 'm1-match',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas (Ejercicios 8 al 11)',
+            instruction: 'Haz clic en un inicio de frase de la izquierda y después en su continuación correcta en <strong>-ing</strong> de la derecha.',
+            pairs: [
+              {
+                num: 8,
+                leftId: 'm1l8',
+                left: 'My friend suggested',
+                rightId: 'm1r1',
+                right: 'visiting the art museum on Saturday.',
+                explanation: '«Suggest» (sugerir) va seguido de gerundio: «suggested visiting the art museum on Saturday».'
+              },
+              {
+                num: 9,
+                leftId: 'm1l9',
+                left: 'Can you imagine',
+                rightId: 'm1r2',
+                right: 'travelling around the world by train?',
+                explanation: 'Es la única pregunta de la columna izquierda («Can you imagine...»), por lo que encaja con el final interrogativo «travelling around the world by train?».'
+              },
+              {
+                num: 10,
+                leftId: 'm1l10',
+                left: 'I really love',
+                rightId: 'm1r3',
+                right: 'dancing to pop music in my bedroom.',
+                explanation: '«Love + -ing» expresa un gusto muy fuerte: «I really love dancing to pop music in my bedroom».'
+              },
+              {
+                num: 11,
+                leftId: 'm1l11',
+                left: 'My dad hates',
+                rightId: 'm1r4',
+                right: 'driving in heavy traffic every morning.',
+                explanation: '«Hate + -ing» expresa algo que detestas hacer: «driving in heavy traffic every morning».'
+              }
+            ],
+            rightOrder: ['m1r3', 'm1r1', 'm1r4', 'm1r2']
+          },
+          {
+            id: 'm1-build',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 12 al 16)',
+            instruction: 'Haz clic en las fichas de palabras en el orden correcto para construir frases en afirmativa, negativa e interrogativa.',
+            items: [
+              {
+                num: 12,
+                words: ['Japan?', 'living', 'you', 'imagine', 'Can', 'in'],
+                accepted: ['Can you imagine living in Japan'],
+                display: 'Can you imagine living in Japan?',
+                explanation: 'Orden interrogativo con «can»: Can + sujeto (you) + imagine + V-ing (living) + lugar (in Japan)?'
+              },
+              {
+                num: 13,
+                words: ['tonight.', 'pizza', 'ordering', 'suggested', 'They'],
+                accepted: ['They suggested ordering pizza tonight'],
+                display: 'They suggested ordering pizza tonight.',
+                explanation: 'Afirmativa con «suggest + -ing»: Sujeto (They) + suggested + ordering + pizza tonight.'
+              },
+              {
+                num: 14,
+                words: ['queues.', "can't", 'in', 'I', 'waiting', 'stand', 'long'],
+                accepted: ["I can't stand waiting in long queues"],
+                display: "I can't stand waiting in long queues.",
+                explanation: 'Estructura fija: Sujeto (I) + can\'t stand + V-ing (waiting) + complemento (in long queues).'
+              },
+              {
+                num: 15,
+                words: ['early?', 'Does', 'enjoy', 'getting', 'she', 'up'],
+                accepted: ['Does she enjoy getting up early'],
+                display: 'Does she enjoy getting up early?',
+                explanation: 'Pregunta en Present Simple con 3ª persona: Does + sujeto (she) + enjoy (sin -s) + getting up early?'
+              },
+              {
+                num: 16,
+                words: ['out', "doesn't", 'tonight.', 'going', 'He', 'fancy'],
+                accepted: ["He doesn't fancy going out tonight"],
+                display: "He doesn't fancy going out tonight.",
+                explanation: 'Negativa con 3ª persona: Sujeto (He) + doesn\'t + fancy (sin -s) + V-ing (going out tonight).'
+              }
+            ]
+          },
+          {
+            id: 'm1-translate',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés (Ejercicios 17 al 20)',
+            instruction: 'Traduce estas frases al inglés usando los verbos del tema seguidos de <strong>-ing</strong>.',
+            items: [
+              {
+                num: 17,
+                contextType: 'ing',
+                prompt: 'No soporto limpiar mi habitación.',
+                accepted: [
+                  "I can't stand cleaning my room",
+                  "I can't stand tidying my room",
+                  "I can't stand cleaning my bedroom",
+                  "I can't stand tidying my bedroom",
+                  "I can't stand tidying up my room",
+                  "I can't stand tidying up my bedroom"
+                ],
+                display: "I can't stand cleaning my room.",
+                explanation: '«No soporto» = «I can\'t stand», seguido siempre de gerundio (-ing): «cleaning / tidying my room (o bedroom)».'
+              },
+              {
+                num: 18,
+                contextType: 'ing',
+                prompt: '¿Te apetece nadar en la piscina?',
+                accepted: [
+                  'Do you fancy swimming in the pool',
+                  'Do you fancy swimming in the swimming pool'
+                ],
+                display: 'Do you fancy swimming in the pool?',
+                explanation: 'Pregunta en Present Simple: «Do you fancy» + «swimming» (doblando la «m» de «swim») + «in the pool?».'
+              },
+              {
+                num: 19,
+                contextType: 'ing',
+                prompt: 'Él siguió leyendo el libro.',
+                accepted: [
+                  'He carried on reading the book'
+                ],
+                display: 'He carried on reading the book.',
+                explanation: '«Seguir haciendo algo» en pasado = «carried on» + verbo en -ing («reading»): «He carried on reading the book.»'
+              },
+              {
+                num: 20,
+                contextType: 'ing',
+                prompt: 'Ella odia llegar tarde.',
+                accepted: [
+                  'She hates arriving late',
+                  'She hates being late',
+                  'She hates getting there late'
+                ],
+                display: 'She hates arriving late.',
+                explanation: '3ª persona singular («She hates», con -s) + verbo en -ing («arriving» sin la «-e» final, o «being late»).'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         MÓDULO 2: SUSTANTIVO VS. VERBO + -ING (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      mod2: {
+        id: 'mod2',
+        title: 'Módulo 2: Sustantivo vs. Verbo + -ing',
+        subtitle: '20 ejercicios para diferenciar con claridad cuándo sigue un sustantivo (cosa/idea) y cuándo un verbo en -ing (acción).',
+        accent: 'gold',
+        blocks: [
+          {
+            id: 'm2-fill',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Decide: ¿Sustantivo o Verbo + -ing? (Ejercicios 1 al 6)',
+            instruction: 'Completa cada hueco eligiendo la opción adecuada o escribiendo la forma correcta según la palabra entre paréntesis. <strong>Recuerda:</strong> los sustantivos NUNCA llevan <em>-ing</em>; los verbos SÍ.',
+            items: [
+              {
+                num: 1,
+                contextType: 'noun',
+                parts: ['I love ', ' (music) — especially jazz and rock.'],
+                gaps: [{ accepted: ['music'], display: 'music' }],
+                explanation: '«Music» es un sustantivo (una cosa/arte), no una acción. Por lo tanto, se escribe tal cual: «I love music» (sin -ing).'
+              },
+              {
+                num: 2,
+                contextType: 'ing',
+                parts: ['I love ', ' (listen) to music when I travel by bus.'],
+                gaps: [{ accepted: ['listening'], display: 'listening' }],
+                explanation: 'Aquí «listen» es un verbo (acción) detrás de «love», así que debe llevar gerundio: «listening».'
+              },
+              {
+                num: 3,
+                contextType: 'noun',
+                parts: ['She dislikes ', ' (rain) because it ruins her plans.'],
+                gaps: [{ accepted: ['rain', 'the rain'], display: 'rain' }],
+                explanation: 'En esta frase «rain» funciona como sustantivo (la lluvia). No es una acción que ella realice, así que escribimos «rain» (o «the rain»).'
+              },
+              {
+                num: 4,
+                contextType: 'ing',
+                parts: ['She dislikes ', ' (get) wet when she walks home.'],
+                gaps: [{ accepted: ['getting'], display: 'getting' }],
+                explanation: '«Get wet» (mojarse) es una acción (verbo). Tras «dislike» usamos -ing y doblamos la «t» de «get»: «getting».'
+              },
+              {
+                num: 5,
+                contextType: 'noun',
+                parts: ['He suggested ', ' (a new café) near the central square.'],
+                gaps: [{ accepted: ['a new café', 'a new cafe'], display: 'a new café' }],
+                explanation: '«Suggest» también puede ir seguido directamente de un sustantivo (un lugar/cosa): «He suggested a new café».'
+              },
+              {
+                num: 6,
+                contextType: 'ing',
+                parts: ['He suggested ', ' (try) the new café near the central square.'],
+                gaps: [{ accepted: ['trying'], display: 'trying' }],
+                explanation: 'Aquí sigue el verbo «try» (probar). Tras «suggest», el verbo siempre va en gerundio: «trying».'
+              }
+            ]
+          },
+          {
+            id: 'm2-match',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas: Sustantivo vs. Acción (Ejercicios 7 al 10)',
+            instruction: 'Une cada frase de la izquierda con la descripción o complemento gramatical que le corresponde en la derecha.',
+            pairs: [
+              {
+                num: 7,
+                leftId: 'm2l7',
+                left: 'I enjoy Italian food',
+                rightId: 'm2r1',
+                right: '→ Verbo + SUSTANTIVO (una cosa, sin -ing).',
+                explanation: '«Italian food» es un sintagma nominal (sustantivo), por eso no lleva terminación -ing.'
+              },
+              {
+                num: 8,
+                leftId: 'm2l8',
+                left: 'I enjoy cooking Italian food',
+                rightId: 'm2r2',
+                right: '→ Verbo + VERBO EN -ING (una acción).',
+                explanation: '«Cooking» es la acción (verbo) que sigue a «enjoy», por lo que exige la forma en -ing.'
+              },
+              {
+                num: 9,
+                leftId: 'm2l9',
+                left: "He can't stand spiders",
+                rightId: 'm2r3',
+                right: '→ "Can\'t stand" + SUSTANTIVO (animales/cosas).',
+                explanation: '«Spiders» (arañas) es un sustantivo plural que va directamente tras «can\'t stand».'
+              },
+              {
+                num: 10,
+                leftId: 'm2l10',
+                left: 'Do you fancy watching a match?',
+                rightId: 'm2r4',
+                right: '→ Pregunta con "fancy" + VERBO EN -ING.',
+                explanation: 'En «Do you fancy watching...?», «watching» es un verbo de acción en gerundio.'
+              }
+            ],
+            rightOrder: ['m2r2', 'm2r4', 'm2r1', 'm2r3']
+          },
+          {
+            id: 'm2-build',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 11 al 15)',
+            instruction: 'Ordena las fichas clicables combinando frases con <strong>sustantivo</strong> y frases con <strong>verbo + -ing</strong>.',
+            items: [
+              {
+                num: 11,
+                words: ['food?', 'like', 'you', 'spicy', 'Do'],
+                accepted: ['Do you like spicy food'],
+                display: 'Do you like spicy food?',
+                explanation: 'Pregunta con sustantivo («spicy food»): Do + sujeto (you) + like + adjetivo (spicy) + sustantivo (food)?'
+              },
+              {
+                num: 12,
+                words: ['games.', 'love', 'board', 'playing', 'We'],
+                accepted: ['We love playing board games'],
+                display: 'We love playing board games.',
+                explanation: 'Afirmativa con acción («playing»): Sujeto (We) + love + V-ing (playing) + board games.'
+              },
+              {
+                num: 13,
+                words: ['noise.', "can't", 'loud', 'stand', 'She'],
+                accepted: ["She can't stand loud noise"],
+                display: "She can't stand loud noise.",
+                explanation: '«Can\'t stand» seguido de sustantivo («loud noise»): Sujeto (She) + can\'t stand + loud noise.'
+              },
+              {
+                num: 14,
+                words: ['films.', 'enjoys', 'classic', 'He'],
+                accepted: ['He enjoys classic films'],
+                display: 'He enjoys classic films.',
+                explanation: '«Enjoy» en 3ª persona («enjoys») seguido de sustantivo («classic films»), sin ningún verbo en -ing.'
+              },
+              {
+                num: 15,
+                words: ['walk.', 'fancy', 'a', "don't", 'long', 'They'],
+                accepted: ["They don't fancy a long walk"],
+                display: "They don't fancy a long walk.",
+                explanation: '«A long walk» es un sustantivo (un paseo largo), no un verbo. Orden negativo: They don\'t fancy a long walk.'
+              }
+            ]
+          },
+          {
+            id: 'm2-translate',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés: Sustantivo vs. -ing (Ejercicios 16 al 20)',
+            instruction: 'Traduce con cuidado observando si en cada frase hay un <strong>sustantivo</strong> o una <strong>acción (-ing)</strong>.',
+            items: [
+              {
+                num: 16,
+                contextType: 'noun',
+                prompt: 'Me encanta el chocolate.',
+                accepted: ['I love chocolate'],
+                display: 'I love chocolate.',
+                explanation: '«Chocolate» es un sustantivo incontable en sentido general (sin «the» en inglés): «I love chocolate.»'
+              },
+              {
+                num: 17,
+                contextType: 'ing',
+                prompt: 'Me encanta comer chocolate.',
+                accepted: ['I love eating chocolate'],
+                display: 'I love eating chocolate.',
+                explanation: 'A diferencia del ejercicio anterior, aquí aparece la acción «comer» (eat), que tras «love» va en -ing: «I love eating chocolate.»'
+              },
+              {
+                num: 18,
+                contextType: 'noun',
+                prompt: 'Ella sugiere una película de terror.',
+                accepted: [
+                  'She suggests a horror film',
+                  'She suggests a horror movie',
+                  'She suggests a scary film',
+                  'She suggests a scary movie'
+                ],
+                display: 'She suggests a horror film.',
+                explanation: '3ª persona singular («She suggests») + sustantivo («a horror film / movie»). No hay segundo verbo, así que no hay -ing.'
+              },
+              {
+                num: 19,
+                contextType: 'noun',
+                prompt: 'No me gusta el café frío.',
+                accepted: [
+                  "I don't like cold coffee",
+                  'I dislike cold coffee'
+                ],
+                display: "I don't like cold coffee.",
+                explanation: 'Negativa con sustantivo («cold coffee», sin «the» por hablar en general): «I don\'t like cold coffee.» (o «I dislike cold coffee.»).'
+              },
+              {
+                num: 20,
+                contextType: 'noun',
+                prompt: '¿Te apetece un helado?',
+                accepted: [
+                  'Do you fancy an ice cream',
+                  'Do you fancy ice cream'
+                ],
+                display: 'Do you fancy an ice cream?',
+                explanation: '«Fancy» seguido de sustantivo («an ice cream»): «Do you fancy an ice cream?». No se añade ningún -ing porque «ice cream» es una cosa.'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         MÓDULO 3: MIXTO (20 EJERCICIOS EXACTOS)
+         ----------------------------------------------------------------------- */
+      mod3: {
+        id: 'mod3',
+        title: 'Módulo 3: Práctica Mixta',
+        subtitle: '20 ejercicios integrados con los 11 verbos, todas las formas (+ / − / ?), sustantivos, gerundios y un texto completo.',
+        accent: 'forest',
+        blocks: [
+          {
+            id: 'm3-fill',
+            type: 'fill',
+            letter: 'Bloque A',
+            title: 'Rellenar huecos variados (Ejercicios 1 al 5)',
+            instruction: 'Completa las frases conjugando correctamente el verbo principal (si aparece entre paréntesis) y escribiendo el complemento en <strong>-ing</strong> o como <strong>sustantivo</strong>.',
+            items: [
+              {
+                num: 1,
+                contextType: 'ing',
+                parts: ['My parents ', ' (not / enjoy / shop) on crowded Saturdays.'],
+                gaps: [{ accepted: ["don't enjoy shopping", 'do not enjoy shopping'], display: "don't enjoy shopping" }],
+                explanation: 'Sujeto plural («My parents») en negativa: «don\'t enjoy» + «shopping» (verbo corto C+V+C: dobla la «p»).'
+              },
+              {
+                num: 2,
+                contextType: 'noun',
+                parts: ['Can you imagine ', ' (a world) without the internet?'],
+                gaps: [{ accepted: ['a world'], display: 'a world' }],
+                explanation: '«A world» es un sustantivo detrás de «imagine», por lo que no lleva -ing: «Can you imagine a world without the internet?».'
+              },
+              {
+                num: 3,
+                contextType: 'ing',
+                parts: ['', ' your sister ', ' (hate / do) the washing-up?'],
+                gaps: [
+                  { accepted: ['does'], display: 'Does', width: 'w-20' },
+                  { accepted: ['hate doing'], display: 'hate doing', width: 'w-40' }
+                ],
+                explanation: 'Pregunta en 3ª persona singular («your sister»): «Does your sister hate doing...?». Recuerda que «hate» no lleva «-s» porque ya está «Does».'
+              },
+              {
+                num: 4,
+                contextType: 'ing',
+                parts: ['We stopped ', ' (play) football when the storm started.'],
+                gaps: [{ accepted: ['playing'], display: 'playing' }],
+                explanation: '«Stop + -ing» significa dejar de hacer una actividad: «stopped playing football».'
+              },
+              {
+                num: 5,
+                contextType: 'noun',
+                parts: ['My grandfather ', ' (can\'t stand / noise) at night.'],
+                gaps: [{ accepted: ["can't stand noise", "can't stand the noise"], display: "can't stand noise" }],
+                explanation: '«Can\'t stand» no cambia en 3ª persona («My grandfather can\'t stand») y «noise» es un sustantivo (sin -ing).'
+              }
+            ]
+          },
+          {
+            id: 'm3-match',
+            type: 'match',
+            letter: 'Bloque B',
+            title: 'Unir con flechas: Casos mixtos (Ejercicios 6 al 9)',
+            instruction: 'Relaciona cada comienzo de la izquierda con su final gramaticalmente correcto en la derecha.',
+            pairs: [
+              {
+                num: 6,
+                leftId: 'm3l6',
+                left: "She doesn't fancy",
+                rightId: 'm3r1',
+                right: 'a heavy dinner before bed.',
+                explanation: '«Fancy» seguido de sustantivo («a heavy dinner»): «She doesn\'t fancy a heavy dinner before bed».'
+              },
+              {
+                num: 7,
+                leftId: 'm3l7',
+                left: 'They carried on',
+                rightId: 'm3r2',
+                right: 'walking even though it was cold.',
+                explanation: '«Carry on» (continuar) siempre lleva verbo en -ing: «carried on walking».'
+              },
+              {
+                num: 8,
+                leftId: 'm3l8',
+                left: 'Do you dislike',
+                rightId: 'm3r3',
+                right: 'speaking in front of large groups?',
+                explanation: 'Es una interrogativa («Do you dislike...»), por lo que encaja con el final interrogativo «speaking in front of large groups?».'
+              },
+              {
+                num: 9,
+                leftId: 'm3l9',
+                left: 'Our coach suggested',
+                rightId: 'm3r4',
+                right: 'a short break after training.',
+                explanation: '«Suggest» seguido de sustantivo («a short break»): «Our coach suggested a short break after training».'
+              }
+            ],
+            rightOrder: ['m3r3', 'm3r1', 'm3r4', 'm3r2']
+          },
+          {
+            id: 'm3-build',
+            type: 'build',
+            letter: 'Bloque C',
+            title: 'Construir frases (Ejercicios 10 al 12)',
+            instruction: 'Ordena las palabras clicando en las fichas para formar frases correctas.',
+            items: [
+              {
+                num: 10,
+                words: ['Mondays.', 'hates', 'brother', 'My'],
+                accepted: ['My brother hates Mondays'],
+                display: 'My brother hates Mondays.',
+                explanation: 'Afirmativa con sustantivo («Mondays»): My brother + hates (3ª persona) + Mondays.'
+              },
+              {
+                num: 11,
+                words: ['homework?', 'doing', 'enjoy', 'you', 'Do'],
+                accepted: ['Do you enjoy doing homework'],
+                display: 'Do you enjoy doing homework?',
+                explanation: 'Pregunta en Present Simple con verbo + -ing: Do + you + enjoy + doing homework?'
+              },
+              {
+                num: 12,
+                words: ['the', 'stopped', 'guitar.', 'practising', 'She'],
+                accepted: ['She stopped practising the guitar'],
+                display: 'She stopped practising the guitar.',
+                explanation: '«Stop + -ing» (dejar de hacer algo): She + stopped + practising + the guitar.'
+              }
+            ]
+          },
+          {
+            id: 'm3-translate',
+            type: 'translate',
+            letter: 'Bloque D',
+            title: 'Traducir al inglés (Ejercicios 13 al 15)',
+            instruction: 'Traduce estas frases al inglés aplicando correctamente las estructuras aprendidas.',
+            items: [
+              {
+                num: 13,
+                contextType: 'ing',
+                prompt: '¿Puedes imaginar vivir sin música?',
+                accepted: [
+                  'Can you imagine living without music'
+                ],
+                display: 'Can you imagine living without music?',
+                explanation: '«Can you imagine» + verbo en -ing («living», sin la «-e» final) + «without music».'
+              },
+              {
+                num: 14,
+                contextType: 'noun',
+                prompt: 'A ella no le gustan los lunes.',
+                accepted: [
+                  "She doesn't like Mondays",
+                  'She dislikes Mondays'
+                ],
+                display: "She doesn't like Mondays.",
+                explanation: '3ª persona negativa con sustantivo («Mondays», siempre en mayúscula y sin artículo): «She doesn\'t like Mondays.» (o «She dislikes Mondays.»).'
+              },
+              {
+                num: 15,
+                contextType: 'ing',
+                prompt: 'Él sugirió hacer un pastel.',
+                accepted: [
+                  'He suggested making a cake',
+                  'He suggested baking a cake'
+                ],
+                display: 'He suggested making a cake.',
+                explanation: '«Suggest» en pasado («suggested») + gerundio («making», quitando la «-e» muda de «make», o «baking») + «a cake».'
+              }
+            ]
+          },
+          {
+            id: 'm3-cloze',
+            type: 'cloze',
+            letter: 'Bloque E',
+            title: 'Texto Cloze Test (Ejercicios 16 al 20)',
+            instruction: 'Lee el texto y completa los 5 huecos usando los verbos o sustantivos entre paréntesis. Decide en cada caso si necesita <strong>-ing</strong> o si es un <strong>sustantivo</strong>.',
+            storyTitle: 'A Rainy Weekend at Home',
+            segments: [
+              { text: 'Last Saturday it poured with rain all day. I really hate ' },
+              {
+                num: 16,
+                verb: 'stay',
+                contextType: 'ing',
+                accepted: ['staying'],
+                display: 'staying',
+                explanation: 'Hueco 16: Tras «hate» va el verbo de acción «stay» (quedarse), que debe ir en gerundio: «staying».'
+              },
+              { text: ' indoors when I have free time, and my sister can\'t stand ' },
+              {
+                num: 17,
+                verb: 'bad weather',
+                contextType: 'noun',
+                accepted: ['bad weather'],
+                display: 'bad weather',
+                explanation: 'Hueco 17: «Bad weather» (mal tiempo) es un sustantivo, no un verbo. Por eso va sin -ing: «bad weather».'
+              },
+              { text: '. At first, we didn\'t fancy ' },
+              {
+                num: 18,
+                verb: 'do',
+                contextType: 'ing',
+                accepted: ['doing'],
+                display: 'doing',
+                explanation: 'Hueco 18: «Didn\'t fancy» (no nos apetecía) va seguido de verbo en -ing: «doing».'
+              },
+              { text: ' anything, so we just sat on the sofa. Then my mum suggested ' },
+              {
+                num: 19,
+                verb: 'bake',
+                contextType: 'ing',
+                accepted: ['baking'],
+                display: 'baking',
+                explanation: 'Hueco 19: Tras «suggested» usamos gerundio. «Bake» termina en «-e» muda, así que la quitamos: «baking».'
+              },
+              { text: ' chocolate cookies together! We enjoyed ' },
+              {
+                num: 20,
+                verb: 'the afternoon',
+                contextType: 'noun',
+                accepted: ['the afternoon'],
+                display: 'the afternoon',
+                explanation: 'Hueco 20: «The afternoon» (la tarde) es un sustantivo directo tras «enjoyed», por lo que no lleva -ing: «the afternoon».'
+              },
+              { text: ' so much that we carried on playing board games until midnight.' }
+            ]
+          }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       3. ESTADO GLOBAL DE LA APLICACIÓN
+       ========================================================================= */
+    const appState = {
+      activeTab: 'theory',
+      scores: {
+        mod1: null,
+        mod2: null,
+        mod3: null
+      },
+      matches: {}, // { blockId: { selectedLeft, links: {}, graded, results: {} } }
+      builds: {},  // { key: { placed: [] } }
+      pendingResetSection: null
+    };
+
+    const resizeObservers = [];
+
+    /* =========================================================================
+       4. RENDERIZADO DINÁMICO DE CADA MÓDULO
+       ========================================================================= */
+    function renderSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      const container = document.getElementById(`panel-${sectionId}`);
+      if (!sec || !container) return;
+
+      const accentBorder =
+        sec.accent === 'gold'
+          ? 'border-t-gold'
+          : sec.accent === 'forest'
+          ? 'border-t-forest'
+          : 'border-t-navy';
+
+      let html = `
+        <div class="bg-white rounded-2xl border border-borderWarm border-t-4 ${accentBorder} shadow-card p-5 sm:p-7">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-navy">${sec.title}</h2>
+              <p class="text-sm text-slate-600 mt-1">${sec.subtitle}</p>
+            </div>
+            <div class="inline-flex items-center gap-2 self-start sm:self-center px-3.5 py-1.5 rounded-full bg-parchment border border-borderWarm text-xs font-bold text-navy shrink-0">
+              <span>📝</span>
+              <span>20 ejercicios</span>
+            </div>
+          </div>
+          <div id="summary-${sectionId}" class="hidden mt-5"></div>
+        </div>
+      `;
+
+      sec.blocks.forEach(block => {
+        html += renderBlock(sectionId, block);
+      });
+
+      html += `
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-sm text-slate-600 text-center sm:text-left">
+            <strong class="text-navy">¿Has completado los 20 ejercicios?</strong> Pulsa para corregir y ver las explicaciones.
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-3 w-full sm:w-auto">
+            <button type="button" onclick="openResetModal('${sectionId}')" class="px-4 py-2.5 rounded-xl border border-borderWarm bg-parchment hover:bg-cream text-slate-700 font-semibold text-sm transition flex items-center gap-2">
+              <span>↺</span>
+              <span>Reiniciar sección</span>
+            </button>
+            <button type="button" onclick="gradeSection('${sectionId}')" class="px-6 py-2.5 rounded-xl bg-navy hover:bg-navy-dark text-white font-semibold text-sm shadow-md transition flex items-center gap-2">
+              <span>✓</span>
+              <span>Corregir esta sección</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      sec.blocks.forEach(block => {
+        if (block.type === 'match') {
+          initMatchBlock(block);
+        } else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            appState.builds[key] = { placed: [] };
+            renderBuildExercise(sectionId, item);
+          });
+        }
+      });
+    }
+
+    function renderBlock(sectionId, block) {
+      let bodyHtml = '';
+
+      if (block.type === 'fill') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          let sentenceHtml = '';
+          item.parts.forEach((part, idx) => {
+            sentenceHtml += `<span>${part}</span>`;
+            if (idx < item.gaps.length) {
+              const widthClass = item.gaps[idx].width || 'w-44 sm:w-52';
+              sentenceHtml += `<input type="text" id="${exId}-gap-${idx}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input inline-block ${widthClass} mx-1 px-2.5 py-1 rounded-lg border-2 border-borderWarm bg-parchment/70 text-navy font-semibold text-sm align-baseline" />`;
+            }
+          });
+
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm sm:text-[15px] leading-8 text-ink">${sentenceHtml}</div>
+                  <div id="${exId}-feedback" class="hidden mt-3"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'match') {
+        const rightMap = {};
+        block.pairs.forEach(p => { rightMap[p.rightId] = p; });
+        const orderedRight = block.rightOrder.map(id => rightMap[id]);
+
+        bodyHtml = `
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 bg-parchment px-3.5 py-2 rounded-xl border border-borderWarm">
+              <span>💡 Haz clic en una tarjeta de la <strong>izquierda</strong> y luego en su pareja de la <strong>derecha</strong>. Haz clic en una tarjeta ya unida para cambiarla.</span>
+              <button type="button" onclick="clearMatchBlock('${block.id}')" class="text-navy font-semibold hover:underline shrink-0">Limpiar flechas</button>
+            </div>
+
+            <div id="match-wrap-${block.id}" class="relative py-1">
+              <svg id="match-svg-${block.id}" class="match-svg">
+                <defs>
+                  <marker id="arrow-pending-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C59B27" />
+                  </marker>
+                  <marker id="arrow-correct-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#1E8449" />
+                  </marker>
+                  <marker id="arrow-wrong-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C0392B" />
+                  </marker>
+                </defs>
+                <g id="match-lines-${block.id}"></g>
+              </svg>
+
+              <div class="grid grid-cols-2 gap-6 sm:gap-14 md:gap-20 relative z-20">
+                <div class="space-y-3">
+                  ${block.pairs.map(p => `
+                    <button type="button" id="left-${block.id}-${p.leftId}" data-block="${block.id}" data-left="${p.leftId}"
+                      onclick="handleMatchLeftClick('${block.id}', '${p.leftId}')"
+                      class="match-left-btn w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-borderWarm bg-white hover:border-gold transition-all shadow-soft flex items-start gap-2.5">
+                      <span class="w-6 h-6 rounded-md bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${p.num}</span>
+                      <span class="text-xs sm:text-sm font-medium text-ink leading-snug">${p.left}</span>
+                    </button>
+                  `).join('')}
+                </div>
+
+                <div class="space-y-3">
+                  ${orderedRight.map((p, idx) => `
+                    <button type="button" id="right-${block.id}-${p.rightId}" data-block="${block.id}" data-right="${p.rightId}"
+                      onclick="handleMatchRightClick('${block.id}', '${p.rightId}')"
+                      class="match-right-btn w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-borderWarm bg-parchment/60 hover:border-navy transition-all shadow-soft flex items-start gap-2.5">
+                      <span class="w-6 h-6 rounded-md bg-white text-slate-600 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${String.fromCharCode(65 + idx)}</span>
+                      <span class="text-xs sm:text-sm text-ink leading-snug">${p.right}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div id="match-feedback-${block.id}" class="hidden space-y-2.5 pt-2"></div>
+          </div>
+        `;
+      }
+
+      else if (block.type === 'build') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0 space-y-3">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tu frase:</span>
+                    <button type="button" onclick="clearBuildExercise('${sectionId}', ${item.num})" class="text-xs font-semibold text-slate-500 hover:text-navy">Limpiar frase</button>
+                  </div>
+                  <div id="${sectionId}-build-zone-${item.num}" class="min-h-[48px] p-2.5 rounded-xl border-2 border-dashed border-borderWarm bg-parchment/70 flex flex-wrap gap-2 items-center"></div>
+                  <div id="${sectionId}-build-bank-${item.num}" class="flex flex-wrap gap-2"></div>
+                  <div id="${exId}-feedback" class="hidden mt-2"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'translate') {
+        bodyHtml = `<div class="space-y-4">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-card rounded-xl border border-borderWarm bg-white p-4 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-lg bg-cream text-navy font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-borderWarm">${item.num}</span>
+                <div class="flex-1 min-w-0 space-y-2.5">
+                  <p class="text-sm sm:text-[15px] font-semibold text-navy">«${item.prompt}»</p>
+                  <input type="text" id="${exId}-input" autocomplete="off" spellcheck="false" placeholder="Escribe la traducción en inglés..."
+                    class="gap-input w-full px-3.5 py-2.5 rounded-xl border-2 border-borderWarm bg-parchment/60 text-ink text-sm font-medium" />
+                  <div id="${exId}-feedback" class="hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'cloze') {
+        let storyHtml = '';
+        block.segments.forEach(seg => {
+          if (seg.text) {
+            storyHtml += `<span>${seg.text}</span>`;
+          } else {
+            storyHtml += `
+              <span class="inline-flex items-baseline flex-wrap gap-1 mx-0.5 my-1">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-navy text-white text-[11px] font-bold align-middle">${seg.num}</span>
+                <input type="text" id="${sectionId}-cloze-${seg.num}" autocomplete="off" spellcheck="false" placeholder="..."
+                  class="gap-input w-36 sm:w-44 px-2.5 py-1 rounded-lg border-2 border-borderWarm bg-white text-navy font-semibold text-sm" />
+                <span class="text-xs font-semibold text-forest bg-forest-soft px-1.5 py-0.5 rounded">(${seg.verb})</span>
+              </span>
+            `;
+          }
+        });
+
+        bodyHtml = `
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-borderWarm bg-parchment/80 p-5 sm:p-6 shadow-inner">
+              <h4 class="font-serif text-lg sm:text-xl font-bold text-navy mb-3 flex items-center gap-2">
+                <span>🌧️</span>
+                <span>${block.storyTitle}</span>
+              </h4>
+              <p class="text-sm sm:text-[15.5px] leading-9 text-ink">${storyHtml}</p>
+            </div>
+            <div id="${sectionId}-cloze-feedback" class="hidden space-y-2.5"></div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="bg-white rounded-2xl border border-borderWarm shadow-card p-5 sm:p-6 space-y-4">
+          <div class="border-b border-borderWarm pb-3.5">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gold bg-gold-soft px-2.5 py-0.5 rounded-full border border-gold/30">${block.letter}</span>
+            <h3 class="font-serif text-lg sm:text-xl font-bold text-navy mt-1.5">${block.title}</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">${block.instruction}</p>
+          </div>
+          ${bodyHtml}
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       5. INTERACTIVIDAD DE FLECHAS SVG
+       ========================================================================= */
+    function initMatchBlock(block) {
+      appState.matches[block.id] = {
+        selectedLeft: null,
+        links: {},
+        graded: false,
+        results: {}
+      };
+
+      const wrap = document.getElementById(`match-wrap-${block.id}`);
+      if (wrap && typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => drawMatchLines(block.id));
+        ro.observe(wrap);
+        resizeObservers.push(ro);
+      }
+    }
+
+    function handleMatchLeftClick(blockId, leftId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+      state.selectedLeft = state.selectedLeft === leftId ? null : leftId;
+      state.graded = false;
+      updateMatchVisuals(blockId);
+    }
+
+    function handleMatchRightClick(blockId, rightId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+
+      if (state.selectedLeft) {
+        Object.keys(state.links).forEach(lId => {
+          if (state.links[lId] === rightId) delete state.links[lId];
+        });
+        state.links[state.selectedLeft] = rightId;
+        state.selectedLeft = null;
+        state.graded = false;
+        updateMatchVisuals(blockId);
+      } else {
+        const connectedLeft = Object.keys(state.links).find(lId => state.links[lId] === rightId);
+        if (connectedLeft) {
+          delete state.links[connectedLeft];
+          state.graded = false;
+          updateMatchVisuals(blockId);
+        }
+      }
+    }
+
+    function clearMatchBlock(blockId) {
+      const state = appState.matches[blockId];
+      if (!state) return;
+      state.selectedLeft = null;
+      state.links = {};
+      state.graded = false;
+      state.results = {};
+      const fb = document.getElementById(`match-feedback-${blockId}`);
+      if (fb) {
+        fb.innerHTML = '';
+        fb.classList.add('hidden');
+      }
+      updateMatchVisuals(blockId);
+    }
+
+    function updateMatchVisuals(blockId) {
+      const state = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      if (!state || !wrap) return;
+
+      const usedRights = new Set(Object.values(state.links));
+
+      wrap.querySelectorAll('.match-left-btn').forEach(btn => {
+        const lId = btn.dataset.left;
+        btn.classList.remove(
+          'border-gold', 'bg-gold-soft/70', 'ring-2', 'ring-gold/40',
+          'border-navy', 'bg-navy/5',
+          'border-okGreen', 'bg-okGreen-soft',
+          'border-errRed', 'bg-errRed-soft', 'border-borderWarm', 'bg-white'
+        );
+
+        if (state.graded) {
+          if (state.results[lId]) {
+            btn.classList.add('border-okGreen', 'bg-okGreen-soft');
+          } else {
+            btn.classList.add('border-errRed', 'bg-errRed-soft');
+          }
+        } else if (state.selectedLeft === lId) {
+          btn.classList.add('border-gold', 'bg-gold-soft/70', 'ring-2', 'ring-gold/40');
+        } else if (state.links[lId]) {
+          btn.classList.add('border-navy', 'bg-navy/5');
+        } else {
+          btn.classList.add('border-borderWarm', 'bg-white');
+        }
+      });
+
+      wrap.querySelectorAll('.match-right-btn').forEach(btn => {
+        const rId = btn.dataset.right;
+        btn.classList.remove(
+          'border-navy', 'bg-navy/5', 'border-borderWarm', 'bg-parchment/60',
+          'border-okGreen', 'bg-okGreen-soft', 'border-errRed', 'bg-errRed-soft'
+        );
+
+        if (state.graded) {
+          const linkedLeft = Object.keys(state.links).find(lId => state.links[lId] === rId);
+          if (linkedLeft && state.results[linkedLeft]) {
+            btn.classList.add('border-okGreen', 'bg-okGreen-soft');
+          } else if (linkedLeft && !state.results[linkedLeft]) {
+            btn.classList.add('border-errRed', 'bg-errRed-soft');
+          } else {
+            btn.classList.add('border-borderWarm', 'bg-parchment/60');
+          }
+        } else if (usedRights.has(rId)) {
+          btn.classList.add('border-navy', 'bg-navy/5');
+        } else {
+          btn.classList.add('border-borderWarm', 'bg-parchment/60');
+        }
+      });
+
+      drawMatchLines(blockId);
+    }
+
+    function drawMatchLines(blockId) {
+      const state = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      const linesGroup = document.getElementById(`match-lines-${blockId}`);
+      if (!state || !wrap || !linesGroup) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      if (wrapRect.width === 0 || wrapRect.height === 0) return;
+
+      linesGroup.innerHTML = '';
+
+      Object.entries(state.links).forEach(([leftId, rightId]) => {
+        const leftEl = document.getElementById(`left-${blockId}-${leftId}`);
+        const rightEl = document.getElementById(`right-${blockId}-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left - wrapRect.left - 3;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+
+        const dx = Math.max(24, (x2 - x1) * 0.45);
+        const pathData = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        let strokeColor = '#C59B27';
+        let markerId = `arrow-pending-${blockId}`;
+        if (state.graded) {
+          if (state.results[leftId]) {
+            strokeColor = '#1E8449';
+            markerId = `arrow-correct-${blockId}`;
+          } else {
+            strokeColor = '#C0392B';
+            markerId = `arrow-wrong-${blockId}`;
+          }
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', strokeColor);
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('marker-end', `url(#${markerId})`);
+        linesGroup.appendChild(path);
+
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x1);
+        dot.setAttribute('cy', y1);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', strokeColor);
+        linesGroup.appendChild(dot);
+      });
+    }
+
+    function redrawAllMatches() {
+      Object.keys(appState.matches).forEach(blockId => drawMatchLines(blockId));
+    }
+
+    /* =========================================================================
+       6. INTERACTIVIDAD DE FICHAS CLICABLES (CONSTRUIR FRASES)
+       ========================================================================= */
+    function renderBuildExercise(sectionId, item) {
+      const key = `${sectionId}-build-${item.num}`;
+      const state = appState.builds[key];
+      const zone = document.getElementById(`${sectionId}-build-zone-${item.num}`);
+      const bank = document.getElementById(`${sectionId}-build-bank-${item.num}`);
+      if (!state || !zone || !bank) return;
+
+      if (state.placed.length === 0) {
+        zone.innerHTML = `<span class="text-xs text-slate-400 italic select-none">Haz clic en las palabras de abajo para construir la frase...</span>`;
+      } else {
+        zone.innerHTML = state.placed
+          .map((wordIdx, pos) => `
+            <button type="button" onclick="removeWordTile('${sectionId}', ${item.num}, ${pos})"
+              class="word-tile px-3 py-1.5 rounded-lg bg-navy text-white text-sm font-semibold shadow-sm hover:bg-navy-light">
+              ${item.words[wordIdx]}
+            </button>
+          `)
+          .join('');
+      }
+
+      bank.innerHTML = item.words
+        .map((word, idx) => {
+          const isUsed = state.placed.includes(idx);
+          return `
+            <button type="button" ${isUsed ? 'disabled' : ''} onclick="addWordTile('${sectionId}', ${item.num}, ${idx})"
+              class="word-tile px-3 py-1.5 rounded-lg text-sm font-semibold border transition ${
+                isUsed
+                  ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed'
+                  : 'bg-white text-navy border-borderWarm hover:border-gold hover:bg-gold-soft/40 shadow-soft'
+              }">
+              ${word}
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function findBuildItem(sectionId, num) {
+      const sec = SECTIONS_DATA[sectionId];
+      for (const b of sec.blocks) {
+        if (b.type === 'build') {
+          const found = b.items.find(i => i.num === num);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+
+    function addWordTile(sectionId, num, wordIdx) {
+      const key = `${sectionId}-build-${num}`;
+      const state = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!state || !item || state.placed.includes(wordIdx)) return;
+      state.placed.push(wordIdx);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function removeWordTile(sectionId, num, pos) {
+      const key = `${sectionId}-build-${num}`;
+      const state = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!state || !item) return;
+      state.placed.splice(pos, 1);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function clearBuildExercise(sectionId, num) {
+      const key = `${sectionId}-build-${num}`;
+      const item = findBuildItem(sectionId, num);
+      if (!appState.builds[key] || !item) return;
+      appState.builds[key].placed = [];
+      renderBuildExercise(sectionId, item);
+    }
+
+    /* =========================================================================
+       7. CORRECCIÓN INTELIGENTE Y FEEDBACK PEDAGÓGICO
+       ========================================================================= */
+    function renderFeedbackBox(isCorrect, correctDisplay, explanation, extraTip = '') {
+      if (isCorrect) {
+        return `
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-okGreen bg-okGreen-soft border border-okGreen-border rounded-xl px-3.5 py-2">
+            <span class="w-5 h-5 rounded-full bg-okGreen text-white flex items-center justify-center text-xs shrink-0">✓</span>
+            <span>¡Correcto! Muy bien hecho.</span>
+          </div>
+        `;
+      }
+      return `
+        <div class="text-xs sm:text-sm bg-errRed-soft border border-errRed-border rounded-xl p-3.5 space-y-1.5">
+          <div class="flex items-start gap-2 text-errRed font-semibold">
+            <span class="w-5 h-5 rounded-full bg-errRed text-white flex items-center justify-center text-xs shrink-0 mt-0.5">✕</span>
+            <div>
+              <span>Respuesta correcta: </span>
+              <span class="underline decoration-errRed/40 font-bold text-slate-900">${correctDisplay}</span>
+            </div>
+          </div>
+          ${extraTip ? `<div class="pl-7 text-errRed/90 font-medium">${extraTip}</div>` : ''}
+          <div class="pl-7 text-slate-700 leading-relaxed">
+            <span class="font-bold text-navy">Explicación:</span> ${explanation}
+          </div>
+        </div>
+      `;
+    }
+
+    function setCardStatus(el, isCorrect) {
+      if (!el) return;
+      el.classList.remove(
+        'border-borderWarm', 'bg-white',
+        'border-okGreen-border', 'bg-okGreen-soft/40',
+        'border-errRed-border', 'bg-errRed-soft/40'
+      );
+      if (isCorrect) {
+        el.classList.add('border-okGreen-border', 'bg-okGreen-soft/40');
+      } else {
+        el.classList.add('border-errRed-border', 'bg-errRed-soft/40');
+      }
+    }
+
+    function gradeSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      if (!sec) return;
+
+      let score = 0;
+      const total = 20;
+
+      sec.blocks.forEach(block => {
+        /* --- BLOQUE FILL --- */
+        if (block.type === 'fill') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            let allGapsOk = true;
+            let combinedUser = '';
+
+            item.gaps.forEach((gap, idx) => {
+              const input = document.getElementById(`${exId}-gap-${idx}`);
+              const val = input ? input.value : '';
+              combinedUser += ' ' + val;
+              const ok = isMatchAny(val, gap.accepted);
+              if (!ok) allGapsOk = false;
+              if (input) {
+                input.classList.remove('border-borderWarm', 'border-okGreen', 'bg-okGreen-soft', 'border-errRed', 'bg-errRed-soft');
+                input.classList.add(ok ? 'border-okGreen' : 'border-errRed', ok ? 'bg-okGreen-soft' : 'bg-errRed-soft');
+              }
+            });
+
+            if (allGapsOk) score++;
+            setCardStatus(card, allGapsOk);
+            const displayAns = item.gaps.map(g => g.display).join(' ... ');
+            const tip = allGapsOk ? '' : getDiagnosticTip(combinedUser.trim(), displayAns, item.contextType);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(allGapsOk, displayAns, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE MATCH --- */
+        else if (block.type === 'match') {
+          const state = appState.matches[block.id];
+          const fbContainer = document.getElementById(`match-feedback-${block.id}`);
+          state.selectedLeft = null;
+          state.graded = true;
+          state.results = {};
+
+          let fbHtml = '';
+          block.pairs.forEach(pair => {
+            const chosenRight = state.links[pair.leftId];
+            const ok = chosenRight === pair.rightId;
+            state.results[pair.leftId] = ok;
+            if (ok) score++;
+
+            if (ok) {
+              fbHtml += `
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-okGreen bg-okGreen-soft border border-okGreen-border rounded-xl px-3.5 py-2">
+                  <span class="font-bold">✓ Ej. ${pair.num}:</span>
+                  <span>¡Emparejamiento correcto!</span>
+                </div>
+              `;
+            } else {
+              fbHtml += `
+                <div class="text-xs sm:text-sm bg-errRed-soft border border-errRed-border rounded-xl p-3 space-y-1">
+                  <div class="font-semibold text-errRed">
+                    ✕ Ej. ${pair.num} — Pareja correcta: <span class="text-slate-900 font-bold">${pair.left} ${pair.right}</span>
+                  </div>
+                  <div class="text-slate-700"><strong class="text-navy">Explicación:</strong> ${pair.explanation}</div>
+                </div>
+              `;
+            }
+          });
+
+          updateMatchVisuals(block.id);
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+
+        /* --- BLOQUE BUILD --- */
+        else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const placed = appState.builds[key]?.placed || [];
+            const userSentence = placed.map(idx => item.words[idx]).join(' ');
+            const ok = isMatchAny(userSentence, item.accepted);
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = ok || placed.length > 0 ? '' : 'Has dejado la frase sin construir.';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE TRANSLATE --- */
+        else if (block.type === 'translate') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const input = document.getElementById(`${exId}-input`);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const val = input ? input.value : '';
+            const ok = isMatchAny(val, item.accepted);
+
+            if (input) {
+              input.classList.remove('border-borderWarm', 'border-okGreen', 'bg-okGreen-soft', 'border-errRed', 'bg-errRed-soft');
+              input.classList.add(ok ? 'border-okGreen' : 'border-errRed', ok ? 'bg-okGreen-soft' : 'bg-errRed-soft');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = ok ? '' : getDiagnosticTip(val, item.display, item.contextType);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BLOQUE CLOZE --- */
+        else if (block.type === 'cloze') {
+          const fbContainer = document.getElementById(`${sectionId}-cloze-feedback`);
+          let fbHtml = '';
+
+          block.segments.forEach(seg => {
+            if (!seg.num) return;
+            const input = document.getElementById(`${sectionId}-cloze-${seg.num}`);
+            const val = input ? input.value : '';
+            const ok = isMatchAny(val, seg.accepted);
+
+            if (input) {
+              input.classList.remove('border-borderWarm', 'border-okGreen', 'bg-okGreen-soft', 'border-errRed', 'bg-errRed-soft');
+              input.classList.add(ok ? 'border-okGreen' : 'border-errRed', ok ? 'bg-okGreen-soft' : 'bg-errRed-soft');
+            }
+
+            if (ok) {
+              score++;
+              fbHtml += `
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-okGreen bg-okGreen-soft border border-okGreen-border rounded-xl px-3.5 py-2">
+                  <span class="font-bold">✓ Hueco ${seg.num} (${seg.verb}):</span>
+                  <span>¡Correcto! (${seg.display})</span>
+                </div>
+              `;
+            } else {
+              const tip = getDiagnosticTip(val, seg.display, seg.contextType);
+              fbHtml += `
+                <div class="text-xs sm:text-sm bg-errRed-soft border border-errRed-border rounded-xl p-3 space-y-1">
+                  <div class="font-semibold text-errRed">
+                    ✕ Hueco ${seg.num} (${seg.verb}) — Respuesta correcta: <span class="text-slate-900 font-bold">${seg.display}</span>
+                  </div>
+                  ${tip ? `<div class="text-errRed/90 font-medium">${tip}</div>` : ''}
+                  <div class="text-slate-700"><strong class="text-navy">Explicación:</strong> ${seg.explanation}</div>
+                </div>
+              `;
+            }
+          });
+
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+      });
+
+      appState.scores[sectionId] = score;
+      showSectionSummary(sectionId, score, total);
+      updateGlobalProgress();
+
+      const summaryEl = document.getElementById(`summary-${sectionId}`);
+      if (summaryEl) {
+        summaryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function showSectionSummary(sectionId, score, total) {
+      const el = document.getElementById(`summary-${sectionId}`);
+      if (!el) return;
+
+      const pct = Math.round((score / total) * 100);
+      let badgeColor = 'bg-gold-soft text-amber-900 border-gold/40';
+      let barColor = 'from-gold to-gold-light';
+      let message = '¡Buen progreso! Revisa las explicaciones en rojo y vuelve a intentarlo para afianzar la regla.';
+
+      if (pct >= 90) {
+        badgeColor = 'bg-okGreen-soft text-okGreen border-okGreen-border';
+        barColor = 'from-forest to-okGreen';
+        message = '¡Excelente trabajo, digno de Wisdom Corner Academy! Dominas los verbos con -ing y sustantivos.';
+      } else if (pct >= 70) {
+        badgeColor = 'bg-forest-soft text-forest border-forest/30';
+        barColor = 'from-forest to-okGreen';
+        message = '¡Muy buen resultado! Repasa los pequeños detalles fallados para alcanzar el 100%.';
+      } else if (pct < 50) {
+        badgeColor = 'bg-errRed-soft text-errRed border-errRed-border';
+        barColor = 'from-errRed to-gold';
+        message = 'Te animamos a repasar la pestaña «Guía de Teoría» y leer cada explicación debajo antes de reintentarlo.';
+      }
+
+      el.innerHTML = `
+        <div class="rounded-xl border p-4 sm:p-5 ${badgeColor} space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider opacity-80">Resultado del módulo</div>
+              <div class="font-serif text-2xl font-bold mt-0.5">${score} / ${total} aciertos <span class="text-base font-sans font-semibold">(${pct}%)</span></div>
+            </div>
+            <p class="text-xs sm:text-sm max-w-md leading-relaxed font-medium">${message}</p>
+          </div>
+          <div class="w-full h-2.5 bg-white/75 rounded-full overflow-hidden border border-black/5">
+            <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+          </div>
+        </div>
+      `;
+      el.classList.remove('hidden');
+    }
+
+    function updateGlobalProgress() {
+      const sections = ['mod1', 'mod2', 'mod3'];
+      let totalCorrect = 0;
+
+      sections.forEach(secId => {
+        const sc = appState.scores[secId];
+        const badge = document.getElementById(`badge-${secId}`);
+        if (sc !== null) {
+          totalCorrect += sc;
+          if (badge) {
+            badge.textContent = `${sc}/20`;
+            badge.className = 'text-[11px] px-1.5 py-0.5 rounded-md font-bold ' + (sc >= 14 ? 'bg-green-500/25 text-green-200' : 'bg-gold/30 text-gold-light');
+          }
+        } else if (badge) {
+          badge.textContent = '20';
+          badge.className = 'text-[11px] px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200';
+        }
+      });
+
+      const pct = Math.round((totalCorrect / 60) * 100);
+      document.getElementById('global-score-text').textContent = `${totalCorrect} / 60`;
+      document.getElementById('global-percent').textContent = `${pct}%`;
+      document.getElementById('global-progress-bar').style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       8. MODAL DE REINICIO PERSONALIZADO
+       ========================================================================= */
+    function openResetModal(sectionId) {
+      appState.pendingResetSection = sectionId;
+      const modal = document.getElementById('reset-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeResetModal() {
+      appState.pendingResetSection = null;
+      const modal = document.getElementById('reset-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmResetSection() {
+      const secId = appState.pendingResetSection;
+      closeResetModal();
+      if (!secId) return;
+
+      appState.scores[secId] = null;
+      renderSection(secId);
+      updateGlobalProgress();
+      requestAnimationFrame(() => redrawAllMatches());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================================
+       9. NAVEGACIÓN POR PESTAÑAS E INICIALIZACIÓN
+       ========================================================================= */
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `panel-${tabId}`);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isActive = btn.dataset.tab === tabId;
+        btn.classList.toggle('active', isActive);
+        if (isActive) {
+          btn.classList.remove('bg-white/10', 'text-slate-200', 'hover:bg-white/20');
+          btn.classList.add('bg-white', 'text-navy', 'shadow-sm');
+        } else {
+          btn.classList.remove('bg-white', 'text-navy', 'shadow-sm');
+          btn.classList.add('bg-white/10', 'text-slate-200', 'hover:bg-white/20');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      requestAnimationFrame(() => {
+        redrawAllMatches();
+        setTimeout(redrawAllMatches, 120);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSection('mod1');
+      renderSection('mod2');
+      renderSection('mod3');
+      updateGlobalProgress();
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('modal-cancel').addEventListener('click', closeResetModal);
+      document.getElementById('modal-confirm').addEventListener('click', confirmResetSection);
+      document.getElementById('reset-modal').addEventListener('click', e => {
+        if (e.target.id === 'reset-modal') closeResetModal();
+      });
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(redrawAllMatches);
+      });
+    });
+  </script>
+</body>
+</html>
