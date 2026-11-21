@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy | Vocabulary Game: Jobs & Transport</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Fredoka for playful academic headings -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wca: {
+              navy: '#0A192F',
+              navyLight: '#1B365D',
+              gold: '#D4AF37',
+              goldBright: '#F39C12',
+              cream: '#F8FAFC',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Fredoka', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F1F5F9;
+      color: #0F172A;
+    }
+    .font-display {
+      font-family: 'Fredoka', sans-serif;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      70% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-7px); }
+      40%, 80% { transform: translateX(7px); }
+    }
+    @keyframes pulseGold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.45); }
+      50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    }
+    .animate-pop {
+      animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    .animate-pulse-gold {
+      animation: pulseGold 2s infinite;
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #E2E8F0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1B365D;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-100">
+
+  <!-- HEADER: Wisdom Corner Academy -->
+  <header class="bg-[#0A192F] text-white border-b-4 border-[#D4AF37] shadow-lg sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-[#1B365D] border-2 border-[#D4AF37] flex items-center justify-center shadow-inner overflow-hidden shrink-0">
+          <!-- Fallback SVG Crest / Graduation Cap if logo.png is unavailable -->
+          <img src="logo.png" alt="Wisdom Corner Academy" class="w-full h-full object-contain"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="hidden w-full h-full items-center justify-center text-[#D4AF37]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <span class="text-[11px] uppercase tracking-widest text-[#D4AF37] font-bold block leading-none">
+            Tu Wisdom Corner Academy
+          </span>
+          <h1 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
+            English Vocabulary <span class="text-[#F39C12]">Explorer</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs: Modo Repaso vs Modo Juego -->
+      <nav class="flex bg-[#1B365D] p-1 rounded-2xl border border-[#D4AF37]/40 w-full sm:w-auto justify-center" aria-label="Modos de aprendizaje">
+        <button id="tab-repaso" onclick="switchMode('repaso')"
+          class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 bg-[#D4AF37] text-[#0A192F] shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          Modo Repaso
+        </button>
+        <button id="tab-juego" onclick="switchMode('juego')"
+          class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 text-white hover:text-[#D4AF37]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Modo Juego
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
+
+    <!-- ========================================================= -->
+    <!-- SECTION 1: MODO REPASO (VOCABULARY STUDY HUB)              -->
+    <!-- ========================================================= -->
+    <section id="section-repaso" class="animate-pop">
+      <!-- Intro Banner & Controls -->
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-5 mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0A192F]/5 text-[#0A192F] text-xs font-bold mb-1">
+            <span class="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
+            Unidades: Jobs &amp; Transport
+          </div>
+          <h2 class="font-display text-2xl font-bold text-[#0A192F]">Repasa el vocabulario con fotos reales</h2>
+          <p class="text-sm text-slate-600 mt-0.5">
+            Observa cada imagen, escucha su pronunciación en inglés y practica la ortografía antes de jugar.
+          </p>
+        </div>
+
+        <!-- Filters & Self-Test Toggle -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="inline-flex rounded-2xl bg-slate-100 p-1 border border-slate-200">
+            <button onclick="setStudyFilter('all')" id="filter-all"
+              class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-[#0A192F] text-white transition">
+              Todas (16)
+            </button>
+            <button onclick="setStudyFilter('jobs')" id="filter-jobs"
+              class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0A192F] transition">
+              Jobs (10)
+            </button>
+            <button onclick="setStudyFilter('transport')" id="filter-transport"
+              class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0A192F] transition">
+              Transport (6)
+            </button>
+          </div>
+
+          <button id="toggle-hide-words" onclick="toggleHideEnglishWords()"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border-2 border-[#1B365D] text-[#1B365D] hover:bg-[#1B365D] hover:text-white transition">
+            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+            </svg>
+            <span id="hide-words-label">Ocultar inglés (Autoevaluación)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Vocabulary Cards Grid -->
+      <div id="study-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <!-- Cards rendered dynamically by JS -->
+      </div>
+
+      <!-- Bottom Call to Action to Jump into Game Mode -->
+      <div class="mt-8 bg-gradient-to-r from-[#0A192F] to-[#1B365D] rounded-3xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-[#D4AF37]">
+        <div>
+          <h3 class="font-display text-xl font-bold text-[#D4AF37]">¿Listo para ponerte a prueba?</h3>
+          <p class="text-sm text-slate-200">Escribe el nombre en inglés de cada imagen y consigue las 3 estrellas de Wisdom Corner Academy.</p>
+        </div>
+        <button onclick="switchMode('juego')"
+          class="px-6 py-3 rounded-2xl bg-[#D4AF37] hover:bg-[#F39C12] text-[#0A192F] font-extrabold text-sm shadow-lg transition transform hover:-translate-y-0.5 shrink-0">
+          ¡Ir al Modo Juego! &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 2: MODO JUEGO (INTERACTIVE TYPING GAME)           -->
+    <!-- ========================================================= -->
+    <section id="section-juego" class="hidden animate-pop">
+
+      <!-- 2A. GAME SETUP / START SCREEN -->
+      <div id="game-setup" class="max-w-2xl mx-auto bg-white rounded-3xl shadow-md border-2 border-[#0A192F]/10 overflow-hidden">
+        <div class="bg-[#0A192F] px-6 py-6 text-center border-b-4 border-[#D4AF37]">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] text-xs font-bold uppercase tracking-wider mb-2">
+            Desafío de Escritura &amp; Vocabulario
+          </span>
+          <h2 class="font-display text-3xl font-bold text-white">¡Hora de Jugar!</h2>
+          <p class="text-slate-300 text-sm mt-1">Mira la fotografía real y escribe correctamente la palabra en inglés.</p>
+        </div>
+
+        <div class="p-6 sm:p-8 space-y-6">
+          <!-- Student Name Input -->
+          <div>
+            <label for="student-name" class="block text-sm font-bold text-[#0A192F] mb-1.5">
+              Nombre del alumno/a <span class="text-slate-400 font-normal">(opcional)</span>
+            </label>
+            <input type="text" id="student-name" placeholder="Escribe tu nombre aquí..."
+              class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-[#D4AF37] focus:outline-none text-slate-800 font-medium transition" />
+          </div>
+
+          <!-- Category Selection -->
+          <div>
+            <span class="block text-sm font-bold text-[#0A192F] mb-2">Elige qué quieres practicar:</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <button type="button" onclick="selectGameCategory('all')" id="cat-btn-all"
+                class="cat-choice p-4 rounded-2xl border-2 border-[#D4AF37] bg-[#0A192F] text-white text-left transition shadow-sm">
+                <div class="font-display font-bold text-base text-[#D4AF37]">Todo mezclado</div>
+                <div class="text-xs text-slate-300 mt-0.5">16 palabras (Jobs + Transport)</div>
+              </button>
+
+              <button type="button" onclick="selectGameCategory('jobs')" id="cat-btn-jobs"
+                class="cat-choice p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:border-[#1B365D] text-[#0A192F] text-left transition">
+                <div class="font-display font-bold text-base">Solo Jobs</div>
+                <div class="text-xs text-slate-500 mt-0.5">10 profesiones</div>
+              </button>
+
+              <button type="button" onclick="selectGameCategory('transport')" id="cat-btn-transport"
+                class="cat-choice p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:border-[#1B365D] text-[#0A192F] text-left transition">
+                <div class="font-display font-bold text-base">Solo Transport</div>
+                <div class="text-xs text-slate-500 mt-0.5">6 transportes</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Game Rules Quick Summary -->
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs sm:text-sm text-amber-950 space-y-1.5">
+            <div class="font-bold flex items-center gap-1.5 text-[#0A192F]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#F39C12]" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+              ¿Cómo funciona?
+            </div>
+            <ul class="list-disc list-inside space-y-1 text-slate-700">
+              <li>Tienes hasta <strong>3 intentos</strong> por imagen con pistas progresivas si te equivocas.</li>
+              <li>¡Acertar a la primera suma <strong>100 puntos</strong> + bonus por racha!</li>
+              <li>Pulsa <strong>Enter</strong> o el botón <strong>Comprobar</strong> para validar tu respuesta.</li>
+            </ul>
+          </div>
+
+          <!-- Start Game Button -->
+          <button onclick="startGame()"
+            class="w-full py-4 rounded-2xl bg-[#D4AF37] hover:bg-[#F39C12] text-[#0A192F] font-display font-bold text-xl shadow-lg transition transform hover:-translate-y-0.5 animate-pulse-gold">
+            Comenzar Partida
+          </button>
+        </div>
+      </div>
+
+      <!-- 2B. ACTIVE GAMEPLAY ARENA -->
+      <div id="game-arena" class="hidden max-w-2xl mx-auto">
+        <!-- Top HUD (Progress, Score, Streak, Hearts/Lives) -->
+        <div class="bg-[#0A192F] text-white rounded-3xl p-4 mb-4 shadow-md border-2 border-[#D4AF37]/60">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span id="hud-progress-text" class="px-3 py-1 rounded-xl bg-[#1B365D] text-[#D4AF37] font-bold text-xs sm:text-sm">
+                Pregunta 1 de 16
+              </span>
+              <span id="hud-category-badge" class="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
+                Jobs
+              </span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <!-- Streak Badge -->
+              <div id="hud-streak" class="hidden items-center gap-1 px-2.5 py-1 rounded-xl bg-orange-500/20 border border-orange-400 text-orange-300 text-xs font-bold">
+                🔥 Racha x<span id="streak-count">0</span>
+              </div>
+              <!-- Score -->
+              <div class="px-3 py-1 rounded-xl bg-[#D4AF37] text-[#0A192F] font-extrabold text-xs sm:text-sm">
+                ⭐ <span id="hud-score">0</span> pts
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-2.5 bg-[#1B365D] rounded-full overflow-hidden">
+            <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-[#D4AF37] to-[#F39C12] transition-all duration-300" style="width: 6%;"></div>
+          </div>
+        </div>
+
+        <!-- Main Question Card -->
+        <div id="question-card" class="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
+          <!-- Medium-Sized Real Photograph Container -->
+          <div class="bg-slate-900/5 pt-6 pb-4 px-4 flex flex-col items-center justify-center relative">
+            <!-- Attempts Indicator -->
+            <div class="absolute top-3 right-4 flex items-center gap-1.5 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm border border-slate-200">
+              <span class="text-[11px] font-bold text-slate-600">Intentos:</span>
+              <div id="attempts-dots" class="flex gap-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              </div>
+            </div>
+
+            <!-- Medium Real Image Frame (280x210px) -->
+            <div class="w-[270px] sm:w-[300px] h-[205px] sm:h-[225px] rounded-2xl overflow-hidden border-4 border-white shadow-md bg-slate-200 relative">
+              <img id="game-image" src="" alt="Imagen de vocabulario"
+                class="w-full h-full object-cover transition-transform duration-300" />
+            </div>
+
+            <!-- Prompt Question -->
+            <p id="game-prompt-text" class="mt-3 font-display text-lg sm:text-xl font-bold text-[#0A192F] text-center">
+              What is it? / ¿Qué es?
+            </p>
+          </div>
+
+          <!-- Typing Input & Controls -->
+          <div class="p-5 sm:p-6 space-y-4">
+            <form id="answer-form" onsubmit="handleAnswerSubmit(event)" class="flex flex-col sm:flex-row gap-2.5">
+              <input type="text" id="answer-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                placeholder="Escribe la palabra en inglés..."
+                class="flex-1 px-4 py-3.5 rounded-2xl border-2 border-slate-300 focus:border-[#0A192F] focus:outline-none text-lg font-bold text-center sm:text-left text-[#0A192F] tracking-wide transition" />
+
+              <button type="submit" id="submit-btn"
+                class="px-6 py-3.5 rounded-2xl bg-[#0A192F] hover:bg-[#1B365D] text-[#D4AF37] font-extrabold text-base shadow transition shrink-0">
+                Comprobar
+              </button>
+            </form>
+
+            <!-- Hint & Feedback Box -->
+            <div id="feedback-box" class="hidden rounded-2xl p-4 text-sm transition-all">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p id="feedback-title" class="font-extrabold text-base"></p>
+                  <p id="feedback-detail" class="mt-0.5"></p>
+                </div>
+                <button type="button" id="feedback-audio-btn" onclick="speakCurrentGameWord()"
+                  class="hidden shrink-0 p-2.5 rounded-xl bg-white/80 hover:bg-white text-[#0A192F] shadow-sm border border-slate-200 transition"
+                  title="Escuchar pronunciación">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Action Bar Below Input (Next Button / Quit) -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button type="button" onclick="confirmExitGame()"
+                class="text-xs font-semibold text-slate-400 hover:text-slate-600 transition">
+                &larr; Cambiar categoría
+              </button>
+
+              <button type="button" id="next-btn" onclick="nextQuestion()"
+                class="hidden px-6 py-2.5 rounded-2xl bg-[#D4AF37] hover:bg-[#F39C12] text-[#0A192F] font-extrabold text-sm shadow transition">
+                Siguiente imagen &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2C. END-OF-GAME SUMMARY SCREEN -->
+      <div id="game-summary" class="hidden max-w-2xl mx-auto bg-white rounded-3xl shadow-lg border-2 border-[#D4AF37] overflow-hidden animate-pop">
+        <div class="bg-[#0A192F] px-6 py-8 text-center text-white border-b-4 border-[#D4AF37]">
+          <div id="summary-stars" class="flex justify-center gap-2 text-4xl mb-2">
+            ⭐⭐⭐
+          </div>
+          <h2 id="summary-heading" class="font-display text-3xl font-bold text-[#D4AF37]">¡Excelente trabajo!</h2>
+          <p id="summary-subtext" class="text-slate-300 text-sm mt-1">Has completado el desafío de vocabulario.</p>
+        </div>
+
+        <div class="p-6 sm:p-8 space-y-6">
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-500 uppercase">Puntuación</div>
+              <div id="summary-score" class="font-display text-2xl sm:text-3xl font-bold text-[#0A192F] mt-1">0</div>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-500 uppercase">Aciertos</div>
+              <div id="summary-correct" class="font-display text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">0/0</div>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-500 uppercase">Precisión</div>
+              <div id="summary-accuracy" class="font-display text-2xl sm:text-3xl font-bold text-[#F39C12] mt-1">0%</div>
+            </div>
+          </div>
+
+          <!-- Missed / Reviewed Words List -->
+          <div id="summary-review-container" class="space-y-3">
+            <h3 class="font-bold text-sm text-[#0A192F] uppercase tracking-wider">Resumen de palabras practicadas:</h3>
+            <div id="summary-words-list" class="max-h-64 overflow-y-auto space-y-2 pr-1">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <button onclick="startGame()"
+              class="flex-1 py-3.5 rounded-2xl bg-[#D4AF37] hover:bg-[#F39C12] text-[#0A192F] font-display font-bold text-lg shadow transition">
+              Jugar de nuevo
+            </button>
+            <button onclick="switchMode('repaso')"
+              class="flex-1 py-3.5 rounded-2xl bg-[#0A192F] hover:bg-[#1B365D] text-white font-display font-bold text-lg shadow transition">
+              Repasar vocabulario
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0A192F] text-slate-400 text-xs py-4 px-4 text-center border-t border-[#1B365D] mt-10">
+    <p>
+      <strong class="text-[#D4AF37]">Wisdom Corner Academy</strong> &bull; Material interactivo de apoyo para Primaria (Units: Jobs &amp; Transport)
+    </p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /**
+     * VOCABULARY DATASET
+     * Extracted directly from the student's textbook units:
+     * - Unit: Jobs (10 items)
+     * - Unit: Transport & Toys (6 items)
+     * Includes real, reliable photographic URLs + multi-layer fallback handling.
+     */
+    const VOCABULARY_ITEMS = [
+      // === UNIT: JOBS (10) ===
+      {
+        id: 'police-officer',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'police officer',
+        acceptedAnswers: ['police officer', 'policeman', 'policewoman'],
+        spanish: 'policía',
+        example: 'He is a police officer.',
+        hintNote: 'Son dos palabras: police + officer.',
+        image: 'https://images.pexels.com/photos/7714968/pexels-photo-7714968.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cook',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'cook',
+        acceptedAnswers: ['cook', 'chef'],
+        spanish: 'cocinero / cocinera',
+        example: 'The cook is making dinner.',
+        hintNote: 'Empieza por C y tiene 4 letras (como el verbo cocinar).',
+        image: 'https://images.pexels.com/photos/3814446/pexels-photo-3814446.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'football-player',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'football player',
+        acceptedAnswers: ['football player', 'soccer player'],
+        spanish: 'futbolista',
+        example: 'She is a great football player.',
+        hintNote: 'Dos palabras: deporte (football) + jugador (player).',
+        image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'scientist',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'scientist',
+        acceptedAnswers: ['scientist'],
+        spanish: 'científico / científica',
+        example: 'The scientist works in a laboratory.',
+        hintNote: 'Viene de la palabra "science" (ciencia) + -tist.',
+        image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'zoo-keeper',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'zoo keeper',
+        acceptedAnswers: ['zoo keeper', 'zookeeper'],
+        spanish: 'cuidador/a de zoo',
+        example: 'The zoo keeper feeds the animals.',
+        hintNote: 'Lugar con animales (zoo) + cuidador (keeper).',
+        image: 'https://images.pexels.com/photos/247376/pexels-photo-247376.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'doctor',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'doctor',
+        acceptedAnswers: ['doctor'],
+        spanish: 'médico / médica / doctor/a',
+        example: 'Is he a doctor? Yes, he is.',
+        hintNote: 'Se escribe exactamente igual en inglés y en español.',
+        image: 'https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'builder',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'builder',
+        acceptedAnswers: ['builder'],
+        spanish: 'constructor / albañil',
+        example: 'The builder wears a yellow helmet.',
+        hintNote: 'Del verbo "build" (construir) + -er.',
+        image: 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'waiter',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'waiter',
+        acceptedAnswers: ['waiter', 'waitress'],
+        spanish: 'camarero / camarera',
+        example: 'The waiter brings the food.',
+        hintNote: 'Empieza por W y termina en -er (6 letras).',
+        image: 'https://images.pexels.com/photos/3217156/pexels-photo-3217156.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'farmer',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'farmer',
+        acceptedAnswers: ['farmer'],
+        spanish: 'granjero / granjera',
+        example: 'Is she a farmer? Yes, she is.',
+        hintNote: 'De "farm" (granja) + -er.',
+        image: 'https://images.pexels.com/photos/2382904/pexels-photo-2382904.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'teacher',
+        category: 'jobs',
+        categoryLabel: 'Jobs',
+        word: 'teacher',
+        acceptedAnswers: ['teacher'],
+        spanish: 'profesor / profesora',
+        example: 'Our English teacher is very nice.',
+        hintNote: 'Del verbo "teach" (enseñar) + -er.',
+        image: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80'
+      },
+
+      // === UNIT: TRANSPORT (6) ===
+      {
+        id: 'bus',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'bus',
+        acceptedAnswers: ['bus'],
+        spanish: 'autobús',
+        example: 'I go to school by bus.',
+        hintNote: 'Palabra muy corta de 3 letras: b - u - s.',
+        image: 'https://images.pexels.com/photos/385998/pexels-photo-385998.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'car',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'car',
+        acceptedAnswers: ['car'],
+        spanish: 'coche',
+        example: "I've got a red car.",
+        hintNote: 'Palabra muy corta de 3 letras que empieza por C.',
+        image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'motorbike',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'motorbike',
+        acceptedAnswers: ['motorbike', 'motorcycle'],
+        spanish: 'moto / motocicleta',
+        example: 'Look at that green motorbike!',
+        hintNote: 'Une "motor" + "bike" (bicicleta con motor).',
+        image: 'https://images.pexels.com/photos/2393816/pexels-photo-2393816.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'lorry',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'lorry',
+        acceptedAnswers: ['lorry', 'truck'],
+        spanish: 'camión',
+        example: 'The blue lorry is very big.',
+        hintNote: 'En inglés británico se escribe con doble R y termina en Y (5 letras).',
+        image: 'https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'plane',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'plane',
+        acceptedAnswers: ['plane', 'airplane', 'aeroplane'],
+        spanish: 'avión',
+        example: 'The plane flies high in the sky.',
+        hintNote: 'Empieza por P y tiene 5 letras (p _ a n e).',
+        image: 'https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'train',
+        category: 'transport',
+        categoryLabel: 'Transport',
+        word: 'train',
+        acceptedAnswers: ['train'],
+        spanish: 'tren',
+        example: 'The train is on the railway.',
+        hintNote: 'Casi igual que en español, pero con una "i" en medio (5 letras).',
+        image: 'https://images.pexels.com/photos/730134/pexels-photo-730134.jpeg?auto=compress&cs=tinysrgb&w=600',
+        fallbackImage: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=600&q=80'
+      }
+    ];
+
+    // =========================================================
+    // STATE MANAGEMENT
+    // =========================================================
+    let currentMode = 'repaso';
+    let studyFilter = 'all';
+    let hideEnglishInStudy = false;
+
+    let selectedGameCategory = 'all';
+    let gameDeck = [];
+    let currentIndex = 0;
+    let currentAttempts = 0;
+    const MAX_ATTEMPTS = 3;
+    let score = 0;
+    let streak = 0;
+    let questionResolved = false;
+    let gameHistory = []; // Stores { item, correct, attemptsUsed, userLastInput }
+
+    // =========================================================
+    // AUDIO & SPEECH SYNTHESIS HELPERS
+    // =========================================================
+    function speakEnglish(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-GB'; // Textbook uses British English ("lorry", "football player")
+      utterance.rate = 0.92;
+      utterance.pitch = 1.02;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function playSoundEffect(type) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        if (type === 'correct') {
+          // Cheerful two-note ascending chime
+          [523.25, 659.25, 783.99].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.08);
+            gain.gain.setValueAtTime(0.18, now + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.08);
+            osc.stop(now + i * 0.08 + 0.36);
+          });
+        } else if (type === 'wrong') {
+          // Gentle low tone
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(175, now + 0.25);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'victory') {
+          // Victory fanfare
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.12);
+            gain.gain.setValueAtTime(0.2, now + i * 0.12);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.5);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.12);
+            osc.stop(now + i * 0.12 + 0.52);
+          });
+        }
+      } catch (e) {
+        // Ignore audio errors if blocked by browser policy
+      }
+    }
+
+    // =========================================================
+    // IMAGE FALLBACK HANDLER
+    // =========================================================
+    function handleImageError(imgElement, fallbackUrl, labelText) {
+      if (!imgElement.dataset.triedFallback && fallbackUrl) {
+        imgElement.dataset.triedFallback = 'true';
+        imgElement.src = fallbackUrl;
+      } else {
+        imgElement.onerror = null;
+        imgElement.src = `https://placehold.co/320x240/0A192F/D4AF37?text=${encodeURIComponent(labelText)}`;
+      }
+    }
+
+    // =========================================================
+    // NAVIGATION BETWEEN MODES
+    // =========================================================
+    function switchMode(mode) {
+      currentMode = mode;
+      const tabRepaso = document.getElementById('tab-repaso');
+      const tabJuego = document.getElementById('tab-juego');
+      const secRepaso = document.getElementById('section-repaso');
+      const secJuego = document.getElementById('section-juego');
+
+      if (mode === 'repaso') {
+        tabRepaso.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 bg-[#D4AF37] text-[#0A192F] shadow';
+        tabJuego.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 text-white hover:text-[#D4AF37]';
+        secRepaso.classList.remove('hidden');
+        secJuego.classList.add('hidden');
+        renderStudyCards();
+      } else {
+        tabJuego.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 bg-[#D4AF37] text-[#0A192F] shadow';
+        tabRepaso.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 text-white hover:text-[#D4AF37]';
+        secJuego.classList.remove('hidden');
+        secRepaso.classList.add('hidden');
+      }
+    }
+
+    // =========================================================
+    // MODO REPASO FUNCTIONS
+    // =========================================================
+    function setStudyFilter(filter) {
+      studyFilter = filter;
+      ['all', 'jobs', 'transport'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (f === filter) {
+          btn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-[#0A192F] text-white transition';
+        } else {
+          btn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0A192F] transition';
+        }
+      });
+      renderStudyCards();
+    }
+
+    function toggleHideEnglishWords() {
+      hideEnglishInStudy = !hideEnglishInStudy;
+      const label = document.getElementById('hide-words-label');
+      const btn = document.getElementById('toggle-hide-words');
+      if (hideEnglishInStudy) {
+        label.textContent = 'Mostrar palabras en inglés';
+        btn.classList.add('bg-[#1B365D]', 'text-white');
+      } else {
+        label.textContent = 'Ocultar inglés (Autoevaluación)';
+        btn.classList.remove('bg-[#1B365D]', 'text-white');
+      }
+      renderStudyCards();
+    }
+
+    function revealSingleCard(cardId) {
+      const wordEl = document.getElementById(`study-word-${cardId}`);
+      const hintEl = document.getElementById(`study-reveal-btn-${cardId}`);
+      if (wordEl) {
+        wordEl.classList.remove('blur-md', 'select-none');
+      }
+      if (hintEl) {
+        hintEl.classList.add('hidden');
+      }
+    }
+
+    function renderStudyCards() {
+      const grid = document.getElementById('study-grid');
+      const filtered = studyFilter === 'all'
+        ? VOCABULARY_ITEMS
+        : VOCABULARY_ITEMS.filter(item => item.category === studyFilter);
+
+      grid.innerHTML = filtered.map(item => {
+        const badgeColor = item.category === 'jobs'
+          ? 'bg-[#0A192F] text-[#D4AF37]'
+          : 'bg-amber-100 text-amber-900 border border-amber-300';
+
+        const blurClasses = hideEnglishInStudy ? 'blur-md select-none' : '';
+        const revealBtnHtml = hideEnglishInStudy
+          ? `<button id="study-reveal-btn-${item.id}" onclick="revealSingleCard('${item.id}')"
+               class="text-[11px] font-bold text-[#1B365D] underline hover:text-[#F39C12] mt-0.5">
+               Mostrar palabra
+             </button>`
+          : '';
+
+        return `
+          <article class="bg-white rounded-3xl shadow-sm hover:shadow-md border border-slate-200 overflow-hidden flex flex-col transition duration-200 group">
+            <!-- Medium-Sized Real Photo Frame -->
+            <div class="relative h-48 w-full bg-slate-200 overflow-hidden">
+              <img src="${item.image}"
+                   alt="${item.word} - ${item.spanish}"
+                   loading="lazy"
+                   onerror="handleImageError(this, '${item.fallbackImage}', '${item.word}')"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-xl text-[11px] font-bold uppercase tracking-wide shadow-sm ${badgeColor}">
+                ${item.categoryLabel}
+              </span>
+              <button onclick="speakEnglish('${item.word.replace(/'/g, "\\'")}')"
+                title="Escuchar pronunciación en inglés"
+                class="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-[#0A192F]/90 hover:bg-[#D4AF37] text-white hover:text-[#0A192F] flex items-center justify-center shadow-lg transition transform hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-baseline justify-between gap-2">
+                  <h3 id="study-word-${item.id}" class="font-display text-xl font-bold text-[#0A192F] transition-all ${blurClasses}">
+                    ${item.word}
+                  </h3>
+                  <span class="text-xs font-semibold text-slate-500 capitalize">${item.spanish}</span>
+                </div>
+                ${revealBtnHtml}
+              </div>
+
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                <p class="text-xs italic text-slate-600">"${item.example}"</p>
+                <button onclick="speakEnglish('${item.example.replace(/'/g, "\\'")}')"
+                  class="text-[11px] font-bold text-[#1B365D] hover:text-[#F39C12] shrink-0" title="Escuchar frase">
+                  🔊 Frase
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // =========================================================
+    // MODO JUEGO FUNCTIONS
+    // =========================================================
+    function selectGameCategory(cat) {
+      selectedGameCategory = cat;
+      ['all', 'jobs', 'transport'].forEach(c => {
+        const btn = document.getElementById(`cat-btn-${c}`);
+        if (c === cat) {
+          btn.className = 'cat-choice p-4 rounded-2xl border-2 border-[#D4AF37] bg-[#0A192F] text-white text-left transition shadow-sm';
+          btn.querySelector('div:first-child').className = 'font-display font-bold text-base text-[#D4AF37]';
+          btn.querySelector('div:last-child').className = 'text-xs text-slate-300 mt-0.5';
+        } else {
+          btn.className = 'cat-choice p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:border-[#1B365D] text-[#0A192F] text-left transition';
+          btn.querySelector('div:first-child').className = 'font-display font-bold text-base';
+          btn.querySelector('div:last-child').className = 'text-xs text-slate-500 mt-0.5';
+        }
+      });
+    }
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function startGame() {
+      const pool = selectedGameCategory === 'all'
+        ? VOCABULARY_ITEMS
+        : VOCABULARY_ITEMS.filter(item => item.category === selectedGameCategory);
+
+      gameDeck = shuffleArray(pool);
+      currentIndex = 0;
+      score = 0;
+      streak = 0;
+      gameHistory = [];
+
+      document.getElementById('game-setup').classList.add('hidden');
+      document.getElementById('game-summary').classList.add('hidden');
+      document.getElementById('game-arena').classList.remove('hidden');
+
+      loadCurrentQuestion();
+    }
+
+    function confirmExitGame() {
+      document.getElementById('game-arena').classList.add('hidden');
+      document.getElementById('game-summary').classList.add('hidden');
+      document.getElementById('game-setup').classList.remove('hidden');
+    }
+
+    function updateHud() {
+      const total = gameDeck.length;
+      document.getElementById('hud-progress-text').textContent = `Imagen ${currentIndex + 1} de ${total}`;
+      document.getElementById('hud-score').textContent = score;
+
+      const pct = Math.round(((currentIndex) / total) * 100);
+      document.getElementById('hud-progress-bar').style.width = `${Math.max(6, pct)}%`;
+
+      const streakEl = document.getElementById('hud-streak');
+      if (streak >= 2) {
+        streakEl.classList.remove('hidden');
+        streakEl.classList.add('inline-flex');
+        document.getElementById('streak-count').textContent = streak;
+      } else {
+        streakEl.classList.add('hidden');
+        streakEl.classList.remove('inline-flex');
+      }
+    }
+
+    function renderAttemptDots() {
+      const dotsContainer = document.getElementById('attempts-dots');
+      const remaining = MAX_ATTEMPTS - currentAttempts;
+      let html = '';
+      for (let i = 0; i < MAX_ATTEMPTS; i++) {
+        if (i < remaining) {
+          html += '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 transition-colors"></span>';
+        } else {
+          html += '<span class="w-2.5 h-2.5 rounded-full bg-rose-400 transition-colors"></span>';
+        }
+      }
+      dotsContainer.innerHTML = html;
+    }
+
+    function loadCurrentQuestion() {
+      const item = gameDeck[currentIndex];
+      currentAttempts = 0;
+      questionResolved = false;
+
+      updateHud();
+      renderAttemptDots();
+
+      document.getElementById('hud-category-badge').textContent = item.categoryLabel;
+      document.getElementById('game-prompt-text').textContent = item.category === 'jobs'
+        ? 'What is this job? / ¿Qué profesión es?'
+        : 'What transport is it? / ¿Qué transporte es?';
+
+      const imgEl = document.getElementById('game-image');
+      delete imgEl.dataset.triedFallback;
+      imgEl.onerror = () => handleImageError(imgEl, item.fallbackImage, '?');
+      imgEl.src = item.image;
+
+      const inputEl = document.getElementById('answer-input');
+      inputEl.value = '';
+      inputEl.disabled = false;
+      inputEl.className = 'flex-1 px-4 py-3.5 rounded-2xl border-2 border-slate-300 focus:border-[#0A192F] focus:outline-none text-lg font-bold text-center sm:text-left text-[#0A192F] tracking-wide transition';
+
+      document.getElementById('submit-btn').classList.remove('hidden');
+      document.getElementById('next-btn').classList.add('hidden');
+
+      const feedbackBox = document.getElementById('feedback-box');
+      feedbackBox.classList.add('hidden');
+      document.getElementById('feedback-audio-btn').classList.add('hidden');
+
+      setTimeout(() => inputEl.focus(), 80);
+    }
+
+    function normalizeText(str) {
+      return str
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace(/^(a|an|the)\s+/i, ''); // Strip optional article if student writes "a doctor"
+    }
+
+    function buildMaskedHint(word) {
+      return word
+        .split(' ')
+        .map(part => {
+          if (part.length <= 2) return part[0] + '_'.repeat(part.length - 1);
+          return part[0] + ' ' + Array(part.length - 2).fill('_').join(' ') + ' ' + part[part.length - 1];
+        })
+        .join('   ');
+    }
+
+    function handleAnswerSubmit(event) {
+      event.preventDefault();
+      if (questionResolved) {
+        nextQuestion();
+        return;
+      }
+
+      const inputEl = document.getElementById('answer-input');
+      const rawValue = inputEl.value;
+      const cleaned = normalizeText(rawValue);
+
+      if (!cleaned) {
+        inputEl.classList.add('animate-shake');
+        setTimeout(() => inputEl.classList.remove('animate-shake'), 400);
+        inputEl.focus();
+        return;
+      }
+
+      const item = gameDeck[currentIndex];
+      const isMatch = item.acceptedAnswers.some(ans => normalizeText(ans) === cleaned);
+
+      if (isMatch) {
+        // CORRECT ANSWER!
+        questionResolved = true;
+        const pointsEarned = currentAttempts === 0 ? 100 + (streak * 15) : (currentAttempts === 1 ? 70 : 40);
+        score += pointsEarned;
+        streak += 1;
+
+        gameHistory.push({
+          item,
+          correct: true,
+          attemptsUsed: currentAttempts + 1,
+          userLastInput: rawValue.trim()
+        });
+
+        playSoundEffect('correct');
+        speakEnglish(item.word);
+        updateHud();
+
+        inputEl.disabled = true;
+        inputEl.className = 'flex-1 px-4 py-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-lg font-extrabold text-center sm:text-left text-emerald-900 tracking-wide';
+
+        showFeedback(
+          'success',
+          `¡Muy bien! +${pointsEarned} puntos`,
+          `Es <strong>"${item.word}"</strong> (${item.spanish}).`
+        );
+
+        document.getElementById('submit-btn').classList.add('hidden');
+        const nextBtn = document.getElementById('next-btn');
+        nextBtn.textContent = currentIndex === gameDeck.length - 1 ? 'Ver resultados finales 🏆' : 'Siguiente imagen →';
+        nextBtn.classList.remove('hidden');
+        nextBtn.focus();
+
+      } else {
+        // INCORRECT ANSWER
+        currentAttempts += 1;
+        streak = 0;
+        updateHud();
+        renderAttemptDots();
+        playSoundEffect('wrong');
+
+        inputEl.classList.add('animate-shake', 'border-rose-400');
+        setTimeout(() => inputEl.classList.remove('animate-shake'), 400);
+
+        if (currentAttempts < MAX_ATTEMPTS) {
+          // Give progressive pedagogical hint
+          let hintMessage = '';
+          if (currentAttempts === 1) {
+            hintMessage = `Pista 1: En español significa <strong>"${item.spanish}"</strong>. ${item.hintNote}`;
+          } else {
+            hintMessage = `Pista 2 (último intento): Empieza y termina así: <span class="font-mono font-bold tracking-wider bg-white px-2 py-0.5 rounded border border-amber-300">${buildMaskedHint(item.word)}</span>`;
+          }
+
+          showFeedback(
+            'warning',
+            `¡Casi! Revisa cómo se escribe (te quedan ${MAX_ATTEMPTS - currentAttempts} ${MAX_ATTEMPTS - currentAttempts === 1 ? 'intento' : 'intentos'})`,
+            hintMessage
+          );
+          inputEl.select();
+        } else {
+          // Out of attempts -> reveal answer & teach
+          questionResolved = true;
+          gameHistory.push({
+            item,
+            correct: false,
+            attemptsUsed: MAX_ATTEMPTS,
+            userLastInput: rawValue.trim()
+          });
+
+          speakEnglish(item.word);
+          inputEl.disabled = true;
+          inputEl.value = item.word;
+          inputEl.className = 'flex-1 px-4 py-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50 text-lg font-extrabold text-center sm:text-left text-rose-900 tracking-wide';
+
+          showFeedback(
+            'error',
+            '¡Buen intento! Fíjate bien para la próxima:',
+            `La respuesta correcta es <strong>"${item.word}"</strong> (${item.spanish}).`
+          );
+
+          document.getElementById('submit-btn').classList.add('hidden');
+          const nextBtn = document.getElementById('next-btn');
+          nextBtn.textContent = currentIndex === gameDeck.length - 1 ? 'Ver resultados finales 🏆' : 'Siguiente imagen →';
+          nextBtn.classList.remove('hidden');
+          nextBtn.focus();
+        }
+      }
+    }
+
+    function showFeedback(type, title, detailHtml) {
+      const box = document.getElementById('feedback-box');
+      const titleEl = document.getElementById('feedback-title');
+      const detailEl = document.getElementById('feedback-detail');
+      const audioBtn = document.getElementById('feedback-audio-btn');
+
+      box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-950',
+        'bg-amber-50', 'border-amber-300', 'text-amber-950',
+        'bg-rose-50', 'border-rose-300', 'text-rose-950');
+
+      box.classList.add('border-2');
+
+      if (type === 'success') {
+        box.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-950');
+        audioBtn.classList.remove('hidden');
+      } else if (type === 'warning') {
+        box.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-950');
+        audioBtn.classList.add('hidden');
+      } else {
+        box.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-950');
+        audioBtn.classList.remove('hidden');
+      }
+
+      titleEl.textContent = title;
+      detailEl.innerHTML = detailHtml;
+    }
+
+    function speakCurrentGameWord() {
+      const item = gameDeck[currentIndex];
+      if (item) speakEnglish(item.word);
+    }
+
+    function nextQuestion() {
+      if (currentIndex < gameDeck.length - 1) {
+        currentIndex += 1;
+        loadCurrentQuestion();
+      } else {
+        showGameSummary();
+      }
+    }
+
+    function showGameSummary() {
+      playSoundEffect('victory');
+      document.getElementById('game-arena').classList.add('hidden');
+      document.getElementById('game-summary').classList.remove('hidden');
+
+      const total = gameHistory.length;
+      const correctCount = gameHistory.filter(h => h.correct).length;
+      const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+      const studentName = document.getElementById('student-name').value.trim();
+      const namePrefix = studentName ? `¡Enhorabuena, ${studentName}!` : '¡Enhorabuena!';
+
+      let starsHtml = '⭐⭐⭐';
+      let heading = `${namePrefix} ¡Puntuación de Oro!`;
+      if (accuracy < 50) {
+        starsHtml = '⭐☆☆';
+        heading = `${namePrefix} ¡Sigue practicando!`;
+      } else if (accuracy < 85) {
+        starsHtml = '⭐⭐☆';
+        heading = `${namePrefix} ¡Muy buen trabajo!`;
+      }
+
+      document.getElementById('summary-stars').textContent = starsHtml;
+      document.getElementById('summary-heading').textContent = heading;
+      document.getElementById('summary-score').textContent = score;
+      document.getElementById('summary-correct').textContent = `${correctCount}/${total}`;
+      document.getElementById('summary-accuracy').textContent = `${accuracy}%`;
+
+      const listEl = document.getElementById('summary-words-list');
+      listEl.innerHTML = gameHistory.map(entry => {
+        const statusBadge = entry.correct
+          ? `<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">✓ Correcto</span>`
+          : `<span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 text-xs font-bold">✗ Repasar</span>`;
+
+        return `
+          <div class="flex items-center justify-between gap-3 p-3 rounded-2xl border ${entry.correct ? 'border-slate-200 bg-slate-50' : 'border-rose-200 bg-rose-50/50'}">
+            <div class="flex items-center gap-3">
+              <img src="${entry.item.image}" alt="${entry.item.word}"
+                   onerror="handleImageError(this, '${entry.item.fallbackImage}', '${entry.item.word}')"
+                   class="w-12 h-10 rounded-xl object-cover border border-slate-300 shrink-0" />
+              <div>
+                <div class="font-bold text-sm text-[#0A192F]">${entry.item.word}</div>
+                <div class="text-xs text-slate-500">${entry.item.spanish}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="speakEnglish('${entry.item.word.replace(/'/g, "\\'")}')"
+                class="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-[#D4AF37]/20 text-[#0A192F]" title="Escuchar">
+                🔊
+              </button>
+              ${statusBadge}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Initialize study cards on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStudyCards();
+    });
+  </script>
+</body>
+</html>
