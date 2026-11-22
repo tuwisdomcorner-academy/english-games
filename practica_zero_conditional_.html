@@ -1,0 +1,2950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy — Zero Conditional (Nivel A2–B1)</title>
+
+  <!-- Google Fonts: Playfair Display (títulos académicos) + Plus Jakarta Sans (lectura e interfaz) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       DESIGN TOKENS — WISDOM CORNER ACADEMY
+       ========================================================================= */
+    :root {
+      --parchment: #FAF8F5;
+      --cream: #F3EFE6;
+      --white: #FFFFFF;
+      --ink: #1E293B;
+      --muted: #526074;
+      --navy: #1B365D;
+      --navy-dark: #122644;
+      --navy-light: #2A4E82;
+      --forest: #2D5A4C;
+      --forest-light: #3C7362;
+      --forest-soft: #EBF4F0;
+      --gold: #C59B27;
+      --gold-light: #E3C565;
+      --gold-soft: #FBF5E6;
+      --border: #E5E0D8;
+      --ok: #1E8449;
+      --ok-soft: #ECFDF3;
+      --ok-border: #A7DFC0;
+      --err: #C0392B;
+      --err-soft: #FDF2F2;
+      --err-border: #F2B8B5;
+      --shadow-card: 0 4px 20px -2px rgba(27, 54, 93, 0.06), 0 1px 4px rgba(27, 54, 93, 0.04);
+      --shadow-soft: 0 2px 10px rgba(27, 54, 93, 0.05);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--gold-soft);
+      color: var(--navy);
+    }
+
+    /* =========================================================================
+       CABECERA INSTITUCIONAL
+       ========================================================================= */
+    .site-header {
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 4px 16px rgba(18, 38, 68, 0.18);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .container {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    .header-inner {
+      padding: 0.9rem 0 0.75rem;
+    }
+
+    .header-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 768px) {
+      .header-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .logo-frame {
+      width: 62px;
+      height: 62px;
+      border-radius: 14px;
+      background: rgba(18, 38, 68, 0.78);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.42));
+    }
+
+    .logo-fallback {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+    }
+
+    .logo-fallback.visible {
+      display: flex;
+    }
+
+    .brand-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .academy-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-light);
+    }
+
+    .level-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(197, 155, 39, 0.22);
+      color: var(--gold-light);
+      border: 1px solid rgba(197, 155, 39, 0.45);
+    }
+
+    .brand-title {
+      margin: 0.15rem 0 0;
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+    }
+
+    @media (min-width: 640px) {
+      .brand-title {
+        font-size: 1.65rem;
+      }
+    }
+
+    .brand-subtitle {
+      margin: 0.15rem 0 0;
+      font-size: 0.82rem;
+      color: #CBD5E1;
+    }
+
+    /* Marcador global */
+    .scoreboard {
+      background: rgba(18, 38, 68, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-width: 260px;
+    }
+
+    .scoreboard-left {
+      flex: 1;
+    }
+
+    .scoreboard-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      color: #CBD5E1;
+      margin-bottom: 0.4rem;
+    }
+
+    .scoreboard-score {
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 999px;
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .scoreboard-pct {
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      padding-left: 0.8rem;
+      text-align: right;
+    }
+
+    .scoreboard-pct-val {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .scoreboard-pct-lbl {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #CBD5E1;
+      margin-top: 0.2rem;
+    }
+
+    /* Navegación por pestañas */
+    .tabs-nav {
+      margin-top: 0.85rem;
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.11);
+      color: #E2E8F0;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .tab-badge {
+      font-size: 0.69rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #E2E8F0;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: var(--cream);
+      color: var(--navy);
+    }
+
+    .tab-badge.graded-high {
+      background: rgba(30, 132, 73, 0.25);
+      color: #A7F3D0;
+    }
+
+    .tab-btn.active .tab-badge.graded-high {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .tab-badge.graded-mid {
+      background: rgba(197, 155, 39, 0.3);
+      color: var(--gold-light);
+    }
+
+    .tab-btn.active .tab-badge.graded-mid {
+      background: var(--gold-soft);
+      color: #8A6914;
+    }
+
+    /* =========================================================================
+       CONTENIDO PRINCIPAL Y TARJETAS
+       ========================================================================= */
+    main {
+      flex: 1;
+      padding: 1.75rem 0 2.5rem;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.26s ease-out;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stack-lg > * + * { margin-top: 1.5rem; }
+    .stack-md > * + * { margin-top: 1rem; }
+    .stack-sm > * + * { margin-top: 0.65rem; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 1.4rem;
+    }
+
+    @media (min-width: 640px) {
+      .card {
+        padding: 1.75rem;
+      }
+    }
+
+    .card-top-navy { border-top: 4px solid var(--navy); }
+    .card-top-forest { border-top: 4px solid var(--forest); }
+    .card-top-gold { border-top: 4px solid var(--gold); }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-accent {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 170px;
+      height: 170px;
+      background: var(--gold-soft);
+      border-bottom-left-radius: 100%;
+      opacity: 0.78;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8A6914;
+      background: var(--gold-soft);
+      border: 1px solid rgba(197, 155, 39, 0.4);
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    h2.section-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+
+    @media (min-width: 640px) {
+      h2.section-title {
+        font-size: 1.85rem;
+      }
+    }
+
+    h3.card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .lead-text {
+      margin: 0.6rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 780px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* =========================================================================
+       GUÍA DE TEORÍA
+       ========================================================================= */
+    .use-box {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+    }
+
+    .use-box-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--forest);
+      margin-bottom: 0.35rem;
+    }
+
+    .use-box p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    .use-box .ex-en {
+      margin-top: 0.35rem;
+      font-style: italic;
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .table-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 1.1rem 1.5rem;
+      background: rgba(243, 239, 230, 0.75);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table.grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    table.grammar-table th {
+      background: var(--parchment);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.25rem;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    table.grammar-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    table.grammar-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .formula-code {
+      display: inline-block;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.25rem 0.55rem;
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 0.84rem;
+    }
+
+    .tag-ok { color: var(--ok); font-weight: 700; }
+    .tag-err { color: var(--err); font-weight: 700; }
+    .tag-navy { color: var(--navy); font-weight: 700; }
+    .tag-forest { color: var(--forest); font-weight: 700; }
+
+    .warning-banner {
+      background: rgba(251, 245, 230, 0.82);
+      border: 1px solid rgba(197, 155, 39, 0.48);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+    }
+
+    .mistake-card {
+      background: var(--white);
+      border: 1px solid rgba(197, 155, 39, 0.35);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.86rem;
+    }
+
+    .mistake-card .m-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--err);
+      margin-bottom: 0.35rem;
+    }
+
+    .strike {
+      text-decoration: line-through;
+      color: #64748B;
+      margin: 0.15rem 0;
+    }
+
+    .correct-line {
+      color: var(--ok);
+      font-weight: 600;
+      margin: 0.15rem 0;
+    }
+
+    /* =========================================================================
+       BOTONES
+       ========================================================================= */
+    .btn {
+      appearance: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.18s ease, transform 0.14s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(27, 54, 93, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-dark);
+    }
+
+    .btn-forest {
+      background: var(--forest);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(45, 90, 76, 0.22);
+    }
+
+    .btn-forest:hover {
+      background: var(--forest-light);
+    }
+
+    .btn-secondary {
+      background: var(--parchment);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--cream);
+      border-color: #D2C9BA;
+    }
+
+    .btn-danger {
+      background: var(--err);
+      color: var(--white);
+    }
+
+    .btn-danger:hover {
+      background: #A93226;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      padding: 0.2rem 0.4rem;
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      padding-top: 0.5rem;
+    }
+
+    /* =========================================================================
+       EJERCICIOS: CABECERA, TARJETAS, INPUTS Y FEEDBACK
+       ========================================================================= */
+    .section-header-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .section-header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy);
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    .exercise-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      padding: 1rem 1.1rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .exercise-item.is-correct {
+      border-color: var(--ok-border);
+      background: rgba(236, 253, 243, 0.45);
+    }
+
+    .exercise-item.is-wrong {
+      border-color: var(--err-border);
+      background: rgba(253, 242, 242, 0.45);
+    }
+
+    .exercise-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .ex-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ex-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sentence-line {
+      font-size: 0.95rem;
+      line-height: 2.15;
+      color: var(--ink);
+    }
+
+    .verb-hint {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--forest);
+      background: var(--forest-soft);
+      padding: 0.12rem 0.45rem;
+      border-radius: 6px;
+      margin-left: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .gap-input {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: rgba(250, 248, 245, 0.85);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 0.28rem 0.6rem;
+      margin: 0 0.2rem;
+      width: 145px;
+      max-width: 100%;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .gap-input.w-sm { width: 92px; }
+    .gap-input.w-md { width: 150px; }
+    .gap-input.w-lg { width: 185px; }
+
+    .gap-input:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.14);
+      background: var(--white);
+    }
+
+    .gap-input.input-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .gap-input.input-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+      color: var(--err);
+    }
+
+    /* Cajas de Feedback */
+    .feedback-slot {
+      margin-top: 0.75rem;
+    }
+
+    .feedback-slot.hidden {
+      display: none;
+    }
+
+    .fb-ok {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ok);
+      background: var(--ok-soft);
+      border: 1px solid var(--ok-border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .fb-err {
+      font-size: 0.84rem;
+      background: var(--err-soft);
+      border: 1px solid var(--err-border);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .fb-err-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      color: var(--err);
+      font-weight: 600;
+    }
+
+    .fb-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .fb-icon-ok { background: var(--ok); }
+    .fb-icon-err { background: var(--err); }
+
+    .fb-answer {
+      color: #111827;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: rgba(192, 57, 43, 0.35);
+    }
+
+    .fb-tip {
+      margin-left: 1.8rem;
+      color: #991B1B;
+      background: rgba(192, 57, 43, 0.08);
+      border-left: 3px solid var(--err);
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .fb-expl {
+      margin-left: 1.8rem;
+      color: #334155;
+    }
+
+    .fb-expl strong {
+      color: var(--navy);
+    }
+
+    /* =========================================================================
+       UNIR CON FLECHAS (SVG DINÁMICO)
+       ========================================================================= */
+    .match-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .match-wrap {
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .match-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 20;
+    }
+
+    @media (min-width: 640px) {
+      .match-columns {
+        gap: 3.5rem;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .match-columns {
+        gap: 5rem;
+      }
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .match-card {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 0.75rem 0.85rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .match-card.right-card {
+      background: rgba(250, 248, 245, 0.75);
+    }
+
+    .match-card:hover {
+      border-color: var(--gold);
+    }
+
+    .match-card.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.25);
+    }
+
+    .match-card.linked {
+      border-color: var(--navy);
+      background: rgba(27, 54, 93, 0.05);
+    }
+
+    .match-card.graded-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+    }
+
+    .match-card.graded-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+    }
+
+    .match-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.74rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .match-card.right-card .match-badge {
+      background: var(--white);
+      color: var(--muted);
+    }
+
+    .match-text {
+      font-size: 0.84rem;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    @media (min-width: 640px) {
+      .match-text {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* =========================================================================
+       CONSTRUIR FRASES (WORD TILES)
+       ========================================================================= */
+    .build-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .build-label {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .build-zone {
+      min-height: 50px;
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 2px dashed var(--border);
+      background: rgba(250, 248, 245, 0.85);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .build-placeholder {
+      font-size: 0.8rem;
+      color: #94A3B8;
+      font-style: italic;
+      user-select: none;
+    }
+
+    .build-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .word-tile {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.42rem 0.78rem;
+      border-radius: 9px;
+      transition: transform 0.14s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .word-tile:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .word-tile.tile-bank {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .word-tile.tile-bank:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .word-tile.tile-bank:disabled {
+      background: #F1F5F9;
+      color: #CBD5E1;
+      border-color: #E2E8F0;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .word-tile.tile-placed {
+      background: var(--navy);
+      color: var(--white);
+      border: 1.5px solid var(--navy);
+      box-shadow: 0 2px 6px rgba(27, 54, 93, 0.18);
+    }
+
+    .word-tile.tile-placed:hover {
+      background: var(--navy-light);
+    }
+
+    /* =========================================================================
+       TEXTO CLOZE TEST
+       ========================================================================= */
+    .cloze-paper {
+      background: rgba(250, 248, 245, 0.9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      box-shadow: inset 0 2px 6px rgba(27, 54, 93, 0.04);
+    }
+
+    .cloze-title {
+      margin: 0 0 1rem;
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cloze-paragraph {
+      margin: 0 0 1rem;
+      font-size: 0.96rem;
+      line-height: 2.35;
+      color: var(--ink);
+    }
+
+    .cloze-paragraph:last-child {
+      margin-bottom: 0;
+    }
+
+    .cloze-unit {
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin: 0 0.15rem;
+    }
+
+    .cloze-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    /* =========================================================================
+       BARRA DE ACCIÓN Y RESUMEN DE SECCIÓN
+       ========================================================================= */
+    .action-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .action-bar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+    }
+
+    .action-bar-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 640px) {
+      .action-bar-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .summary-card {
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.3rem;
+      border: 1px solid var(--border);
+    }
+
+    .summary-card.hidden {
+      display: none;
+    }
+
+    .summary-card.lvl-high {
+      background: var(--ok-soft);
+      border-color: var(--ok-border);
+      color: var(--ok);
+    }
+
+    .summary-card.lvl-good {
+      background: var(--forest-soft);
+      border-color: rgba(45, 90, 76, 0.35);
+      color: var(--forest);
+    }
+
+    .summary-card.lvl-mid {
+      background: var(--gold-soft);
+      border-color: rgba(197, 155, 39, 0.45);
+      color: #8A6914;
+    }
+
+    .summary-card.lvl-low {
+      background: var(--err-soft);
+      border-color: var(--err-border);
+      color: var(--err);
+    }
+
+    .summary-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    @media (min-width: 640px) {
+      .summary-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .summary-score {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+
+    .summary-msg {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 500;
+      max-width: 440px;
+    }
+
+    .summary-bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .summary-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.7s ease;
+    }
+
+    /* =========================================================================
+       PIE DE PÁGINA
+       ========================================================================= */
+    .site-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1.15rem 0;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (min-width: 640px) {
+      .footer-inner {
+        flex-direction: row;
+      }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .footer-logo-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--navy);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 0.9rem;
+    }
+
+    /* =========================================================================
+       MODAL PERSONALIZADO DE REINICIO
+       ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(18, 38, 68, 0.52);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 45px rgba(18, 38, 68, 0.25);
+      max-width: 420px;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .modal-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #8A6914;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--navy);
+    }
+
+    .modal-desc {
+      margin: 0.2rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.65rem;
+    }
+
+    .block-divider {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.9rem;
+      margin-bottom: 1.15rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== CABECERA INSTITUCIONAL ==================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="header-top">
+        <!-- Marca + Logotipo oficial -->
+        <div class="brand">
+          <div class="logo-frame">
+            <img
+              src="Logo.png"
+              alt="Wisdom Corner Academy"
+              onerror="this.style.display='none'; document.getElementById('header-logo-fallback').classList.add('visible');"
+            />
+            <div id="header-logo-fallback" class="logo-fallback" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 6.5C2 5.4 2.9 4.5 4 4.5h5.5c1.4 0 2.5 1.1 2.5 2.5v12.5c0-1.1-.9-2-2-2H4c-1.1 0-2-.9-2-2V6.5z"/>
+                <path d="M22 6.5c0-1.1-.9-2-2-2h-5.5C13.1 4.5 12 5.6 12 7v12.5c0-1.1.9-2 2-2h6c1.1 0 2-.9 2-2V6.5z"/>
+                <circle cx="12" cy="3" r="1.2" fill="#E3C565" stroke="none"/>
+              </svg>
+              <span style="font-family: var(--font-serif); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; margin-top: 2px;">WCA</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="brand-eyebrow">
+              <span class="academy-name">Wisdom Corner Academy</span>
+              <span class="level-pill">Nivel A2–B1</span>
+            </div>
+            <h1 class="brand-title">Zero Conditional</h1>
+            <p class="brand-subtitle">Gramática Inglesa · Nivel A2–B1</p>
+          </div>
+        </div>
+
+        <!-- Marcador Global (40 ejercicios) -->
+        <div class="scoreboard" aria-live="polite">
+          <div class="scoreboard-left">
+            <div class="scoreboard-labels">
+              <span>Puntuación global:</span>
+              <span id="global-score-text" class="scoreboard-score">0 / 40</span>
+            </div>
+            <div class="progress-track">
+              <div id="global-progress-bar" class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="scoreboard-pct">
+            <div id="global-percent" class="scoreboard-pct-val">0%</div>
+            <div class="scoreboard-pct-lbl">Nota</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por pestañas -->
+      <nav class="tabs-nav" aria-label="Secciones de Zero Conditional">
+        <button type="button" class="tab-btn active" data-tab="theory">
+          <span>📖</span>
+          <span>Guía de Teoría</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="fill">
+          <span>1. Rellenar huecos</span>
+          <span id="badge-fill" class="tab-badge">12</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="match">
+          <span>2. Unir con flechas</span>
+          <span id="badge-match" class="tab-badge">8</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="build">
+          <span>3. Construir frases</span>
+          <span id="badge-build" class="tab-badge">10</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="cloze">
+          <span>4. Texto (Cloze Test)</span>
+          <span id="badge-cloze" class="tab-badge">10</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main>
+    <div class="container">
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑA 0: GUÍA DE TEORÍA VISUAL                           -->
+      <!-- ========================================================== -->
+      <section id="panel-theory" class="tab-panel active stack-lg">
+
+        <!-- Banner Introductorio -->
+        <div class="card hero-card">
+          <div class="hero-accent"></div>
+          <div class="hero-content">
+            <span class="eyebrow-pill">✦ Guía de Gramática · Nivel A2–B1</span>
+            <h2 class="section-title">El <span style="font-style: italic; color: var(--forest);">Zero Conditional</span> (Condicional Cero)</h2>
+            <p class="lead-text">
+              El <strong>Zero Conditional</strong> se utiliza para expresar <strong>resultados que siempre son verdaderos</strong> cuando se cumple una condición. En inglés, ambas partes de la oración van en <strong>Present Simple</strong> porque hablamos de hechos reales, leyes naturales o rutinas fijas.
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. ¿Cuándo se usa? -->
+        <div class="card card-top-forest stack-md">
+          <h3 class="card-title">1. ¿Cuándo usamos el Zero Conditional?</h3>
+          <div class="grid-2">
+            <div class="use-box">
+              <div class="use-box-title">🔬 Hechos científicos y verdades universales</div>
+              <p>Fenómenos físicos, químicos o matemáticos que se cumplen siempre.</p>
+              <p class="ex-en">If you heat water to 100°C, it boils.</p>
+            </div>
+            <div class="use-box">
+              <div class="use-box-title">🌿 Leyes de la naturaleza</div>
+              <p>Procesos naturales que ocurren de forma automática.</p>
+              <p class="ex-en">If plants don't get water, they die.</p>
+            </div>
+            <div class="use-box">
+              <div class="use-box-title">☕ Hábitos y rutinas con resultado fijo</div>
+              <p>Situaciones cotidianas que siempre producen el mismo efecto.</p>
+              <p class="ex-en">When Emma drinks coffee at night, she doesn't sleep well.</p>
+            </div>
+            <div class="use-box">
+              <div class="use-box-title">📋 Instrucciones y reglas (con imperativo)</div>
+              <p>Indicaciones claras sobre qué hacer si ocurre una condición.</p>
+              <p class="ex-en">If you see smoke, call the fire brigade.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Tabla de Estructuras -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">2. Estructura del Zero Conditional</h3>
+            <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">Siempre Present Simple + Present Simple</span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Forma</th>
+                  <th>Fórmula</th>
+                  <th>Ejemplo en inglés</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-ok">Afirmativa (+)</span></td>
+                  <td><span class="formula-code">If / When + Present Simple, Present Simple</span></td>
+                  <td>
+                    <em>If you <strong>heat</strong> water to 100°C, it <strong>boils</strong>.</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="tag-err">Negativa (−)</span></td>
+                  <td><span class="formula-code">If + don't / doesn't + V, don't / doesn't + V</span></td>
+                  <td>
+                    <em>If plants <strong>don't get</strong> water, they <strong>die</strong>.</em><br />
+                    <span style="font-size: 0.8rem; color: var(--muted);">Con «be»: <em>isn't / aren't</em> (nunca <em>doesn't be</em>).</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="tag-navy">Interrogativa (?)</span></td>
+                  <td><span class="formula-code">What happens if...? / Do/Does + S + V + if...?</span></td>
+                  <td>
+                    <em><strong>What happens if</strong> you <strong>mix</strong> red and blue?</em><br />
+                    <em><strong>Does</strong> ice <strong>melt</strong> if you leave it in the sun?</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="tag-forest">Orden invertido (sin coma)</span></td>
+                  <td><span class="formula-code">Present Simple + if / when + Present Simple</span></td>
+                  <td>
+                    <em>Water <strong>boils</strong> if you <strong>heat</strong> it to 100°C.</em><br />
+                    <span style="font-size: 0.8rem; color: var(--muted);">¡Fíjate! Cuando <strong>if / when</strong> va en medio, <strong>NO se pone coma</strong>.</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Recordatorio Clave -->
+        <div class="grid-2">
+          <div class="card card-top-navy stack-sm">
+            <h3 class="card-title">3. Regla de la 3.ª persona (he / she / it)</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--muted);">
+              Como el Zero Conditional usa <strong>Present Simple</strong>, recuerda añadir la terminación adecuada en afirmativa cuando el sujeto es <em>he, she, it</em> o un sustantivo singular:
+            </p>
+            <div class="use-box" style="margin-top: 0.5rem;">
+              <p><strong>Regla general (-s):</strong> melt → <strong>melts</strong> · boil → <strong>boils</strong> · beat → <strong>beats</strong></p>
+              <p style="margin-top: 0.3rem;"><strong>Terminados en -ch, -sh, -s, -x, -o (-es):</strong> reach → <strong>reaches</strong> · go → <strong>goes</strong></p>
+              <p style="margin-top: 0.3rem;"><strong>Consonante + -y (-ies):</strong> cry → <strong>cries</strong> · dry → <strong>dries</strong></p>
+            </div>
+          </div>
+
+          <div class="card card-top-gold stack-sm">
+            <h3 class="card-title">4. «When» como sinónimo de «If»</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--muted);">
+              En el Zero Conditional podemos sustituir <strong>if</strong> por <strong>when</strong> (cuando) prácticamente sin cambiar el significado, sobre todo al hablar de hábitos o hechos que sabemos con seguridad que ocurren:
+            </p>
+            <div class="use-box" style="margin-top: 0.5rem;">
+              <p class="ex-en" style="margin-top: 0;"><strong>If</strong> the sun goes down, it gets dark.</p>
+              <p class="ex-en"><strong>When</strong> the sun goes down, it gets dark.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Errores frecuentes -->
+        <div class="warning-banner stack-md">
+          <h3 class="card-title" style="display: flex; align-items: center; gap: 0.45rem;">
+            <span>⚠️</span> Errores frecuentes que debes evitar
+          </h3>
+          <div class="grid-3">
+            <div class="mistake-card">
+              <div class="m-label">Error 1: Usar «will»</div>
+              <p class="strike">If you heat ice, it will melt. ❌</p>
+              <p class="correct-line">If you heat ice, it <u>melts</u>. ✅</p>
+              <p style="margin: 0.35rem 0 0; font-size: 0.78rem; color: var(--muted);">En el Zero Conditional <strong>NUNCA</strong> se usa <em>will</em>; ambas cláusulas van en Present Simple.</p>
+            </div>
+            <div class="mistake-card">
+              <div class="m-label">Error 2: Olvidar la «-s»</div>
+              <p class="strike">If water reach 100°C, it boil. ❌</p>
+              <p class="correct-line">If water <u>reaches</u> 100°C, it <u>boils</u>. ✅</p>
+              <p style="margin: 0.35rem 0 0; font-size: 0.78rem; color: var(--muted);">Con <em>he / she / it</em> (como <em>water</em> o <em>Emma</em>), el verbo en afirmativa lleva <em>-s / -es / -ies</em>.</p>
+            </div>
+            <div class="mistake-card">
+              <div class="m-label">Error 3: Olvidar la coma</div>
+              <p class="strike">If you touch fire you get burned. ❌</p>
+              <p class="correct-line">If you touch fire<u>,</u> you get burned. ✅</p>
+              <p style="margin: 0.35rem 0 0; font-size: 0.78rem; color: var(--muted);">Pon coma cuando la frase empieza por <em>If / When</em>. Si <em>if</em> va en medio, no lleva coma.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones rápidos -->
+        <div class="quick-nav">
+          <button type="button" class="btn btn-primary" onclick="switchTab('fill')">Empezar: 1. Rellenar huecos →</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('match')">2. Unir con flechas</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('build')">3. Construir frases</button>
+          <button type="button" class="btn btn-forest" onclick="switchTab('cloze')">4. Texto (Cloze Test)</button>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑAS DE PRÁCTICA (RENDERIZADAS POR JAVASCRIPT)         -->
+      <!-- ========================================================== -->
+      <section id="panel-fill" class="tab-panel stack-lg"></section>
+      <section id="panel-match" class="tab-panel stack-lg"></section>
+      <section id="panel-build" class="tab-panel stack-lg"></section>
+      <section id="panel-cloze" class="tab-panel stack-lg"></section>
+
+    </div>
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo-box">
+          <img
+            src="Logo.png"
+            alt="Wisdom Corner Academy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+          />
+          <span style="display: none; font-family: var(--font-serif); font-size: 9px; font-weight: 700; color: var(--gold-light);">WCA</span>
+        </div>
+        <span><strong class="footer-brand-name">Wisdom Corner Academy</strong> · Gramática Inglesa · Nivel A2–B1</span>
+      </div>
+      <div>40 ejercicios interactivos · Corrección inteligente por sección</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL PERSONALIZADO DE REINICIO ==================== -->
+  <div id="reset-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-icon">↺</div>
+        <div>
+          <h3 id="modal-title-text" class="modal-title">¿Reiniciar esta sección?</h3>
+          <p class="modal-desc">Se borrarán tus respuestas y la puntuación actual de esta pestaña.</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn btn-secondary">Cancelar</button>
+        <button id="modal-confirm" type="button" class="btn btn-danger">Sí, reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. NORMALIZACIÓN, VALIDACIÓN FLEXIBLE Y DIAGNÓSTICO DE ERRORES
+       ========================================================================= */
+    function normalizeText(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/[’‘`´]/g, "'")
+        .toLowerCase()
+        .replace(/\bdo not\b/g, "don't")
+        .replace(/\bdoes not\b/g, "doesn't")
+        .replace(/\bis not\b/g, "isn't")
+        .replace(/\bare not\b/g, "aren't")
+        .replace(/\bwill not\b/g, "won't")
+        .replace(/[.,?!;:"()]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function isMatchAny(userVal, acceptedArray) {
+      const normUser = normalizeText(userVal);
+      if (!normUser) return false;
+      return acceptedArray.some(acc => normalizeText(acc) === normUser);
+    }
+
+    /* Detección específica de errores frecuentes del Zero Conditional */
+    function diagnoseZeroConditionalError(userVal, baseVerbsFor3rdPerson = []) {
+      const raw = (userVal || '').replace(/[’‘`´]/g, "'").toLowerCase().trim();
+      if (!raw) {
+        return 'Has dejado este apartado sin responder.';
+      }
+
+      // 1. Detectar uso de "will", "'ll" o "won't"
+      if (/\bwill\b|\bwon't\b|[a-z]+'ll\b/.test(raw)) {
+        return 'Aviso importante: en el Zero Conditional NUNCA se usa «will» (ni «\'ll» / «won\'t»). Ambas cláusulas deben ir en Present Simple.';
+      }
+
+      // 2. Detectar olvido de "-s / -es / -ies" en 3.ª persona del singular
+      if (baseVerbsFor3rdPerson.length > 0) {
+        const tokens = normalizeText(raw).split(' ');
+        const forgotS = baseVerbsFor3rdPerson.some(base => tokens.includes(base.toLowerCase()));
+        if (forgotS) {
+          return '¡Cuidado con la 3.ª persona del singular (he / she / it)! En afirmativa de Present Simple el verbo necesita «-s», «-es» o «-ies».';
+        }
+      }
+
+      return '';
+    }
+
+    /* =========================================================================
+       2. BANCO COMPLETO DE 40 EJERCICIOS (12 + 8 + 10 + 10)
+       ========================================================================= */
+    const DATA = {
+      /* -----------------------------------------------------------------------
+         PESTAÑA 1: RELLENAR HUECOS (12 EJERCICIOS = 12 PUNTOS)
+         ----------------------------------------------------------------------- */
+      fill: {
+        id: 'fill',
+        title: '1. Rellenar huecos — Zero Conditional',
+        subtitle: '12 ejercicios con hechos científicos, hábitos diarios, negativas, interrogativas y orden invertido.',
+        total: 12,
+        accentClass: 'card-top-navy',
+        items: [
+          {
+            num: 1,
+            parts: ['If you ', ' (heat) ice, it ', ' (melt).'],
+            gaps: [
+              { accepted: ['heat'], display: 'heat', width: 'w-sm' },
+              { accepted: ['melts'], display: 'melts', width: 'w-sm', thirdPersonBase: 'melt' }
+            ],
+            explanation: 'Hecho científico en Present Simple: con «you» usamos el verbo base («heat»), y con «it» añadimos «-s» («melts»).'
+          },
+          {
+            num: 2,
+            parts: ['When water ', ' (reach) 100°C, it boils.'],
+            gaps: [
+              { accepted: ['reaches'], display: 'reaches', width: 'w-md', thirdPersonBase: 'reach' }
+            ],
+            explanation: '«Water» equivale a «it» (3.ª persona singular) y el verbo «reach» termina en «-ch», por lo que añadimos «-es»: «reaches».'
+          },
+          {
+            num: 3,
+            parts: ['If Emma ', ' (drink) coffee at night, she ', ' (not / sleep) well.'],
+            gaps: [
+              { accepted: ['drinks'], display: 'drinks', width: 'w-sm', thirdPersonBase: 'drink' },
+              { accepted: ["doesn't sleep", 'does not sleep'], display: "doesn't sleep", width: 'w-md' }
+            ],
+            explanation: 'Hábito con resultado fijo: «Emma» (she) lleva «-s» en afirmativa («drinks») y «doesn\'t + infinitivo» en negativa («doesn\'t sleep»).'
+          },
+          {
+            num: 4,
+            parts: ['If plants ', ' (not / get) enough sunlight, they ', ' (die).'],
+            gaps: [
+              { accepted: ["don't get", 'do not get'], display: "don't get", width: 'w-md' },
+              { accepted: ['die'], display: 'die', width: 'w-sm' }
+            ],
+            explanation: '«Plants» y «they» son plurales: la negativa usa «don\'t get» y el resultado usa el verbo base «die».'
+          },
+          {
+            num: 5,
+            parts: ['Liam always ', ' (cry) if he cuts onions.'],
+            gaps: [
+              { accepted: ['cries'], display: 'cries', width: 'w-sm', thirdPersonBase: 'cry' }
+            ],
+            explanation: 'Orden invertido (sin coma). «Liam» es 3.ª persona singular y «cry» termina en consonante + «-y», así que cambia a «-ies»: «cries».'
+          },
+          {
+            num: 6,
+            parts: ['You get cold if your jacket ', ' (not / be) warm enough.'],
+            gaps: [
+              { accepted: ["isn't", 'is not'], display: "isn't", width: 'w-sm' }
+            ],
+            explanation: 'Con el verbo «be» en 3.ª persona singular («your jacket») la negativa en Present Simple es «isn\'t» (o «is not»), nunca «doesn\'t be».'
+          },
+          {
+            num: 7,
+            parts: ['What happens if you ', ' (mix) yellow and blue?'],
+            gaps: [
+              { accepted: ['mix'], display: 'mix', width: 'w-sm' }
+            ],
+            explanation: 'Pregunta típica de Zero Conditional («What happens if...?»): con el sujeto «you» el verbo va en Present Simple base («mix»).'
+          },
+          {
+            num: 8,
+            parts: ['', ' Maya ', ' (get) angry if her brother takes her things?'],
+            gaps: [
+              { accepted: ['does'], display: 'Does', width: 'w-sm' },
+              { accepted: ['get'], display: 'get', width: 'w-sm' }
+            ],
+            explanation: 'Interrogativa en Present Simple con 3.ª persona («Maya»): «Does + sujeto + verbo base» → «Does Maya get...?» (sin «-s» en «get»).'
+          },
+          {
+            num: 9,
+            parts: ['If the temperature ', ' (drop) below 0°C, the roads ', ' (become) icy.'],
+            gaps: [
+              { accepted: ['drops'], display: 'drops', width: 'w-sm', thirdPersonBase: 'drop' },
+              { accepted: ['become'], display: 'become', width: 'w-md' }
+            ],
+            explanation: '«The temperature» es singular («drops» con «-s»), mientras que «the roads» es plural («become» sin «-s»).'
+          },
+          {
+            num: 10,
+            parts: ['If David ', ' (not / set) an alarm, he ', ' (be) late for work.'],
+            gaps: [
+              { accepted: ["doesn't set", 'does not set'], display: "doesn't set", width: 'w-md' },
+              { accepted: ['is'], display: 'is', width: 'w-sm' }
+            ],
+            explanation: 'Con «David» (he) la negativa es «doesn\'t set» y el Present Simple de «be» para «he» es «is».'
+          },
+          {
+            num: 11,
+            parts: ['If the batteries ', ' (not / be) charged, the remote control doesn\'t work.'],
+            gaps: [
+              { accepted: ["aren't", 'are not'], display: "aren't", width: 'w-sm' }
+            ],
+            explanation: '«The batteries» es sujeto plural, por lo que la negativa de «be» en Present Simple es «aren\'t» (o «are not»).'
+          },
+          {
+            num: 12,
+            parts: ['Metal ', ' (expand) when you ', ' (heat) it.'],
+            gaps: [
+              { accepted: ['expands'], display: 'expands', width: 'w-md', thirdPersonBase: 'expand' },
+              { accepted: ['heat'], display: 'heat', width: 'w-sm' }
+            ],
+            explanation: 'Orden invertido con «when» (sin coma): «Metal» (incontable singular = it) lleva «-s» («expands») y «you» lleva «heat».'
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 2: UNIR CON FLECHAS (8 EJERCICIOS EN 2 TABLEROS DE 4 PAREJAS)
+         ----------------------------------------------------------------------- */
+      match: {
+        id: 'match',
+        title: '2. Unir con flechas — Condición y Resultado',
+        subtitle: '8 ejercicios divididos en 2 tableros interactivos. Haz clic en una tarjeta izquierda y después en su resultado correcto a la derecha.',
+        total: 8,
+        accentClass: 'card-top-gold',
+        boards: [
+          {
+            id: 'board-science',
+            letter: 'Tablero A',
+            title: 'Hechos científicos y naturaleza (Ejercicios 1 al 4)',
+            instruction: 'Relaciona cada fenómeno natural o científico (izquierda) con su consecuencia invariable (derecha).',
+            pairs: [
+              {
+                num: 1,
+                leftId: 's1',
+                left: 'If you freeze water,',
+                rightId: 'sr1',
+                right: 'it turns into ice.',
+                explanation: 'Al congelar agua («freeze water»), siempre se convierte en hielo («it turns into ice»). Ambas partes en Present Simple.'
+              },
+              {
+                num: 2,
+                leftId: 's2',
+                left: 'If you drop a glass on the floor,',
+                rightId: 'sr2',
+                right: 'it breaks.',
+                explanation: 'Si dejas caer un vaso al suelo («drop a glass»), se rompe («it breaks» con «-s» de 3.ª persona).'
+              },
+              {
+                num: 3,
+                leftId: 's3',
+                left: 'When the sun goes down,',
+                rightId: 'sr3',
+                right: 'it gets dark.',
+                explanation: 'Cuando el sol se pone («When the sun goes down»), oscurece («it gets dark»).'
+              },
+              {
+                num: 4,
+                leftId: 's4',
+                left: 'If you mix red and white,',
+                rightId: 'sr4',
+                right: 'you get pink.',
+                explanation: 'Al mezclar rojo y blanco («mix red and white»), obtienes rosa («you get pink»).'
+              }
+            ],
+            rightOrder: ['sr3', 'sr1', 'sr4', 'sr2']
+          },
+          {
+            id: 'board-daily',
+            letter: 'Tablero B',
+            title: 'Hábitos, salud y vida diaria (Ejercicios 5 al 8)',
+            instruction: 'Une cada rutina o situación cotidiana (izquierda) con su resultado habitual (derecha).',
+            pairs: [
+              {
+                num: 5,
+                leftId: 'd5',
+                left: "If you don't sleep enough,",
+                rightId: 'dr1',
+                right: 'you feel tired the next day.',
+                explanation: 'Si no duermes lo suficiente («don\'t sleep enough»), te sientes cansado al día siguiente («you feel tired the next day»).'
+              },
+              {
+                num: 6,
+                leftId: 'd6',
+                left: 'When Liam misses the bus,',
+                rightId: 'dr2',
+                right: 'he walks to the office.',
+                explanation: 'El sujeto masculino «Liam» concuerda con el pronombre «he»: cuando pierde el autobús, camina a la oficina.'
+              },
+              {
+                num: 7,
+                leftId: 'd7',
+                left: 'If Maya eats too much sugar,',
+                rightId: 'dr3',
+                right: 'she gets a headache.',
+                explanation: '«Maya» concuerda con «she»: si come demasiado azúcar, le duele la cabeza («she gets a headache»).'
+              },
+              {
+                num: 8,
+                leftId: 'd8',
+                left: 'If you press this red button,',
+                rightId: 'dr4',
+                right: 'the machine stops immediately.',
+                explanation: 'Es una regla de funcionamiento: al pulsar el botón rojo, la máquina se detiene al instante («stops» con «-s»).'
+              }
+            ],
+            rightOrder: ['dr4', 'dr2', 'dr1', 'dr3']
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 3: CONSTRUIR FRASES (10 EJERCICIOS = 10 PUNTOS)
+         ----------------------------------------------------------------------- */
+      build: {
+        id: 'build',
+        title: '3. Construir frases — Orden y Puntuación',
+        subtitle: '10 ejercicios con fichas de palabras desordenadas: afirmativas (con y sin coma), negativas, interrogativas e imperativo.',
+        total: 10,
+        accentClass: 'card-top-navy',
+        items: [
+          {
+            num: 1,
+            words: ['burned.', 'touch', 'get', 'you', 'If', 'fire,', 'you'],
+            accepted: ['If you touch fire, you get burned'],
+            display: 'If you touch fire, you get burned.',
+            explanation: 'Empieza por «If», así que lleva coma entre las dos cláusulas: «If you touch fire,» + «you get burned.»'
+          },
+          {
+            num: 2,
+            words: ['sun.', 'melts', 'in', 'you', 'the', 'Ice', 'it', 'if', 'leave'],
+            accepted: ['Ice melts if you leave it in the sun'],
+            display: 'Ice melts if you leave it in the sun.',
+            explanation: 'Orden invertido (el resultado va primero): «Ice melts» + «if you leave it in the sun.» Como «if» va en medio, NO lleva coma.'
+          },
+          {
+            num: 3,
+            words: ['trees.', 'arrives,', 'from', 'When', 'fall', 'the', 'leaves', 'autumn'],
+            accepted: ['When autumn arrives, leaves fall from the trees'],
+            display: 'When autumn arrives, leaves fall from the trees.',
+            explanation: 'Al comenzar con «When», colocamos coma tras la condición («When autumn arrives,») y luego el resultado en Present Simple.'
+          },
+          {
+            num: 4,
+            words: ['music.', 'feels', 'when', 'to', 'Emma', 'she', 'happy', 'listens'],
+            accepted: ['Emma feels happy when she listens to music'],
+            display: 'Emma feels happy when she listens to music.',
+            explanation: 'Orden invertido sin coma: resultado («Emma feels happy») + «when» + condición («she listens to music»).'
+          },
+          {
+            num: 5,
+            words: ['brown.', 'grass', 'turns', 'If', "doesn't", 'the', 'rain,', 'it'],
+            accepted: ["If it doesn't rain, the grass turns brown"],
+            display: "If it doesn't rain, the grass turns brown.",
+            explanation: 'Negativa en 3.ª persona («If it doesn\'t rain,») con coma obligatoria, seguida del resultado («the grass turns brown.»).'
+          },
+          {
+            num: 6,
+            words: ['late.', 'breakfast', 'if', 'up', 'I', "don't", 'wake', 'I', 'eat'],
+            accepted: ["I don't eat breakfast if I wake up late"],
+            display: "I don't eat breakfast if I wake up late.",
+            explanation: 'Negativa en orden invertido (sin coma): «I don\'t eat breakfast» + «if I wake up late.»'
+          },
+          {
+            num: 7,
+            words: ['die.', 'water', 'they', 'If', 'flowers,', "don't", 'you'],
+            accepted: ["If you don't water flowers, they die"],
+            display: "If you don't water flowers, they die.",
+            explanation: 'Condición negativa al principio con coma: «If you don\'t water flowers,» + resultado («they die.»).'
+          },
+          {
+            num: 8,
+            words: ['metal?', 'if', 'happens', 'heat', 'What', 'you'],
+            accepted: ['What happens if you heat metal'],
+            display: 'What happens if you heat metal?',
+            explanation: 'Estructura interrogativa estándar del Zero Conditional: «What happens» + «if» + Present Simple («you heat metal?»). Sin coma.'
+          },
+          {
+            num: 9,
+            words: ['rains?', 'umbrella', 'it', 'you', 'an', 'if', 'Do', 'take'],
+            accepted: ['Do you take an umbrella if it rains'],
+            display: 'Do you take an umbrella if it rains?',
+            explanation: 'Pregunta cerrada en orden invertido (sin coma): «Do + sujeto + verbo» («Do you take an umbrella») + «if it rains?».'
+          },
+          {
+            num: 10,
+            words: ['brigade.', 'see', 'the', 'If', 'fire', 'smoke,', 'call', 'you'],
+            accepted: ['If you see smoke, call the fire brigade'],
+            display: 'If you see smoke, call the fire brigade.',
+            explanation: 'Zero Conditional para instrucciones con imperativo: «If you see smoke,» (con coma) + imperativo («call the fire brigade.»).'
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 4: TEXTO — CLOZE TEST (10 HUECOS = 10 PUNTOS)
+         ----------------------------------------------------------------------- */
+      cloze: {
+        id: 'cloze',
+        title: '4. Texto en contexto — Cloze Test',
+        subtitle: 'Lee el texto completo y conjuga los 10 verbos entre paréntesis en Present Simple aplicando las reglas del Zero Conditional.',
+        total: 10,
+        accentClass: 'card-top-forest',
+        storyTitle: 'The Science of Everyday Life',
+        paragraphs: [
+          [
+            { text: 'Science is all around us, even in the simplest moments of our day. For example, in nature, when the sun ' },
+            {
+              num: 1,
+              verb: 'shine',
+              accepted: ['shines'],
+              display: 'shines',
+              thirdPersonBase: 'shine',
+              explanation: 'Hueco 1: «The sun» es 3.ª persona singular (it), por lo que en Present Simple añadimos «-s»: «shines».'
+            },
+            { text: ' on the ocean, the water slowly ' },
+            {
+              num: 2,
+              verb: 'evaporate',
+              accepted: ['evaporates'],
+              display: 'evaporates',
+              thirdPersonBase: 'evaporate',
+              explanation: 'Hueco 2: «The water» es sustantivo incontable singular (it). En Present Simple lleva «-s»: «evaporates».'
+            },
+            { text: ' and rises into the sky. When that warm air ' },
+            {
+              num: 3,
+              verb: 'cool',
+              accepted: ['cools'],
+              display: 'cools',
+              thirdPersonBase: 'cool',
+              explanation: 'Hueco 3: «That warm air» es singular (it), así que «cool» añade «-s»: «cools».'
+            },
+            { text: ' down, clouds form and rain falls back to the earth. Plants depend on this cycle: if a tree ' },
+            {
+              num: 4,
+              verb: 'not / receive',
+              accepted: ["doesn't receive", 'does not receive'],
+              display: "doesn't receive",
+              explanation: 'Hueco 4: Negativa en 3.ª persona singular («a tree» = it): usamos «doesn\'t + infinitivo» («doesn\'t receive» o «does not receive»).'
+            },
+            { text: ' enough water, its leaves dry out and fall.' }
+          ],
+          [
+            { text: 'Our bodies follow strict rules too. If you ' },
+            {
+              num: 5,
+              verb: 'exercise',
+              accepted: ['exercise'],
+              display: 'exercise',
+              explanation: 'Hueco 5: Con el sujeto «you» en Present Simple usamos la forma base sin «-s»: «exercise».'
+            },
+            { text: ' hard, your heart ' },
+            {
+              num: 6,
+              verb: 'beat',
+              accepted: ['beats'],
+              display: 'beats',
+              thirdPersonBase: 'beat',
+              explanation: 'Hueco 6: «Your heart» es 3.ª persona singular (it), así que el verbo «beat» lleva «-s»: «beats».'
+            },
+            { text: ' faster to send more oxygen to your muscles. Also, when your body ' },
+            {
+              num: 7,
+              verb: 'be',
+              accepted: ['is'],
+              display: 'is',
+              explanation: 'Hueco 7: El verbo «be» en Present Simple con sujeto singular («your body» = it) es «is».'
+            },
+            { text: ' too hot, you sweat to bring your temperature down.' }
+          ],
+          [
+            { text: 'The same logic applies to our daily routines. If people ' },
+            {
+              num: 8,
+              verb: 'not / drink',
+              accepted: ["don't drink", 'do not drink'],
+              display: "don't drink",
+              explanation: 'Hueco 8: «People» es siempre plural (they), por lo que la negativa en Present Simple es «don\'t drink» (o «do not drink»).'
+            },
+            { text: ' enough water during the day, they often ' },
+            {
+              num: 9,
+              verb: 'feel',
+              accepted: ['feel'],
+              display: 'feel',
+              explanation: 'Hueco 9: Con el pronombre plural «they», el verbo en Present Simple va en forma base: «feel».'
+            },
+            { text: ' dizzy or tired. Finally, if you ' },
+            {
+              num: 10,
+              verb: 'go',
+              accepted: ['go'],
+              display: 'go',
+              explanation: 'Hueco 10: Con el sujeto «you» en Present Simple usamos la forma base: «go».'
+            },
+            { text: ' to bed at the same time every night, your brain rests much better and you wake up full of energy.' }
+          ]
+        ]
+      }
+    };
+
+    /* =========================================================================
+       3. ESTADO DE LA APLICACIÓN
+       ========================================================================= */
+    const state = {
+      activeTab: 'theory',
+      scores: {
+        fill: null,  // 0..12
+        match: null, // 0..8
+        build: null, // 0..10
+        cloze: null  // 0..10
+      },
+      matches: {}, // { boardId: { selectedLeft, links: {}, graded, results: {} } }
+      builds: {},  // { num: [wordIndex, ...] }
+      pendingReset: null
+    };
+
+    const observers = [];
+
+    /* =========================================================================
+       4. RENDERIZADO DE LAS 4 PESTAÑAS DE PRÁCTICA
+       ========================================================================= */
+    function sectionHeaderHTML(sec) {
+      return `
+        <div class="card ${sec.accentClass}">
+          <div class="section-header-row">
+            <div>
+              <h2 class="section-title">${sec.title}</h2>
+              <p class="lead-text" style="margin-top: 0.35rem;">${sec.subtitle}</p>
+            </div>
+            <div class="count-pill">📝 ${sec.total} ejercicios</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function actionFooterHTML(sectionId, total) {
+      return `
+        <div class="card action-bar">
+          <div class="action-bar-top">
+            <div style="font-size: 0.88rem; color: var(--muted);">
+              <strong style="color: var(--navy);">¿Has completado los ${total} ejercicios?</strong> Pulsa para corregir y consultar las explicaciones.
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn btn-secondary" onclick="openResetModal('${sectionId}')">↺ Reiniciar sección</button>
+              <button type="button" class="btn btn-primary" onclick="gradeSection('${sectionId}')">✓ Corregir esta sección</button>
+            </div>
+          </div>
+          <div id="summary-${sectionId}" class="summary-card hidden"></div>
+        </div>
+      `;
+    }
+
+    /* --- Pestaña 1: Rellenar huecos --- */
+    function renderFillTab() {
+      const sec = DATA.fill;
+      const panel = document.getElementById('panel-fill');
+
+      let itemsHtml = sec.items.map(item => {
+        let sentenceHtml = '';
+        item.parts.forEach((part, idx) => {
+          sentenceHtml += `<span>${part}</span>`;
+          if (idx < item.gaps.length) {
+            const w = item.gaps[idx].width || 'w-md';
+            sentenceHtml += `<input type="text" id="fill-${item.num}-gap-${idx}" class="gap-input ${w}" autocomplete="off" spellcheck="false" placeholder="..." aria-label="Ejercicio ${item.num} hueco ${idx + 1}" />`;
+          }
+        });
+
+        return `
+          <div id="fill-card-${item.num}" class="exercise-item">
+            <div class="exercise-row">
+              <span class="ex-num">${item.num}</span>
+              <div class="ex-body">
+                <div class="sentence-line">${sentenceHtml}</div>
+                <div id="fill-fb-${item.num}" class="feedback-slot hidden"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      panel.innerHTML = `
+        ${sectionHeaderHTML(sec)}
+        <div class="card stack-md">
+          <div class="block-divider">
+            <span class="eyebrow-pill" style="margin-bottom: 0.4rem;">Práctica guiada</span>
+            <h3 class="card-title">Completa con Present Simple (afirmativa, negativa o interrogativa)</h3>
+            <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted);">Escribe la forma correcta del verbo entre paréntesis en cada hueco. Si un ejercicio tiene dos huecos, ambos deben ser correctos para sumar el punto.</p>
+          </div>
+          <div class="stack-md">${itemsHtml}</div>
+        </div>
+        ${actionFooterHTML('fill', sec.total)}
+      `;
+    }
+
+    /* --- Pestaña 2: Unir con flechas --- */
+    function renderMatchTab() {
+      const sec = DATA.match;
+      const panel = document.getElementById('panel-match');
+
+      const boardsHtml = sec.boards.map(board => {
+        const rightMap = {};
+        board.pairs.forEach(p => { rightMap[p.rightId] = p; });
+        const orderedRight = board.rightOrder.map(id => rightMap[id]);
+
+        return `
+          <div class="card stack-md">
+            <div class="block-divider" style="margin-bottom: 0.25rem;">
+              <span class="eyebrow-pill" style="margin-bottom: 0.4rem;">${board.letter}</span>
+              <h3 class="card-title">${board.title}</h3>
+              <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted);">${board.instruction}</p>
+            </div>
+
+            <div class="match-toolbar">
+              <span>💡 Pulsa una tarjeta de la <strong>izquierda</strong> y luego su pareja de la <strong>derecha</strong>. Pulsa de nuevo una tarjeta unida para deshacer o cambiar la flecha.</span>
+              <button type="button" class="btn-link" onclick="clearMatchBoard('${board.id}')">Limpiar flechas</button>
+            </div>
+
+            <div id="match-wrap-${board.id}" class="match-wrap">
+              <svg id="match-svg-${board.id}" class="match-svg">
+                <defs>
+                  <marker id="arrow-pending-${board.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C59B27" />
+                  </marker>
+                  <marker id="arrow-ok-${board.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#1E8449" />
+                  </marker>
+                  <marker id="arrow-err-${board.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C0392B" />
+                  </marker>
+                </defs>
+                <g id="match-lines-${board.id}"></g>
+              </svg>
+
+              <div class="match-columns">
+                <div class="match-col">
+                  ${board.pairs.map(p => `
+                    <button type="button" id="left-${board.id}-${p.leftId}" data-left="${p.leftId}"
+                      class="match-card left-card" onclick="onMatchLeftClick('${board.id}', '${p.leftId}')">
+                      <span class="match-badge">${p.num}</span>
+                      <span class="match-text">${p.left}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                <div class="match-col">
+                  ${orderedRight.map((p, idx) => `
+                    <button type="button" id="right-${board.id}-${p.rightId}" data-right="${p.rightId}"
+                      class="match-card right-card" onclick="onMatchRightClick('${board.id}', '${p.rightId}')">
+                      <span class="match-badge">${String.fromCharCode(65 + idx)}</span>
+                      <span class="match-text">${p.right}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div id="match-fb-${board.id}" class="feedback-slot hidden stack-sm"></div>
+          </div>
+        `;
+      }).join('');
+
+      panel.innerHTML = `
+        ${sectionHeaderHTML(sec)}
+        ${boardsHtml}
+        ${actionFooterHTML('match', sec.total)}
+      `;
+
+      sec.boards.forEach(board => {
+        state.matches[board.id] = {
+          selectedLeft: null,
+          links: {},
+          graded: false,
+          results: {}
+        };
+        const wrap = document.getElementById(`match-wrap-${board.id}`);
+        if (wrap && typeof ResizeObserver !== 'undefined') {
+          const ro = new ResizeObserver(() => drawMatchLines(board.id));
+          ro.observe(wrap);
+          observers.push(ro);
+        }
+      });
+    }
+
+    /* --- Pestaña 3: Construir frases --- */
+    function renderBuildTab() {
+      const sec = DATA.build;
+      const panel = document.getElementById('panel-build');
+
+      const itemsHtml = sec.items.map(item => `
+        <div id="build-card-${item.num}" class="exercise-item">
+          <div class="exercise-row">
+            <span class="ex-num">${item.num}</span>
+            <div class="ex-body">
+              <div class="build-header">
+                <span class="build-label">Tu oración:</span>
+                <button type="button" class="btn-link" onclick="clearBuildItem(${item.num})">Limpiar frase</button>
+              </div>
+              <div id="build-zone-${item.num}" class="build-zone"></div>
+              <div id="build-bank-${item.num}" class="build-bank"></div>
+              <div id="build-fb-${item.num}" class="feedback-slot hidden"></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      panel.innerHTML = `
+        ${sectionHeaderHTML(sec)}
+        <div class="card stack-md">
+          <div class="block-divider">
+            <span class="eyebrow-pill" style="margin-bottom: 0.4rem;">Word Tiles</span>
+            <h3 class="card-title">Ordena las palabras para formar frases correctas</h3>
+            <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted);">Pulsa las fichas del banco para colocarlas arriba. Si quieres quitar una palabra, haz clic sobre ella en la zona superior.</p>
+          </div>
+          <div class="stack-md">${itemsHtml}</div>
+        </div>
+        ${actionFooterHTML('build', sec.total)}
+      `;
+
+      sec.items.forEach(item => {
+        state.builds[item.num] = [];
+        renderBuildItem(item.num);
+      });
+    }
+
+    /* --- Pestaña 4: Texto Cloze Test --- */
+    function renderClozeTab() {
+      const sec = DATA.cloze;
+      const panel = document.getElementById('panel-cloze');
+
+      const paragraphsHtml = sec.paragraphs.map(para => {
+        const inner = para.map(seg => {
+          if (seg.text) return `<span>${seg.text}</span>`;
+          const w = seg.verb.includes('/') ? 'w-lg' : 'w-md';
+          return `
+            <span class="cloze-unit">
+              <span class="cloze-num">${seg.num}</span>
+              <input type="text" id="cloze-gap-${seg.num}" class="gap-input ${w}" autocomplete="off" spellcheck="false" placeholder="..." aria-label="Hueco ${seg.num} (${seg.verb})" />
+              <span class="verb-hint">(${seg.verb})</span>
+            </span>
+          `;
+        }).join('');
+        return `<p class="cloze-paragraph">${inner}</p>`;
+      }).join('');
+
+      panel.innerHTML = `
+        ${sectionHeaderHTML(sec)}
+        <div class="card stack-md">
+          <div class="block-divider">
+            <span class="eyebrow-pill" style="margin-bottom: 0.4rem;">Lectura y gramática</span>
+            <h3 class="card-title">Completa los 10 huecos del texto</h3>
+            <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted);">Fíjate bien en el sujeto de cada verbo (singular, plural o incontable) y en si lleva <strong>not</strong>. Recuerda: en el Zero Conditional nunca usamos <em>will</em>.</p>
+          </div>
+
+          <div class="cloze-paper">
+            <h4 class="cloze-title"><span>🔬</span><span>${sec.storyTitle}</span></h4>
+            ${paragraphsHtml}
+          </div>
+
+          <div id="cloze-fb-list" class="feedback-slot hidden stack-sm"></div>
+        </div>
+        ${actionFooterHTML('cloze', sec.total)}
+      `;
+    }
+
+    /* =========================================================================
+       5. INTERACTIVIDAD DE FLECHAS SVG
+       ========================================================================= */
+    function onMatchLeftClick(boardId, leftId) {
+      const st = state.matches[boardId];
+      if (!st) return;
+
+      // Si ya tenía flecha y no estaba seleccionado, permitir deshacer o re-seleccionar
+      if (st.selectedLeft === leftId) {
+        st.selectedLeft = null;
+      } else if (st.links[leftId] && !st.selectedLeft) {
+        delete st.links[leftId];
+        st.selectedLeft = leftId;
+      } else {
+        st.selectedLeft = leftId;
+      }
+      st.graded = false;
+      updateMatchBoardVisuals(boardId);
+    }
+
+    function onMatchRightClick(boardId, rightId) {
+      const st = state.matches[boardId];
+      if (!st) return;
+
+      if (st.selectedLeft) {
+        // Mantener relación 1 a 1
+        Object.keys(st.links).forEach(lId => {
+          if (st.links[lId] === rightId) delete st.links[lId];
+        });
+        st.links[st.selectedLeft] = rightId;
+        st.selectedLeft = null;
+        st.graded = false;
+        updateMatchBoardVisuals(boardId);
+      } else {
+        // Si se pulsa un elemento derecho ya conectado sin tener izquierdo seleccionado, desconectarlo
+        const existingLeft = Object.keys(st.links).find(lId => st.links[lId] === rightId);
+        if (existingLeft) {
+          delete st.links[existingLeft];
+          st.graded = false;
+          updateMatchBoardVisuals(boardId);
+        }
+      }
+    }
+
+    function clearMatchBoard(boardId) {
+      const st = state.matches[boardId];
+      if (!st) return;
+      st.selectedLeft = null;
+      st.links = {};
+      st.graded = false;
+      st.results = {};
+      const fb = document.getElementById(`match-fb-${boardId}`);
+      if (fb) {
+        fb.innerHTML = '';
+        fb.classList.add('hidden');
+      }
+      updateMatchBoardVisuals(boardId);
+    }
+
+    function updateMatchBoardVisuals(boardId) {
+      const st = state.matches[boardId];
+      const wrap = document.getElementById(`match-wrap-${boardId}`);
+      if (!st || !wrap) return;
+
+      const usedRights = new Set(Object.values(st.links));
+
+      wrap.querySelectorAll('.left-card').forEach(btn => {
+        const lId = btn.dataset.left;
+        btn.classList.remove('selected', 'linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          btn.classList.add(st.results[lId] ? 'graded-ok' : 'graded-err');
+        } else if (st.selectedLeft === lId) {
+          btn.classList.add('selected');
+        } else if (st.links[lId]) {
+          btn.classList.add('linked');
+        }
+      });
+
+      wrap.querySelectorAll('.right-card').forEach(btn => {
+        const rId = btn.dataset.right;
+        btn.classList.remove('linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          const linkedLeft = Object.keys(st.links).find(lId => st.links[lId] === rId);
+          if (linkedLeft) {
+            btn.classList.add(st.results[linkedLeft] ? 'graded-ok' : 'graded-err');
+          }
+        } else if (usedRights.has(rId)) {
+          btn.classList.add('linked');
+        }
+      });
+
+      drawMatchLines(boardId);
+    }
+
+    function drawMatchLines(boardId) {
+      const st = state.matches[boardId];
+      const wrap = document.getElementById(`match-wrap-${boardId}`);
+      const group = document.getElementById(`match-lines-${boardId}`);
+      if (!st || !wrap || !group) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      if (wrapRect.width === 0 || wrapRect.height === 0) return;
+
+      group.innerHTML = '';
+
+      Object.entries(st.links).forEach(([leftId, rightId]) => {
+        const leftEl = document.getElementById(`left-${boardId}-${leftId}`);
+        const rightEl = document.getElementById(`right-${boardId}-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left - wrapRect.left - 3;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+
+        const dx = Math.max(22, (x2 - x1) * 0.45);
+        const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        let color = '#C59B27';
+        let marker = `arrow-pending-${boardId}`;
+        if (st.graded) {
+          if (st.results[leftId]) {
+            color = '#1E8449';
+            marker = `arrow-ok-${boardId}`;
+          } else {
+            color = '#C0392B';
+            marker = `arrow-err-${boardId}`;
+          }
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('marker-end', `url(#${marker})`);
+        group.appendChild(path);
+
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x1);
+        dot.setAttribute('cy', y1);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', color);
+        group.appendChild(dot);
+      });
+    }
+
+    function redrawAllMatchBoards() {
+      Object.keys(state.matches).forEach(drawMatchLines);
+    }
+
+    /* =========================================================================
+       6. INTERACTIVIDAD DE FICHAS (WORD TILES)
+       ========================================================================= */
+    function renderBuildItem(num) {
+      const item = DATA.build.items.find(i => i.num === num);
+      const placed = state.builds[num] || [];
+      const zone = document.getElementById(`build-zone-${num}`);
+      const bank = document.getElementById(`build-bank-${num}`);
+      if (!item || !zone || !bank) return;
+
+      if (placed.length === 0) {
+        zone.innerHTML = `<span class="build-placeholder">Haz clic en las palabras de abajo para formar la frase...</span>`;
+      } else {
+        zone.innerHTML = placed.map((wordIdx, pos) => `
+          <button type="button" class="word-tile tile-placed" onclick="removeWordTile(${num}, ${pos})">
+            ${item.words[wordIdx]}
+          </button>
+        `).join('');
+      }
+
+      bank.innerHTML = item.words.map((word, idx) => {
+        const used = placed.includes(idx);
+        return `
+          <button type="button" class="word-tile tile-bank" ${used ? 'disabled' : ''} onclick="addWordTile(${num}, ${idx})">
+            ${word}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function addWordTile(num, wordIdx) {
+      if (!state.builds[num]) state.builds[num] = [];
+      if (state.builds[num].includes(wordIdx)) return;
+      state.builds[num].push(wordIdx);
+      renderBuildItem(num);
+    }
+
+    function removeWordTile(num, pos) {
+      if (!state.builds[num]) return;
+      state.builds[num].splice(pos, 1);
+      renderBuildItem(num);
+    }
+
+    function clearBuildItem(num) {
+      state.builds[num] = [];
+      renderBuildItem(num);
+    }
+
+    /* =========================================================================
+       7. CORRECCIÓN INTELIGENTE Y FEEDBACK PEDAGÓGICO
+       ========================================================================= */
+    function feedbackHTML(isOk, displayAns, explanation, tip = '', prefix = '') {
+      if (isOk) {
+        return `
+          <div class="fb-ok">
+            <span class="fb-icon fb-icon-ok">✓</span>
+            <span>${prefix ? `<strong>${prefix}:</strong> ` : ''}¡Correcto! ${displayAns ? `(${displayAns})` : ''}</span>
+          </div>
+        `;
+      }
+      return `
+        <div class="fb-err">
+          <div class="fb-err-head">
+            <span class="fb-icon fb-icon-err">✕</span>
+            <div>
+              ${prefix ? `<strong>${prefix} — </strong>` : ''}Respuesta correcta: <span class="fb-answer">${displayAns}</span>
+            </div>
+          </div>
+          ${tip ? `<div class="fb-tip">${tip}</div>` : ''}
+          <div class="fb-expl"><strong>Explicación:</strong> ${explanation}</div>
+        </div>
+      `;
+    }
+
+    function gradeSection(sectionId) {
+      let score = 0;
+      const total = DATA[sectionId].total;
+
+      /* --- 1. RELLENAR HUECOS --- */
+      if (sectionId === 'fill') {
+        DATA.fill.items.forEach(item => {
+          const card = document.getElementById(`fill-card-${item.num}`);
+          const fb = document.getElementById(`fill-fb-${item.num}`);
+          let allOk = true;
+          let combinedInput = '';
+          const thirdPersonBases = [];
+
+          item.gaps.forEach((gap, idx) => {
+            const input = document.getElementById(`fill-${item.num}-gap-${idx}`);
+            const val = input ? input.value : '';
+            combinedInput += ' ' + val;
+            if (gap.thirdPersonBase) thirdPersonBases.push(gap.thirdPersonBase);
+
+            const ok = isMatchAny(val, gap.accepted);
+            if (!ok) allOk = false;
+
+            if (input) {
+              input.classList.remove('input-ok', 'input-err');
+              input.classList.add(ok ? 'input-ok' : 'input-err');
+            }
+          });
+
+          if (allOk) score++;
+          card.classList.remove('is-correct', 'is-wrong');
+          card.classList.add(allOk ? 'is-correct' : 'is-wrong');
+
+          const displayAns = item.gaps.map(g => g.display).join(' ... ');
+          const tip = allOk ? '' : diagnoseZeroConditionalError(combinedInput.trim(), thirdPersonBases);
+          fb.innerHTML = feedbackHTML(allOk, displayAns, item.explanation, tip);
+          fb.classList.remove('hidden');
+        });
+      }
+
+      /* --- 2. UNIR CON FLECHAS --- */
+      else if (sectionId === 'match') {
+        DATA.match.boards.forEach(board => {
+          const st = state.matches[board.id];
+          const fb = document.getElementById(`match-fb-${board.id}`);
+          st.selectedLeft = null;
+          st.graded = true;
+          st.results = {};
+
+          let fbHtml = '';
+          board.pairs.forEach(pair => {
+            const chosenRight = st.links[pair.leftId];
+            const ok = chosenRight === pair.rightId;
+            st.results[pair.leftId] = ok;
+            if (ok) score++;
+
+            if (ok) {
+              fbHtml += feedbackHTML(true, '', '', '', `Ej. ${pair.num}`);
+            } else {
+              const tip = chosenRight ? '' : 'No has unido esta tarjeta con ninguna opción de la derecha.';
+              fbHtml += feedbackHTML(false, `${pair.left} ${pair.right}`, pair.explanation, tip, `Ej. ${pair.num}`);
+            }
+          });
+
+          updateMatchBoardVisuals(board.id);
+          fb.innerHTML = fbHtml;
+          fb.classList.remove('hidden');
+        });
+      }
+
+      /* --- 3. CONSTRUIR FRASES --- */
+      else if (sectionId === 'build') {
+        DATA.build.items.forEach(item => {
+          const card = document.getElementById(`build-card-${item.num}`);
+          const fb = document.getElementById(`build-fb-${item.num}`);
+          const placed = state.builds[item.num] || [];
+          const userSentence = placed.map(idx => item.words[idx]).join(' ');
+          const ok = isMatchAny(userSentence, item.accepted);
+
+          if (ok) score++;
+          card.classList.remove('is-correct', 'is-wrong');
+          card.classList.add(ok ? 'is-correct' : 'is-wrong');
+
+          const tip = ok || placed.length > 0 ? '' : 'Has dejado la frase sin construir.';
+          fb.innerHTML = feedbackHTML(ok, item.display, item.explanation, tip);
+          fb.classList.remove('hidden');
+        });
+      }
+
+      /* --- 4. TEXTO CLOZE TEST --- */
+      else if (sectionId === 'cloze') {
+        const fbList = document.getElementById('cloze-fb-list');
+        let fbHtml = '';
+
+        DATA.cloze.paragraphs.forEach(para => {
+          para.forEach(seg => {
+            if (!seg.num) return;
+            const input = document.getElementById(`cloze-gap-${seg.num}`);
+            const val = input ? input.value : '';
+            const ok = isMatchAny(val, seg.accepted);
+
+            if (input) {
+              input.classList.remove('input-ok', 'input-err');
+              input.classList.add(ok ? 'input-ok' : 'input-err');
+            }
+
+            if (ok) {
+              score++;
+              fbHtml += feedbackHTML(true, seg.display, '', '', `Hueco ${seg.num} (${seg.verb})`);
+            } else {
+              const bases = seg.thirdPersonBase ? [seg.thirdPersonBase] : [];
+              const tip = diagnoseZeroConditionalError(val, bases);
+              fbHtml += feedbackHTML(false, seg.display, seg.explanation, tip, `Hueco ${seg.num} (${seg.verb})`);
+            }
+          });
+        });
+
+        fbList.innerHTML = fbHtml;
+        fbList.classList.remove('hidden');
+      }
+
+      state.scores[sectionId] = score;
+      renderSectionSummary(sectionId, score, total);
+      updateGlobalScore();
+
+      const summaryEl = document.getElementById(`summary-${sectionId}`);
+      if (summaryEl) {
+        summaryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function renderSectionSummary(sectionId, score, total) {
+      const el = document.getElementById(`summary-${sectionId}`);
+      if (!el) return;
+
+      const pct = Math.round((score / total) * 100);
+      let cls = 'lvl-mid';
+      let barBg = 'linear-gradient(90deg, #C59B27, #E3C565)';
+      let msg = '¡Buen progreso! Revisa las explicaciones en rojo y vuelve a intentarlo para afianzar el Zero Conditional.';
+
+      if (pct >= 90) {
+        cls = 'lvl-high';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #1E8449)';
+        msg = '¡Excelente resultado, digno de Wisdom Corner Academy! Dominas el Zero Conditional con total seguridad.';
+      } else if (pct >= 70) {
+        cls = 'lvl-good';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #3C7362)';
+        msg = '¡Muy buen trabajo! Tienes una base muy sólida; repasa los pequeños detalles fallados para llegar al 100%.';
+      } else if (pct < 50) {
+        cls = 'lvl-low';
+        barBg = 'linear-gradient(90deg, #C0392B, #C59B27)';
+        msg = 'Te recomendamos repasar la «Guía de Teoría» (especialmente la 3.ª persona y no usar «will») y volver a intentarlo.';
+      }
+
+      el.className = `summary-card ${cls}`;
+      el.innerHTML = `
+        <div class="summary-top">
+          <div>
+            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85;">Resumen de la sección</div>
+            <div class="summary-score">${score} / ${total} aciertos <span style="font-family: var(--font-sans); font-size: 0.98rem; font-weight: 600;">(${pct}%)</span></div>
+          </div>
+          <p class="summary-msg">${msg}</p>
+        </div>
+        <div class="summary-bar-track">
+          <div class="summary-bar-fill" style="width: ${pct}%; background: ${barBg};"></div>
+        </div>
+      `;
+    }
+
+    function updateGlobalScore() {
+      const ids = ['fill', 'match', 'build', 'cloze'];
+      let totalCorrect = 0;
+
+      ids.forEach(id => {
+        const sc = state.scores[id];
+        const max = DATA[id].total;
+        const badge = document.getElementById(`badge-${id}`);
+
+        if (sc !== null) {
+          totalCorrect += sc;
+          if (badge) {
+            badge.textContent = `${sc}/${max}`;
+            badge.classList.remove('graded-high', 'graded-mid');
+            badge.classList.add(sc / max >= 0.7 ? 'graded-high' : 'graded-mid');
+          }
+        } else if (badge) {
+          badge.textContent = String(max);
+          badge.classList.remove('graded-high', 'graded-mid');
+        }
+      });
+
+      const pct = Math.round((totalCorrect / 40) * 100);
+      document.getElementById('global-score-text').textContent = `${totalCorrect} / 40`;
+      document.getElementById('global-percent').textContent = `${pct}%`;
+      document.getElementById('global-progress-bar').style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       8. MODAL DE REINICIO Y NAVEGACIÓN POR PESTAÑAS
+       ========================================================================= */
+    function openResetModal(sectionId) {
+      state.pendingReset = sectionId;
+      document.getElementById('reset-modal').classList.add('open');
+    }
+
+    function closeResetModal() {
+      state.pendingReset = null;
+      document.getElementById('reset-modal').classList.remove('open');
+    }
+
+    function confirmResetSection() {
+      const id = state.pendingReset;
+      closeResetModal();
+      if (!id) return;
+
+      state.scores[id] = null;
+      if (id === 'fill') renderFillTab();
+      if (id === 'match') renderMatchTab();
+      if (id === 'build') renderBuildTab();
+      if (id === 'cloze') renderClozeTab();
+
+      updateGlobalScore();
+      requestAnimationFrame(redrawAllMatchBoards);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(p => {
+        p.classList.toggle('active', p.id === `panel-${tabId}`);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      requestAnimationFrame(() => {
+        redrawAllMatchBoards();
+        setTimeout(redrawAllMatchBoards, 120);
+      });
+    }
+
+    /* =========================================================================
+       9. INICIALIZACIÓN
+       ========================================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFillTab();
+      renderMatchTab();
+      renderBuildTab();
+      renderClozeTab();
+      updateGlobalScore();
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('modal-cancel').addEventListener('click', closeResetModal);
+      document.getElementById('modal-confirm').addEventListener('click', confirmResetSection);
+      document.getElementById('reset-modal').addEventListener('click', e => {
+        if (e.target.id === 'reset-modal') closeResetModal();
+      });
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(redrawAllMatchBoards);
+      });
+    });
+  </script>
+</body>
+</html>
