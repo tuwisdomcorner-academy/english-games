@@ -957,560 +957,502 @@
       "use strict";
 
       // =====================================================================
-      // 1. SUPABASE REST & GEMINI PROXY CONFIG (NATIVE FETCH ONLY)
+      // 1. SUPABASE CONFIG, DOM HELPERS & LOCAL STORAGE CACHE
       // =====================================================================
       const SUPABASE_URL = "https://jjgwmvcksvvzxkotyars.supabase.co";
-      const SUPABASE_KEY = "sb_publishable_Lfl7q4fc-3SyHAogpfhPjw_eHL2XMMm";
+      const SUPABASE_ANON_KEY = "sb_publishable_Lfl7q4fc-3SyHAogpfhPjw_eHL2XMMm";
       const GEMINI_PROXY_URL = `${SUPABASE_URL}/functions/v1/gemini-proxy`;
       const SB_HEADERS = {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         "Content-Type": "application/json"
       };
 
-      const $ = (id) => document.getElementById(id);
-      const safeOn = (id, evt, fn) => { const el = $(id); if (el) el.addEventListener(evt, fn); };
-
       const LS_KEYS = {
-        PIN: "sa_teacher_pin_v5",
-        LOGO: "sa_academy_logo_v5",
-        STUDENTS: "sa_students_v5",
-        REPORTS: "sa_reports_v5",
-        PHOTOS: "sa_custom_photos_v5",
-        TASKS: "sa_tasks_v5"
+        PIN: "wca_teacher_pin_v1",
+        LOGO: "wca_brand_logo_v1",
+        STUDENTS: "wca_students_v1",
+        TASKS: "wca_tasks_v1",
+        REPORTS: "wca_reports_v1",
+        PHOTOS: "wca_photos_v1"
       };
 
-      function lsRead(key, fallback) {
-        try {
-          const raw = window.localStorage.getItem(key);
-          return raw ? JSON.parse(raw) : fallback;
-        } catch { return fallback; }
-      }
-      function lsWrite(key, val) {
-        try { window.localStorage.setItem(key, JSON.stringify(val)); } catch {}
+      const $ = (id) => document.getElementById(id);
+
+      function safeOn(id, ev, fn) {
+        const el = $(id);
+        if (el) el.addEventListener(ev, fn);
       }
 
       function esc(str) {
-        return String(str == null ? "" : str)
-          .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
       }
 
-      function setCloudBadge(text, ok) {
-        ["cloud-status-badge", "login-cloud-badge"].forEach((id) => {
-          const el = $(id);
-          if (!el) return;
-          el.textContent = text;
-          el.classList.toggle("text-emerald-300", Boolean(ok));
-          el.classList.toggle("text-gold-400", !ok);
-        });
+      function lsRead(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (raw === null || raw === undefined) return fallback;
+          return JSON.parse(raw);
+        } catch {
+          return fallback;
+        }
       }
 
-      function showToast(html, type = "info", duration = 4500) {
-        const box = $("toast-container");
-        if (!box) return;
-        const map = {
-          success: "bg-emerald-900 text-white border-emerald-400",
+      function lsWrite(key, val) {
+        try {
+          localStorage.setItem(key, JSON.stringify(val));
+        } catch {}
+      }
+
+      function showToast(html, type = "info", duration = 3600) {
+        const container = $("toast-container");
+        if (!container) return;
+        const styles = {
+          success: "bg-emerald-700 text-white border-emerald-400",
+          error: "bg-red-700 text-white border-red-400",
           correction: "bg-navy-900 text-white border-gold-400",
-          error: "bg-red-800 text-white border-red-300",
-          info: "bg-navy-800 text-white border-slate-400"
+          info: "bg-navy-800 text-white border-slate-500"
         };
         const el = document.createElement("div");
-        el.className = `toast-anim pointer-events-auto px-4 py-3 rounded-2xl border-l-4 shadow-xl text-xs sm:text-sm font-medium ${map[type] || map.info}`;
+        el.className = `toast-anim pointer-events-auto rounded-2xl px-4 py-3 text-xs sm:text-sm border shadow-xl leading-snug ${styles[type] || styles.info}`;
         el.innerHTML = html;
-        box.appendChild(el);
+        container.appendChild(el);
         setTimeout(() => {
           el.style.opacity = "0";
-          el.style.transition = "opacity 0.25s";
+          el.style.transition = "opacity 0.25s ease";
           setTimeout(() => el.remove(), 260);
         }, duration);
       }
 
-      function copyText(txt) {
+      function copyText(text) {
         try {
           const ta = document.createElement("textarea");
-          ta.value = txt;
+          ta.value = text;
           ta.style.position = "fixed";
           ta.style.opacity = "0";
           document.body.appendChild(ta);
+          ta.focus();
           ta.select();
           document.execCommand("copy");
-          document.body.removeChild(ta);
-          showToast("📋 Credenciales copiadas al portapapeles", "success");
+          ta.remove();
+          showToast("📋 Credenciales copiadas al portapapeles", "success", 2400);
         } catch {
-          showToast("No se pudo copiar automáticamente.", "info");
+          showToast("No se pudo copiar automáticamente.", "error", 2400);
         }
       }
 
       // =====================================================================
-      // 2. CURRICULUM: 10 ACTIVITIES, GUIDES, 16 TOPICS, 24 REAL PHOTOS
+      // 2. CURRICULUM DATA BANKS (TOPICS, ACTIVITIES, GUIDES & 24 REAL PHOTOS)
       // =====================================================================
-      const ACTIVITIES = [
-        { id: "topic", icon: "💬", title: "Conversación guiada", desc: "Charla enfocada en un topic y 12 palabras objetivo." },
-        { id: "photo_single", icon: "🖼️", title: "Describir una foto", desc: "Describe una fotografía real en detalle con estructura." },
-        { id: "photo_compare", icon: "⚖️", title: "Comparar dos fotos", desc: "Compara dos fotografías reales estilo examen oficial." },
-        { id: "guess", icon: "❓", title: "Adivina el objeto", desc: "20 Questions: haz preguntas de sí/no para descubrirlo." },
-        { id: "roleplay", icon: "🎭", title: "Roleplay", desc: "Resuelve una situación real actuando con el profesor." },
-        { id: "taboo", icon: "🚫", title: "Tabú inverso", desc: "Define la palabra en pantalla sin pronunciarla." },
-        { id: "dilemma", icon: "🤔", title: "El dilema", desc: "Would you rather...? Defiende tu postura ante la IA." },
-        { id: "story", icon: "📖", title: "Historia encadenada", desc: "Construid una historia por turnos usando el vocabulario." },
-        { id: "detective", icon: "🕵️", title: "El detective", desc: "Interroga al profesor en pasado para resolver un misterio." },
-        { id: "free", icon: "✨", title: "Conversación libre", desc: "Habla de lo que quieras sin guion, adaptado a tu nivel." }
-      ];
-
-      const STRUCTURE_GUIDES = {
-        topic: {
-          subtitle: "Organiza tus opiniones y ejemplos para sonar natural y fluido.",
-          steps: ["Responde directamente a la pregunta con una idea clara.", "Añade un motivo usando 'because' o 'since'.", "Da un ejemplo personal o experiencia real.", "Devuelve una breve pregunta al profesor para mantener el diálogo."],
-          phrasesLow: ["I really like... because...", "In my free time, I usually...", "For example, last week I...", "What about you?"],
-          phrasesHigh: ["From my point of view, ...", "What I appreciate most is...", "A clear example of this would be...", "Would you agree that...?"],
-          goldenTip: "No respondas solo 'Yes' o 'No': une siempre 2 o 3 ideas seguidas."
-        },
-        photo_single: {
-          subtitle: "Ve de lo general a los detalles y termina especulando.",
-          steps: ["Panorama general: indica qué lugar es y qué está pasando.", "Posiciones: describe el primer plano (foreground) y el fondo (background).", "Personas y acciones: usa Present Continuous (is smiling, are talking).", "Impresión final: especula cómo se sienten o qué pasará después."],
-          phrasesLow: ["In this picture I can see...", "In the foreground / background...", "The person is wearing...", "They look very happy."],
-          phrasesHigh: ["This photograph captures...", "In the foreground, we can notice...", "Judging by their expression, they seem to be...", "Overall, the atmosphere feels..."],
-          goldenTip: "Usa Present Continuous ('are sitting', 'is holding') para las acciones de la foto."
-        },
-        photo_compare: {
-          subtitle: "Alterna similitudes y diferencias entre la Foto A y la Foto B.",
-          steps: ["Tema común: explica en una frase qué conecta ambas imágenes.", "Similitud principal: destaca algo que comparten las dos escenas.", "Contraste clave: usa 'whereas' o 'in contrast' para comparar.", "Preferencia personal: elige qué situación prefieres tú y por qué."],
-          phrasesLow: ["Both pictures show...", "In the first photo..., whereas in the second...", "The first one is more... than...", "I would prefer... because..."],
-          phrasesHigh: ["Both photographs deal with...", "Similarly, they both highlight...", "In contrast to the first image, the second...", "On the other hand, I would much rather..."],
-          goldenTip: "No describas primero toda la Foto A y luego la B por separado: compáralas en paralelo."
-        },
-        guess: {
-          subtitle: "Formula preguntas cerradas (Sí/No) de lo general a lo concreto.",
-          steps: ["Categoría: pregunta si es un objeto, lugar, comida o animal.", "Ubicación: pregunta dónde se suele encontrar o usar.", "Características: tamaño, material, color o utilidad.", "Hipótesis final: arriesga tu respuesta con 'Is it a...?'."],
-          phrasesLow: ["Is it bigger than a...?", "Can you find it at home?", "Do people use it every day?", "Is it made of...?"],
-          phrasesHigh: ["Would you typically come across it indoors?", "Does it require electricity to operate?", "Could it be considered essential?", "Am I right in thinking it's...?"],
-          goldenTip: "Cuida el orden en preguntas: Auxiliar + Sujeto + Verbo ('Do you use it...?')."
-        },
-        roleplay: {
-          subtitle: "Actúa con cortesía y resuelve el problema paso a paso.",
-          steps: ["Saludo y contexto: explica brevemente quién eres y qué necesitas.", "Explica el problema o petición con claridad.", "Negocia una solución respondiendo al profesor.", "Despedida educada agradeciendo la ayuda."],
-          phrasesLow: ["Excuse me, could you help me?", "I'm afraid there is a problem with...", "Would it be possible to...?", "Thank you so much for your help."],
-          phrasesHigh: ["I'd like to bring an issue to your attention...", "I was wondering if we could arrange...", "That sounds reasonable, provided that...", "I truly appreciate your assistance."],
-          goldenTip: "Usa expresiones educadas como 'Could I...?' o 'Would you mind...?'."
-        },
-        taboo: {
-          subtitle: "Describe el concepto con sinónimos y ejemplos sin decir la palabra.",
-          steps: ["Define qué tipo de cosa es ('It's a thing/place/feeling...').", "Explica para qué sirve o cuándo se usa.", "Añade un sinónimo, antónimo o ejemplo cotidiano.", "Si la IA duda, da una pista extra sobre dónde se encuentra."],
-          phrasesLow: ["It is something you use when...", "It's a place where people...", "It's the opposite of...", "You usually need it to..."],
-          phrasesHigh: ["It refers to a concept associated with...", "People rely on this whenever...", "It could be described as the counterpart to...", "A typical situation involving this is..."],
-          goldenTip: "Las cláusulas relativas ('a thing THAT...', 'a place WHERE...') son tu mejor aliada."
-        },
-        dilemma: {
-          subtitle: "Toma partido rápido, argumenta y responde a la contra-opinión.",
-          steps: ["Elige claramente una de las dos opciones al principio.", "Presenta dos ventajas sólidas de tu elección.", "Reconoce un pequeño inconveniente o ventaja de la otra opción.", "Reafirma tu postura cuando el profesor te lleve la contraria."],
-          phrasesLow: ["I would definitely choose...", "The main reason is that...", "Even though... is good, I think...", "That's why I prefer..."],
-          phrasesHigh: ["Without a doubt, I would opt for...", "While I see the appeal of..., I'd argue that...", "Weighing the pros and cons...", "All things considered, I stand by..."],
-          goldenTip: "El profesor adoptará la postura contraria a propósito: ¡defiende tus motivos!"
-        },
-        story: {
-          subtitle: "Conecta tu parte con la del profesor usando marcadores de tiempo.",
-          steps: ["Retoma el último detalle que contó el profesor.", "Introduce un giro inesperado con 'Suddenly...' o 'However...'.", "Describe una acción en pasado e integra 1 o 2 palabras de la misión.", "Deja un gancho abierto para que continúe el profesor."],
-          phrasesLow: ["After that, ...", "Suddenly, they saw...", "So they decided to...", "In the end, ..."],
-          phrasesHigh: ["No sooner had they... than...", "Unexpectedly, a strange thing happened...", "Realising the danger, they immediately...", "Little did they know that..."],
-          goldenTip: "Mantén la narración en pasado (Past Simple y Past Continuous)."
-        },
-        detective: {
-          subtitle: "Investiga el misterio haciendo preguntas precisas en pasado.",
-          steps: ["Pregunta qué ocurrió exactamente y a qué hora.", "Interroga sobre quién estaba allí y qué estaba haciendo.", "Busca pistas físicas o contradicciones en las respuestas.", "Presenta tu teoría final sobre quién fue y por qué."],
-          phrasesLow: ["Where were you at...?", "Did anyone see...?", "What was... doing?", "I think... did it because..."],
-          phrasesHigh: ["Could you account for your whereabouts?", "Did anything strike you as unusual?", "How do you explain the fact that...?", "Based on the evidence, I conclude that..."],
-          goldenTip: "Combina Past Simple ('Did you see?') con Past Continuous ('What were you doing?')."
-        },
-        free: {
-          subtitle: "Disfruta de una conversación natural guiando el tema a tu ritmo.",
-          steps: ["Elige un tema que te apetezca comentar hoy.", "Desarrolla tus respuestas con detalles y anécdotas.", "Usa conectores para enlazar tus frases con fluidez.", "Haz preguntas al profesor para mantener un diálogo real."],
-          phrasesLow: ["Today I'd like to talk about...", "Actually, I think...", "By the way, ...", "What do you think?"],
-          phrasesHigh: ["Something that's been on my mind lately is...", "Speaking of which, ...", "To be completely honest, ...", "How do you see it?"],
-          goldenTip: "Si te bloqueas buscando una palabra, explícala con otras palabras en inglés sin pararte."
-        }
-      };
-
       const v = (pairs) => pairs.map(([en, es]) => ({ en, es }));
 
       const TOPICS_DB = {
         A1: [
-          { id: "a1_mountain", title: "In the Mountain", titleEs: "En la montaña", vocab: v([["mountain","montaña"],["tree","árbol"],["river","río"],["cold","frío"],["walk","caminar"],["tent","tienda"],["backpack","mochila"],["boots","botas"],["bird","pájaro"],["sun","sol"],["map","mapa"],["water","agua"]]) },
-          { id: "a1_routine", title: "My Daily Routine", titleEs: "Mi rutina diaria", vocab: v([["wake up","despertarse"],["breakfast","desayuno"],["shower","ducha"],["work","trabajo"],["lunch","almuerzo"],["coffee","café"],["bus","autobús"],["study","estudiar"],["dinner","cena"],["sleep","dormir"],["early","temprano"],["tired","cansado"]]) },
-          { id: "a1_house", title: "My Ideal House", titleEs: "Mi casa ideal", vocab: v([["kitchen","cocina"],["garden","jardín"],["window","ventana"],["bedroom","dormitorio"],["sofa","sofá"],["big","grande"],["light","luz"],["quiet","tranquilo"],["table","mesa"],["balcony","balcón"],["near","cerca"],["clean","limpio"]]) },
-          { id: "a1_pets", title: "Pets & Animals", titleEs: "Mascotas y animales", vocab: v([["dog","perro"],["cat","gato"],["play","jugar"],["food","comida"],["park","parque"],["friendly","amigable"],["small","pequeño"],["run","correr"],["vet","veterinario"],["cute","adorable"],["sleep","dormir"],["happy","feliz"]]) }
+          { id: "a1_routine", title: "Daily Routine", titleEs: "Rutina Diaria", vocab: v([["wake up","despertarse"],["breakfast","desayuno"],["commute","trayecto"],["lunch","almuerzo"],["homework","deberes"],["shower","ducha"],["dinner","cena"],["relax","relajarse"],["evening","tarde-noche"],["early","temprano"],["weekend","fin de semana"],["habit","hábito"]]) },
+          { id: "a1_family", title: "Family & Friends", titleEs: "Familia y Amigos", vocab: v([["parents","padres"],["sibling","hermano/a"],["cousin","primo/a"],["neighbor","vecino"],["funny","divertido"],["kind","amable"],["together","juntos"],["visit","visitar"],["birthday","cumpleaños"],["dinner","cena"],["support","apoyo"],["hobby","afición"]]) },
+          { id: "a1_food", title: "Food & Drinks", titleEs: "Comida y Bebida", vocab: v([["delicious","delicioso"],["fresh","fresco"],["cook","cocinar"],["recipe","receta"],["vegetables","verduras"],["fruit","fruta"],["coffee","café"],["dessert","postre"],["spicy","picante"],["healthy","saludable"],["restaurant","restaurante"],["hungry","hambriento"]]) },
+          { id: "a1_nature", title: "Weather & Nature", titleEs: "Clima y Naturaleza", vocab: v([["sunny","soleado"],["rainy","lluvioso"],["mountain","montaña"],["beach","playa"],["forest","bosque"],["season","estación"],["warm","cálido"],["windy","ventoso"],["park","parque"],["walk","caminar"],["flowers","flores"],["peaceful","tranquilo"]]) }
         ],
         A2: [
-          { id: "a2_trip", title: "A Disastrous Trip", titleEs: "Un viaje desastroso", vocab: v([["delay","retraso"],["luggage","equipaje"],["passport","pasaporte"],["miss","perder"],["crowded","lleno"],["refund","reembolso"],["ticket","billete"],["lost","perdido"],["weather","tiempo"],["complain","quejarse"],["hotel","hotel"],["stressful","estresante"]]) },
-          { id: "a2_cooking", title: "Cooking & Recipes", titleEs: "Cocina y recetas", vocab: v([["recipe","receta"],["ingredients","ingredientes"],["fresh","fresco"],["boil","hervir"],["fry","freír"],["spicy","picante"],["sweet","dulce"],["delicious","delicioso"],["healthy","saludable"],["oven","horno"],["salt","sal"],["share","compartir"]]) },
-          { id: "a2_shopping", title: "Online Shopping", titleEs: "Compras online", vocab: v([["delivery","envío"],["discount","descuento"],["price","precio"],["size","talla"],["return","devolver"],["review","reseña"],["package","paquete"],["cheap","barato"],["expensive","caro"],["order","pedido"],["fast","rápido"],["store","tienda"]]) },
-          { id: "a2_sports", title: "Sports & Fitness", titleEs: "Deporte y bienestar", vocab: v([["train","entrenar"],["team","equipo"],["match","partido"],["win","ganar"],["gym","gimnasio"],["stretch","estirar"],["energy","energía"],["injury","lesión"],["outdoor","aire libre"],["coach","entrenador"],["strong","fuerte"],["habit","hábito"]]) }
+          { id: "a2_travel", title: "Memorable Trips", titleEs: "Viajes Inolvidables", vocab: v([["luggage","equipaje"],["flight","vuelo"],["souvenir","recuerdo"],["sightseeing","turismo"],["hotel","hotel"],["passport","pasaporte"],["explore","explorar"],["abroad","en el extranjero"],["local","local"],["adventure","aventura"],["ticket","billete"],["unforgettable","inolvidable"]]) },
+          { id: "a2_shopping", title: "Shopping & Money", titleEs: "Compras y Dinero", vocab: v([["discount","descuento"],["bargain","ganga"],["receipt","recibo"],["afford","permitirse"],["cash","efectivo"],["refund","reembolso"],["quality","calidad"],["brand","marca"],["online","en línea"],["delivery","entrega"],["budget","presupuesto"],["worth","valer la pena"]]) },
+          { id: "a2_health", title: "Healthy Lifestyle", titleEs: "Vida Saludable", vocab: v([["exercise","ejercicio"],["workout","entrenamiento"],["balanced","equilibrado"],["sleep","dormir"],["stress","estrés"],["energy","energía"],["hydrate","hidratarse"],["stretch","estirar"],["active","activo"],["routine","rutina"],["well-being","bienestar"],["improve","mejorar"]]) },
+          { id: "a2_city", title: "City vs Countryside", titleEs: "Ciudad vs Campo", vocab: v([["crowded","concurrido"],["traffic","tráfico"],["quiet","tranquilo"],["transport","transporte"],["pollution","contaminación"],["nature","naturaleza"],["convenient","práctico"],["community","comunidad"],["noisy","ruidoso"],["space","espacio"],["lively","animado"],["lifestyle","estilo de vida"]]) }
         ],
         B1: [
-          { id: "b1_tourism", title: "Mass Tourism", titleEs: "Turismo masivo", vocab: v([["overcrowded","masificado"],["locals","locales"],["accommodation","alojamiento"],["sustainable","sostenible"],["landmark","monumento"],["peak season","temporada alta"],["affordable","asequible"],["sightseeing","turismo"],["preserve","preservar"],["impact","impacto"],["rent","alquiler"],["authentic","auténtico"]]) },
-          { id: "b1_remote", title: "Remote Work", titleEs: "Trabajo remoto", vocab: v([["flexible","flexible"],["commute","desplazamiento"],["productivity","productividad"],["colleagues","compañeros"],["balance","equilibrio"],["meeting","reunión"],["isolated","aislado"],["deadline","fecha límite"],["workspace","espacio"],["distraction","distracción"],["schedule","horario"],["disconnect","desconectar"]]) },
-          { id: "b1_social", title: "Social Media", titleEs: "Redes sociales", vocab: v([["influencer","influencer"],["privacy","privacidad"],["scroll","deslizar"],["addictive","adictivo"],["followers","seguidores"],["content","contenido"],["comparison","comparación"],["trend","tendencia"],["comment","comentario"],["screen time","tiempo de pantalla"],["connect","conectar"],["realistic","realista"]]) },
-          { id: "b1_climate", title: "Climate & Sustainability", titleEs: "Clima y sostenibilidad", vocab: v([["recycle","reciclar"],["pollution","contaminación"],["renewable","renovable"],["footprint","huella"],["waste","residuos"],["awareness","conciencia"],["drought","sequía"],["electric","eléctrico"],["reduce","reducir"],["plastic","plástico"],["protect","proteger"],["future","futuro"]]) }
+          { id: "b1_tourism", title: "Mass Tourism", titleEs: "Turismo Masivo", vocab: v([["overcrowded","masificado"],["sustainable","sostenible"],["heritage","patrimonio"],["economy","economía"],["residents","residentes"],["authentic","auténtico"],["impact","impacto"],["preserve","preservar"],["seasonal","estacional"],["destination","destino"],["respect","respetar"],["balance","equilibrio"]]) },
+          { id: "b1_remote", title: "Remote Work", titleEs: "Teletrabajo", vocab: v([["flexibility","flexibilidad"],["commuting","desplazamiento"],["productivity","productividad"],["isolation","aislamiento"],["colleagues","compañeros"],["schedule","horario"],["workspace","espacio de trabajo"],["deadline","fecha límite"],["hybrid","híbrido"],["focus","concentración"],["distraction","distracción"],["burnout","agotamiento"]]) },
+          { id: "b1_social", title: "Social Media Habits", titleEs: "Redes Sociales", vocab: v([["scroll","deslizar"],["influence","influencia"],["privacy","privacidad"],["addictive","adictivo"],["connect","conectar"],["algorithm","algoritmo"],["content","contenido"],["authentic","auténtico"],["screen time","tiempo de pantalla"],["compare","comparar"],["trend","tendencia"],["disconnect","desconectar"]]) },
+          { id: "b1_env", title: "Climate & Recycling", titleEs: "Clima y Reciclaje", vocab: v([["renewable","renovable"],["footprint","huella"],["recycle","reciclar"],["waste","residuos"],["awareness","conciencia"],["energy","energía"],["emissions","emisiones"],["conserve","conservar"],["reusable","reutilizable"],["planet","planeta"],["responsibility","responsabilidad"],["solution","solución"]]) }
         ],
         B2: [
-          { id: "b2_fakenews", title: "Fake News & Media", titleEs: "Noticias falsas", vocab: v([["misleading","engañoso"],["bias","sesgo"],["reliable","fiable"],["fact-check","verificar"],["viral","viral"],["algorithm","algoritmo"],["echo chamber","cámara de eco"],["headline","titular"],["source","fuente"],["manipulate","manipular"],["skeptical","escéptico"],["widespread","extendido"]]) },
-          { id: "b2_ai", title: "Artificial Intelligence", titleEs: "Inteligencia Artificial", vocab: v([["automation","automatización"],["ethics","ética"],["replace","reemplazar"],["efficiency","eficiencia"],["regulation","regulación"],["creativity","creatividad"],["breakthrough","avance"],["data","datos"],["oversight","supervisión"],["adapt","adaptarse"],["skillset","habilidades"],["unprecedented","sin precedentes"]]) },
-          { id: "b2_mental", title: "Mental Health & Burnout", titleEs: "Salud mental", vocab: v([["burnout","agotamiento"],["resilience","resiliencia"],["boundaries","límites"],["mindfulness","atención plena"],["overwhelmed","abrumado"],["stigma","estigma"],["well-being","bienestar"],["cope","afrontar"],["pressure","presión"],["support","apoyo"],["priority","prioridad"],["recovery","recuperación"]]) },
-          { id: "b2_consumption", title: "Ethical Consumption", titleEs: "Consumo ético", vocab: v([["fast fashion","moda rápida"],["supply chain","suministro"],["transparent","transparente"],["boycott","boicotear"],["durability","durabilidad"],["minimalism","minimalismo"],["overconsumption","sobreconsumo"],["fair trade","comercio justo"],["conscious","consciente"],["second-hand","segunda mano"],["impulse","impulso"],["accountable","responsable"]]) }
+          { id: "b2_ai", title: "Artificial Intelligence", titleEs: "Inteligencia Artificial", vocab: v([["automation","automatización"],["ethics","ética"],["innovation","innovación"],["displacement","desplazamiento"],["efficiency","eficiencia"],["regulation","regulación"],["creativity","creatividad"],["bias","sesgo"],["breakthrough","avance"],["reliability","fiabilidad"],["oversight","supervisión"],["transform","transformar"]]) },
+          { id: "b2_fakenews", title: "Fake News & Media", titleEs: "Desinformación y Medios", vocab: v([["misinformation","desinformación"],["verify","verificar"],["source","fuente"],["credibility","credibilidad"],["headline","titular"],["critical","crítico"],["viral","viral"],["manipulate","manipular"],["journalism","periodismo"],["fact-check","contrastar"],["echo chamber","cámara de eco"],["skeptical","escéptico"]]) },
+          { id: "b2_education", title: "Future of Education", titleEs: "Futuro de la Educación", vocab: v([["curriculum","plan de estudios"],["lifelong","continuo"],["personalized","personalizado"],["assessment","evaluación"],["mentorship","mentoría"],["critical thinking","pensamiento crítico"],["adaptability","adaptabilidad"],["tuition","matrícula"],["accessible","accesible"],["hands-on","práctico"],["motivation","motivación"],["literacy","alfabetización"]]) },
+          { id: "b2_worklife", title: "Four-Day Workweek", titleEs: "Semana Laboral de 4 Días", vocab: v([["well-being","bienestar"],["output","rendimiento"],["retention","retención"],["feasibility","viabilidad"],["compressed","comprimido"],["morale","moral"],["overtime","horas extra"],["pilot","piloto"],["efficiency","eficiencia"],["incentive","incentivo"],["sustainability","sostenibilidad"],["redefine","redefinir"]]) }
         ]
       };
 
-      const mkPh = (id, title, titleEs, url, aiDescription, pairs) => ({ id, title, titleEs, url, aiDescription, vocab: v(pairs) });
-      const PHOTO_PAIRS = [
-        {
-          pairId: "pair_work",
-          a: mkPh("ph_office","Busy Modern Office","Oficina moderna","https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80","Bright modern office where colleagues collaborate around a wooden desk with laptops and coffee.",[["office","oficina"],["colleagues","compañeros"],["laptop","portátil"],["meeting","reunión"],["desk","escritorio"],["teamwork","trabajo en equipo"],["busy","ocupado"],["professional","profesional"]]),
-          b: mkPh("ph_remote","Working From Home","Teletrabajo en casa","https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=900&q=80","Calm sunny home office where one person works comfortably on a laptop with headphones and a warm mug.",[["remote","remoto"],["comfortable","cómodo"],["headphones","auriculares"],["quiet","tranquilo"],["flexible","flexible"],["plant","planta"],["mug","taza"],["alone","solo"]])
-        },
-        {
-          pairId: "pair_holiday",
-          a: mkPh("ph_beach","Sunny Beach Holiday","Vacaciones en la playa","https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80","Sunny sandy beach with turquoise ocean waves, warm sunlight and relaxing coastal scenery.",[["beach","playa"],["sand","arena"],["umbrella","sombrilla"],["waves","olas"],["sunbathing","tomando el sol"],["towel","toalla"],["summer","verano"],["relaxing","relajante"]]),
-          b: mkPh("ph_mountain","Mountain Hiking Trail","Senderismo en la montaña","https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=900&q=80","Hikers wearing backpacks and boots walking along a scenic mountain trail surrounded by dramatic peaks.",[["hiking","senderismo"],["trail","sendero"],["backpack","mochila"],["peaks","picos"],["forest","bosque"],["boots","botas"],["fresh air","aire fresco"],["adventure","aventura"]])
-        },
-        {
-          pairId: "pair_food",
-          a: mkPh("ph_restaurant","Cozy Restaurant Dinner","Cena en restaurante","https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80","Warm lively restaurant interior with tables set for dinner, soft lighting and diners enjoying a meal.",[["waiter","camarero"],["menu","menú"],["table","mesa"],["dish","plato"],["customer","cliente"],["delicious","delicioso"],["cozy","acogedor"],["order","pedir"]]),
-          b: mkPh("ph_cooking","Family Cooking at Home","Cocinar en casa","https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=80","Family cooking together in a bright home kitchen with fresh ingredients and utensils on the counter.",[["kitchen","cocina"],["ingredients","ingredientes"],["chopping","cortando"],["apron","delantal"],["homemade","casero"],["vegetables","verduras"],["family","familia"],["recipe","receta"]])
-        },
-        {
-          pairId: "pair_transport",
-          a: mkPh("ph_subway","Crowded City Subway","Metro lleno en hora punta","https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=900&q=80","Busy city transit and urban rush hour commuters moving fast through the city.",[["subway","metro"],["commuters","viajeros"],["crowded","lleno"],["rush hour","hora punta"],["standing","de pie"],["stressful","estresante"],["fast","rápido"],["underground","subterráneo"]]),
-          b: mkPh("ph_bicycle","Cycling in the Park","Bicicleta en el parque","https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=900&q=80","Cyclists riding bicycles outdoors along a peaceful sunlit path surrounded by greenery.",[["bicycle","bicicleta"],["helmet","casco"],["bike lane","carril bici"],["park","parque"],["healthy","saludable"],["eco-friendly","ecológico"],["sunshine","sol"],["freedom","libertad"]])
-        },
-        {
-          pairId: "pair_study",
-          a: mkPh("ph_library","Quiet University Library","Biblioteca universitaria","https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80","Quiet classic library with tall wooden bookshelves filled with books and peaceful study spaces.",[["library","biblioteca"],["bookshelves","estanterías"],["silence","silencio"],["focused","concentrado"],["notes","apuntes"],["textbook","libro de texto"],["exam","examen"],["lamp","lámpara"]]),
-          b: mkPh("ph_cafe","Studying in a Coffee Shop","Estudiar en cafetería","https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=80","Warm bustling coffee shop with tables, warm lights, fresh coffee and a casual atmosphere.",[["coffee shop","cafetería"],["barista","barista"],["lively","animado"],["pastry","bollería"],["background noise","ruido de fondo"],["casual","informal"],["chatting","charlando"],["caffeine","cafeína"]])
-        },
-        {
-          pairId: "pair_shop",
-          a: mkPh("ph_market","Local Street Market","Mercado local tradicional","https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80","Vibrant outdoor local market with colorful stalls of fresh fruit and vegetables.",[["market","mercado"],["stall","puesto"],["vendor","vendedor"],["fresh","fresco"],["local","local"],["basket","cesta"],["produce","productos"],["community","comunidad"]]),
-          b: mkPh("ph_online_shop","Shopping Online at Home","Compras online en casa","https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80","Person shopping online with a payment card and digital device from the comfort of home.",[["parcel","paquete"],["delivery","envío"],["tablet","tableta"],["convenient","cómodo"],["couch","sofá"],["discount","descuento"],["website","sitio web"],["fast","rápido"]])
-        },
-        {
-          pairId: "pair_living",
-          a: mkPh("ph_city","Bustling City Center","Centro de gran ciudad","https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=80","Bustling modern city skyline with tall skyscrapers, avenues, traffic and glowing urban lights.",[["skyscrapers","rascacielos"],["traffic","tráfico"],["pedestrians","peatones"],["noisy","ruidoso"],["downtown","centro"],["opportunities","oportunidades"],["bright","brillante"],["modern","moderno"]]),
-          b: mkPh("ph_village","Peaceful Countryside Village","Pueblo tranquilo","https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=900&q=80","Peaceful green countryside landscape with rolling hills, open nature and a calm slow pace.",[["village","pueblo"],["cottage","casita"],["peaceful","pacífico"],["hills","colinas"],["nature","naturaleza"],["neighbors","vecinos"],["traditional","tradicional"],["slow pace","ritmo tranquilo"]])
-        },
-        {
-          pairId: "pair_sport",
-          a: mkPh("ph_gym","Indoor Fitness Gym","Entrenamiento en gimnasio","https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80","Modern indoor fitness gym equipped with dumbbells, weights, machines and workout space.",[["gym","gimnasio"],["weights","pesas"],["treadmill","cinta"],["equipment","equipamiento"],["indoor","interior"],["workout","entrenamiento"],["mirror","espejo"],["strength","fuerza"]]),
-          b: mkPh("ph_running","Outdoor Park Running","Correr al aire libre","https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80","Runners jogging outdoors along a scenic path in fresh morning air.",[["jogging","trotar"],["sunrise","amanecer"],["path","camino"],["outdoors","al aire libre"],["sneakers","zapatillas"],["endurance","resistencia"],["free","gratis"],["motivated","motivado"]])
-        },
-        {
-          pairId: "pair_music",
-          a: mkPh("ph_festival","Live Music Festival","Festival de música en vivo","https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80","Energetic crowd with raised hands at a live music festival in front of a brightly lit stage.",[["concert","concierto"],["stage","escenario"],["crowd","multitud"],["spotlights","focos"],["live music","música en vivo"],["energetic","enérgico"],["cheering","animando"],["loud","fuerte"]]),
-          b: mkPh("ph_guitar","Playing Guitar at Home","Tocar la guitarra en casa","https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=900&q=80","Musician playing an acoustic guitar in a calm, intimate room at home.",[["guitar","guitarra"],["acoustic","acústica"],["melody","melodía"],["intimate","íntimo"],["practice","practicar"],["relaxing","relajante"],["chords","acordes"],["hobby","afición"]])
-        },
-        {
-          pairId: "pair_reading",
-          a: mkPh("ph_book","Reading a Paper Book","Leer un libro en papel","https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80","Open paper books stacked peacefully in warm natural light for quiet offline reading.",[["novel","novela"],["pages","páginas"],["armchair","sillón"],["imagination","imaginación"],["bookmark","marcapáginas"],["offline","desconectado"],["calm","calma"],["chapter","capítulo"]]),
-          b: mkPh("ph_screens","Scrolling on Screens","Pantallas y dispositivos","https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80","Person holding and scrolling on a glowing smartphone screen surrounded by digital notifications.",[["smartphone","móvil"],["screen","pantalla"],["notifications","notificaciones"],["distracted","distraído"],["digital","digital"],["scrolling","deslizando"],["connected","conectado"],["instant","instantáneo"]])
-        },
-        {
-          pairId: "pair_edu",
-          a: mkPh("ph_classroom","In-Person Classroom","Clase presencial","https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80","Bright school classroom where a teacher interacts face-to-face with engaged students.",[["classroom","aula"],["teacher","profesor"],["whiteboard","pizarra"],["classmates","compañeros"],["interaction","interacción"],["question","pregunta"],["desk","pupitre"],["participate","participar"]]),
-          b: mkPh("ph_online_class","Online Video Lesson","Clase online en casa","https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=900&q=80","Student at home attending an online video call lesson on a laptop with headphones.",[["webcam","cámara web"],["online","en línea"],["video call","videollamada"],["microphone","micrófono"],["flexible","flexible"],["notebook","cuaderno"],["connection","conexión"],["self-paced","a tu ritmo"]])
-        },
-        {
-          pairId: "pair_weather",
-          a: mkPh("ph_rain","Rainy City Afternoon","Tarde lluviosa en la ciudad","https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=900&q=80","Raindrops and wet reflections on a moody rainy afternoon outdoors.",[["umbrella","paraguas"],["raincoat","chubasquero"],["puddles","charcos"],["wet","mojado"],["cloudy","nublado"],["cozy","acogedor"],["sidewalk","acera"],["storm","tormenta"]]),
-          b: mkPh("ph_picnic","Sunny Park Picnic","Picnic soleado en el parque","https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=900&q=80","Cheerful outdoor picnic on green grass with fresh food, sunlight and a relaxed atmosphere.",[["picnic","picnic"],["blanket","manta"],["grass","césped"],["sunshine","sol"],["basket","cesta"],["sandwiches","sándwiches"],["cheerful","alegre"],["outdoors","al aire libre"]])
-        }
+      const ACTIVITIES = [
+        { id: "topic", icon: "💬", title: "Conversación por Tema", desc: "Charla guiada sobre un tema de tu nivel usando vocabulario objetivo." },
+        { id: "photo_single", icon: "📸", title: "Describir una Foto", desc: "Describe una fotografía real en detalle: personas, lugar, ambiente y especulación." },
+        { id: "photo_compare", icon: "⚖️", title: "Comparar dos Fotos", desc: "Estilo examen Cambridge/EOI: compara similitudes, diferencias y da tu opinión." },
+        { id: "roleplay", icon: "🎭", title: "Roleplay Realista", desc: "Resuelve una situación práctica interactuando con el profesor en un papel real." },
+        { id: "dilemma", icon: "🤔", title: "Dilema y Debate", desc: "Defiende tu postura con argumentos, ejemplos y matices." },
+        { id: "story", icon: "📖", title: "Historia Colaborativa", desc: "Construye una historia creativa turno a turno practicando tiempos pasados." },
+        { id: "guess", icon: "❓", title: "Adivina qué es", desc: "Formula preguntas cerradas en inglés para descubrir el concepto secreto." },
+        { id: "taboo", icon: "🚫", title: "Tabú Inverso", desc: "Define la palabra en pantalla usando sinónimos y rodeos sin pronunciarla." },
+        { id: "detective", icon: "🕵️", title: "Misterio Detective", desc: "Interroga al profesor en pasado para resolver un pequeño misterio." },
+        { id: "free", icon: "🌍", title: "Conversación Libre", desc: "Habla de lo que quieras durante 5 minutos sin lista fija de palabras." }
       ];
-      const PHOTO_BANK = PHOTO_PAIRS.flatMap((p) => [p.a, p.b]);
 
-      const STRUCTURE_VOCAB = {
-        photo_single: { low: v([["foreground","primer plano"],["background","fondo"],["wearing","llevando"],["smiling","sonriendo"]]), high: v([["in the foreground","en primer plano"],["in the background","en el fondo"],["atmosphere","ambiente"],["appears to be","parece estar"]]) },
-        photo_compare: { low: v([["both","ambas"],["whereas","mientras que"],["more","más"],["prefer","preferir"]]), high: v([["similarly","de forma similar"],["in contrast","en contraste"],["whereas","mientras que"],["on the other hand","por otro lado"]]) },
-        roleplay: { low: v([["excuse me","disculpe"],["could you","¿podría?"],["problem","problema"],["thank you","gracias"]]), high: v([["I was wondering","me preguntaba"],["solution","solución"],["apologize","disculparse"],["appreciate","agradecer"]]) },
-        detective: { low: v([["yesterday","ayer"],["saw","vio"],["clue","pista"],["where","dónde"]]), high: v([["evidence","evidencia"],["alibi","coartada"],["suspicious","sospechoso"],["witness","testigo"]]) },
-        dilemma: { low: v([["prefer","preferir"],["because","porque"],["better","mejor"],["agree","estar de acuerdo"]]), high: v([["however","sin embargo"],["advantage","ventaja"],["drawback","inconveniente"],["convince","convencer"]]) },
-        guess: { low: v([["bigger","más grande"],["made of","hecho de"],["usually","normalmente"],["inside","dentro"]]), high: v([["material","material"],["purpose","propósito"],["category","categoría"],["typically","típicamente"]]) }
+      const STRUCTURE_GUIDES = {
+        topic: {
+          subtitle: "Responde con claridad desarrollando cada idea con razones y ejemplos personales.",
+          steps: ["Responde directamente a la pregunta del profesor con tu postura inicial.", "Añade un motivo claro usando conectores de causa.", "Aporta un ejemplo real de tu experiencia o entorno.", "Devuelve una breve pregunta o reflexión para mantener el ritmo."],
+          goldenTip: "Evita respuestas de una sola frase: intenta enlazar al menos 2 o 3 ideas seguidas.",
+          phrasesLow: ["I think that...", "Because it is...", "For example, I usually...", "What do you think?"],
+          phrasesHigh: ["From my point of view...", "One key reason is that...", "A good example of this is...", "That being said, I also believe..."]
+        },
+        photo_single: {
+          subtitle: "Organiza tu descripción visual de lo general a los detalles y termina especulando.",
+          steps: ["Presenta la escena general: dónde está y qué ocurre.", "Describe a las personas, su ropa, acciones y expresiones.", "Ubica detalles clave (en primer plano, al fondo, a la izquierda/derecha).", "Especula sobre cómo se sienten o qué pasará después."],
+          goldenTip: "Usa el presente continuo ('are smiling', 'is holding') para describir acciones en la foto.",
+          phrasesLow: ["In this picture I can see...", "In the background there is...", "They are wearing...", "Maybe they feel happy because..."],
+          phrasesHigh: ["This photograph captures...", "In the foreground, we can notice...", "Judging by their expressions, they seem...", "It's likely that they are about to..."]
+        },
+        photo_compare: {
+          subtitle: "Estructura clásica de examen oficial: similitud, contraste y valoración personal.",
+          steps: ["Menciona qué tienen en común ambas fotografías.", "Contrasta la diferencia principal entre la Foto A y la Foto B.", "Comenta ventajas o sensaciones de cada situación.", "Concluye indicando cuál prefieres y por qué."],
+          goldenTip: "No describas las fotos por separado todo el rato: compáralas constantemente con 'whereas' o 'while'.",
+          phrasesLow: ["Both pictures show...", "In the first photo..., but in the second...", "This one looks more...", "I would prefer the first one because..."],
+          phrasesHigh: ["Both images share a common theme of...", "Whereas Photo A depicts..., Photo B highlights...", "A striking difference is that...", "Personally, I'd lean towards..."]
+        },
+        roleplay: {
+          subtitle: "Actúa con naturalidad y cortesía como en una conversación real en el extranjero.",
+          steps: ["Saluda y explica claramente cuál es tu objetivo o problema.", "Haz preguntas concretas para obtener información útil.", "Negocia o propón una alternativa educada si surge un inconveniente.", "Confirma el acuerdo final y despídete con cortesía."],
+          goldenTip: "En inglés suena mucho más natural usar 'Could I...?' o 'Would it be possible...?' que órdenes directas.",
+          phrasesLow: ["Excuse me, could you help me?", "How much does it cost?", "Is it possible to...?", "Thank you very much for your help."],
+          phrasesHigh: ["I was wondering if you could...", "Would it be possible to arrange...?", "That sounds reasonable, although...", "I really appreciate your assistance."]
+        },
+        dilemma: {
+          subtitle: "Argumenta una postura equilibrada reconociendo ambos lados del dilema.",
+          steps: ["Indica claramente qué opción eliges al principio.", "Presenta tu argumento más fuerte con un ejemplo.", "Reconoce brevemente una ventaja de la otra opción.", "Reafirma tu conclusión final con seguridad."],
+          goldenTip: "Reconocer el punto de vista contrario ('Even though...') sube muchísimo tu nota de Speaking.",
+          phrasesLow: ["I would choose... because...", "Another good thing is...", "However, the other option is...", "So in the end, I prefer..."],
+          phrasesHigh: ["I'm firmly in favor of...", "On the one hand..., on the other hand...", "Admittedly, there is a drawback, yet...", "All things considered, I'd opt for..."]
+        },
+        story: {
+          subtitle: "Narremos una historia viva combinando pasado simple y pasado continuo.",
+          steps: ["Retoma el hilo del profesor manteniendo el contexto.", "Introduce una acción inesperada o un giro breve.", "Describe brevemente cómo reaccionó el personaje.", "Deja un pequeño gancho para que el profesor continúe."],
+          goldenTip: "Usa conectores temporales ('Suddenly', 'While', 'After that') para que la narración fluya.",
+          phrasesLow: ["Suddenly, we saw...", "While I was walking...", "Then, he decided to...", "After that, everything changed..."],
+          phrasesHigh: ["Out of nowhere, something strange happened...", "No sooner had we arrived than...", "To our complete surprise...", "Little did we know that..."]
+        },
+        guess: {
+          subtitle: "Haz preguntas estratégicas en inglés para ir descartando opciones rápido.",
+          steps: ["Empieza con categorías amplias (persona, lugar, objeto, actividad).", "Pregunta por características físicas, tamaño o uso.", "Comprueba dónde o cuándo se suele ver o utilizar.", "Lanza tu hipótesis final justificando tus pistas."],
+          goldenTip: "Cuida el orden de las preguntas en inglés: Auxiliar + Sujeto + Verbo ('Does it...?', 'Can you...?').",
+          phrasesLow: ["Is it a place or an object?", "Can you use it at home?", "Does it need electricity?", "Is it a...?"],
+          phrasesHigh: ["Would you normally come across it in...?", "Is it something people rely on daily?", "Could it be considered...?", "Based on your clues, I'd guess it's..."]
+        },
+        taboo: {
+          subtitle: "Explica el concepto con tus propias palabras sin pronunciar la palabra prohibida.",
+          steps: ["Indica primero la categoría general ('It's a type of...', 'It's a person who...').", "Explica para qué sirve o qué hace.", "Añade un ejemplo cotidiano o un sinónimo.", "Si el profesor duda, dale una pista extra por contraste."],
+          goldenTip: "Dominar el parafraseo es la habilidad número 1 cuando te quedas en blanco en inglés.",
+          phrasesLow: ["It's a thing that you use to...", "It's a kind of...", "It's the opposite of...", "For example, you see it when..."],
+          phrasesHigh: ["It refers to a concept/object used for...", "You could describe it as a synonym for...", "People typically associate it with...", "In other words, it's what happens when..."]
+        },
+        detective: {
+          subtitle: "Investiga el caso haciendo preguntas precisas en pasado simple y continuo.",
+          steps: ["Pregunta qué ocurrió exactamente y a qué hora.", "Averigua quién estuvo presente o qué estaban haciendo.", "Busca contradicciones o pistas físicas en el lugar.", "Formula tu teoría final sobre quién fue y cómo lo hizo."],
+          goldenTip: "Practica 'Did anyone see...?' y 'What were you doing when...?' durante el interrogatorio.",
+          phrasesLow: ["What happened last night?", "Where were you at...?", "Did you see anyone?", "I think the suspect is... because..."],
+          phrasesHigh: ["Could you tell me what you were doing when...?", "Did anything strike you as unusual?", "How do you explain the fact that...?", "All the evidence points to..."]
+        },
+        free: {
+          subtitle: "Conversación abierta para ganar soltura y confianza hablando de tus intereses.",
+          steps: ["Elige cualquier tema que te apetezca (trabajo, viajes, cine, planes).", "Desarrolla tus ideas con naturalidad sin preocuparte por la perfección.", "Haz preguntas también al profesor para mantener un diálogo real.", "Aprovecha los consejos sutiles para pulir expresiones."],
+          goldenTip: "Si no recuerdas una palabra exacta, rodéala con otras palabras en inglés sin cambiar al español.",
+          phrasesLow: ["Today I'd like to talk about...", "Recently I went to...", "I really enjoy... because...", "How about you?"],
+          phrasesHigh: ["Lately I've been thinking a lot about...", "What really caught my attention was...", "I tend to believe that...", "What's your take on that?"]
+        }
       };
 
+      const STRUCTURE_VOCAB = {
+        photo_single: {
+          low: v([["in the foreground","en primer plano"],["in the background","al fondo"],["wearing","llevando puesto"],["looks happy","parece feliz"]]),
+          high: v([["captures","captura"],["atmosphere","atmósfera"],["judging by","a juzgar por"],["likely","probable"]])
+        },
+        photo_compare: {
+          low: v([["both","ambos"],["similar","similar"],["however","sin embargo"],["prefer","preferir"]]),
+          high: v([["whereas","mientras que"],["contrast","contraste"],["appealing","atractivo"],["on the other hand","por otro lado"]])
+        },
+        dilemma: {
+          low: v([["opinion","opinión"],["reason","razón"],["advantage","ventaja"],["choose","elegir"]]),
+          high: v([["drawback","inconveniente"],["outweigh","superar"],["perspective","perspectiva"],["nevertheless","no obstante"]])
+        },
+        story: {
+          low: v([["suddenly","de repente"],["after that","después de eso"],["while","mientras"],["finally","finalmente"]]),
+          high: v([["unexpectedly","inesperadamente"],["meanwhile","mientras tanto"],["eventually","finalmente"],["realized","se dio cuenta"]])
+        },
+        roleplay: {
+          low: v([["excuse me","disculpe"],["could you","podría usted"],["possible","posible"],["thank you","gracias"]]),
+          high: v([["wondering","preguntándome"],["arrange","organizar"],["reasonable","razonable"],["appreciate","agradecer"]])
+        },
+        detective: {
+          low: v([["yesterday","ayer"],["clue","pista"],["witness","testigo"],["suspect","sospechoso"]]),
+          high: v([["alibi","coartada"],["evidence","pruebas"],["motive","motivo"],["suspicious","sospechoso"]])
+        }
+      };
+
+      const PHOTO_BANK = [
+        { id: "ph_01", title: "Modern Office Teamwork", titleEs: "Trabajo en Oficina", url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80", aiDescription: "Young professionals collaborating around laptops at a bright modern office table, smiling and sharing ideas.", vocab: v([["colleagues","compañeros"],["laptop","portátil"],["meeting","reunión"],["teamwork","trabajo en equipo"],["office","oficina"],["discussing","debatiendo"],["smiling","sonriendo"],["workspace","espacio de trabajo"]]) },
+        { id: "ph_02", title: "Remote Work from Home", titleEs: "Teletrabajo en Casa", url: "https://images.unsplash.com/photo-1584697964358-3e14ca57858b?auto=format&fit=crop&w=900&q=80", aiDescription: "A person working peacefully from a cozy home desk with a laptop, coffee mug, and natural window light.", vocab: v([["remote","remoto"],["home desk","escritorio en casa"],["mug","taza"],["focused","concentrado"],["comfortable","cómodo"],["independent","independiente"],["quiet","silencioso"],["flexibility","flexibilidad"]]) },
+        { id: "ph_03", title: "Mountain Hiking Adventure", titleEs: "Senderismo en Montaña", url: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=900&q=80", aiDescription: "Two hikers wearing backpacks and warm jackets walking along a scenic mountain trail surrounded by nature.", vocab: v([["hikers","senderistas"],["backpack","mochila"],["trail","sendero"],["jacket","chaqueta"],["mountain","montaña"],["fresh air","aire fresco"],["scenery","paisaje"],["adventure","aventura"]]) },
+        { id: "ph_04", title: "Sunny Tropical Beach", titleEs: "Playa Soleada", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80", aiDescription: "Golden sandy beach with turquoise ocean waves, bright sunlight, and a relaxing summer holiday atmosphere.", vocab: v([["coast","costa"],["waves","olas"],["sand","arena"],["sunlight","luz del sol"],["relaxing","relajante"],["summer","verano"],["turquoise","turquesa"],["vacation","vacaciones"]]) },
+        { id: "ph_05", title: "Fine Dining Restaurant", titleEs: "Restaurante Elegante", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80", aiDescription: "Warmly lit restaurant interior with neatly set tables, guests chatting over dinner, and cozy ambiance.", vocab: v([["restaurant","restaurante"],["diners","comensales"],["lighting","iluminación"],["menu","menú"],["evening","velada"],["table","mesa"],["cozy","acogedor"],["service","servicio"]]) },
+        { id: "ph_06", title: "Cooking at Home", titleEs: "Cocinando en Casa", url: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=80", aiDescription: "People preparing a fresh homemade meal together in a bright kitchen with vegetables and ingredients on the counter.", vocab: v([["kitchen","cocina"],["homemade","casero"],["ingredients","ingredientes"],["chopping","cortando"],["healthy","saludable"],["recipe","receta"],["counter","encimera"],["together","juntos"]]) },
+        { id: "ph_07", title: "Busy Subway Commute", titleEs: "Metro en Hora Punta", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=900&q=80", aiDescription: "Bustling urban city street and transit environment with glowing lights, traffic, and commuters on the move.", vocab: v([["commuters","viajeros diarios"],["rush hour","hora punta"],["urban","urbano"],["crowded","concurrido"],["traffic","tráfico"],["public transport","transporte público"],["fast-paced","acelerado"],["cityscape","paisaje urbano"]]) },
+        { id: "ph_08", title: "Cycling in the Park", titleEs: "En Bicicleta por el Parque", url: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=900&q=80", aiDescription: "Cyclist riding a bicycle outdoors along a tree-lined path, enjoying eco-friendly exercise in the fresh air.", vocab: v([["bicycle","bicicleta"],["eco-friendly","ecológico"],["path","camino"],["outdoors","al aire libre"],["exercise","ejercicio"],["trees","árboles"],["freedom","libertad"],["helmet","casco"]]) },
+        { id: "ph_09", title: "Reading a Paper Book", titleEs: "Leyendo un Libro", url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80", aiDescription: "Open paper books stacked neatly in warm light, evoking calm reading, imagination, and quiet study.", vocab: v([["novel","novela"],["pages","páginas"],["reading","lectura"],["quiet","tranquilo"],["imagination","imaginación"],["library","biblioteca"],["bookmark","marcapáginas"],["unplug","desconectar"]]) },
+        { id: "ph_10", title: "Using a Smartphone", titleEs: "Usando el Móvil", url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80", aiDescription: "Hands holding a modern smartphone screen, representing instant digital communication, apps, and online connectivity.", vocab: v([["smartphone","teléfono móvil"],["screen","pantalla"],["notifications","notificaciones"],["apps","aplicaciones"],["digital","digital"],["connected","conectado"],["scrolling","deslizando"],["instant","instantáneo"]]) },
+        { id: "ph_11", title: "University Lecture Hall", titleEs: "Clase Presencial", url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80", aiDescription: "Group of university students studying together with notebooks and laptops in a lively campus classroom.", vocab: v([["students","estudiantes"],["campus","campus"],["notebooks","cuadernos"],["studying","estudiando"],["classmates","compañeros de clase"],["discussion","debate"],["learning","aprendizaje"],["lecture","clase"]]) },
+        { id: "ph_12", title: "Online Video Lesson", titleEs: "Clase Online", url: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=900&q=80", aiDescription: "Student wearing headphones attending an interactive video call lesson from a laptop at home.", vocab: v([["headphones","auriculares"],["video call","videollamada"],["online course","curso online"],["screen","pantalla"],["convenient","práctico"],["notes","apuntes"],["virtual","virtual"],["tutor","tutor"]]) },
+        { id: "ph_13", title: "Local Farmers Market", titleEs: "Mercado Local", url: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80", aiDescription: "Colorful outdoor farmers market stalls overflowing with fresh fruits, organic vegetables, and shoppers.", vocab: v([["stalls","puestos"],["fresh produce","productos frescos"],["organic","orgánico"],["colorful","colorido"],["vendor","vendedor"],["local","local"],["basket","cesta"],["seasonal","de temporada"]]) },
+        { id: "ph_14", title: "Modern Shopping Mall", titleEs: "Centro Comercial", url: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?auto=format&fit=crop&w=900&q=80", aiDescription: "Spacious modern shopping mall with glass ceilings, retail boutiques, escalators, and shoppers walking.", vocab: v([["shopping mall","centro comercial"],["boutiques","tiendas"],["escalator","escalera mecánica"],["brands","marcas"],["indoor","interior"],["window shopping","mirar escaparates"],["crowds","multitudes"],["modern","moderno"]]) },
+        { id: "ph_15", title: "Gym Workout Session", titleEs: "Entrenamiento en Gimnasio", url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80", aiDescription: "Well-equipped indoor gym with weights, fitness machines, and people training to stay fit and strong.", vocab: v([["weights","pesas"],["fitness","estado físico"],["training","entrenando"],["equipment","equipamiento"],["strength","fuerza"],["indoor","interior"],["discipline","disciplina"],["energy","energía"]]) },
+        { id: "ph_16", title: "Outdoor Park Yoga", titleEs: "Yoga al Aire Libre", url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80", aiDescription: "Person practicing yoga stretches on a mat outdoors surrounded by peaceful morning light and greenery.", vocab: v([["yoga mat","esterilla"],["stretching","estirando"],["mindfulness","atención plena"],["breathing","respiración"],["balance","equilibrio"],["calm","calma"],["morning","mañana"],["flexibility","flexibilidad"]]) },
+        { id: "ph_17", title: "Live Music Concert", titleEs: "Concierto en Directo", url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=900&q=80", aiDescription: "Energetic crowd at a live music concert with bright stage lights, musicians performing, and raised hands.", vocab: v([["crowd","multitud"],["stage","escenario"],["spotlights","focos"],["live music","música en directo"],["energetic","enérgico"],["atmosphere","ambiente"],["cheering","animando"],["performance","actuación"]]) },
+        { id: "ph_18", title: "Quiet Art Museum", titleEs: "Museo de Arte", url: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=900&q=80", aiDescription: "Visitors admiring framed paintings inside a spacious, quiet art gallery with white walls and soft light.", vocab: v([["gallery","galería"],["paintings","cuadros"],["exhibition","exposición"],["visitors","visitantes"],["culture","cultura"],["admiring","admirando"],["peaceful","tranquilo"],["artwork","obra de arte"]]) },
+        { id: "ph_19", title: "Cozy Coffee Shop", titleEs: "Cafetería Acogedora", url: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=80", aiDescription: "Inviting neighborhood café with wooden tables, freshly brewed coffee, warm lighting, and relaxed conversation.", vocab: v([["café","cafetería"],["barista","barista"],["espresso","expreso"],["wooden","de madera"],["aroma","aroma"],["chatting","charlando"],["warm","cálido"],["relax","relajarse"]]) },
+        { id: "ph_20", title: "Family Picnic in Park", titleEs: "Picnic en el Parque", url: "https://images.unsplash.com/photo-1526976668912-1a811878dd37?auto=format&fit=crop&w=900&q=80", aiDescription: "Friends and family sitting on a blanket on green grass sharing snacks and laughter during a sunny picnic.", vocab: v([["blanket","manta"],["grass","césped"],["snacks","aperitivos"],["laughter","risas"],["picnic","picnic"],["sunny","soleado"],["sharing","compartiendo"],["gathering","reunión"]]) },
+        { id: "ph_21", title: "Skyscraper City Skyline", titleEs: "Ciudad con Rascacielos", url: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=80", aiDescription: "Dramatic skyline of towering glass skyscrapers, avenues, and bustling metropolitan life at dusk.", vocab: v([["skyscrapers","rascacielos"],["metropolis","metrópoli"],["skyline","horizonte urbano"],["busy","ajetreado"],["opportunities","oportunidades"],["architecture","arquitectura"],["vibrant","vibrante"],["crowded","masificado"]]) },
+        { id: "ph_22", title: "Peaceful Countryside Village", titleEs: "Pueblo en el Campo", url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80", aiDescription: "Rolling green hills, open fields, and golden sunset light in a tranquil rural countryside landscape.", vocab: v([["countryside","campo"],["hills","colinas"],["fields","campos"],["sunset","atardecer"],["tranquil","tranquilo"],["rural","rural"],["nature","naturaleza"],["slow pace","ritmo pausado"]]) },
+        { id: "ph_23", title: "Dog Walk in Nature", titleEs: "Paseando al Perro", url: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80", aiDescription: "Two happy dogs running playfully along a park trail outdoors, full of joy and companionship.", vocab: v([["pet","mascota"],["playful","juguetón"],["companionship","compañía"],["leash","correa"],["park","parque"],["loyal","leal"],["energetic","enérgico"],["outdoors","exterior"]]) },
+        { id: "ph_24", title: "Airport Departure Lounge", titleEs: "Terminal de Aeropuerto", url: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=80", aiDescription: "Airplane wing flying above soft clouds at sunrise, symbolizing international travel and exciting journeys.", vocab: v([["flight","vuelo"],["clouds","nubes"],["journey","viaje"],["destination","destino"],["window seat","asiento de ventanilla"],["international","internacional"],["boarding","embarque"],["exciting","emocionante"]]) }
+      ];
+
+      const PHOTO_PAIRS = [];
+      for (let i = 0; i < PHOTO_BANK.length; i += 2) {
+        PHOTO_PAIRS.push({
+          pairId: `pair_${i / 2 + 1}`,
+          a: PHOTO_BANK[i],
+          b: PHOTO_BANK[i + 1]
+        });
+      }
+
       // =====================================================================
-      // 3. APPLICATION STATE (INITIALIZED SYNCHRONOUSLY FROM LOCALSTORAGE)
+      // 3. CENTRAL APPLICATION STATE
       // =====================================================================
       const state = {
-        teacherPin: String(lsRead(LS_KEYS.PIN, "1234")),
-        brandLogo: String(lsRead(LS_KEYS.LOGO, "")),
+        teacherPin: String(lsRead(LS_KEYS.PIN, "1234") || "1234"),
+        brandLogo: String(lsRead(LS_KEYS.LOGO, "") || ""),
         students: lsRead(LS_KEYS.STUDENTS, []),
+        tasks: lsRead(LS_KEYS.TASKS, []),
         reports: lsRead(LS_KEYS.REPORTS, []),
         customPhotos: lsRead(LS_KEYS.PHOTOS, []),
-        tasks: lsRead(LS_KEYS.TASKS, []),
         currentUser: null,
-        activeTaskId: null,
-        progressStudentId: null,
-        progressReturnView: "home",
-        reportReturnView: "home",
-
         level: "B1",
-        activityId: "topic",
         topic: TOPICS_DB.B1[0],
+        activityId: "topic",
+        activeTaskId: null,
         activeVocab: [],
         usedWords: new Set(),
-
         seenSingleIds: new Set(),
         seenPairIds: new Set(),
         currentSinglePhoto: null,
         currentPhotoPair: null,
-        photoCounterText: "📸 Foto 1 de 24 en la batería",
-
+        photoCounterText: "",
+        audioCtx: null,
+        audioUnlocked: false,
+        currentAudioUrl: null,
+        currentUtterance: null,
+        recognition: null,
+        isRecording: false,
+        activeMicTarget: null,
         placementTurn: 1,
         placementHistory: [],
         placementLastAiText: "",
-
         sessionHistory: [],
         sessionErrors: [],
-        sessionLastAiText: "",
         sessionSecondsLeft: 300,
         sessionTimerInterval: null,
         sessionClosingSent: false,
+        sessionLastAiText: "",
         tabooIndex: 0,
-
-        audioCtx: null,
-        audioUnlocked: false,
-        currentUtterance: null,
-        currentAudioUrl: null,
-        recognition: null,
-        isRecording: false,
-        activeMicTarget: null
+        lastAiError: "",
+        progressStudentId: null,
+        progressReturnView: "home",
+        reportReturnView: "home",
+        cloudOnline: false
       };
 
       // =====================================================================
-      // 4. SUPABASE REST HELPERS (NATIVE FETCH)
+      // 4. SUPABASE REST HELPERS & CLOUD SYNC (NATIVE FETCH)
       // =====================================================================
       async function sbSelect(table, query = "") {
         const url = `${SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`;
-        const r = await fetch(url, { headers: SB_HEADERS });
-        if (!r.ok) throw new Error(`SB GET ${table} ${r.status}`);
-        return await r.json();
+        const resp = await fetch(url, { method: "GET", headers: SB_HEADERS });
+        if (!resp.ok) throw new Error(`SB SELECT ${table} ${resp.status}`);
+        return resp.json();
       }
 
-      async function sbUpsert(table, payload) {
+      async function sbUpsert(table, row) {
         try {
-          const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+          const resp = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
             method: "POST",
             headers: { ...SB_HEADERS, Prefer: "resolution=merge-duplicates,return=minimal" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(row)
           });
-          if (!r.ok) throw new Error(`SB UPSERT ${table} ${r.status}`);
-          setCloudBadge("☁️ Nube sincronizada", true);
-        } catch {
-          setCloudBadge("💾 Local (sin red)", false);
-        }
+          if (resp.ok) updateCloudBadges(true);
+        } catch {}
       }
 
-      async function sbDelete(table, idVal, pkCol = "id") {
+      async function sbDelete(table, idVal, col = "id") {
         try {
-          const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${pkCol}=eq.${encodeURIComponent(idVal)}`, {
+          await fetch(`${SUPABASE_URL}/rest/v1/${table}?${encodeURIComponent(col)}=eq.${encodeURIComponent(idVal)}`, {
             method: "DELETE",
             headers: SB_HEADERS
           });
-          if (!r.ok) throw new Error(`SB DEL ${table} ${r.status}`);
-          setCloudBadge("☁️ Nube sincronizada", true);
-        } catch {
-          setCloudBadge("💾 Local (sin red)", false);
-        }
+        } catch {}
       }
 
-      function mapStudentFromDb(s) {
-        return {
-          id: String(s.id), name: s.name || "", username: s.username || "", pin: String(s.pin || ""),
-          level: s.level || "B1", active: s.active !== false, createdAt: Number(s.created_at || Date.now())
-        };
-      }
-      function mapStudentToDb(s) {
-        return {
-          id: String(s.id), name: s.name, username: s.username, pin: String(s.pin),
-          level: s.level || "B1", active: s.active !== false, created_at: Number(s.createdAt || Date.now())
-        };
-      }
-      function mapTaskFromDb(t) {
-        return {
-          id: String(t.id), studentId: String(t.student_id), studentName: t.student_name || "",
-          activityId: t.activity_id || "topic", activityTitle: t.activity_title || "",
-          level: t.level || "B1", topicId: t.topic_id || "RANDOM", topicTitle: t.topic_title || "",
-          dueDate: t.due_date || "", note: t.note || "", status: t.status || "pending",
-          reportId: t.report_id || null, createdAt: Number(t.created_at || Date.now()),
-          completedAt: t.completed_at ? Number(t.completed_at) : null
-        };
-      }
-      function mapTaskToDb(t) {
-        return {
-          id: String(t.id), student_id: String(t.studentId), student_name: t.studentName,
-          activity_id: t.activityId, activity_title: t.activityTitle, level: t.level || "B1",
-          topic_id: t.topicId || "RANDOM", topic_title: t.topicTitle || "", due_date: t.dueDate || "",
-          note: t.note || "", status: t.status || "pending", report_id: t.reportId || null,
-          created_at: Number(t.createdAt || Date.now()), completed_at: t.completedAt ? Number(t.completedAt) : null
-        };
-      }
-      function mapReportFromDb(r) {
-        return {
-          id: String(r.id), studentId: String(r.student_id), studentName: r.student_name || "",
-          level: r.level || "B1", activityTitle: r.activity_title || "", topicTitle: r.topic_title || "",
-          fluency: Number(r.fluency || 0), grammar: Number(r.grammar || 0), vocab: Number(r.vocab || 0),
-          wordsUsed: Number(r.words_used || 0),
-          usedWordsList: Array.isArray(r.used_words_list) ? r.used_words_list : [],
-          missedWordsList: Array.isArray(r.missed_words_list) ? r.missed_words_list : [],
-          strengths: r.strengths || "",
-          errors: Array.isArray(r.errors) ? r.errors : [],
-          tips: Array.isArray(r.tips) ? r.tips : [],
-          challenge: r.challenge || "",
-          createdAt: Number(r.created_at || Date.now())
-        };
-      }
-      function mapReportToDb(r) {
-        return {
-          id: String(r.id), student_id: String(r.studentId), student_name: r.studentName,
-          level: r.level || "B1", activity_title: r.activityTitle || "", topic_title: r.topicTitle || "",
-          fluency: Number(r.fluency || 0), grammar: Number(r.grammar || 0), vocab: Number(r.vocab || 0),
-          words_used: Number(r.wordsUsed || 0), used_words_list: r.usedWordsList || [],
-          missed_words_list: r.missedWordsList || [], strengths: r.strengths || "",
-          errors: r.errors || [], tips: r.tips || [], challenge: r.challenge || "",
-          created_at: Number(r.createdAt || Date.now())
-        };
-      }
-      function mapPhotoFromDb(p) {
-        return {
-          id: String(p.id), title: p.title || "", src1: p.src1 || "", desc1: p.desc1 || "",
-          vocab1: p.vocab1 || "", src2: p.src2 || "", desc2: p.desc2 || "", vocab2: p.vocab2 || "",
-          createdAt: Number(p.created_at || Date.now())
-        };
-      }
-      function mapPhotoToDb(p) {
-        return {
-          id: String(p.id), title: p.title, src1: p.src1, desc1: p.desc1, vocab1: p.vocab1 || "",
-          src2: p.src2 || "", desc2: p.desc2 || "", vocab2: p.vocab2 || "",
-          created_at: Number(p.createdAt || Date.now())
-        };
+      const mapStudentFromDb = (r) => ({ id: r.id, name: r.name, username: r.username, pin: r.pin, level: r.level || "B1", active: r.active !== false, createdAt: Number(r.created_at || Date.now()) });
+      const mapStudentToDb = (s) => ({ id: s.id, name: s.name, username: s.username, pin: String(s.pin), level: s.level || "B1", active: s.active !== false, created_at: Number(s.createdAt || Date.now()) });
+
+      const mapTaskFromDb = (r) => ({ id: r.id, studentId: r.student_id, studentName: r.student_name, activityId: r.activity_id, activityTitle: r.activity_title, level: r.level, topicId: r.topic_id || "RANDOM", topicTitle: r.topic_title || "", dueDate: r.due_date || "", note: r.note || "", status: r.status || "pending", reportId: r.report_id || null, createdAt: Number(r.created_at || Date.now()), completedAt: r.completed_at ? Number(r.completed_at) : null });
+      const mapTaskToDb = (t) => ({ id: t.id, student_id: t.studentId, student_name: t.studentName, activity_id: t.activityId, activity_title: t.activityTitle, level: t.level, topic_id: t.topicId || "RANDOM", topic_title: t.topicTitle || "", due_date: t.dueDate || "", note: t.note || "", status: t.status || "pending", report_id: t.reportId || null, created_at: Number(t.createdAt || Date.now()), completed_at: t.completedAt ? Number(t.completedAt) : null });
+
+      const mapReportFromDb = (r) => ({ id: r.id, studentId: r.student_id, studentName: r.student_name, level: r.level || "B1", activityTitle: r.activity_title, topicTitle: r.topic_title, fluency: Number(r.fluency || 0), grammar: Number(r.grammar || 0), vocab: Number(r.vocab || 0), wordsUsed: Number(r.words_used || 0), usedWordsList: Array.isArray(r.used_words_list) ? r.used_words_list : [], missedWordsList: Array.isArray(r.missed_words_list) ? r.missed_words_list : [], strengths: r.strengths || "", errors: Array.isArray(r.errors) ? r.errors : [], tips: Array.isArray(r.tips) ? r.tips : [], challenge: r.challenge || "", createdAt: Number(r.created_at || Date.now()) });
+      const mapReportToDb = (r) => ({ id: r.id, student_id: r.studentId, student_name: r.studentName, level: r.level || "B1", activity_title: r.activityTitle, topic_title: r.topicTitle, fluency: Number(r.fluency || 0), grammar: Number(r.grammar || 0), vocab: Number(r.vocab || 0), words_used: Number(r.wordsUsed || 0), used_words_list: r.usedWordsList || [], missed_words_list: r.missedWordsList || [], strengths: r.strengths || "", errors: r.errors || [], tips: r.tips || [], challenge: r.challenge || "", created_at: Number(r.createdAt || Date.now()) });
+
+      const mapPhotoFromDb = (r) => ({ id: r.id, title: r.title, src1: r.src1, desc1: r.desc1, vocab1: r.vocab1 || "", src2: r.src2 || "", desc2: r.desc2 || "", vocab2: r.vocab2 || "", createdAt: Number(r.created_at || Date.now()) });
+      const mapPhotoToDb = (p) => ({ id: p.id, title: p.title, src1: p.src1, desc1: p.desc1, vocab1: p.vocab1 || "", src2: p.src2 || "", desc2: p.desc2 || "", vocab2: p.vocab2 || "", created_at: Number(p.createdAt || Date.now()) });
+
+      function updateCloudBadges(online) {
+        state.cloudOnline = online;
+        const txt = online ? "☁️ Nube Supabase" : "💾 Modo Local";
+        const b1 = $("cloud-status-badge"), b2 = $("login-cloud-badge");
+        if (b1) b1.textContent = txt;
+        if (b2) b2.textContent = txt;
       }
 
       async function syncFromSupabase() {
         try {
-          const [sets, stus, tsks, reps, phos] = await Promise.all([
-            sbSelect("sa_settings").catch(() => null),
-            sbSelect("sa_students", "order=created_at.desc").catch(() => null),
-            sbSelect("sa_tasks", "order=created_at.desc").catch(() => null),
-            sbSelect("sa_reports", "order=created_at.desc").catch(() => null),
-            sbSelect("sa_photos", "order=created_at.desc").catch(() => null)
+          const [sets, stus, tsks, reps, phs] = await Promise.all([
+            sbSelect("sa_settings"),
+            sbSelect("sa_students", "order=created_at.desc"),
+            sbSelect("sa_tasks", "order=created_at.desc"),
+            sbSelect("sa_reports", "order=created_at.desc"),
+            sbSelect("sa_photos", "order=created_at.desc")
           ]);
 
-          let anySuccess = false;
           if (Array.isArray(sets)) {
-            anySuccess = true;
             const pinRow = sets.find((x) => x.key === "teacher_pin");
-            if (pinRow && typeof pinRow.value === "string" && pinRow.value.trim().length >= 4) {
-              state.teacherPin = pinRow.value.trim();
+            if (pinRow?.value && String(pinRow.value).trim().length >= 4) {
+              state.teacherPin = String(pinRow.value).trim();
               lsWrite(LS_KEYS.PIN, state.teacherPin);
             }
             const logoRow = sets.find((x) => x.key === "academy_logo");
-            if (logoRow && typeof logoRow.value === "string" && logoRow.value.trim()) {
-              state.brandLogo = logoRow.value.trim();
+            if (logoRow && typeof logoRow.value === "string") {
+              state.brandLogo = logoRow.value;
               lsWrite(LS_KEYS.LOGO, state.brandLogo);
               hydrateBrandLogos();
             }
           }
           if (Array.isArray(stus)) {
-            anySuccess = true;
             state.students = stus.map(mapStudentFromDb);
             lsWrite(LS_KEYS.STUDENTS, state.students);
           }
           if (Array.isArray(tsks)) {
-            anySuccess = true;
             state.tasks = tsks.map(mapTaskFromDb);
             lsWrite(LS_KEYS.TASKS, state.tasks);
           }
           if (Array.isArray(reps)) {
-            anySuccess = true;
             state.reports = reps.map(mapReportFromDb);
             lsWrite(LS_KEYS.REPORTS, state.reports);
           }
-          if (Array.isArray(phos)) {
-            anySuccess = true;
-            state.customPhotos = phos.map(mapPhotoFromDb);
+          if (Array.isArray(phs)) {
+            state.customPhotos = phs.map(mapPhotoFromDb);
             lsWrite(LS_KEYS.PHOTOS, state.customPhotos);
           }
 
-          if (anySuccess) {
-            setCloudBadge("☁️ Nube sincronizada", true);
-            if (state.currentUser?.role === "teacher") renderAllAdminViews();
-            if (state.currentUser?.role === "student") {
-              const latest = state.students.find((x) => x.id === state.currentUser.id);
-              if (latest && latest.active === false) {
-                stopAllAudioAndMic();
-                clearSessionTimer();
-                state.currentUser = null;
-                showView("login");
-                showToast("Tu cuenta ha sido desactivada por el profesor.", "error");
-                return;
-              }
-              updateStudentTasksUI();
-            }
-          } else {
-            setCloudBadge("💾 Local", false);
-          }
+          updateCloudBadges(true);
+          if (!$("view-admin")?.classList.contains("hidden")) renderAllAdminViews();
+          if (state.currentUser?.role === "student") updateStudentTasksUI();
         } catch {
-          setCloudBadge("💾 Local", false);
+          updateCloudBadges(false);
         }
       }
 
       // =====================================================================
-      // 5. VIEW NAVIGATION
+      // 5. VIEW ROUTER & HEADER SYNCHRONIZATION
       // =====================================================================
-      const VIEW_IDS = ["login", "admin", "home", "progress", "placement", "activities", "briefing", "session", "report"];
+      const ALL_VIEWS = ["login", "admin", "home", "progress", "placement", "activities", "briefing", "session", "report"];
 
-      function showView(name) {
-        VIEW_IDS.forEach((id) => {
-          const el = $(`view-${id}`);
-          if (el) el.classList.toggle("hidden", id !== name);
+      function showView(viewName) {
+        ALL_VIEWS.forEach((vName) => {
+          const el = $(`view-${vName}`);
+          if (el) el.classList.toggle("hidden", vName !== viewName);
         });
 
-        const isLogged = Boolean(state.currentUser);
+        const loggedIn = Boolean(state.currentUser);
         const isTeacher = state.currentUser?.role === "teacher";
         const isStudent = state.currentUser?.role === "student";
 
         const audioBar = $("header-audio-controls");
         if (audioBar) {
-          const show = isLogged && name !== "admin";
-          audioBar.classList.toggle("hidden", !show);
-          audioBar.classList.toggle("flex", show);
+          const showAudio = loggedIn && viewName !== "login" && viewName !== "admin";
+          audioBar.classList.toggle("hidden", !showAudio);
+          audioBar.classList.toggle("flex", showAudio);
         }
+
         const userBar = $("header-user-bar");
         if (userBar) {
-          userBar.classList.toggle("hidden", !isLogged);
-          userBar.classList.toggle("flex", isLogged);
+          userBar.classList.toggle("hidden", !loggedIn);
+          userBar.classList.toggle("flex", loggedIn);
         }
+
+        if ($("header-user-name")) $("header-user-name").textContent = state.currentUser?.name || "";
+
         const lvlBadge = $("header-lvl-badge");
         if (lvlBadge) {
-          const show = isLogged && name !== "admin";
-          lvlBadge.classList.toggle("hidden", !show);
-          lvlBadge.classList.toggle("inline-flex", show);
+          const showLvl = loggedIn && viewName !== "admin";
+          lvlBadge.classList.toggle("hidden", !showLvl);
+          lvlBadge.classList.toggle("inline-flex", showLvl);
           if ($("header-lvl-val")) $("header-lvl-val").textContent = state.level;
         }
-        if ($("header-user-name") && state.currentUser) {
-          $("header-user-name").textContent = isTeacher ? "👨‍🏫 Modo Profesor" : `🎓 ${state.currentUser.name}`;
-        }
-        $("btn-back-admin")?.classList.toggle("hidden", !(isTeacher && name !== "admin"));
-        $("btn-header-progress")?.classList.toggle("hidden", !isStudent);
-        $("btn-home-progress")?.classList.toggle("hidden", !isStudent);
 
-        if (name === "home" && state.currentUser) {
-          $("home-welcome-title").textContent = isTeacher ? "Modo Profesor · Vista de Práctica" : `¡Hola, ${state.currentUser.name}!`;
+        const btnBackAdm = $("btn-back-admin");
+        if (btnBackAdm) btnBackAdm.classList.toggle("hidden", !(isTeacher && viewName !== "admin"));
+
+        const btnProg = $("btn-header-progress");
+        if (btnProg) btnProg.classList.toggle("hidden", !isStudent);
+
+        const btnHomeProg = $("btn-home-progress");
+        if (btnHomeProg) btnHomeProg.classList.toggle("hidden", !isStudent);
+
+        if (viewName === "home" && $("home-welcome-title")) {
+          $("home-welcome-title").textContent = state.currentUser
+            ? `¡Hola, ${state.currentUser.name}!`
+            : "¡Bienvenido a Wisdom Corner Academy!";
         }
+
         updateStudentTasksUI();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       // =====================================================================
-      // 6. AUDIO ENGINE (GEMINI TTS VIA PROXY + SPEECHSYNTHESIS FALLBACK)
+      // 6. AUDIO ENGINE (GEMINI NEURAL TTS VIA PROXY + NATURAL FALLBACK)
       // =====================================================================
+      let cachedSynthVoices = [];
+      function refreshSynthVoices() {
+        try {
+          if ("speechSynthesis" in window) {
+            const vList = window.speechSynthesis.getVoices();
+            if (vList && vList.length) cachedSynthVoices = vList;
+          }
+        } catch {}
+      }
+      refreshSynthVoices();
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.onvoiceschanged = refreshSynthVoices;
+      }
+
+      const VOICE_PROFILES = {
+        Charon: { gender: "male", pitch: 0.92, label: "Charon (Profesor)" },
+        Aoede:  { gender: "female", pitch: 1.04, label: "Aoede (Profesora)" },
+        Kore:   { gender: "female", pitch: 1.0, label: "Kore (Profesora)" },
+        Puck:   { gender: "male", pitch: 1.05, label: "Puck (Profesor)" },
+        Fenrir: { gender: "male", pitch: 0.88, label: "Fenrir (Profesor)" }
+      };
+
       function unlockAudio() {
         try {
           if (!state.audioCtx) {
@@ -1546,8 +1488,13 @@
         } catch {}
       }
 
+      let activeTtsController = null;
       function stopAiAudio() {
         try {
+          if (activeTtsController) {
+            activeTtsController.abort();
+            activeTtsController = null;
+          }
           const el = $("tts-audio");
           if (el) { el.pause(); el.currentTime = 0; }
           if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -1569,17 +1516,53 @@
         return new Blob([buf], { type: "audio/wav" });
       }
 
+      function pickBestBrowserVoice(lang, voiceName) {
+        refreshSynthVoices();
+        const voices = cachedSynthVoices.length ? cachedSynthVoices : (window.speechSynthesis.getVoices() || []);
+        if (!voices.length) return null;
+        const langPrefix = lang.slice(0, 2).toLowerCase();
+        const exactRegion = lang.toLowerCase();
+        const profile = VOICE_PROFILES[voiceName] || VOICE_PROFILES.Charon;
+        const wantFemale = profile.gender === "female";
+
+        const femaleHints = /female|aria|jenny|sonia|libby|samantha|victoria|karen|moira|serena|ava|allison|google us english|google uk english female|emma|olivia|clara|helena|elena/i;
+        const maleHints = /male|guy|ryan|andrew|brian|daniel|alex|arthur|oliver|george|google uk english male|christopher|eric|jorge|pablo/i;
+
+        const candidates = voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith(langPrefix));
+        if (!candidates.length) return voices[0];
+
+        const scored = candidates.map((v) => {
+          let score = 0;
+          const n = `${v.name} ${v.voiceURI}`.toLowerCase();
+          if (v.lang.toLowerCase() === exactRegion) score += 30;
+          if (/natural|neural|online|wavenet|studio/i.test(n)) score += 50;
+          if (/google/i.test(n)) score += 35;
+          if (/apple|samantha|daniel|serena|moira|karen/i.test(n)) score += 25;
+          if (/espeak|compact|robot/i.test(n)) score -= 40;
+          if (wantFemale && femaleHints.test(n)) score += 18;
+          if (!wantFemale && maleHints.test(n)) score += 18;
+          return { v, score };
+        }).sort((a, b) => b.score - a.score);
+
+        // Spread voices slightly if multiple high-scoring ones exist so switching voice feels distinct
+        const idxMap = { Charon: 0, Aoede: 0, Kore: 1, Puck: 1, Fenrir: 2 };
+        const topSameGender = scored.filter((x) => x.score >= scored[0].score - 15);
+        const pickIdx = (idxMap[voiceName] || 0) % topSameGender.length;
+        return topSameGender[pickIdx]?.v || scored[0].v;
+      }
+
       function speakFallback(text, langOverride) {
         try {
           if (!("speechSynthesis" in window)) return;
           window.speechSynthesis.cancel();
+          const voiceName = $("sel-voice")?.value || "Charon";
+          const profile = VOICE_PROFILES[voiceName] || VOICE_PROFILES.Charon;
           const utt = new SpeechSynthesisUtterance(text);
           const lang = langOverride || ($("sel-accent")?.value || "en-US");
           utt.lang = lang;
           utt.rate = parseFloat($("sel-speed")?.value || "1");
-          const voices = window.speechSynthesis.getVoices() || [];
-          const pref = voices.find((x) => x.lang.startsWith(lang.slice(0, 2)) && /natural|google|neural|samantha|daniel/i.test(x.name))
-            || voices.find((x) => x.lang.startsWith(lang.slice(0, 2)));
+          utt.pitch = profile.pitch;
+          const pref = pickBestBrowserVoice(lang, voiceName);
           if (pref) utt.voice = pref;
           state.currentUtterance = utt;
           utt.onend = () => { state.currentUtterance = null; };
@@ -1595,12 +1578,15 @@
         const voiceName = $("sel-voice")?.value || "Charon";
         const speed = parseFloat($("sel-speed")?.value || "1");
         const lang = langOverride || ($("sel-accent")?.value || "en-US");
-        const prefix = lang === "es-ES"
-          ? "Habla en español claro y cercano: "
-          : (lang === "en-GB" ? "Speak in a warm British English teacher voice: " : "Speak in a warm American English teacher voice: ");
+        const stylePrompt = lang === "es-ES"
+          ? `Read aloud naturally in clear, warm Spanish:\n${text}`
+          : (lang === "en-GB"
+            ? `Read aloud in a warm, natural British English teacher voice:\n${text}`
+            : `Read aloud in a warm, natural American English teacher voice:\n${text}`);
 
         const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 5000);
+        activeTtsController = ctrl;
+        const tid = setTimeout(() => ctrl.abort(), 14000);
         try {
           const resp = await fetch(GEMINI_PROXY_URL, {
             method: "POST",
@@ -1609,7 +1595,7 @@
             body: JSON.stringify({
               model: "gemini-2.5-flash-preview-tts",
               payload: {
-                contents: [{ parts: [{ text: prefix + text }] }],
+                contents: [{ parts: [{ text: stylePrompt }] }],
                 generationConfig: {
                   responseModalities: ["AUDIO"],
                   speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName } } }
@@ -1618,28 +1604,100 @@
             })
           });
           clearTimeout(tid);
-          if (!resp.ok) throw new Error("TTS");
+          if (activeTtsController !== ctrl) return;
+          activeTtsController = null;
+          if (!resp.ok) throw new Error(`TTS HTTP ${resp.status}`);
           const data = await resp.json();
-          const part = data?.candidates?.[0]?.content?.parts?.[0];
-          const b64 = part?.inlineData?.data;
-          const mime = part?.inlineData?.mimeType || "audio/L16;rate=24000";
+          const parts = data?.candidates?.[0]?.content?.parts || [];
+          const audioPart = parts.find((p) => p?.inlineData?.data);
+          const b64 = audioPart?.inlineData?.data;
+          const mime = audioPart?.inlineData?.mimeType || "audio/L16;rate=24000";
           if (!b64) throw new Error("NoAudio");
-          const rate = parseInt((mime.match(/rate=(\d+)/) || [])[1] || "24000", 10);
-          if (state.currentAudioUrl) URL.revokeObjectURL(state.currentAudioUrl);
-          state.currentAudioUrl = URL.createObjectURL(pcm16ToWavBlob(b64, rate));
+
+          if (state.currentAudioUrl) {
+            URL.revokeObjectURL(state.currentAudioUrl);
+            state.currentAudioUrl = null;
+          }
+
+          let audioSrc = "";
+          if (/pcm|l16/i.test(mime)) {
+            const rate = parseInt((mime.match(/rate=(\d+)/) || [])[1] || "24000", 10);
+            state.currentAudioUrl = URL.createObjectURL(pcm16ToWavBlob(b64, rate));
+            audioSrc = state.currentAudioUrl;
+          } else {
+            audioSrc = `data:${mime};base64,${b64}`;
+          }
+
           const el = $("tts-audio");
-          el.src = state.currentAudioUrl;
+          el.src = audioSrc;
           el.playbackRate = speed;
           await el.play();
-        } catch {
+        } catch (err) {
           clearTimeout(tid);
+          if (err?.name === "AbortError" && activeTtsController !== ctrl) return;
+          activeTtsController = null;
           speakFallback(text, langOverride);
         }
       }
 
+      // Immediate feedback when user changes Voice, Accent or Speed
+      function previewVoiceChange(reasonLabel) {
+        unlockAudio();
+        stopMicCleanly();
+        const voiceName = $("sel-voice")?.value || "Charon";
+        const accent = $("sel-accent")?.value || "en-US";
+        showToast(`🎙️ ${esc(reasonLabel)}: <strong>${esc(voiceName)}</strong> (${accent === "en-GB" ? "🇬🇧 UK" : "🇺🇸 US"})`, "info", 2400);
+
+        const inSession = !$("view-session")?.classList.contains("hidden");
+        const inPlace = !$("view-placement")?.classList.contains("hidden");
+        if (inSession && state.sessionLastAiText) {
+          speakAiText(state.sessionLastAiText);
+        } else if (inPlace && state.placementLastAiText) {
+          speakAiText(state.placementLastAiText);
+        } else {
+          speakAiText(`Hello! I'm ${voiceName}, your Wisdom Corner Academy tutor. Ready to practice English?`);
+        }
+      }
+
+      safeOn("sel-voice", "change", () => previewVoiceChange("Voz cambiada"));
+      safeOn("sel-accent", "change", () => previewVoiceChange("Acento cambiado"));
+      safeOn("sel-speed", "change", () => {
+        const spd = parseFloat($("sel-speed")?.value || "1");
+        const el = $("tts-audio");
+        if (el) el.playbackRate = spd;
+        showToast(`⚡ Velocidad ajustada a <strong>${spd}x</strong>`, "info", 1800);
+      });
+
       // =====================================================================
-      // 7. ZERO-BLOCK MANUAL MICROPHONE
+      // 7. ZERO-BLOCK MANUAL MICROPHONE + AUTO QUESTION MARK PUNCTUATION
       // =====================================================================
+      function autoPunctuateEnglish(rawText) {
+        let s = String(rawText || "").replace(/\s+/g, " ").trim();
+        if (!s) return "";
+
+        // Capitalize first letter and standalone "I" contractions
+        s = s.charAt(0).toUpperCase() + s.slice(1);
+        s = s.replace(/\bi\b/g, "I")
+             .replace(/\bi('m|'ve|'d|'ll)\b/gi, (_, suf) => "I" + suf.toLowerCase());
+
+        // If already ends with punctuation, keep it
+        if (/[?!.]$/.test(s)) return s;
+
+        // Strip leading conversational fillers to inspect the actual clause
+        const core = s.replace(/^(?:(?:well|so|um|uh|ah|oh|actually|hey|hi|hello|excuse me|sorry|please|ok|okay|wait|by the way|and|but|then|first|also)[,\s]+)+/i, "").trim();
+
+        const isExclamation = /^(?:what\s+a\b|how\s+(?:nice|great|cool|amazing|wonderful|sad|funny|interesting)\b)/i.test(core);
+        const startsWhQuestion = /^(?:what|where|when|who|whom|whose|which|why|how|what's|where's|when's|who's|how's)\b/i.test(core);
+        const startsAuxQuestion = /^(?:do|does|did|don't|doesn't|didn't|is|are|am|was|were|isn't|aren't|wasn't|weren't|can|could|can't|couldn't|will|would|won't|wouldn't|shall|should|shouldn't|have|has|had|haven't|hasn't|hadn't|may|might|must)\s+(?:you|i|we|they|he|she|it|there|this|that|these|those|anyone|anybody|someone|somebody|people|the\b|a\b|an\b|your\b|my\b|his\b|her\b|our\b|their\b)/i.test(core);
+        const endsWithQuestionTag = /(?:,|\s)(?:isn't it|aren't you|aren't they|don't you|doesn't it|didn't you|can't you|won't you|wouldn't you|isn't he|isn't she|wasn't it|weren't you|haven't you|hasn't it|do you|did you|are you|is it|have you|what about you|how about you|and you|right)$/i.test(s);
+        const containsMidQuestion = /(?:,\s*|\s+)(?:could you|can you|would you|do you|did you|are you|is it|is there|are there|what do you|what about|how about|where is|where are|why do|why did)\b/i.test(s);
+
+        if (!isExclamation && (startsWhQuestion || startsAuxQuestion || endsWithQuestionTag || containsMidQuestion)) {
+          return `${s}?`;
+        }
+        return s;
+      }
+
       function stopMicCleanly() {
         if (state.recognition) {
           try {
@@ -1704,9 +1762,10 @@
             if (ev.results[i].isFinal) finalized += (finalized ? " " : "") + t.trim();
             else interim += t;
           }
-          const full = [baseText, finalized, interim.trim()].filter(Boolean).join(" ");
-          ta.value = full;
-          if (target === "session") detectVocabLive(full);
+          const rawFull = [baseText, finalized, interim.trim()].filter(Boolean).join(" ");
+          const formatted = autoPunctuateEnglish(rawFull);
+          ta.value = formatted;
+          if (target === "session") detectVocabLive(formatted);
         };
         rec.onerror = (ev) => {
           if (ev.error === "not-allowed") showToast("Permiso de micrófono denegado.", "error");
@@ -1714,6 +1773,7 @@
           updateMicButtonsUI();
         };
         rec.onend = () => {
+          if (ta.value.trim()) ta.value = autoPunctuateEnglish(ta.value);
           state.isRecording = false;
           updateMicButtonsUI();
         };
@@ -1745,27 +1805,68 @@
       // =====================================================================
       // 8. GEMINI JSON PROXY & INSTANT REAL PHOTOS (DIRECT UNSPLASH + CUSTOM)
       // =====================================================================
-      async function callGeminiJSON(systemInstruction, userPrompt) {
+      function extractJsonObject(rawText) {
+        const cleaned = String(rawText || "")
+          .replace(/^```json\s*/i, "")
+          .replace(/^```\s*/i, "")
+          .replace(/```$/i, "")
+          .trim();
+        try {
+          return JSON.parse(cleaned);
+        } catch {
+          const start = cleaned.indexOf("{");
+          const end = cleaned.lastIndexOf("}");
+          if (start !== -1 && end > start) {
+            return JSON.parse(cleaned.slice(start, end + 1));
+          }
+          throw new Error("Invalid JSON from Gemini");
+        }
+      }
+
+      async function callGeminiJSON(systemInstruction, userPrompt, responseSchema = null) {
+        const generationConfig = {
+          responseMimeType: "application/json",
+          temperature: 0.85
+        };
+        if (responseSchema) generationConfig.responseSchema = responseSchema;
+
         const body = JSON.stringify({
           model: "gemini-3-flash-preview",
           payload: {
-            contents: [{ parts: [{ text: userPrompt }] }],
+            contents: [{ role: "user", parts: [{ text: userPrompt }] }],
             systemInstruction: { parts: [{ text: systemInstruction }] },
-            generationConfig: { responseMimeType: "application/json" }
+            generationConfig
           }
         });
         const delays = [700, 1500];
+        let lastErr = "";
         for (let i = 0; i <= delays.length; i++) {
           try {
             const resp = await fetch(GEMINI_PROXY_URL, { method: "POST", headers: SB_HEADERS, body });
-            if (!resp.ok) throw new Error(resp.status);
+            if (!resp.ok) {
+              const errBody = await resp.text().catch(() => "");
+              lastErr = `HTTP ${resp.status}${errBody ? `: ${errBody.slice(0, 120)}` : ""}`;
+              throw new Error(lastErr);
+            }
             const data = await resp.json();
-            const raw = (data?.candidates?.[0]?.content?.parts?.[0]?.text || "")
-              .replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
-            return JSON.parse(raw);
-          } catch {
+            const parts = data?.candidates?.[0]?.content?.parts || [];
+            const textJoined = parts
+              .filter((p) => typeof p.text === "string" && !p.thought)
+              .map((p) => p.text)
+              .join("\n");
+            const raw = textJoined || parts[0]?.text || "";
+            if (!raw.trim()) {
+              lastErr = "Respuesta vacía de Gemini";
+              throw new Error(lastErr);
+            }
+            return extractJsonObject(raw);
+          } catch (err) {
+            lastErr = String(err?.message || err || "Error de conexión con gemini-proxy");
             if (i < delays.length) await new Promise((r) => setTimeout(r, delays[i]));
-            else return null;
+            else {
+              state.lastAiError = lastErr;
+              return null;
+            }
           }
         }
         return null;
@@ -2653,57 +2754,89 @@
         if (!n) { hl.innerHTML = `<p class="text-sm text-slate-400 text-center py-6">Todavía no hay sesiones completadas.</p>`; return; }
         hl.innerHTML = reps.map((r) => {
           const avg = ((Number(r.fluency || 0) + Number(r.grammar || 0) + Number(r.vocab || 0)) / 3).toFixed(1);
-          const u = r.usedWordsList || [], m = r.missedWordsList || [];
+          const u = r.usedWordsList || [];
+          const m = r.missedWordsList || [];
           return `
-            <details class="p-4 rounded-2xl border border-slate-200 bg-navy-50/50">
-              <summary class="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <details class="rounded-2xl border border-slate-200 bg-navy-50/40 p-4 group">
+              <summary class="cursor-pointer list-none flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="font-bold text-navy-900 text-sm">${esc(r.activityTitle)}</span>
-                    <span class="px-2 py-0.5 rounded-full bg-navy-900 text-gold-400 text-[10px] font-bold">${esc(r.level)}</span>
+                    <span class="px-2 py-0.5 rounded-full bg-navy-900 text-gold-400 text-[10px] font-bold">${esc(r.level || "B1")}</span>
                     <span class="text-xs text-slate-500">${new Date(r.createdAt || Date.now()).toLocaleDateString("es-ES")}</span>
                   </div>
                   <p class="text-xs text-slate-600 mt-0.5">Topic: <strong>${esc(r.topicTitle)}</strong> · Media: <strong>${avg}/10</strong> · Palabras: <strong>${r.wordsUsed ?? 0}/12</strong></p>
                 </div>
-                <span class="text-xs font-bold text-navy-900 bg-white px-3 py-1.5 rounded-xl border border-slate-200 self-start sm:self-center">▾ Detalles</span>
+                <span class="text-xs font-bold text-gold-600">Ver detalles ▾</span>
               </summary>
-              <div class="mt-3 pt-3 border-t border-slate-200 space-y-2.5">
-                ${u.length ? `<div class="flex flex-wrap gap-1.5 items-center"><span class="text-[11px] font-bold text-emerald-800">Usadas:</span>${u.map((w) => `<span class="px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-900 text-xs font-semibold">${esc(w)}</span>`).join("")}</div>` : ""}
-                ${m.length ? `<div class="flex flex-wrap gap-1.5 items-center"><span class="text-[11px] font-bold text-slate-500">Faltantes:</span>${m.map((w) => `<span class="px-2 py-0.5 rounded-lg bg-slate-200/70 text-slate-600 text-xs">${esc(w)}</span>`).join("")}</div>` : ""}
-                <button type="button" data-pr="${esc(r.id)}" class="px-4 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 text-gold-400 font-bold text-xs">📄 Abrir informe / PDF</button>
+              <div class="mt-3 pt-3 border-t border-slate-200 space-y-2.5 text-xs">
+                ${u.length ? `<div class="flex flex-wrap gap-1"><span class="font-bold text-emerald-800 mr-1">✅ Usadas:</span>${u.map((w) => `<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 font-semibold">${esc(w)}</span>`).join("")}</div>` : ""}
+                ${m.length ? `<div class="flex flex-wrap gap-1"><span class="font-bold text-slate-500 mr-1">⏳ Pendientes:</span>${m.map((w) => `<span class="px-2 py-0.5 rounded-md bg-slate-200 text-slate-600">${esc(w)}</span>`).join("")}</div>` : ""}
+                <div class="pt-1">
+                  <button type="button" data-pr="${esc(r.id)}" class="px-3.5 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-700 text-gold-400 font-bold text-xs">📄 Abrir informe / PDF</button>
+                </div>
               </div>
             </details>`;
         }).join("");
 
         hl.querySelectorAll("button[data-pr]").forEach((b) => b.addEventListener("click", () => {
-          const r = state.reports.find((x) => x.id === b.dataset.pr);
-          if (r) openSavedReportView(r, "progress");
+          const rep = state.reports.find((x) => x.id === b.dataset.pr);
+          if (rep) openSavedReportView(rep, "progress");
         }));
       }
 
       // =====================================================================
       // 12. HOME, PLACEMENT TEST & ACTIVITIES
       // =====================================================================
-      const pickRandomTopic = (lv) => { const a = TOPICS_DB[lv] || TOPICS_DB.B1; return a[Math.floor(Math.random() * a.length)]; };
+      function pickRandomTopic(level) {
+        const list = TOPICS_DB[level] || TOPICS_DB.B1;
+        if (list.length <= 1) return list[0];
+        const others = list.filter((t) => t.id !== state.topic?.id);
+        const pool = others.length ? others : list;
+        return pool[Math.floor(Math.random() * pool.length)];
+      }
 
-      document.querySelectorAll(".btn-pick-level").forEach((b) => b.addEventListener("click", () => {
-        unlockAudio(); state.level = b.dataset.level; state.topic = pickRandomTopic(state.level); openActivitiesView();
-      }));
-      safeOn("btn-home-practice", "click", () => { unlockAudio(); state.topic = pickRandomTopic(state.level); openActivitiesView(); });
+      // Bind Home buttons & direct level cards (A1, A2, B1, B2)
       safeOn("btn-start-placement", "click", startPlacementTest);
-      safeOn("btn-place-back", "click", () => { stopAllAudioAndMic(); showView("home"); });
+      safeOn("btn-home-practice", "click", () => {
+        unlockAudio();
+        state.activeTaskId = null;
+        if (!state.topic) state.topic = pickRandomTopic(state.level);
+        openActivitiesView();
+      });
+      document.querySelectorAll(".btn-pick-level").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          unlockAudio();
+          state.activeTaskId = null;
+          const lv = btn.dataset.level;
+          if (["A1", "A2", "B1", "B2"].includes(lv)) {
+            state.level = lv;
+            state.topic = pickRandomTopic(state.level);
+          }
+          openActivitiesView();
+        });
+      });
 
-      function appendChatBubble(boxId, role, text) {
+      function appendChatBubble(boxId, role, text, correction = null) {
         const box = $(boxId);
         if (!box) return;
         const isAi = role === "ai";
         const wrap = document.createElement("div");
-        wrap.className = `flex ${isAi ? "justify-start" : "justify-end"}`;
+        wrap.className = `flex flex-col ${isAi ? "items-start" : "items-end"} gap-1.5`;
+        const tipHtml = (isAi && correction && correction.wrong && correction.right)
+          ? `<div class="max-w-[85%] rounded-xl px-3.5 py-2 bg-gold-50 border border-gold-400/70 text-[11px] sm:text-xs text-navy-900 shadow-sm">
+               <span class="font-extrabold text-gold-600">💡 Consejo sutil:</span>
+               <span class="line-through text-red-700 mx-1">${esc(correction.wrong)}</span>→
+               <strong class="text-emerald-800 mx-1">${esc(correction.right)}</strong>
+               ${correction.tipEs ? `<span class="text-slate-600">(${esc(correction.tipEs)})</span>` : ""}
+             </div>`
+          : "";
         wrap.innerHTML = `
           <div class="max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${isAi ? "bg-white border border-slate-200 text-navy-900 rounded-tl-sm" : "bg-navy-900 text-white rounded-tr-sm"}">
             <span class="block text-[10px] font-bold uppercase mb-0.5 ${isAi ? "text-gold-600" : "text-gold-400"}">${isAi ? "👨‍🏫 Profesor IA" : "🎓 Tú"}</span>
             <p>${esc(text)}</p>
-          </div>`;
+          </div>
+          ${tipHtml}`;
         box.appendChild(wrap);
         box.scrollTop = box.scrollHeight;
       }
@@ -2722,6 +2855,7 @@
         speakAiText(opener);
       }
 
+      safeOn("btn-place-back", "click", () => { stopAllAudioAndMic(); showView("home"); });
       safeOn("btn-place-repeat-audio", "click", () => { stopMicCleanly(); if (state.placementLastAiText) speakAiText(state.placementLastAiText); });
       safeOn("btn-place-mic", "click", () => toggleMic("placement"));
       safeOn("btn-place-retry", "click", () => retryResponse("placement"));
@@ -3000,6 +3134,7 @@
       safeOn("btn-session-mic", "click", () => toggleMic("session"));
       safeOn("btn-session-retry", "click", () => retryResponse("session"));
       safeOn("btn-session-send", "click", handleSessionSend);
+      safeOn("session-textarea", "input", (e) => detectVocabLive(e.target.value));
       safeOn("btn-finish-session", "click", () => { clearSessionTimer(); finishAndEvaluateSession(); });
 
       async function handleSessionSend() {
@@ -3015,27 +3150,67 @@
         const remaining = state.activeVocab.filter((w) => !state.usedWords.has(w.en.toLowerCase())).map((w) => w.en).slice(0, 6);
         const closingCue = state.sessionSecondsLeft <= 35 ? "URGENT: Less than 30 seconds left. Wrap up warmly with one final short closing question." : "";
 
-        const sys = `You are a warm, encouraging English speaking teacher at CEFR level ${state.level}.
+        const sys = `You are a warm, natural, engaging human-like English speaking tutor at CEFR level ${state.level}.
 Activity: ${state.activityId}. Context: ${getContextSummary()}
-Unused target words to gently elicit: ${remaining.join(", ") || "none"}.
+Unused target words you can gently encourage through your question: ${remaining.join(", ") || "none"}.
 ${closingCue}
-RULES:
-1. Reply in English, MAX 2 short natural sentences so the student speaks 70% of the time.
-2. NEVER stop to lecture grammar. If the student made a clear grammar/vocab mistake, gently recast it naturally in your reply AND include a concise Spanish tip in "correction".
-3. Return ONLY valid JSON: {"reply":"string","correction":null | {"wrong":"string","right":"string","tipEs":"short Spanish explanation"}}`;
 
-        const tr = state.sessionHistory.slice(-10).map((m) => `${m.role}: ${m.text}`).join("\n");
-        const res = await callGeminiJSON(sys, tr);
-        const reply = res?.reply || "That's a great point! Could you tell me a bit more about why you think that?";
+CONVERSATION RULES (CRITICAL):
+1. Have a REAL, alternating, natural two-way conversation. React specifically to the exact details the student just mentioned (never use generic filler like "That's a great point!").
+2. Keep your spoken reply concise (2 short natural sentences max) so the student speaks 70% of the time: first react/comment naturally on what they said (and subtly recast any mistake in correct English without lecturing), then ask ONE fresh, specific follow-up question that moves the conversation forward.
+3. Never repeat a question you already asked.
+4. GENTLE ERROR COACHING (without breaking the flow): Carefully inspect ONLY the student's LAST message for any grammar, phrasing, preposition, or vocabulary error (for example: missing subject "probably is winter" -> "it's probably winter", wrong word, tense error, etc.). If there is a clear, helpful improvement, fill "correction" with a concise, friendly tip in Spanish. If their message was completely natural and accurate, set "correction" to null.
+5. Return ONLY valid JSON with this exact shape:
+{"reply":"your natural English response","correction":null | {"wrong":"exact faulty fragment","right":"natural corrected version","tipEs":"brief friendly explanation in Spanish"}}`;
 
-        if (res?.correction?.wrong && res?.correction?.right) {
-          state.sessionErrors.push({ wrong: res.correction.wrong, right: res.correction.right, explanation: res.correction.tipEs || "Corrección sugerida" });
-          showToast(`💡 <strong>Tip rápido:</strong> <span class="line-through text-red-300">${esc(res.correction.wrong)}</span> → <strong class="text-gold-400">${esc(res.correction.right)}</strong>${res.correction.tipEs ? ` <span class="text-slate-300">(${esc(res.correction.tipEs)})</span>` : ""}`, "correction", 5500);
+        const tr = state.sessionHistory.slice(-12).map((m) => `${m.role === "ai" ? "Teacher" : "Student"}: ${m.text}`).join("\n");
+        const prompt = `Conversation so far:\n${tr}\n\nStudent's LAST message to respond to and check gently:\n"${text}"`;
+
+        const schema = {
+          type: "OBJECT",
+          properties: {
+            reply: { type: "STRING" },
+            correction: {
+              type: "OBJECT",
+              nullable: true,
+              properties: {
+                wrong: { type: "STRING" },
+                right: { type: "STRING" },
+                tipEs: { type: "STRING" }
+              },
+              required: ["wrong", "right", "tipEs"]
+            }
+          },
+          required: ["reply"]
+        };
+
+        const res = await callGeminiJSON(sys, prompt, schema);
+        let reply = res?.reply;
+        let validCorrection = null;
+
+        if (!reply) {
+          const fallbackPool = [
+            "I see what you mean! What else stands out to you in the background or atmosphere?",
+            "Interesting observation! How do you think the people there are feeling right now?",
+            "Nice detail! Would you enjoy being in a place like that yourself, and why?",
+            "That makes sense! What do you think might happen next in this situation?"
+          ];
+          const turnIdx = state.sessionHistory.filter((m) => m.role === "user").length;
+          reply = fallbackPool[(turnIdx - 1) % fallbackPool.length];
+          showToast(`⚠️ <strong>Aviso de conexión IA:</strong> No se pudo contactar con <code>gemini-proxy</code> (${esc(state.lastAiError || "sin respuesta")}). Revisa <em>Verify JWT</em> y <em>GEMINI_API_KEY</em> en Supabase.`, "error", 7000);
+        } else if (res?.correction?.wrong && res?.correction?.right) {
+          validCorrection = res.correction;
+          state.sessionErrors.push({
+            wrong: res.correction.wrong,
+            right: res.correction.right,
+            explanation: res.correction.tipEs || "Corrección sugerida"
+          });
+          showToast(`💡 <strong>Consejo rápido:</strong> <span class="line-through text-red-300">${esc(res.correction.wrong)}</span> → <strong class="text-gold-400">${esc(res.correction.right)}</strong>${res.correction.tipEs ? ` <span class="text-slate-300">(${esc(res.correction.tipEs)})</span>` : ""}`, "correction", 5500);
         }
 
         state.sessionHistory.push({ role: "ai", text: reply });
         state.sessionLastAiText = reply;
-        appendChatBubble("session-chat", "ai", reply);
+        appendChatBubble("session-chat", "ai", reply, validCorrection);
         speakAiText(reply);
         btn.disabled = false; btn.textContent = "Enviar ➤";
       }
