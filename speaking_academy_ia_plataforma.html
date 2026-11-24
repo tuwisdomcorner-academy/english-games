@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Speaking Academy IA - Tutor Conversacional de Inglés</title>
+  <title>Wisdom Corner Academy - Tutor Conversacional de Inglés IA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -58,10 +58,10 @@
   <header class="bg-navy-900 text-white border-b-2 border-gold-500/70 sticky top-0 z-40 shadow-md no-print">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 flex items-center justify-center font-extrabold text-lg shadow">🎓</div>
+        <div class="brand-logo-slot w-11 h-11 rounded-full bg-white p-0.5 flex items-center justify-center shadow-md ring-2 ring-gold-400/80 overflow-hidden shrink-0"></div>
         <div>
-          <h1 class="font-serif font-bold text-base sm:text-lg leading-tight">Speaking <span class="text-gold-400">Academy</span></h1>
-          <p class="text-[10px] text-slate-300 hidden sm:block">Tutor Conversacional IA · Práctica Oral</p>
+          <h1 class="font-serif font-bold text-base sm:text-lg leading-tight">Wisdom Corner <span class="text-gold-400">Academy</span></h1>
+          <p class="text-[10px] text-slate-300 hidden sm:block">Speaking IA · Práctica Oral</p>
         </div>
         <span id="cloud-status-badge" class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-[10px] font-bold text-slate-200">💾 Local</span>
       </div>
@@ -113,9 +113,9 @@
     <!-- ==================== VIEW 1: #view-login ==================== -->
     <section id="view-login" class="max-w-md mx-auto mt-4 sm:mt-8">
       <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
-        <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white p-6 text-center space-y-2">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 flex items-center justify-center text-3xl shadow-lg">🎙️</div>
-          <h2 class="font-serif text-2xl font-bold">Speaking <span class="text-gold-400">Academy</span></h2>
+        <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white p-6 text-center space-y-2.5">
+          <div class="brand-logo-slot w-28 h-28 mx-auto rounded-full bg-white p-1.5 flex items-center justify-center shadow-xl ring-4 ring-gold-400/70 overflow-hidden"></div>
+          <h2 class="font-serif text-2xl font-bold">Wisdom Corner <span class="text-gold-400">Academy</span></h2>
           <p class="text-xs text-slate-300">Acceso privado para alumnado autorizado y docentes</p>
           <span id="login-cloud-badge" class="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[10px] font-bold text-gold-400">💾 Modo Local</span>
         </div>
@@ -382,31 +382,70 @@
         </div>
       </div>
 
-      <!-- TAB 5: SECURITY -->
-      <div id="admin-tab-security" class="hidden max-w-md bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-        <h3 class="font-bold text-navy-900 text-base">🔒 Cambiar PIN del Profesor</h3>
-        <form id="form-change-pin" class="space-y-3">
+      <!-- TAB 5: SECURITY & BRAND LOGO -->
+      <div id="admin-tab-security" class="hidden max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <div>
-            <label for="sec-old-pin" class="block text-xs font-bold text-slate-600 mb-1">PIN actual</label>
-            <input id="sec-old-pin" type="password" inputmode="numeric" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-navy-900 focus:outline-none" />
+            <h3 class="font-bold text-navy-900 text-base">🏛️ Logo Oficial de la Academia</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Sube tu archivo exacto (JPEG/JPG/PNG) y se aplicará al instante en el login, cabecera, inicio e informes PDF de todos los dispositivos.</p>
           </div>
-          <div>
-            <label for="sec-new-pin" class="block text-xs font-bold text-slate-600 mb-1">Nuevo PIN (mín. 4 dígitos)</label>
-            <input id="sec-new-pin" type="password" inputmode="numeric" minlength="4" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-navy-900 focus:outline-none" />
+          <div class="flex items-center gap-4 p-3 rounded-2xl bg-navy-50 border border-slate-200">
+            <div class="brand-logo-slot w-16 h-16 rounded-full bg-white p-0.5 flex items-center justify-center shadow ring-2 ring-gold-400/80 overflow-hidden shrink-0"></div>
+            <div class="text-xs text-slate-600">
+              <p class="font-bold text-navy-900">Vista previa actual</p>
+              <p>Se guarda automáticamente en Supabase.</p>
+            </div>
           </div>
-          <button type="submit" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-700 text-gold-400 font-extrabold text-sm transition-colors">
-            Actualizar PIN
-          </button>
-        </form>
+          <form id="form-brand-logo" class="space-y-3">
+            <div>
+              <label for="inp-brand-logo-file" class="block text-xs font-bold text-slate-600 mb-1">Subir imagen desde tu dispositivo</label>
+              <input id="inp-brand-logo-file" type="file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:bg-navy-100 file:text-navy-900 file:font-bold hover:file:bg-navy-900 hover:file:text-gold-400" />
+            </div>
+            <div>
+              <label for="inp-brand-logo-url" class="block text-xs font-bold text-slate-600 mb-1">O pegar enlace directo a la imagen (opcional)</label>
+              <input id="inp-brand-logo-url" type="url" placeholder="https://.../logo.jpeg" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-navy-900 focus:outline-none" />
+            </div>
+            <div class="flex gap-2">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-700 text-gold-400 font-extrabold text-sm transition-colors">
+                💾 Guardar logo exacto
+              </button>
+              <button type="button" id="btn-reset-brand-logo" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-red-100 hover:text-red-700 text-slate-600 font-bold text-xs transition-colors">
+                🗑️
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-navy-900 text-base">🔒 Cambiar PIN del Profesor</h3>
+          <form id="form-change-pin" class="space-y-3">
+            <div>
+              <label for="sec-old-pin" class="block text-xs font-bold text-slate-600 mb-1">PIN actual</label>
+              <input id="sec-old-pin" type="password" inputmode="numeric" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-navy-900 focus:outline-none" />
+            </div>
+            <div>
+              <label for="sec-new-pin" class="block text-xs font-bold text-slate-600 mb-1">Nuevo PIN (mín. 4 dígitos)</label>
+              <input id="sec-new-pin" type="password" inputmode="numeric" minlength="4" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-navy-900 focus:outline-none" />
+            </div>
+            <button type="submit" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-700 text-gold-400 font-extrabold text-sm transition-colors">
+              Actualizar PIN
+            </button>
+          </form>
+        </div>
       </div>
     </section>
 
     <!-- ==================== VIEW 3: #view-home ==================== -->
     <section id="view-home" class="hidden max-w-5xl mx-auto space-y-6">
       <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div class="brand-logo-slot w-20 h-20 rounded-full bg-white p-1 flex items-center justify-center shadow-lg ring-2 ring-gold-400/80 overflow-hidden shrink-0"></div>
+          <div class="space-y-1.5">
+            <span class="inline-block px-3 py-1 rounded-full bg-gold-500/20 border border-gold-400/50 text-gold-400 text-xs font-bold uppercase tracking-wider">Wisdom Corner Academy · Speaking IA</span>
+            <h2 id="home-welcome-title" class="font-serif text-2xl sm:text-4xl font-bold">¡Bienvenido a Wisdom Corner Academy!</h2>
+          </div>
+        </div>
         <div class="space-y-2">
-          <span class="inline-block px-3 py-1 rounded-full bg-gold-500/20 border border-gold-400/50 text-gold-400 text-xs font-bold uppercase tracking-wider">Práctica Oral Interactiva</span>
-          <h2 id="home-welcome-title" class="font-serif text-2xl sm:text-4xl font-bold">¡Bienvenido a Speaking Academy!</h2>
           <p class="text-slate-200 text-sm sm:text-base max-w-2xl leading-relaxed">
             Mejora tu fluidez en inglés con sesiones guiadas de 5 minutos, fotos reales, misiones de 12 palabras contextuales, correcciones silenciosas e informes detallados.
           </p>
@@ -424,7 +463,7 @@
         </div>
       </div>
 
-      <!-- Pending Tasks -->
+      <!-- Student Pending Tasks Section -->
       <div id="home-tasks-section" class="hidden bg-white rounded-3xl p-5 sm:p-6 border-2 border-gold-500/80 shadow-md space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
@@ -436,7 +475,7 @@
         <div id="home-tasks-list" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
       </div>
 
-      <!-- Direct Levels -->
+      <!-- Direct Level Selection -->
       <div class="space-y-3">
         <h3 class="font-serif text-xl font-bold text-navy-900">Elige tu nivel para practicar ahora</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -454,7 +493,7 @@
               <span class="text-slate-400 group-hover:text-navy-900 font-bold">→</span>
             </div>
             <h4 class="font-bold text-navy-900 text-base">Elemental</h4>
-            <p class="text-xs text-slate-500 mt-1">Viajes, experiencias pasadas, cocina y compras.</p>
+            <p class="text-xs text-slate-500 mt-1">Viajes, experiencias pasadas, cocina y situaciones cotidianas.</p>
           </button>
           <button type="button" data-level="B1" class="btn-pick-level text-left bg-white hover:bg-navy-50 rounded-2xl p-5 border-2 border-slate-200 hover:border-navy-900 shadow-sm transition-all group">
             <div class="flex items-center justify-between mb-2">
@@ -814,10 +853,13 @@
 
       <div id="report-card" class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         <div class="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-700 text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-gold-400">Boletín de Evaluación Oral</span>
-            <h2 class="font-serif text-2xl sm:text-3xl font-bold mt-1">Informe de Speaking</h2>
-            <p id="rep-meta" class="text-xs sm:text-sm text-slate-300 mt-1"></p>
+          <div class="flex items-center gap-4">
+            <div class="brand-logo-slot w-16 h-16 rounded-full bg-white p-1 flex items-center justify-center shadow-md ring-2 ring-gold-400/80 overflow-hidden shrink-0"></div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-gold-400">Wisdom Corner Academy · Boletín de Evaluación Oral</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold mt-1">Informe de Speaking</h2>
+              <p id="rep-meta" class="text-xs sm:text-sm text-slate-300 mt-1"></p>
+            </div>
           </div>
           <div class="bg-white/10 border border-gold-400/50 rounded-2xl px-4 py-3 text-center">
             <span class="block text-[10px] uppercase text-gold-400 font-bold">Nivel</span>
@@ -931,6 +973,7 @@
 
       const LS_KEYS = {
         PIN: "sa_teacher_pin_v5",
+        LOGO: "sa_academy_logo_v5",
         STUDENTS: "sa_students_v5",
         REPORTS: "sa_reports_v5",
         PHOTOS: "sa_custom_photos_v5",
@@ -1196,6 +1239,7 @@
       // =====================================================================
       const state = {
         teacherPin: String(lsRead(LS_KEYS.PIN, "1234")),
+        brandLogo: String(lsRead(LS_KEYS.LOGO, "")),
         students: lsRead(LS_KEYS.STUDENTS, []),
         reports: lsRead(LS_KEYS.REPORTS, []),
         customPhotos: lsRead(LS_KEYS.PHOTOS, []),
@@ -1351,7 +1395,7 @@
       async function syncFromSupabase() {
         try {
           const [sets, stus, tsks, reps, phos] = await Promise.all([
-            sbSelect("sa_settings", "key=eq.teacher_pin").catch(() => null),
+            sbSelect("sa_settings").catch(() => null),
             sbSelect("sa_students", "order=created_at.desc").catch(() => null),
             sbSelect("sa_tasks", "order=created_at.desc").catch(() => null),
             sbSelect("sa_reports", "order=created_at.desc").catch(() => null),
@@ -1361,10 +1405,16 @@
           let anySuccess = false;
           if (Array.isArray(sets)) {
             anySuccess = true;
-            const row = sets.find((x) => x.key === "teacher_pin");
-            if (row && typeof row.value === "string" && row.value.trim().length >= 4) {
-              state.teacherPin = row.value.trim();
+            const pinRow = sets.find((x) => x.key === "teacher_pin");
+            if (pinRow && typeof pinRow.value === "string" && pinRow.value.trim().length >= 4) {
+              state.teacherPin = pinRow.value.trim();
               lsWrite(LS_KEYS.PIN, state.teacherPin);
+            }
+            const logoRow = sets.find((x) => x.key === "academy_logo");
+            if (logoRow && typeof logoRow.value === "string" && logoRow.value.trim()) {
+              state.brandLogo = logoRow.value.trim();
+              lsWrite(LS_KEYS.LOGO, state.brandLogo);
+              hydrateBrandLogos();
             }
           }
           if (Array.isArray(stus)) {
@@ -2316,22 +2366,21 @@
       }
 
       // Custom Photos CRUD
-      function compressFile(file) {
+      function compressFile(file, maxDim = 800, quality = 0.72) {
         return new Promise((res, rej) => {
           const fr = new FileReader();
           fr.onload = (ev) => {
             const img = new Image();
             img.onload = () => {
-              const max = 800;
               let w = img.width, h = img.height;
-              if (w > max || h > max) {
-                if (w >= h) { h = Math.round((h * max) / w); w = max; }
-                else { w = Math.round((w * max) / h); h = max; }
+              if (w > maxDim || h > maxDim) {
+                if (w >= h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+                else { w = Math.round((w * maxDim) / h); h = maxDim; }
               }
               const c = document.createElement("canvas");
               c.width = w; c.height = h;
               c.getContext("2d").drawImage(img, 0, 0, w, h);
-              res(c.toDataURL("image/jpeg", 0.72));
+              res(c.toDataURL("image/jpeg", quality));
             };
             img.onerror = rej;
             img.src = ev.target.result;
@@ -2364,14 +2413,14 @@
       });
 
       function renderAdminPhotosGallery() {
-        const g = $("admin-photos-gallery");
+        const gal = $("admin-photos-gallery");
         if ($("admin-photo-tab-count")) $("admin-photo-tab-count").textContent = String(state.customPhotos.length);
-        if (!g) return;
+        if (!gal) return;
         if (!state.customPhotos.length) {
-          g.innerHTML = `<p class="col-span-full text-sm text-slate-400 text-center py-8">No hay fotos propias todavía. Las 24 escenas integradas están activas.</p>`;
+          gal.innerHTML = `<p class="col-span-full text-sm text-slate-400 text-center py-8">No has subido fotos propias todavía. Las 24 escenas integradas están activas.</p>`;
           return;
         }
-        g.innerHTML = state.customPhotos.map((cp) => `
+        gal.innerHTML = state.customPhotos.map((cp) => `
           <div class="rounded-2xl border border-slate-200 overflow-hidden bg-navy-50 flex flex-col">
             <div class="grid ${cp.src2 ? "grid-cols-2" : "grid-cols-1"} gap-0.5 bg-slate-200 aspect-video overflow-hidden">
               <img src="${esc(cp.src1)}" alt="${esc(cp.title)}" class="w-full h-full object-cover" />
@@ -2380,12 +2429,13 @@
             <div class="p-3 bg-white flex items-center justify-between gap-2">
               <div class="min-w-0">
                 <p class="font-bold text-navy-900 text-xs truncate">${esc(cp.title)}</p>
-                <p class="text-[10px] text-slate-500">${cp.src2 ? "Par + individual" : "Individual"}</p>
+                <p class="text-[10px] text-slate-500">${cp.src2 ? "Par para comparar + individual" : "Foto individual"}</p>
               </div>
               <button type="button" data-dp="${esc(cp.id)}" class="px-2.5 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-bold text-xs shrink-0">🗑️</button>
             </div>
           </div>`).join("");
-        g.querySelectorAll("button[data-dp]").forEach((b) => b.addEventListener("click", () => {
+
+        gal.querySelectorAll("button[data-dp]").forEach((b) => b.addEventListener("click", () => {
           state.customPhotos = state.customPhotos.filter((x) => x.id !== b.dataset.dp);
           lsWrite(LS_KEYS.PHOTOS, state.customPhotos);
           sbDelete("sa_photos", b.dataset.dp);
@@ -2394,7 +2444,40 @@
         }));
       }
 
-      // Change Teacher PIN
+      // Change Teacher PIN & Brand Logo
+      safeOn("form-brand-logo", "submit", async (e) => {
+        e.preventDefault();
+        const file = $("inp-brand-logo-file").files?.[0];
+        const urlIn = ($("inp-brand-logo-url").value || "").trim();
+        let src = urlIn;
+        if (file) {
+          try {
+            src = await compressFile(file, 480, 0.9);
+          } catch {
+            showToast("No se pudo procesar la imagen del logo.", "error");
+            return;
+          }
+        }
+        if (!src) {
+          showToast("Selecciona el archivo de tu logo o pega su URL.", "info");
+          return;
+        }
+        state.brandLogo = src;
+        lsWrite(LS_KEYS.LOGO, src);
+        hydrateBrandLogos();
+        await sbUpsert("sa_settings", { key: "academy_logo", value: src });
+        $("form-brand-logo").reset();
+        showToast("🏛️ Logo oficial actualizado en toda la plataforma", "success");
+      });
+
+      safeOn("btn-reset-brand-logo", "click", async () => {
+        state.brandLogo = "";
+        lsWrite(LS_KEYS.LOGO, "");
+        await sbDelete("sa_settings", "academy_logo", "key");
+        hydrateBrandLogos();
+        showToast("Logo restablecido.", "info");
+      });
+
       safeOn("form-change-pin", "submit", (e) => {
         e.preventDefault();
         const oldP = $("sec-old-pin").value.trim(), newP = $("sec-new-pin").value.trim();
@@ -3096,6 +3179,37 @@ Analyze the student's turns. Return ONLY valid JSON:
       // =====================================================================
       // 15. INITIAL BOOT (SYNCHRONOUS VIEW FIRST, CLOUD SYNC IN BACKGROUND)
       // =====================================================================
+      // 15. BRAND LOGO LOADER & INITIAL BOOT
+      // =====================================================================
+      function renderMinimalMonogram(slot) {
+        slot.innerHTML = `<span class="font-serif font-extrabold text-navy-900 text-sm sm:text-base tracking-tight">WC</span>`;
+      }
+
+      function hydrateBrandLogos() {
+        const candidates = [];
+        if (state.brandLogo) candidates.push(state.brandLogo);
+        candidates.push("./logo.jpeg", "./logo.jpg", "./logo.png");
+
+        document.querySelectorAll(".brand-logo-slot").forEach((slot) => {
+          let idx = 0;
+          const img = document.createElement("img");
+          img.alt = "Wisdom Corner Academy";
+          img.className = "w-full h-full object-contain rounded-full";
+          const tryNext = () => {
+            if (idx < candidates.length) {
+              img.src = candidates[idx++];
+            } else {
+              renderMinimalMonogram(slot);
+            }
+          };
+          img.addEventListener("error", tryNext);
+          slot.innerHTML = "";
+          slot.appendChild(img);
+          tryNext();
+        });
+      }
+
+      hydrateBrandLogos();
       showView("login");
       syncFromSupabase();
     });
