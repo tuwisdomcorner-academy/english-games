@@ -1117,67 +1117,67 @@
         ]
       };
 
-      const mkPh = (id, title, titleEs, prompt, aiDescription, pairs) => ({ id, title, titleEs, prompt, aiDescription, vocab: v(pairs) });
+      const mkPh = (id, title, titleEs, url, aiDescription, pairs) => ({ id, title, titleEs, url, aiDescription, vocab: v(pairs) });
       const PHOTO_PAIRS = [
         {
           pairId: "pair_work",
-          a: mkPh("ph_office","Busy Modern Office","Oficina moderna","Candid documentary photo of coworkers collaborating around a wooden desk with laptops and coffee in a bright glass modern office, natural daylight","Bright modern office where three colleagues sit around a desk with laptops and coffee discussing a project.",[["office","oficina"],["colleagues","compañeros"],["laptop","portátil"],["meeting","reunión"],["desk","escritorio"],["teamwork","trabajo en equipo"],["busy","ocupado"],["professional","profesional"]]),
-          b: mkPh("ph_remote","Working From Home","Teletrabajo en casa","Candid photo of a young person working comfortably on a laptop at a sunny home desk with plants, tea mug and headphones","Calm sunny home office with plants where one person works on a laptop with headphones and a mug.",[["remote","remoto"],["comfortable","cómodo"],["headphones","auriculares"],["quiet","tranquilo"],["flexible","flexible"],["plant","planta"],["mug","taza"],["alone","solo"]])
+          a: mkPh("ph_office","Busy Modern Office","Oficina moderna","https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80","Bright modern office where colleagues collaborate around a wooden desk with laptops and coffee.",[["office","oficina"],["colleagues","compañeros"],["laptop","portátil"],["meeting","reunión"],["desk","escritorio"],["teamwork","trabajo en equipo"],["busy","ocupado"],["professional","profesional"]]),
+          b: mkPh("ph_remote","Working From Home","Teletrabajo en casa","https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=900&q=80","Calm sunny home office where one person works comfortably on a laptop with headphones and a warm mug.",[["remote","remoto"],["comfortable","cómodo"],["headphones","auriculares"],["quiet","tranquilo"],["flexible","flexible"],["plant","planta"],["mug","taza"],["alone","solo"]])
         },
         {
           pairId: "pair_holiday",
-          a: mkPh("ph_beach","Sunny Beach Holiday","Vacaciones en la playa","Realistic travel photo of families relaxing under colorful umbrellas on a golden sandy beach with turquoise ocean waves","Sunny sandy beach with turquoise waves, colorful umbrellas and people sunbathing.",[["beach","playa"],["sand","arena"],["umbrella","sombrilla"],["waves","olas"],["sunbathing","tomando el sol"],["towel","toalla"],["summer","verano"],["relaxing","relajante"]]),
-          b: mkPh("ph_mountain","Mountain Hiking Trail","Senderismo en montaña","Realistic outdoor photo of two hikers with backpacks walking along a scenic alpine mountain ridge with pine forests","Two hikers wearing backpacks and boots walking along a green mountain trail with pine forests and peaks.",[["hiking","senderismo"],["trail","sendero"],["backpack","mochila"],["peaks","picos"],["forest","bosque"],["boots","botas"],["fresh air","aire fresco"],["adventure","aventura"]])
+          a: mkPh("ph_beach","Sunny Beach Holiday","Vacaciones en la playa","https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80","Sunny sandy beach with turquoise ocean waves, warm sunlight and relaxing coastal scenery.",[["beach","playa"],["sand","arena"],["umbrella","sombrilla"],["waves","olas"],["sunbathing","tomando el sol"],["towel","toalla"],["summer","verano"],["relaxing","relajante"]]),
+          b: mkPh("ph_mountain","Mountain Hiking Trail","Senderismo en la montaña","https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=900&q=80","Hikers wearing backpacks and boots walking along a scenic mountain trail surrounded by dramatic peaks.",[["hiking","senderismo"],["trail","sendero"],["backpack","mochila"],["peaks","picos"],["forest","bosque"],["boots","botas"],["fresh air","aire fresco"],["adventure","aventura"]])
         },
         {
           pairId: "pair_food",
-          a: mkPh("ph_restaurant","Cozy Restaurant Dinner","Cena en restaurante","Candid photo of friends dining at a warm cozy restaurant table while a waiter serves delicious pasta dishes","Warm lively restaurant where friends smile around a table with menus while a waiter serves plates of food.",[["waiter","camarero"],["menu","menú"],["table","mesa"],["dish","plato"],["customer","cliente"],["delicious","delicioso"],["cozy","acogedor"],["order","pedir"]]),
-          b: mkPh("ph_cooking","Family Cooking at Home","Cocinar en casa","Documentary photo of a family cooking together in a bright home kitchen chopping fresh vegetables","Family wearing aprons in a home kitchen chopping fresh vegetables and stirring a pot together.",[["kitchen","cocina"],["ingredients","ingredientes"],["chopping","cortando"],["apron","delantal"],["homemade","casero"],["vegetables","verduras"],["family","familia"],["recipe","receta"]])
+          a: mkPh("ph_restaurant","Cozy Restaurant Dinner","Cena en restaurante","https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80","Warm lively restaurant interior with tables set for dinner, soft lighting and diners enjoying a meal.",[["waiter","camarero"],["menu","menú"],["table","mesa"],["dish","plato"],["customer","cliente"],["delicious","delicioso"],["cozy","acogedor"],["order","pedir"]]),
+          b: mkPh("ph_cooking","Family Cooking at Home","Cocinar en casa","https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=80","Family cooking together in a bright home kitchen with fresh ingredients and utensils on the counter.",[["kitchen","cocina"],["ingredients","ingredientes"],["chopping","cortando"],["apron","delantal"],["homemade","casero"],["vegetables","verduras"],["family","familia"],["recipe","receta"]])
         },
         {
           pairId: "pair_transport",
-          a: mkPh("ph_subway","Crowded City Subway","Metro lleno en hora punta","Street photo of commuters standing inside a crowded modern underground subway train during rush hour","Crowded city metro carriage during rush hour with passengers standing and checking phones.",[["subway","metro"],["commuters","viajeros"],["crowded","lleno"],["rush hour","hora punta"],["standing","de pie"],["stressful","estresante"],["fast","rápido"],["underground","subterráneo"]]),
-          b: mkPh("ph_bicycle","Cycling in the Park","Bicicleta en el parque","Sunlit photo of people riding bicycles along a tree-lined bike lane in a green city park","Cyclists wearing helmets riding along a peaceful paved bike lane surrounded by green trees.",[["bicycle","bicicleta"],["helmet","casco"],["bike lane","carril bici"],["park","parque"],["healthy","saludable"],["eco-friendly","ecológico"],["sunshine","sol"],["freedom","libertad"]])
+          a: mkPh("ph_subway","Crowded City Subway","Metro lleno en hora punta","https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=900&q=80","Busy city transit and urban rush hour commuters moving fast through the city.",[["subway","metro"],["commuters","viajeros"],["crowded","lleno"],["rush hour","hora punta"],["standing","de pie"],["stressful","estresante"],["fast","rápido"],["underground","subterráneo"]]),
+          b: mkPh("ph_bicycle","Cycling in the Park","Bicicleta en el parque","https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=900&q=80","Cyclists riding bicycles outdoors along a peaceful sunlit path surrounded by greenery.",[["bicycle","bicicleta"],["helmet","casco"],["bike lane","carril bici"],["park","parque"],["healthy","saludable"],["eco-friendly","ecológico"],["sunshine","sol"],["freedom","libertad"]])
         },
         {
           pairId: "pair_study",
-          a: mkPh("ph_library","Quiet University Library","Biblioteca universitaria","Realistic photo of university students studying quietly at wooden tables surrounded by tall bookshelves and reading lamps","Quiet library with tall bookshelves where students read textbooks and take notes under warm lamps.",[["library","biblioteca"],["bookshelves","estanterías"],["silence","silencio"],["focused","concentrado"],["notes","apuntes"],["textbook","libro de texto"],["exam","examen"],["lamp","lámpara"]]),
-          b: mkPh("ph_cafe","Studying in a Coffee Shop","Estudiar en cafetería","Lifestyle photo of two students studying with laptops and lattes in a bustling modern coffee shop","Two young people working on laptops in a lively coffee shop with pastries and a barista in the background.",[["coffee shop","cafetería"],["barista","barista"],["lively","animado"],["pastry","bollería"],["background noise","ruido de fondo"],["casual","informal"],["chatting","charlando"],["caffeine","cafeína"]])
+          a: mkPh("ph_library","Quiet University Library","Biblioteca universitaria","https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80","Quiet classic library with tall wooden bookshelves filled with books and peaceful study spaces.",[["library","biblioteca"],["bookshelves","estanterías"],["silence","silencio"],["focused","concentrado"],["notes","apuntes"],["textbook","libro de texto"],["exam","examen"],["lamp","lámpara"]]),
+          b: mkPh("ph_cafe","Studying in a Coffee Shop","Estudiar en cafetería","https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=80","Warm bustling coffee shop with tables, warm lights, fresh coffee and a casual atmosphere.",[["coffee shop","cafetería"],["barista","barista"],["lively","animado"],["pastry","bollería"],["background noise","ruido de fondo"],["casual","informal"],["chatting","charlando"],["caffeine","cafeína"]])
         },
         {
           pairId: "pair_shop",
-          a: mkPh("ph_market","Local Street Market","Mercado local","Vibrant documentary photo of shoppers buying fresh fruit and vegetables from a smiling vendor at an outdoor market","Outdoor local market with colorful stalls of fresh fruit and vegetables and a smiling vendor.",[["market","mercado"],["stall","puesto"],["vendor","vendedor"],["fresh","fresco"],["local","local"],["basket","cesta"],["produce","productos"],["community","comunidad"]]),
-          b: mkPh("ph_online_shop","Shopping Online at Home","Compras online","Lifestyle photo of a person sitting on a sofa with a tablet while cardboard delivery boxes sit nearby","Person relaxing on a sofa browsing an online store on a tablet with delivery parcels nearby.",[["parcel","paquete"],["delivery","envío"],["tablet","tableta"],["convenient","cómodo"],["couch","sofá"],["discount","descuento"],["website","sitio web"],["fast","rápido"]])
+          a: mkPh("ph_market","Local Street Market","Mercado local tradicional","https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80","Vibrant outdoor local market with colorful stalls of fresh fruit and vegetables.",[["market","mercado"],["stall","puesto"],["vendor","vendedor"],["fresh","fresco"],["local","local"],["basket","cesta"],["produce","productos"],["community","comunidad"]]),
+          b: mkPh("ph_online_shop","Shopping Online at Home","Compras online en casa","https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80","Person shopping online with a payment card and digital device from the comfort of home.",[["parcel","paquete"],["delivery","envío"],["tablet","tableta"],["convenient","cómodo"],["couch","sofá"],["discount","descuento"],["website","sitio web"],["fast","rápido"]])
         },
         {
           pairId: "pair_living",
-          a: mkPh("ph_city","Bustling City Center","Centro de gran ciudad","Street photo of a lively downtown avenue with skyscrapers, yellow taxis, shopfronts and pedestrians at dusk","Bustling city avenue lined with skyscrapers, glowing shop windows, traffic and pedestrians.",[["skyscrapers","rascacielos"],["traffic","tráfico"],["pedestrians","peatones"],["noisy","ruidoso"],["downtown","centro"],["opportunities","oportunidades"],["bright","brillante"],["modern","moderno"]]),
-          b: mkPh("ph_village","Peaceful Countryside Village","Pueblo tranquilo","Realistic photo of a quiet European village with cobblestone streets, stone cottages with flowers and green hills","Peaceful small village with stone cottages, flower pots, cobblestone streets and green hills.",[["village","pueblo"],["cottage","casita"],["peaceful","pacífico"],["hills","colinas"],["nature","naturaleza"],["neighbors","vecinos"],["traditional","tradicional"],["slow pace","ritmo tranquilo"]])
+          a: mkPh("ph_city","Bustling City Center","Centro de gran ciudad","https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=80","Bustling modern city skyline with tall skyscrapers, avenues, traffic and glowing urban lights.",[["skyscrapers","rascacielos"],["traffic","tráfico"],["pedestrians","peatones"],["noisy","ruidoso"],["downtown","centro"],["opportunities","oportunidades"],["bright","brillante"],["modern","moderno"]]),
+          b: mkPh("ph_village","Peaceful Countryside Village","Pueblo tranquilo","https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=900&q=80","Peaceful green countryside landscape with rolling hills, open nature and a calm slow pace.",[["village","pueblo"],["cottage","casita"],["peaceful","pacífico"],["hills","colinas"],["nature","naturaleza"],["neighbors","vecinos"],["traditional","tradicional"],["slow pace","ritmo tranquilo"]])
         },
         {
           pairId: "pair_sport",
-          a: mkPh("ph_gym","Indoor Fitness Gym","Gimnasio interior","Realistic photo of people exercising with dumbbells and treadmills inside a bright modern indoor gym","Indoor modern gym with treadmills, weights, mirrors and people lifting dumbbells.",[["gym","gimnasio"],["weights","pesas"],["treadmill","cinta"],["equipment","equipamiento"],["indoor","interior"],["workout","entrenamiento"],["mirror","espejo"],["strength","fuerza"]]),
-          b: mkPh("ph_running","Outdoor Park Running","Correr al aire libre","Sports photo of two joggers running along a tree-lined park path at sunrise with golden morning light","Two runners jogging along a scenic outdoor park path at sunrise with golden light.",[["jogging","trotar"],["sunrise","amanecer"],["path","camino"],["outdoors","al aire libre"],["sneakers","zapatillas"],["endurance","resistencia"],["free","gratis"],["motivated","motivado"]])
+          a: mkPh("ph_gym","Indoor Fitness Gym","Entrenamiento en gimnasio","https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80","Modern indoor fitness gym equipped with dumbbells, weights, machines and workout space.",[["gym","gimnasio"],["weights","pesas"],["treadmill","cinta"],["equipment","equipamiento"],["indoor","interior"],["workout","entrenamiento"],["mirror","espejo"],["strength","fuerza"]]),
+          b: mkPh("ph_running","Outdoor Park Running","Correr al aire libre","https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80","Runners jogging outdoors along a scenic path in fresh morning air.",[["jogging","trotar"],["sunrise","amanecer"],["path","camino"],["outdoors","al aire libre"],["sneakers","zapatillas"],["endurance","resistencia"],["free","gratis"],["motivated","motivado"]])
         },
         {
           pairId: "pair_music",
-          a: mkPh("ph_festival","Live Music Festival","Festival en vivo","Concert photo of an enthusiastic crowd with raised hands watching a live band on an outdoor festival stage at night","Huge energetic crowd at a night outdoor music festival cheering in front of a lit stage.",[["concert","concierto"],["stage","escenario"],["crowd","multitud"],["spotlights","focos"],["live music","música en vivo"],["energetic","enérgico"],["cheering","animando"],["loud","fuerte"]]),
-          b: mkPh("ph_guitar","Playing Guitar at Home","Guitarra en casa","Warm candid photo of a young musician sitting on a cozy bedroom rug playing an acoustic guitar by afternoon window light","One person sitting peacefully in a cozy room playing an acoustic guitar near a sunny window.",[["guitar","guitarra"],["acoustic","acústica"],["melody","melodía"],["intimate","íntimo"],["practice","practicar"],["relaxing","relajante"],["chords","acordes"],["hobby","afición"]])
+          a: mkPh("ph_festival","Live Music Festival","Festival de música en vivo","https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80","Energetic crowd with raised hands at a live music festival in front of a brightly lit stage.",[["concert","concierto"],["stage","escenario"],["crowd","multitud"],["spotlights","focos"],["live music","música en vivo"],["energetic","enérgico"],["cheering","animando"],["loud","fuerte"]]),
+          b: mkPh("ph_guitar","Playing Guitar at Home","Tocar la guitarra en casa","https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=900&q=80","Musician playing an acoustic guitar in a calm, intimate room at home.",[["guitar","guitarra"],["acoustic","acústica"],["melody","melodía"],["intimate","íntimo"],["practice","practicar"],["relaxing","relajante"],["chords","acordes"],["hobby","afición"]])
         },
         {
           pairId: "pair_reading",
-          a: mkPh("ph_book","Reading a Paper Book","Leer libro en papel","Warm realistic photo of a person curled up in an armchair holding an open paper book beside a steaming cup of tea","Person sitting comfortably in an armchair reading a paper novel next to a cup of tea.",[["novel","novela"],["pages","páginas"],["armchair","sillón"],["imagination","imaginación"],["bookmark","marcapáginas"],["offline","desconectado"],["calm","calma"],["chapter","capítulo"]]),
-          b: mkPh("ph_screens","Scrolling on Screens","Pantallas y dispositivos","Evening photo of two young adults sitting on a modern couch looking at a smartphone and tablet illuminated by screen light","Two people on a sofa in the evening each focused on their glowing smartphone or tablet.",[["smartphone","móvil"],["screen","pantalla"],["notifications","notificaciones"],["distracted","distraído"],["digital","digital"],["scrolling","deslizando"],["connected","conectado"],["instant","instantáneo"]])
+          a: mkPh("ph_book","Reading a Paper Book","Leer un libro en papel","https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80","Open paper books stacked peacefully in warm natural light for quiet offline reading.",[["novel","novela"],["pages","páginas"],["armchair","sillón"],["imagination","imaginación"],["bookmark","marcapáginas"],["offline","desconectado"],["calm","calma"],["chapter","capítulo"]]),
+          b: mkPh("ph_screens","Scrolling on Screens","Pantallas y dispositivos","https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80","Person holding and scrolling on a glowing smartphone screen surrounded by digital notifications.",[["smartphone","móvil"],["screen","pantalla"],["notifications","notificaciones"],["distracted","distraído"],["digital","digital"],["scrolling","deslizando"],["connected","conectado"],["instant","instantáneo"]])
         },
         {
           pairId: "pair_edu",
-          a: mkPh("ph_classroom","In-Person Classroom","Clase presencial","Educational photo of a teacher explaining a lesson at a whiteboard while engaged students raise their hands","Bright school classroom where a teacher stands by a whiteboard interacting with seated students.",[["classroom","aula"],["teacher","profesor"],["whiteboard","pizarra"],["classmates","compañeros"],["interaction","interacción"],["question","pregunta"],["desk","pupitre"],["participate","participar"]]),
-          b: mkPh("ph_online_class","Online Video Lesson","Clase online","Realistic photo of a student wearing headphones taking an online video class on a laptop at home","Student at home wearing headphones attending a live video call class on a laptop.",[["webcam","cámara web"],["online","en línea"],["video call","videollamada"],["microphone","micrófono"],["flexible","flexible"],["notebook","cuaderno"],["connection","conexión"],["self-paced","a tu ritmo"]])
+          a: mkPh("ph_classroom","In-Person Classroom","Clase presencial","https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80","Bright school classroom where a teacher interacts face-to-face with engaged students.",[["classroom","aula"],["teacher","profesor"],["whiteboard","pizarra"],["classmates","compañeros"],["interaction","interacción"],["question","pregunta"],["desk","pupitre"],["participate","participar"]]),
+          b: mkPh("ph_online_class","Online Video Lesson","Clase online en casa","https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=900&q=80","Student at home attending an online video call lesson on a laptop with headphones.",[["webcam","cámara web"],["online","en línea"],["video call","videollamada"],["microphone","micrófono"],["flexible","flexible"],["notebook","cuaderno"],["connection","conexión"],["self-paced","a tu ritmo"]])
         },
         {
           pairId: "pair_weather",
-          a: mkPh("ph_rain","Rainy City Afternoon","Tarde lluviosa","Atmospheric street photo of people walking with colorful umbrellas along wet reflective city sidewalks during rain","Pedestrians in raincoats walking under umbrellas on wet city sidewalks in the rain.",[["umbrella","paraguas"],["raincoat","chubasquero"],["puddles","charcos"],["wet","mojado"],["cloudy","nublado"],["cozy","acogedor"],["sidewalk","acera"],["storm","tormenta"]]),
-          b: mkPh("ph_picnic","Sunny Park Picnic","Picnic soleado","Bright cheerful photo of friends enjoying a picnic on a checkered blanket on green grass with a wicker basket in sunshine","Group of friends laughing on a picnic blanket on green park grass with a basket of food in the sun.",[["picnic","picnic"],["blanket","manta"],["grass","césped"],["sunshine","sol"],["basket","cesta"],["sandwiches","sándwiches"],["cheerful","alegre"],["outdoors","al aire libre"]])
+          a: mkPh("ph_rain","Rainy City Afternoon","Tarde lluviosa en la ciudad","https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=900&q=80","Raindrops and wet reflections on a moody rainy afternoon outdoors.",[["umbrella","paraguas"],["raincoat","chubasquero"],["puddles","charcos"],["wet","mojado"],["cloudy","nublado"],["cozy","acogedor"],["sidewalk","acera"],["storm","tormenta"]]),
+          b: mkPh("ph_picnic","Sunny Park Picnic","Picnic soleado en el parque","https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=900&q=80","Cheerful outdoor picnic on green grass with fresh food, sunlight and a relaxed atmosphere.",[["picnic","picnic"],["blanket","manta"],["grass","césped"],["sunshine","sol"],["basket","cesta"],["sandwiches","sándwiches"],["cheerful","alegre"],["outdoors","al aire libre"]])
         }
       ];
       const PHOTO_BANK = PHOTO_PAIRS.flatMap((p) => [p.a, p.b]);
@@ -1192,7 +1192,7 @@
       };
 
       // =====================================================================
-      // 3. STATE (INSTANT LOCAL LOAD FIRST)
+      // 3. APPLICATION STATE (INITIALIZED SYNCHRONOUSLY FROM LOCALSTORAGE)
       // =====================================================================
       const state = {
         teacherPin: String(lsRead(LS_KEYS.PIN, "1234")),
@@ -1240,21 +1240,21 @@
       };
 
       // =====================================================================
-      // 4. SUPABASE REST API HELPERS (NATIVE FETCH, NEVER BLOCKS UI)
+      // 4. SUPABASE REST HELPERS (NATIVE FETCH)
       // =====================================================================
       async function sbSelect(table, query = "") {
-        const url = `${SUPABASE_URL}/rest/v1/${table}?select=*${query ? "&" + query : ""}`;
-        const r = await fetch(url, { method: "GET", headers: SB_HEADERS });
+        const url = `${SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`;
+        const r = await fetch(url, { headers: SB_HEADERS });
         if (!r.ok) throw new Error(`SB GET ${table} ${r.status}`);
         return await r.json();
       }
 
-      async function sbUpsert(table, row) {
+      async function sbUpsert(table, payload) {
         try {
           const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
             method: "POST",
             headers: { ...SB_HEADERS, Prefer: "resolution=merge-duplicates,return=minimal" },
-            body: JSON.stringify(row)
+            body: JSON.stringify(payload)
           });
           if (!r.ok) throw new Error(`SB UPSERT ${table} ${r.status}`);
           setCloudBadge("☁️ Nube sincronizada", true);
@@ -1693,7 +1693,7 @@
       }
 
       // =====================================================================
-      // 8. GEMINI JSON PROXY & REAL PHOTOS (INDEXEDDB CACHE)
+      // 8. GEMINI JSON PROXY & INSTANT REAL PHOTOS (DIRECT UNSPLASH + CUSTOM)
       // =====================================================================
       async function callGeminiJSON(systemInstruction, userPrompt) {
         const body = JSON.stringify({
@@ -1721,65 +1721,6 @@
         return null;
       }
 
-      function openPhotoDB() {
-        return new Promise((res, rej) => {
-          if (!("indexedDB" in window)) return rej();
-          const req = indexedDB.open("sa_photo_cache_v1", 1);
-          req.onupgradeneeded = () => {
-            if (!req.result.objectStoreNames.contains("photos")) req.result.createObjectStore("photos");
-          };
-          req.onsuccess = () => res(req.result);
-          req.onerror = () => rej(req.error);
-        });
-      }
-      async function getCachedPhoto(id) {
-        try {
-          const db = await openPhotoDB();
-          return await new Promise((res) => {
-            const req = db.transaction("photos", "readonly").objectStore("photos").get(id);
-            req.onsuccess = () => res(req.result || null);
-            req.onerror = () => res(null);
-          });
-        } catch { return null; }
-      }
-      async function setCachedPhoto(id, dataUrl) {
-        try {
-          const db = await openPhotoDB();
-          await new Promise((res) => {
-            const tx = db.transaction("photos", "readwrite");
-            tx.objectStore("photos").put(dataUrl, id);
-            tx.oncomplete = res; tx.onerror = res;
-          });
-        } catch {}
-      }
-
-      async function resolveRealPhotoUrl(photoObj) {
-        if (!photoObj) return null;
-        if (photoObj.customSrc) return photoObj.customSrc;
-        const hit = await getCachedPhoto(photoObj.id);
-        if (hit) return hit;
-        try {
-          const resp = await fetch(GEMINI_PROXY_URL, {
-            method: "POST",
-            headers: SB_HEADERS,
-            body: JSON.stringify({
-              model: "gemini-3.1-flash-image",
-              payload: {
-                contents: [{ role: "user", parts: [{ text: photoObj.prompt || photoObj.aiDescription }] }],
-                generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "16:9" } }
-              }
-            })
-          });
-          if (!resp.ok) throw new Error();
-          const data = await resp.json();
-          const part = data?.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
-          if (!part) throw new Error();
-          const url = `data:${part.inlineData.mimeType || "image/png"};base64,${part.inlineData.data}`;
-          await setCachedPhoto(photoObj.id, url);
-          return url;
-        } catch { return null; }
-      }
-
       function normalizeCustomVocab(rawStr, fallbackTitle) {
         const defs = v([["scene","escena"],["people","personas"],["place","lugar"],["detail","detalle"],["lighting","luz"],["moment","momento"],["action","acción"],["expression","expresión"]]);
         const list = String(rawStr || "").split(",").map((s) => s.trim()).filter(Boolean).slice(0, 8)
@@ -1790,7 +1731,7 @@
 
       function getSinglePool() {
         const customs = state.customPhotos.map((cp) => ({
-          id: cp.id, title: cp.title, titleEs: cp.title, customSrc: cp.src1,
+          id: cp.id, title: cp.title, titleEs: cp.title, url: cp.src1,
           aiDescription: cp.desc1, vocab: normalizeCustomVocab(cp.vocab1, cp.title), isCustom: true
         }));
         return [...customs, ...PHOTO_BANK];
@@ -1799,8 +1740,8 @@
       function getPairPool() {
         const customs = state.customPhotos.filter((cp) => cp.src2).map((cp) => ({
           pairId: `cpair_${cp.id}`,
-          a: { id: `${cp.id}_a`, title: `${cp.title} (A)`, titleEs: `${cp.title} (A)`, customSrc: cp.src1, aiDescription: cp.desc1, vocab: normalizeCustomVocab(cp.vocab1, cp.title), isCustom: true },
-          b: { id: `${cp.id}_b`, title: `${cp.title} (B)`, titleEs: `${cp.title} (B)`, customSrc: cp.src2, aiDescription: cp.desc2 || cp.desc1, vocab: normalizeCustomVocab(cp.vocab2 || cp.vocab1, cp.title), isCustom: true }
+          a: { id: `${cp.id}_a`, title: `${cp.title} (A)`, titleEs: `${cp.title} (A)`, url: cp.src1, aiDescription: cp.desc1, vocab: normalizeCustomVocab(cp.vocab1, cp.title), isCustom: true },
+          b: { id: `${cp.id}_b`, title: `${cp.title} (B)`, titleEs: `${cp.title} (B)`, url: cp.src2, aiDescription: cp.desc2 || cp.desc1, vocab: normalizeCustomVocab(cp.vocab2 || cp.vocab1, cp.title), isCustom: true }
         }));
         return [...customs, ...PHOTO_PAIRS];
       }
@@ -1828,14 +1769,23 @@
         if (rebuildVocab) buildActiveVocab();
       }
 
+      function photoFallbackCardHtml(ph) {
+        return `
+          <div class="w-full h-full bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 p-4 flex flex-col items-center justify-center text-center text-white space-y-1">
+            <span class="text-2xl">📸</span>
+            <p class="font-bold text-sm text-gold-400">${esc(ph.title)}</p>
+            <p class="text-[11px] text-slate-200 line-clamp-3">${esc(ph.aiDescription)}</p>
+          </div>`;
+      }
+
       function photoCardHtml(ph, label) {
+        const imgSrc = ph.url || ph.customSrc || "";
         return `
           <div class="rounded-2xl overflow-hidden border border-slate-200 bg-navy-50 flex flex-col">
             <div class="relative w-full aspect-video bg-navy-900 flex items-center justify-center overflow-hidden" data-photo-slot="${esc(ph.id)}">
-              <div class="flex flex-col items-center gap-2 text-gold-400 p-4 text-center">
-                <div class="w-7 h-7 border-2 border-gold-400 border-t-transparent rounded-full animate-spin"></div>
-                <span class="text-xs font-bold">📸 Cargando fotografía real...</span>
-              </div>
+              ${imgSrc
+                ? `<img src="${esc(imgSrc)}" alt="${esc(ph.title)}" referrerpolicy="no-referrer" class="w-full h-full object-cover" />`
+                : photoFallbackCardHtml(ph)}
             </div>
             <div class="px-3 py-2 bg-white flex items-center justify-between gap-2">
               <span class="text-xs font-bold text-navy-900">${label ? `${label}: ` : ""}${esc(ph.title)}</span>
@@ -1844,23 +1794,16 @@
           </div>`;
       }
 
-      async function hydratePhotoSlots(container, photos) {
+      function attachPhotoFallbacks(container, photos) {
         if (!container) return;
-        for (const p of photos) {
-          const slot = container.querySelector(`[data-photo-slot="${CSS.escape(p.id)}"]`);
-          if (!slot) continue;
-          const url = await resolveRealPhotoUrl(p);
-          if (url) {
-            slot.innerHTML = `<img src="${url}" alt="${esc(p.title)}" class="w-full h-full object-cover" />`;
-          } else {
-            slot.innerHTML = `
-              <div class="w-full h-full bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 p-4 flex flex-col items-center justify-center text-center text-white space-y-1">
-                <span class="text-2xl">📸</span>
-                <p class="font-bold text-sm text-gold-400">${esc(p.title)}</p>
-                <p class="text-[11px] text-slate-200 line-clamp-3">${esc(p.aiDescription)}</p>
-              </div>`;
-          }
-        }
+        photos.forEach((ph) => {
+          const slot = container.querySelector(`[data-photo-slot="${CSS.escape(ph.id)}"]`);
+          const img = slot ? slot.querySelector("img") : null;
+          if (!slot || !img) return;
+          img.addEventListener("error", () => {
+            slot.innerHTML = photoFallbackCardHtml(ph);
+          }, { once: true });
+        });
       }
 
       function renderPhotoStage(stageId, counterId) {
@@ -1870,11 +1813,11 @@
         if (state.activityId === "photo_single" && state.currentSinglePhoto) {
           stage.className = "grid grid-cols-1 gap-3 max-w-xl mx-auto";
           stage.innerHTML = photoCardHtml(state.currentSinglePhoto, "");
-          hydratePhotoSlots(stage, [state.currentSinglePhoto]);
+          attachPhotoFallbacks(stage, [state.currentSinglePhoto]);
         } else if (state.activityId === "photo_compare" && state.currentPhotoPair) {
           stage.className = "grid grid-cols-1 sm:grid-cols-2 gap-3";
           stage.innerHTML = photoCardHtml(state.currentPhotoPair.a, "Foto A") + photoCardHtml(state.currentPhotoPair.b, "Foto B");
-          hydratePhotoSlots(stage, [state.currentPhotoPair.a, state.currentPhotoPair.b]);
+          attachPhotoFallbacks(stage, [state.currentPhotoPair.a, state.currentPhotoPair.b]);
         }
       }
 
