@@ -1,0 +1,4147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy — Present Perfect Simple Mastery (For, Since, Already, Yet, Still &amp; Just)</title>
+
+  <!-- Google Fonts: Playfair Display (títulos académicos) + Plus Jakarta Sans (lectura e interfaz) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS — IDENTIDAD WISDOM CORNER ACADEMY
+       ========================================================================= */
+    :root {
+      --parchment: #FAF8F5;
+      --cream: #F3EFE6;
+      --white: #FFFFFF;
+      --ink: #1E293B;
+      --muted: #526074;
+      --navy: #1B365D;
+      --navy-dark: #122644;
+      --navy-light: #2A4E82;
+      --forest: #2D5A4C;
+      --forest-light: #3C7362;
+      --forest-soft: #EBF4F0;
+      --gold: #C59B27;
+      --gold-dark: #8A6914;
+      --gold-light: #E3C565;
+      --gold-soft: #FBF5E6;
+      --border: #E8E2D6;
+      --ok: #1E8449;
+      --ok-soft: #EAF7EE;
+      --ok-border: #A3D9B1;
+      --err: #C0392B;
+      --err-soft: #FDEDEC;
+      --err-border: #F2B8B5;
+      --shadow-card: 0 4px 20px -2px rgba(27, 54, 93, 0.06), 0 1px 4px rgba(27, 54, 93, 0.04);
+      --shadow-soft: 0 2px 10px rgba(27, 54, 93, 0.05);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--gold-soft);
+      color: var(--navy);
+    }
+
+    .container {
+      max-width: 1060px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    /* =========================================================================
+       2. CABECERA INSTITUCIONAL Y MARCADOR GLOBAL
+       ========================================================================= */
+    .site-header {
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 4px 18px rgba(18, 38, 68, 0.22);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-inner {
+      padding: 0.9rem 0 0.75rem;
+    }
+
+    .header-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 820px) {
+      .header-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .logo-frame {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: rgba(18, 38, 68, 0.85);
+      border: 1px solid rgba(197, 155, 39, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+    }
+
+    .logo-fallback {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+    }
+
+    .logo-fallback.visible {
+      display: flex;
+    }
+
+    .brand-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .level-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.16rem 0.62rem;
+      border-radius: 999px;
+      background: rgba(197, 155, 39, 0.22);
+      color: var(--gold-light);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+    }
+
+    .brand-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.32rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+    }
+
+    @media (min-width: 640px) {
+      .brand-title {
+        font-size: 1.55rem;
+      }
+    }
+
+    .brand-subtitle {
+      margin: 0.22rem 0 0;
+      font-size: 0.8rem;
+      color: #CBD5E1;
+    }
+
+    /* Marcador Global (80 ejercicios) */
+    .scoreboard {
+      background: rgba(18, 38, 68, 0.86);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-width: 265px;
+    }
+
+    .scoreboard-left {
+      flex: 1;
+    }
+
+    .scoreboard-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      color: #CBD5E1;
+      margin-bottom: 0.4rem;
+    }
+
+    .scoreboard-score {
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 999px;
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .scoreboard-pct {
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      padding-left: 0.8rem;
+      text-align: right;
+    }
+
+    .scoreboard-pct-val {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .scoreboard-pct-lbl {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #CBD5E1;
+      margin-top: 0.2rem;
+    }
+
+    /* Navegación por 5 Pestañas */
+    .tabs-nav {
+      margin-top: 0.85rem;
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.11);
+      color: #E2E8F0;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    }
+
+    .tab-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #E2E8F0;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: var(--cream);
+      color: var(--navy);
+    }
+
+    .tab-badge.graded-high {
+      background: rgba(30, 132, 73, 0.3);
+      color: #A7F3D0;
+    }
+
+    .tab-btn.active .tab-badge.graded-high {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .tab-badge.graded-mid {
+      background: rgba(197, 155, 39, 0.32);
+      color: var(--gold-light);
+    }
+
+    .tab-btn.active .tab-badge.graded-mid {
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+    }
+
+    /* =========================================================================
+       3. LAYOUT PRINCIPAL Y TARJETAS
+       ========================================================================= */
+    main {
+      flex: 1;
+      padding: 1.75rem 0 2.5rem;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stack-lg > * + * { margin-top: 1.5rem; }
+    .stack-md > * + * { margin-top: 1rem; }
+    .stack-sm > * + * { margin-top: 0.65rem; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 1.35rem;
+    }
+
+    @media (min-width: 640px) {
+      .card {
+        padding: 1.7rem;
+      }
+    }
+
+    .card-top-navy { border-top: 4px solid var(--navy); }
+    .card-top-forest { border-top: 4px solid var(--forest); }
+    .card-top-gold { border-top: 4px solid var(--gold); }
+
+    .exam-hero {
+      background: linear-gradient(180deg, #FFFCF4 0%, #FFFFFF 130px);
+      border: 1.5px solid rgba(197, 155, 39, 0.55);
+      border-top: 5px solid var(--gold);
+    }
+
+    .gold-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #C59B27 0%, #DFB94C 100%);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(197, 155, 39, 0.35);
+      margin-bottom: 0.55rem;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-accent {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 175px;
+      height: 175px;
+      background: var(--gold-soft);
+      border-bottom-left-radius: 100%;
+      opacity: 0.78;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      background: var(--gold-soft);
+      border: 1px solid rgba(197, 155, 39, 0.4);
+      padding: 0.25rem 0.72rem;
+      border-radius: 999px;
+      margin-bottom: 0.6rem;
+    }
+
+    h2.section-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+
+    @media (min-width: 640px) {
+      h2.section-title {
+        font-size: 1.82rem;
+      }
+    }
+
+    h3.card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .lead-text {
+      margin: 0.5rem 0 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+      max-width: 800px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* =========================================================================
+       4. ESTILOS DE LA GUÍA DE TEORÍA
+       ========================================================================= */
+    .theory-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    .theory-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .dot-navy { color: var(--navy); font-weight: 700; }
+    .dot-forest { color: var(--forest); font-weight: 700; }
+
+    .table-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 1.05rem 1.45rem;
+      background: rgba(243, 239, 230, 0.75);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table.grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    table.grammar-table th {
+      background: var(--parchment);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.15rem;
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    table.grammar-table td {
+      padding: 0.95rem 1.15rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    table.grammar-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pos-tag {
+      display: inline-block;
+      padding: 0.14rem 0.5rem;
+      border-radius: 6px;
+      background: var(--gold-soft);
+      border: 1px solid rgba(197, 155, 39, 0.55);
+      color: var(--gold-dark);
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    .type-pill {
+      display: inline-block;
+      padding: 0.14rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      margin: 0.1rem 0.15rem 0.1rem 0;
+    }
+
+    .type-aff { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok-border); }
+    .type-neg { background: var(--err-soft); color: var(--err); border: 1px solid var(--err-border); }
+    .type-int { background: rgba(27, 54, 93, 0.09); color: var(--navy); border: 1px solid rgba(27, 54, 93, 0.22); }
+
+    .rule-box {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      font-size: 0.86rem;
+    }
+
+    .irreg-pill {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .irreg-pill strong { color: var(--navy); }
+    .irreg-pill span { color: var(--forest); font-weight: 700; }
+
+    .warning-banner {
+      background: rgba(251, 245, 230, 0.84);
+      border: 1px solid rgba(197, 155, 39, 0.48);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem;
+    }
+
+    .mistake-card {
+      background: var(--white);
+      border: 1px solid rgba(197, 155, 39, 0.35);
+      border-radius: var(--radius-md);
+      padding: 0.95rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.85rem;
+    }
+
+    .mistake-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--err);
+      margin-bottom: 0.3rem;
+    }
+
+    .strike {
+      text-decoration: line-through;
+      color: #64748B;
+      margin: 0.12rem 0;
+    }
+
+    .correct-line {
+      color: var(--ok);
+      font-weight: 600;
+      margin: 0.12rem 0;
+    }
+
+    /* =========================================================================
+       5. BOTONES
+       ========================================================================= */
+    .btn {
+      appearance: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.68rem 1.2rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 0.87rem;
+      font-weight: 600;
+      transition: background 0.18s ease, transform 0.14s ease, border-color 0.18s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(27, 54, 93, 0.22);
+    }
+
+    .btn-primary:hover { background: var(--navy-dark); }
+
+    .btn-forest {
+      background: var(--forest);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(45, 90, 76, 0.22);
+    }
+
+    .btn-forest:hover { background: var(--forest-light); }
+
+    .btn-secondary {
+      background: var(--parchment);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover { background: var(--cream); }
+
+    .btn-danger {
+      background: var(--err);
+      color: var(--white);
+    }
+
+    .btn-danger:hover { background: #A93226; }
+
+    .btn-link {
+      background: none;
+      border: none;
+      padding: 0.2rem 0.35rem;
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-link:hover { text-decoration: underline; }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+      padding-top: 0.4rem;
+    }
+
+    /* =========================================================================
+       6. EJERCICIOS — ESTILOS GENERALES E INPUTS
+       ========================================================================= */
+    .section-header-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .section-header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy);
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    .block-divider {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.9rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .exercise-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      padding: 1rem 1.1rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .exercise-item.is-correct {
+      border-color: var(--ok-border);
+      background: rgba(234, 247, 238, 0.5);
+    }
+
+    .exercise-item.is-wrong {
+      border-color: var(--err-border);
+      background: rgba(253, 237, 236, 0.5);
+    }
+
+    .exercise-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .ex-num {
+      width: 29px;
+      height: 29px;
+      border-radius: 8px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ex-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sentence-line {
+      font-size: 0.94rem;
+      line-height: 2.25;
+      color: var(--ink);
+    }
+
+    .verb-hint {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--forest);
+      background: var(--forest-soft);
+      padding: 0.12rem 0.45rem;
+      border-radius: 6px;
+      margin-left: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .gap-input {
+      font-family: var(--font-sans);
+      font-size: 0.89rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: rgba(250, 248, 245, 0.92);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 0.28rem 0.6rem;
+      margin: 0 0.18rem;
+      width: 155px;
+      max-width: 100%;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .gap-input.w-xs { width: 92px; }
+    .gap-input.w-sm { width: 120px; }
+    .gap-input.w-md { width: 165px; }
+    .gap-input.w-lg { width: 220px; }
+    .gap-input.w-xl { width: 270px; }
+    .gap-input.w-full { width: 100%; margin: 0; padding: 0.58rem 0.8rem; }
+
+    .gap-input:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.14);
+      background: var(--white);
+    }
+
+    .gap-input.input-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .gap-input.input-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+      color: var(--err);
+    }
+
+    /* =========================================================================
+       7. MECÁNICAS ESPECIALES: FLECHAS, WORD TILES, ERRORES, CLASIFICADOR,
+          COLOCAR PALABRA ([+]), CLOZE Y KEY WORD TRANSFORMATION
+       ========================================================================= */
+
+    /* --- 7A. Clasificador FOR vs SINCE --- */
+    .classify-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 640px) {
+      .classify-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .classify-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      padding: 0.95rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .classify-card.is-correct {
+      border-color: var(--ok-border);
+      background: rgba(234, 247, 238, 0.5);
+    }
+
+    .classify-card.is-wrong {
+      border-color: var(--err-border);
+      background: rgba(253, 237, 236, 0.5);
+    }
+
+    .classify-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+    }
+
+    .classify-expr {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .classify-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .choice-btn {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 0.75rem;
+      border-radius: 9px;
+      border: 2px solid var(--border);
+      background: var(--parchment);
+      color: var(--navy);
+      transition: all 0.16s ease;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .choice-btn.selected {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(27, 54, 93, 0.22);
+    }
+
+    .choice-btn.graded-ok {
+      background: var(--ok);
+      border-color: var(--ok);
+      color: var(--white);
+    }
+
+    .choice-btn.graded-err {
+      background: var(--err);
+      border-color: var(--err);
+      color: var(--white);
+    }
+
+    /* --- 7B. Detecta y Corrige el Error --- */
+    .error-segments {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: var(--radius-md);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .err-seg-btn {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 500;
+      padding: 0.34rem 0.65rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .err-seg-btn:hover {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .err-seg-btn.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(197, 155, 39, 0.28);
+    }
+
+    .err-seg-btn.graded-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: var(--ok);
+      font-weight: 700;
+    }
+
+    .err-seg-btn.graded-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+      color: var(--err);
+      font-weight: 700;
+    }
+
+    .error-fix-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* --- 7C. Coloca la palabra en su posición exacta ([ + ]) --- */
+    .place-target-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .target-word-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.75rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #C59B27 0%, #DFB94C 100%);
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      box-shadow: 0 2px 6px rgba(197, 155, 39, 0.3);
+    }
+
+    .place-sentence-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: var(--radius-md);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      line-height: 1.9;
+    }
+
+    .place-slot-btn {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.22rem 0.55rem;
+      border-radius: 7px;
+      border: 1.5px dashed #B9AF9D;
+      background: var(--white);
+      color: var(--muted);
+      transition: all 0.16s ease;
+    }
+
+    .place-slot-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      background: var(--gold-soft);
+    }
+
+    .place-slot-btn.placed {
+      border-style: solid;
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+      font-size: 0.86rem;
+      padding: 0.24rem 0.68rem;
+      box-shadow: 0 2px 6px rgba(197, 155, 39, 0.22);
+    }
+
+    .place-slot-btn.graded-ok {
+      border-style: solid;
+      border-color: var(--ok);
+      background: var(--ok);
+      color: var(--white);
+    }
+
+    .place-slot-btn.graded-err {
+      border-style: solid;
+      border-color: var(--err);
+      background: var(--err);
+      color: var(--white);
+    }
+
+    /* --- 7D. Key Word Transformation (Cambridge B1) --- */
+    .kwt-orig {
+      font-size: 0.94rem;
+      color: var(--ink);
+      margin: 0 0 0.45rem;
+    }
+
+    .kwt-key-row {
+      margin-bottom: 0.5rem;
+    }
+
+    .kwt-key {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.68rem;
+      border-radius: 7px;
+      background: var(--navy);
+      color: var(--gold-light);
+      border: 1px solid var(--gold);
+    }
+
+    .transform-orig {
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: var(--parchment);
+      border-left: 3px solid var(--gold);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.55rem;
+    }
+
+    /* --- 7E. Unir con Flechas SVG --- */
+    .match-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .match-wrap {
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .match-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.35rem;
+      position: relative;
+      z-index: 20;
+    }
+
+    @media (min-width: 640px) {
+      .match-columns { gap: 3.5rem; }
+    }
+
+    @media (min-width: 900px) {
+      .match-columns { gap: 5rem; }
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .match-card {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 0.72rem 0.85rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .match-card.right-card { background: rgba(250, 248, 245, 0.78); }
+    .match-card:hover { border-color: var(--gold); }
+    .match-card.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.25);
+    }
+    .match-card.linked {
+      border-color: var(--navy);
+      background: rgba(27, 54, 93, 0.05);
+    }
+    .match-card.graded-ok { border-color: var(--ok); background: var(--ok-soft); }
+    .match-card.graded-err { border-color: var(--err); background: var(--err-soft); }
+
+    .match-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.73rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .match-card.right-card .match-badge { background: var(--white); color: var(--muted); }
+    .match-text { font-size: 0.82rem; line-height: 1.4; font-weight: 500; }
+    @media (min-width: 640px) { .match-text { font-size: 0.89rem; } }
+
+    /* --- 7F. Word Tiles (Construir frases) --- */
+    .build-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .build-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .build-zone {
+      min-height: 48px;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 2px dashed var(--border);
+      background: rgba(250, 248, 245, 0.85);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .build-placeholder {
+      font-size: 0.8rem;
+      color: #94A3B8;
+      font-style: italic;
+      user-select: none;
+    }
+
+    .build-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .word-tile {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 9px;
+      transition: transform 0.14s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .word-tile:hover:not(:disabled) { transform: translateY(-1px); }
+
+    .word-tile.tile-bank {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .word-tile.tile-bank:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .word-tile.tile-bank:disabled {
+      background: #F1F5F9;
+      color: #CBD5E1;
+      border-color: #E2E8F0;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .word-tile.tile-placed {
+      background: var(--navy);
+      color: var(--white);
+      border: 1.5px solid var(--navy);
+      box-shadow: 0 2px 6px rgba(27, 54, 93, 0.18);
+    }
+
+    .word-tile.tile-placed:hover { background: var(--navy-light); }
+
+    /* --- 7G. Cloze Test --- */
+    .cloze-paper {
+      background: rgba(250, 248, 245, 0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      box-shadow: inset 0 2px 6px rgba(27, 54, 93, 0.04);
+    }
+
+    .cloze-title {
+      margin: 0 0 0.95rem;
+      font-family: var(--font-serif);
+      font-size: 1.28rem;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cloze-paragraph {
+      margin: 0 0 0.95rem;
+      font-size: 0.95rem;
+      line-height: 2.38;
+      color: var(--ink);
+    }
+
+    .cloze-paragraph:last-child { margin-bottom: 0; }
+
+    .cloze-unit {
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.22rem;
+      margin: 0 0.14rem;
+    }
+
+    .cloze-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    /* =========================================================================
+       8. FEEDBACK, BARRA DE ACCIÓN, RESUMEN, PIE Y MODAL
+       ========================================================================= */
+    .feedback-slot { margin-top: 0.75rem; }
+    .feedback-slot.hidden { display: none; }
+
+    .fb-ok {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ok);
+      background: var(--ok-soft);
+      border: 1px solid var(--ok-border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .fb-err {
+      font-size: 0.84rem;
+      background: var(--err-soft);
+      border: 1px solid var(--err-border);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+    }
+
+    .fb-err-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      color: var(--err);
+      font-weight: 600;
+    }
+
+    .fb-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .fb-icon-ok { background: var(--ok); }
+    .fb-icon-err { background: var(--err); }
+
+    .fb-answer {
+      color: #111827;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: rgba(192, 57, 43, 0.35);
+    }
+
+    .fb-gap-list {
+      margin-left: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .fb-gap-pill {
+      font-size: 0.77rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+    }
+
+    .fb-gap-pill.ok { background: var(--ok-soft); border-color: var(--ok-border); color: var(--ok); }
+    .fb-gap-pill.err { background: rgba(192, 57, 43, 0.1); border-color: var(--err-border); color: var(--err); }
+
+    .fb-tip {
+      margin-left: 1.8rem;
+      color: #991B1B;
+      background: rgba(192, 57, 43, 0.08);
+      border-left: 3px solid var(--err);
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .fb-expl {
+      margin-left: 1.8rem;
+      color: #334155;
+    }
+
+    .fb-expl strong { color: var(--navy); }
+
+    /* Barra de acción y resumen */
+    .action-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .action-bar-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 640px) {
+      .action-bar-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .summary-card {
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.3rem;
+      border: 1px solid var(--border);
+    }
+
+    .summary-card.hidden { display: none; }
+    .summary-card.lvl-high { background: var(--ok-soft); border-color: var(--ok-border); color: var(--ok); }
+    .summary-card.lvl-good { background: var(--forest-soft); border-color: rgba(45, 90, 76, 0.35); color: var(--forest); }
+    .summary-card.lvl-mid { background: var(--gold-soft); border-color: rgba(197, 155, 39, 0.45); color: var(--gold-dark); }
+    .summary-card.lvl-low { background: var(--err-soft); border-color: var(--err-border); color: var(--err); }
+
+    .summary-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 0.85rem;
+    }
+
+    @media (min-width: 640px) {
+      .summary-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .summary-score {
+      font-family: var(--font-serif);
+      font-size: 1.48rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+
+    .summary-grade-pill {
+      display: inline-block;
+      margin-left: 0.45rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .summary-msg {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 500;
+      max-width: 440px;
+    }
+
+    .summary-bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .summary-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.7s ease;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1.15rem 0;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (min-width: 640px) {
+      .footer-inner { flex-direction: row; }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .footer-logo-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--navy);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 0.9rem;
+    }
+
+    /* Modal de reinicio */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(18, 38, 68, 0.52);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 45px rgba(18, 38, 68, 0.25);
+      max-width: 420px;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .modal-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--navy);
+    }
+
+    .modal-desc {
+      margin: 0.2rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.65rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== CABECERA WISDOM CORNER ACADEMY ==================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="header-top">
+        <!-- Logotipo Oficial + Identidad -->
+        <div class="brand">
+          <div class="logo-frame">
+            <img
+              src="Logo.png"
+              alt="Wisdom Corner Academy"
+              onerror="this.style.display='none'; document.getElementById('header-logo-fallback').classList.add('visible');"
+            />
+            <div id="header-logo-fallback" class="logo-fallback" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 6.5C2 5.4 2.9 4.5 4 4.5h5.5c1.4 0 2.5 1.1 2.5 2.5v12.5c0-1.1-.9-2-2-2H4c-1.1 0-2-.9-2-2V6.5z"/>
+                <path d="M22 6.5c0-1.1-.9-2-2-2h-5.5C13.1 4.5 12 5.6 12 7v12.5c0-1.1.9-2 2-2h6c1.1 0 2-.9 2-2V6.5z"/>
+                <circle cx="12" cy="3" r="1.2" fill="#E3C565" stroke="none"/>
+              </svg>
+              <span style="font-family: var(--font-serif); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; margin-top: 2px;">WCA</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="brand-eyebrow">
+              <h1 class="brand-title">Wisdom Corner Academy</h1>
+              <span class="level-pill">Nivel A2–B1</span>
+            </div>
+            <p class="brand-subtitle">Present Perfect Simple · For, Since, Already, Yet, Still &amp; Just</p>
+          </div>
+        </div>
+
+        <!-- Marcador Global (80 ejercicios) -->
+        <div class="scoreboard" aria-live="polite">
+          <div class="scoreboard-left">
+            <div class="scoreboard-labels">
+              <span>Puntuación global:</span>
+              <span id="global-score-text" class="scoreboard-score">0 / 80</span>
+            </div>
+            <div class="progress-track">
+              <div id="global-progress-bar" class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="scoreboard-pct">
+            <div id="global-percent" class="scoreboard-pct-val">0%</div>
+            <div class="scoreboard-pct-lbl">Nota</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por 5 Pestañas -->
+      <nav class="tabs-nav" aria-label="Módulos de Present Perfect Simple">
+        <button type="button" class="tab-btn active" data-tab="theory">
+          <span>📖</span>
+          <span>Guía de Teoría</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab1">
+          <span>1. Present Perfect Simple</span>
+          <span id="badge-tab1" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab2">
+          <span>2. Since &amp; For</span>
+          <span id="badge-tab2" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab3">
+          <span>3. Already, Yet, Still &amp; Just</span>
+          <span id="badge-tab3" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab4">
+          <span>★ 4. Simulacro B1</span>
+          <span id="badge-tab4" class="tab-badge">0/20</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main>
+    <div class="container">
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑA 0: GUÍA DE TEORÍA VISUAL                           -->
+      <!-- ========================================================== -->
+      <section id="panel-theory" class="tab-panel active stack-lg">
+
+        <!-- Banner -->
+        <div class="card hero-card">
+          <div class="hero-accent"></div>
+          <div class="hero-content">
+            <span class="eyebrow-pill">✦ Guía Definitiva · Nivel A2–B1</span>
+            <h2 class="section-title"><span style="font-style: italic; color: var(--navy);">Present Perfect Simple</span> Mastery</h2>
+            <p class="lead-text">
+              El <strong>Present Perfect Simple</strong> es el puente entre el pasado y el presente. Aquí dominarás su estructura completa, los participios irregulares clave, la diferencia exacta entre <strong>for</strong> y <strong>since</strong>, y la posición precisa de <strong>already</strong>, <strong>yet</strong>, <strong>still</strong> y <strong>just</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Usos principales + Tabla de estructuras -->
+        <div class="card card-top-navy stack-md">
+          <h3 class="card-title">1. ¿Cuándo usamos el Present Perfect Simple?</h3>
+          <div class="grid-3">
+            <div class="rule-box">
+              <strong style="color: var(--navy); display: block; margin-bottom: 0.25rem;">🌍 Experiencias de vida</strong>
+              <div>Acciones vividas alguna vez (o nunca), sin mencionar una fecha cerrada.</div>
+              <div style="font-style: italic; color: var(--forest); margin-top: 0.3rem;">Sarah <strong>has flown</strong> in a hot-air balloon.</div>
+            </div>
+            <div class="rule-box">
+              <strong style="color: var(--navy); display: block; margin-bottom: 0.25rem;">✨ Resultado visible en el presente</strong>
+              <div>Algo ocurrió en el pasado pero su efecto importa ahora mismo.</div>
+              <div style="font-style: italic; color: var(--forest); margin-top: 0.3rem;">Liam <strong>has broken</strong> his watch, so he can't check the time.</div>
+            </div>
+            <div class="rule-box">
+              <strong style="color: var(--navy); display: block; margin-bottom: 0.25rem;">⏳ Empezó en el pasado y sigue hoy</strong>
+              <div>Estados o situaciones que continúan vigentes (con <em>for</em> o <em>since</em>).</div>
+              <div style="font-style: italic; color: var(--forest); margin-top: 0.3rem;">Elena <strong>has lived</strong> in Valencia since 2020.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla Afirmativa / Negativa / Interrogativa -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">Estructura: Afirmativa, Negativa e Interrogativa</h3>
+            <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">I / you / we / they → <strong>have ('ve)</strong> · he / she / it → <strong>has ('s)</strong></span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Forma</th>
+                  <th>Fórmula</th>
+                  <th>Ejemplos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="type-pill type-aff">Afirmativa (+)</span></td>
+                  <td><strong>Sujeto + have / has + participio (V3)</strong></td>
+                  <td><em>Marco <strong>has written</strong> three songs. / We <strong>have eaten</strong> here before.</em></td>
+                </tr>
+                <tr>
+                  <td><span class="type-pill type-neg">Negativa (−)</span></td>
+                  <td><strong>Sujeto + haven't / hasn't + participio (V3)</strong></td>
+                  <td><em>Chloe <strong>hasn't seen</strong> that film. / They <strong>haven't lost</strong> a match.</em></td>
+                </tr>
+                <tr>
+                  <td><span class="type-pill type-int">Interrogativa (?)</span></td>
+                  <td><strong>Have / Has + sujeto + participio (V3)?</strong></td>
+                  <td><em><strong>Have</strong> you ever <strong>visited</strong> Rome? / <strong>Has</strong> Noah <strong>called</strong> Paula?</em></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Participios irregulares + Contraste BEEN vs GONE / EVER vs NEVER -->
+        <div class="grid-2">
+          <div class="card card-top-forest stack-sm">
+            <h3 class="card-title">Participios irregulares imprescindibles (V3)</h3>
+            <div class="grid-2" style="gap: 0.5rem; margin-top: 0.3rem;">
+              <div class="irreg-pill"><strong>write</strong><span>written</span></div>
+              <div class="irreg-pill"><strong>eat</strong><span>eaten</span></div>
+              <div class="irreg-pill"><strong>break</strong><span>broken</span></div>
+              <div class="irreg-pill"><strong>see</strong><span>seen</span></div>
+              <div class="irreg-pill"><strong>lose</strong><span>lost</span></div>
+              <div class="irreg-pill"><strong>fly</strong><span>flown</span></div>
+              <div class="irreg-pill"><strong>know</strong><span>known</span></div>
+              <div class="irreg-pill"><strong>buy</strong><span>bought</span></div>
+              <div class="irreg-pill"><strong>take</strong><span>taken</span></div>
+              <div class="irreg-pill"><strong>choose</strong><span>chosen</span></div>
+            </div>
+          </div>
+
+          <div class="card card-top-gold stack-sm">
+            <h3 class="card-title">Contrastes clave: BEEN vs GONE · EVER vs NEVER</h3>
+            <div class="rule-box">
+              <strong style="color: var(--navy);">BEEN vs GONE:</strong>
+              <div style="margin-top: 0.25rem;">• <strong>has been to</strong> = fue y <u>ya ha vuelto</u> (experiencia): <em>Maya <strong>has been</strong> to Paris twice.</em></div>
+              <div style="margin-top: 0.25rem;">• <strong>has gone to</strong> = se fue y <u>todavía está allí</u>: <em>Hugo isn't here; he <strong>has gone</strong> to the bank.</em></div>
+            </div>
+            <div class="rule-box">
+              <strong style="color: var(--forest);">EVER vs NEVER:</strong>
+              <div style="margin-top: 0.25rem;">• <strong>ever</strong> (alguna vez) en preguntas: <em>Have you <strong>ever</strong> tried sushi?</em></div>
+              <div style="margin-top: 0.25rem;">• <strong>never</strong> (nunca) con verbo afirmativo: <em>Oliver has <strong>never</strong> skied.</em></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. FOR vs SINCE -->
+        <div class="card card-top-navy stack-md">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 class="card-title">2. FOR vs. SINCE</h3>
+            <span class="eyebrow-pill" style="margin: 0;">Regla mnemotécnica: FOR = «durante» (bloque) · SINCE = «desde» (fecha en el calendario)</span>
+          </div>
+          <div class="grid-2">
+            <div class="rule-box" style="border-left: 4px solid var(--navy);">
+              <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--navy); margin-bottom: 0.35rem;">FOR + duración / cantidad de tiempo</div>
+              <p style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--muted);">Responde a <em>«¿cuánto tiempo?»</em>. Se puede contar en minutos, horas, días, años...</p>
+              <div><em>for ten minutes · for half an hour · for three weeks · for five years · for a long time · for ages</em></div>
+            </div>
+            <div class="rule-box" style="border-left: 4px solid var(--forest);">
+              <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--forest); margin-bottom: 0.35rem;">SINCE + punto exacto de inicio</div>
+              <p style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--muted);">Responde a <em>«¿desde cuándo?»</em>. Marca el momento concreto en que empezó la acción.</p>
+              <div><em>since 8 o'clock · since last Tuesday · since March · since 2018 · since I was ten · since childhood</em></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. ALREADY, YET, STILL & JUST -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">3. ALREADY, YET, STILL y JUST — Significado y posición exacta</h3>
+            <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">¡Fíjate en las etiquetas doradas de posición!</span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Palabra</th>
+                  <th>Significado</th>
+                  <th>Tipo de oración</th>
+                  <th>Posición exacta y ejemplo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pos-tag">JUST</span></td>
+                  <td>acabar de</td>
+                  <td><span class="type-pill type-aff">Afirmativa (+)</span></td>
+                  <td>
+                    <code>have/has + <span class="pos-tag">JUST</span> + V3</code><br />
+                    <em style="color: var(--muted);">Claire has <strong>just</strong> arrived at the station.</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="pos-tag">ALREADY</span></td>
+                  <td>ya</td>
+                  <td>
+                    <span class="type-pill type-aff">Afirmativa (+)</span>
+                    <span class="type-pill type-int">Pregunta sorpresa</span>
+                  </td>
+                  <td>
+                    <code>have/has + <span class="pos-tag">ALREADY</span> + V3</code><br />
+                    <em style="color: var(--muted);">Mateo has <strong>already</strong> finished the essay.</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="pos-tag">YET</span></td>
+                  <td>todavía / ya</td>
+                  <td>
+                    <span class="type-pill type-neg">Negativa (−)</span>
+                    <span class="type-pill type-int">Interrogativa (?)</span>
+                  </td>
+                  <td>
+                    <code>... + <span class="pos-tag">YET</span></code> (siempre al <strong>FINAL</strong>)<br />
+                    <em style="color: var(--muted);">Paula hasn't replied <strong>yet</strong>. / Have you eaten <strong>yet</strong>?</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="pos-tag">STILL</span></td>
+                  <td>todavía / aún (enfático)</td>
+                  <td><span class="type-pill type-neg">Negativa (−)</span></td>
+                  <td>
+                    <code>Sujeto + <span class="pos-tag">STILL</span> + haven't/hasn't + V3</code><br />
+                    <em style="color: var(--muted);">Noah <strong>still</strong> hasn't paid the bill!</em>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4. Trampas típicas de examen -->
+        <div class="warning-banner stack-md">
+          <h3 class="card-title" style="display: flex; align-items: center; gap: 0.45rem;">
+            <span>⚠️</span> Trampas típicas de examen
+          </h3>
+          <div class="grid-2" style="gap: 0.9rem;">
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 1: Present Simple con «for / since»</div>
+              <p class="strike">I know Marco since 2019. ❌</p>
+              <p class="correct-line">I <u>have known</u> Marco since 2019. ✅</p>
+            </div>
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 2: Colocar «still» después de «haven't»</div>
+              <p class="strike">They haven't still finished. ❌</p>
+              <p class="correct-line">They <u>still haven't</u> finished. ✅</p>
+            </div>
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 3: Usar «yet» en afirmativa</div>
+              <p class="strike">Elena has already finished yet. / has finished yet. ❌</p>
+              <p class="correct-line">Elena has <u>already</u> finished. ✅</p>
+            </div>
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 4: Confundir «been» y «gone»</div>
+              <p class="strike">Have you ever gone to London? ❌</p>
+              <p class="correct-line">Have you ever <u>been</u> to London? ✅</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="quick-nav">
+          <button type="button" class="btn btn-primary" onclick="switchTab('tab1')">1. Present Perfect Simple →</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('tab2')">2. Since &amp; For</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('tab3')">3. Already, Yet, Still &amp; Just</button>
+          <button type="button" class="btn btn-forest" onclick="switchTab('tab4')">★ 4. Simulacro B1</button>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑAS DE PRÁCTICA (RENDERIZADAS POR JAVASCRIPT)         -->
+      <!-- ========================================================== -->
+      <section id="panel-tab1" class="tab-panel stack-lg"></section>
+      <section id="panel-tab2" class="tab-panel stack-lg"></section>
+      <section id="panel-tab3" class="tab-panel stack-lg"></section>
+      <section id="panel-tab4" class="tab-panel stack-lg"></section>
+
+    </div>
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo-box">
+          <img
+            src="Logo.png"
+            alt="Wisdom Corner Academy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+          />
+          <span style="display: none; font-family: var(--font-serif); font-size: 9px; font-weight: 700; color: var(--gold-light);">WCA</span>
+        </div>
+        <span><strong class="footer-brand-name">Wisdom Corner Academy</strong> · © Todos los derechos reservados</span>
+      </div>
+      <div>80 ejercicios interactivos · Present Perfect Simple Mastery (Nivel A2–B1)</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL DE REINICIO ==================== -->
+  <div id="reset-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-icon">↺</div>
+        <div>
+          <h3 id="modal-title-text" class="modal-title">¿Reiniciar esta sección?</h3>
+          <p class="modal-desc">Se borrarán todas tus respuestas y la corrección actual de esta pestaña.</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn btn-secondary">Cancelar</button>
+        <button id="modal-confirm" type="button" class="btn btn-danger">Sí, reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. NORMALIZACIÓN, VALIDACIÓN FLEXIBLE Y DIAGNÓSTICO PEDAGÓGICO
+       ========================================================================= */
+    function normalizeText(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/[’‘`´]/g, "'")
+        .toLowerCase()
+        .replace(/\bhave not\b/g, "haven't")
+        .replace(/\bhas not\b/g, "hasn't")
+        .replace(/\bdid not\b/g, "didn't")
+        .replace(/\bi've\b/g, 'i have')
+        .replace(/\byou've\b/g, 'you have')
+        .replace(/\bwe've\b/g, 'we have')
+        .replace(/\bthey've\b/g, 'they have')
+        .replace(/\bhe's\b/g, 'he has')
+        .replace(/\bshe's\b/g, 'she has')
+        .replace(/\bit's\b/g, 'it has')
+        .replace(/^'ve\b/g, 'have')
+        .replace(/^'s\b/g, 'has')
+        .replace(/[.,?!;:"()]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function isMatchAny(userVal, acceptedArray) {
+      const normUser = normalizeText(userVal);
+      if (!normUser) return false;
+      return acceptedArray.some(acc => normalizeText(acc) === normUser);
+    }
+
+    function getDiagnosticTip(userVal, contextType) {
+      const norm = normalizeText(userVal);
+      if (!norm) return 'Has dejado algún campo sin responder.';
+
+      if (contextType === 'pps' && /\b(saw|wrote|ate|broke|flew)\b/.test(norm)) {
+        return 'Cuidado: has usado el Past Simple (2.ª columna) en lugar del participio pasado (3.ª columna: seen, written, eaten, broken, flown).';
+      }
+      if (contextType === 'been_gone' && /\bgone\b/.test(norm)) {
+        return 'Recuerda: para experiencias de vida (ir y volver) usamos «been», nunca «gone».';
+      }
+      if (contextType === 'for_since') {
+        if (/\bsince\s+(a|an|two|three|four|five|six|ten|half|many|\d+)\b/.test(norm)) {
+          return 'Con cantidades o bloques de duración (ej. three years, half an hour) se usa «for», no «since».';
+        }
+        if (/\bfor\s+(20\d\d|monday|tuesday|last|january|june|i was)\b/.test(norm)) {
+          return 'Con un punto de inicio exacto (año, día, hora o etapa) se usa «since», no «for».';
+        }
+      }
+      if (contextType === 'adverbs') {
+        if (/\bhaven't still\b|\bhasn't still\b/.test(norm)) {
+          return '¡Ojo con el orden! «Still» siempre va ANTES del auxiliar negativo: «still haven\'t / still hasn\'t».';
+        }
+      }
+      return '';
+    }
+
+    /* =========================================================================
+       2. BANCO COMPLETO DE 80 EJERCICIOS (20 × 4 PESTAÑAS)
+       ========================================================================= */
+    const SECTIONS_DATA = {
+      /* -----------------------------------------------------------------------
+         PESTAÑA 1: PRESENT PERFECT SIMPLE (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab1: {
+        id: 'tab1',
+        title: '1. Present Perfect Simple',
+        subtitle: '20 ejercicios sobre estructura (+ / − / ?), participios irregulares, ever/never, been vs. gone y detección de errores.',
+        total: 20,
+        accentClass: 'card-top-navy',
+        blocks: [
+          {
+            id: 't1-fill',
+            type: 'fill',
+            letter: 'Bloque 1',
+            title: 'Rellenar huecos (Ejercicios 1 al 8)',
+            instruction: 'Conjuga el verbo entre paréntesis en <strong>Present Perfect Simple</strong> (<em>have / has + V3</em>). Presta atención a los participios irregulares y a <em>been / gone</em>.',
+            items: [
+              {
+                num: 1,
+                contextType: 'pps',
+                parts: ['Elena ', ' (write) three articles for the school magazine this term.'],
+                gaps: [{ accepted: ['has written', "'s written"], display: 'has written', width: 'w-md' }],
+                explanation: 'Con 3.ª persona («Elena») usamos «has» + participio irregular de «write» («written»).'
+              },
+              {
+                num: 2,
+                contextType: 'pps',
+                parts: ['Noah and Paula ', ' (never / eat) Thai food before.'],
+                gaps: [{ accepted: ['have never eaten', "'ve never eaten"], display: 'have never eaten', width: 'w-lg' }],
+                explanation: 'Con «never» el verbo va en afirmativa («have never») + participio irregular de «eat» («eaten»).'
+              },
+              {
+                num: 3,
+                contextType: 'pps',
+                parts: ['Oh no! Hugo ', ' (break) his favourite coffee mug.'],
+                gaps: [{ accepted: ['has broken', "'s broken"], display: 'has broken', width: 'w-md' }],
+                explanation: 'Acción pasada con resultado presente: «has» + participio irregular de «break» («broken»).'
+              },
+              {
+                num: 4,
+                contextType: 'pps',
+                parts: ['We ', ' (not / see) Sarah since the end of August.'],
+                gaps: [{ accepted: ["haven't seen", 'have not seen'], display: "haven't seen", width: 'w-md' }],
+                explanation: 'Negativa con «we»: «haven\'t» + participio irregular de «see» («seen»).'
+              },
+              {
+                num: 5,
+                contextType: 'pps',
+                parts: ['Marco ', ' (lose) his umbrella again, so he is soaking wet.'],
+                gaps: [{ accepted: ['has lost', "'s lost"], display: 'has lost', width: 'w-md' }],
+                explanation: 'Participio irregular de «lose» es «lost»: «Marco has lost his umbrella».'
+              },
+              {
+                num: 6,
+                contextType: 'pps',
+                parts: ['', ' Chloe ever ', ' (fly) in a helicopter?'],
+                gaps: [
+                  { accepted: ['has'], display: 'Has', width: 'w-xs' },
+                  { accepted: ['flown'], display: 'flown', width: 'w-sm' }
+                ],
+                explanation: 'Pregunta de experiencia con 3.ª persona: «Has + Chloe + ever + participio irregular de fly (flown)?».'
+              },
+              {
+                num: 7,
+                contextType: 'been_gone',
+                parts: ['Oliver isn\'t at his desk right now; he has ', ' (go / be) to the post office.'],
+                gaps: [{ accepted: ['gone'], display: 'gone', width: 'w-sm' }],
+                explanation: 'Como Oliver NO está aquí ahora mismo (se fue y sigue allí), usamos «has gone».'
+              },
+              {
+                num: 8,
+                contextType: 'been_gone',
+                parts: ['Maya has ', ' (go / be) to Lisbon three times and she loves its trams.'],
+                gaps: [{ accepted: ['been'], display: 'been', width: 'w-sm' }],
+                explanation: 'Para experiencias de viaje (fue y ya volvió) usamos siempre «has been».'
+              }
+            ]
+          },
+          {
+            id: 't1-build',
+            type: 'build',
+            letter: 'Bloque 2',
+            title: 'Ordenar frases desordenadas (Ejercicios 9 al 12)',
+            instruction: 'Haz clic en las fichas del banco en el orden correcto para construir oraciones en <strong>Present Perfect Simple</strong>.',
+            items: [
+              {
+                num: 9,
+                words: ['a', 'Liam', 'competition.', 'won', 'chess', 'has'],
+                accepted: ['Liam has won a chess competition'],
+                display: 'Liam has won a chess competition.',
+                explanation: 'Orden afirmativo: Sujeto (Liam) + has + participio (won) + complemento (a chess competition).'
+              },
+              {
+                num: 10,
+                words: ['tried', 'never', 'have', 'surfing.', 'They'],
+                accepted: ['They have never tried surfing'],
+                display: 'They have never tried surfing.',
+                explanation: '«Never» se coloca entre «have» y el participio («tried»): «They have never tried surfing.»'
+              },
+              {
+                num: 11,
+                words: ['ever', 'Claire', 'a', 'Has', 'horse?', 'ridden'],
+                accepted: ['Has Claire ever ridden a horse'],
+                display: 'Has Claire ever ridden a horse?',
+                explanation: 'Interrogativa con «ever»: Has + sujeto (Claire) + ever + participio irregular (ridden) + a horse?'
+              },
+              {
+                num: 12,
+                words: ['the', 'visited', "haven't", 'museum.', 'new', 'We'],
+                accepted: ["We haven't visited the new museum"],
+                display: "We haven't visited the new museum.",
+                explanation: 'Negativa: Sujeto (We) + haven\'t + participio (visited) + the new museum.'
+              }
+            ]
+          },
+          {
+            id: 't1-match',
+            type: 'match',
+            letter: 'Bloque 3',
+            title: 'Unir con flechas: Acción y Resultado Presente (Ejercicios 13 al 16)',
+            instruction: 'Une cada acción en <strong>Present Perfect Simple</strong> (izquierda) con su consecuencia visible en el presente (derecha).',
+            pairs: [
+              {
+                num: 13,
+                leftId: 't1l13',
+                left: 'Mateo has lost his glasses,',
+                rightId: 't1r1',
+                right: "so he can't read the small text on the board.",
+                explanation: 'Perder las gafas («has lost his glasses») tiene como resultado inmediato no poder leer la letra pequeña.'
+              },
+              {
+                num: 14,
+                leftId: 't1l14',
+                left: 'Paula has cleaned the whole kitchen,',
+                rightId: 't1r2',
+                right: 'so the floor is spotless and smells of lemon.',
+                explanation: 'Haber limpiado la cocina explica que el suelo esté impecable ahora mismo.'
+              },
+              {
+                num: 15,
+                leftId: 't1l15',
+                left: 'Noah has sprained his ankle,',
+                rightId: 't1r3',
+                right: 'so he has to rest his leg for a week.',
+                explanation: 'Haberse torcido el tobillo («has sprained his ankle») obliga a reposar la pierna.'
+              },
+              {
+                num: 16,
+                leftId: 't1l16',
+                left: 'Sarah and Chloe have missed the last train,',
+                rightId: 't1r4',
+                right: 'so they need to call a taxi to get home.',
+                explanation: 'Haber perdido el último tren provoca tener que pedir un taxi.'
+              }
+            ],
+            rightOrder: ['t1r3', 't1r1', 't1r4', 't1r2']
+          },
+          {
+            id: 't1-error',
+            type: 'error',
+            letter: 'Bloque 4',
+            title: 'Detecta y corrige el error (Ejercicios 17 al 20)',
+            instruction: 'Paso 1: haz clic en el bloque erróneo de la frase. Paso 2: escribe la corrección correcta de ese bloque.',
+            items: [
+              {
+                num: 17,
+                segments: ['Marco', 'has saw', 'that documentary', 'three times.'],
+                wrongIndex: 1,
+                accepted: ['has seen', 'seen'],
+                display: 'has seen',
+                explanation: 'Tras «has» debemos usar el participio pasado (3.ª columna: «seen»), nunca el Past Simple («saw»).'
+              },
+              {
+                num: 18,
+                segments: ['Have Elena', 'ever visited', 'the Prado Museum', 'in Madrid?'],
+                wrongIndex: 0,
+                accepted: ['Has Elena', 'Has'],
+                display: 'Has Elena',
+                explanation: '«Elena» es 3.ª persona singular (she), por lo que el auxiliar correcto es «Has», no «Have».'
+              },
+              {
+                num: 19,
+                segments: ['Have you', 'ever', 'gone', 'to Edinburgh?'],
+                wrongIndex: 2,
+                accepted: ['been'],
+                display: 'been',
+                explanation: 'Para preguntar por una experiencia de viaje (ir y volver) siempre usamos «been», nunca «gone».'
+              },
+              {
+                num: 20,
+                segments: ['We', "didn't finished", 'our science project', 'this week.'],
+                wrongIndex: 1,
+                accepted: ["haven't finished", 'have not finished'],
+                display: "haven't finished",
+                explanation: 'Con «this week» (período no terminado) usamos Present Perfect Simple: «haven\'t finished» (además, «didn\'t» nunca lleva «-ed»).'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 2: SINCE & FOR (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab2: {
+        id: 'tab2',
+        title: '2. Since & For',
+        subtitle: '20 ejercicios para dominar la duración vs. el punto de inicio, transformaciones tipo examen y detección de errores.',
+        total: 20,
+        accentClass: 'card-top-gold',
+        blocks: [
+          {
+            id: 't2-classify',
+            type: 'classify',
+            letter: 'Bloque 1',
+            title: 'Clasificador rápido: FOR vs. SINCE (Ejercicios 1 al 8)',
+            instruction: 'Selecciona si cada expresión de tiempo se utiliza con <strong>FOR</strong> (duración) o con <strong>SINCE</strong> (punto de inicio).',
+            items: [
+              { num: 1, expr: 'three weeks', answer: 'for', explanation: '«Three weeks» es una cantidad/duración de tiempo → FOR three weeks.' },
+              { num: 2, expr: 'last Tuesday', answer: 'since', explanation: '«Last Tuesday» es un día concreto de inicio → SINCE last Tuesday.' },
+              { num: 3, expr: 'I was ten', answer: 'since', explanation: '«I was ten» marca el momento exacto en que empezó → SINCE I was ten.' },
+              { num: 4, expr: '2018', answer: 'since', explanation: 'Un año concreto en el calendario siempre lleva SINCE → SINCE 2018.' },
+              { num: 5, expr: 'a long time', answer: 'for', explanation: '«A long time» expresa duración (mucho tiempo) → FOR a long time.' },
+              { num: 6, expr: 'half an hour', answer: 'for', explanation: '«Half an hour» es un bloque de 30 minutos (duración) → FOR half an hour.' },
+              { num: 7, expr: "8 o'clock this morning", answer: 'since', explanation: 'Una hora exacta marca un punto de inicio → SINCE 8 o\'clock this morning.' },
+              { num: 8, expr: 'ages', answer: 'for', explanation: '«Ages» (siglos / muchísimo tiempo) indica duración → FOR ages.' }
+            ]
+          },
+          {
+            id: 't2-double',
+            type: 'fill',
+            letter: 'Bloque 2',
+            title: 'Doble hueco: Present Perfect + For / Since (Ejercicios 9 al 13)',
+            instruction: 'Completa el primer hueco con el verbo en <strong>Present Perfect Simple</strong> y el segundo con <strong>for</strong> o <strong>since</strong>. Ambos huecos deben ser correctos para sumar el punto.',
+            items: [
+              {
+                num: 9,
+                contextType: 'for_since',
+                parts: ['Sarah ', ' (know) Liam ', ' primary school.'],
+                gaps: [
+                  { accepted: ['has known', "'s known"], display: 'has known', width: 'w-md' },
+                  { accepted: ['since'], display: 'since', width: 'w-xs' }
+                ],
+                explanation: '«Know» en Present Perfect Simple con 3.ª persona es «has known». «Primary school» es un punto de inicio → «since».'
+              },
+              {
+                num: 10,
+                contextType: 'for_since',
+                parts: ['Elena and Marco ', ' (live) in this neighbourhood ', ' six years.'],
+                gaps: [
+                  { accepted: ['have lived', "'ve lived"], display: 'have lived', width: 'w-md' },
+                  { accepted: ['for'], display: 'for', width: 'w-xs' }
+                ],
+                explanation: 'Sujeto plural → «have lived». «Six years» es una duración → «for».'
+              },
+              {
+                num: 11,
+                contextType: 'for_since',
+                parts: ['Hugo ', ' (have) that acoustic guitar ', ' his twelfth birthday.'],
+                gaps: [
+                  { accepted: ['has had', "'s had"], display: 'has had', width: 'w-md' },
+                  { accepted: ['since'], display: 'since', width: 'w-xs' }
+                ],
+                explanation: 'Present Perfect de «have» en 3.ª persona es «has had». «His twelfth birthday» es una fecha concreta → «since».'
+              },
+              {
+                num: 12,
+                contextType: 'for_since',
+                parts: ['Paula ', ' (not / eat) any chocolate ', ' two months.'],
+                gaps: [
+                  { accepted: ["hasn't eaten", 'has not eaten'], display: "hasn't eaten", width: 'w-md' },
+                  { accepted: ['for'], display: 'for', width: 'w-xs' }
+                ],
+                explanation: 'Negativa con participio irregular de «eat»: «hasn\'t eaten». «Two months» es una duración → «for».'
+              },
+              {
+                num: 13,
+                contextType: 'for_since',
+                parts: ['How long ', ' Oliver ', ' (work) at the bookshop? — ', ' last September.'],
+                gaps: [
+                  { accepted: ['has'], display: 'has', width: 'w-xs' },
+                  { accepted: ['worked'], display: 'worked', width: 'w-sm' },
+                  { accepted: ['since'], display: 'Since', width: 'w-xs' }
+                ],
+                explanation: 'Pregunta de duración: «How long has Oliver worked...?». «Last September» es un mes concreto de inicio → «Since».'
+              }
+            ]
+          },
+          {
+            id: 't2-transform',
+            type: 'fill',
+            letter: 'Bloque 3',
+            title: 'Transformación de frases tipo examen (Ejercicios 14 al 17)',
+            instruction: 'Reescribe la información de la frase original usando <strong>Present Perfect Simple</strong> con <strong>for</strong> o <strong>since</strong>.',
+            items: [
+              {
+                num: 14,
+                contextType: 'for_since',
+                original: 'Liam moved to Madrid in 2021. (He still lives there.)',
+                parts: ['Liam ', ' in Madrid ', ' 2021.'],
+                gaps: [
+                  { accepted: ['has lived', "'s lived"], display: 'has lived', width: 'w-md' },
+                  { accepted: ['since'], display: 'since', width: 'w-xs' }
+                ],
+                explanation: 'Cambiamos «moved in 2021» por el estado vigente en Present Perfect: «Liam has lived in Madrid since 2021.»'
+              },
+              {
+                num: 15,
+                contextType: 'for_since',
+                original: 'Chloe bought her bicycle three years ago. (She still has it.)',
+                parts: ['Chloe ', ' her bicycle ', ' three years.'],
+                gaps: [
+                  { accepted: ['has had', "'s had", 'has owned', "'s owned"], display: 'has had', width: 'w-md' },
+                  { accepted: ['for'], display: 'for', width: 'w-xs' }
+                ],
+                explanation: '«Bought three years ago» pasa a posesión actual con «has had» (o «has owned») + «for three years».'
+              },
+              {
+                num: 16,
+                contextType: 'for_since',
+                original: 'Noah started studying German last October. (He still studies it.)',
+                parts: ['Noah ', ' German ', ' last October.'],
+                gaps: [
+                  { accepted: ['has studied', "'s studied"], display: 'has studied', width: 'w-md' },
+                  { accepted: ['since'], display: 'since', width: 'w-xs' }
+                ],
+                explanation: 'Con un mes concreto de inicio («last October») usamos «has studied» + «since».'
+              },
+              {
+                num: 17,
+                contextType: 'for_since',
+                original: 'Maya last played tennis two weeks ago.',
+                parts: ['Maya ', ' tennis ', ' two weeks.'],
+                gaps: [
+                  { accepted: ["hasn't played", 'has not played'], display: "hasn't played", width: 'w-md' },
+                  { accepted: ['for'], display: 'for', width: 'w-xs' }
+                ],
+                explanation: '«Last played two weeks ago» equivale a la negativa en Present Perfect: «Maya hasn\'t played tennis for two weeks.»'
+              }
+            ]
+          },
+          {
+            id: 't2-error',
+            type: 'error',
+            letter: 'Bloque 4',
+            title: 'Detecta y corrige el error (Ejercicios 18 al 20)',
+            instruction: 'Haz clic en el bloque erróneo y escribe su corrección abajo.',
+            items: [
+              {
+                num: 18,
+                segments: ['Claire', 'knows', 'Mateo', 'since 2019.'],
+                wrongIndex: 1,
+                accepted: ['has known', "'s known"],
+                display: 'has known',
+                explanation: 'En inglés NO usamos Present Simple con «since» para acciones que empezaron en el pasado y continúan: debe ser «has known».'
+              },
+              {
+                num: 19,
+                segments: ['We have lived', 'in this house', 'for', 'January 2020.'],
+                wrongIndex: 2,
+                accepted: ['since'],
+                display: 'since',
+                explanation: '«January 2020» es una fecha exacta de inicio, así que requiere «since», nunca «for».'
+              },
+              {
+                num: 20,
+                segments: ['Hugo hasn\'t called', 'his cousin', 'since', 'four months.'],
+                wrongIndex: 2,
+                accepted: ['for'],
+                display: 'for',
+                explanation: '«Four months» es una duración (cantidad de tiempo), por lo que debe llevar «for», no «since».'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 3: ALREADY, YET, STILL & JUST (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab3: {
+        id: 'tab3',
+        title: '3. Already, Yet, Still & Just',
+        subtitle: '20 ejercicios sobre posición exacta en la oración, uso según contexto, orden sintáctico y detección de errores.',
+        total: 20,
+        accentClass: 'card-top-forest',
+        blocks: [
+          {
+            id: 't3-place',
+            type: 'place',
+            letter: 'Bloque 1 · Mecánica Interactiva',
+            title: 'Coloca la palabra en su posición exacta (Ejercicios 1 al 6)',
+            instruction: 'Pulsa el botón <strong>[ + ]</strong> en el lugar exacto donde debe ir la palabra destacada en dorado. Puedes cambiar tu elección antes de corregir.',
+            items: [
+              {
+                num: 1,
+                word: 'JUST',
+                chunks: ['Sarah', 'has', 'arrived', 'at the airport.'],
+                // Slots: 0 (before Sarah), 1 (after Sarah), 2 (after has), 3 (after arrived), 4 (end) -> use curated slots
+                slots: [0, 1, 2, 4],
+                correctSlot: 2,
+                display: 'Sarah has JUST arrived at the airport.',
+                explanation: '«Just» (acabar de) va en oraciones afirmativas entre «have / has» y el participio pasado («has just arrived»).'
+              },
+              {
+                num: 2,
+                word: 'ALREADY',
+                chunks: ['Liam', 'has', 'finished', 'his maths homework.'],
+                slots: [0, 1, 2, 3],
+                correctSlot: 2,
+                display: 'Liam has ALREADY finished his maths homework.',
+                explanation: '«Already» (ya) se coloca entre el auxiliar «has» y el participio pasado («has already finished»).'
+              },
+              {
+                num: 3,
+                word: 'YET',
+                chunks: ['Elena', "hasn't", 'packed', 'her suitcase.'],
+                slots: [1, 2, 3, 4],
+                correctSlot: 4,
+                display: "Elena hasn't packed her suitcase YET.",
+                explanation: '«Yet» (todavía) en oraciones negativas va siempre al FINAL de la frase.'
+              },
+              {
+                num: 4,
+                word: 'STILL',
+                chunks: ['Marco', "hasn't", 'replied', 'to my email.'],
+                slots: [0, 1, 2, 4],
+                correctSlot: 1,
+                display: "Marco STILL hasn't replied to my email.",
+                explanation: '«Still» en negativa enfática va SIEMPRE ANTES del auxiliar negativo: «Marco still hasn\'t replied...».'
+              },
+              {
+                num: 5,
+                word: 'YET',
+                chunks: ['Have', 'you', 'visited', 'the new exhibition?'],
+                slots: [1, 2, 3, 4],
+                correctSlot: 4,
+                display: 'Have you visited the new exhibition YET?',
+                explanation: '«Yet» (ya) en preguntas va siempre al FINAL de la oración interrogativa.'
+              },
+              {
+                num: 6,
+                word: 'STILL',
+                chunks: ['They', "haven't", 'decided', 'where to go.'],
+                slots: [0, 1, 2, 4],
+                correctSlot: 1,
+                display: "They STILL haven't decided where to go.",
+                explanation: 'Con sujeto plural funciona igual: «still» precede a «haven\'t» → «They still haven\'t decided...».'
+              }
+            ]
+          },
+          {
+            id: 't3-fill',
+            type: 'fill',
+            letter: 'Bloque 2',
+            title: 'Rellenar huecos según contexto (Ejercicios 7 al 12)',
+            instruction: 'Escribe <strong>already</strong>, <strong>yet</strong>, <strong>still</strong> o <strong>just</strong> fijándote en el contexto y la posición del hueco.',
+            items: [
+              {
+                num: 7,
+                contextType: 'adverbs',
+                parts: ['Watch out! Chloe has ', ' painted that bench — the paint is still wet!'],
+                gaps: [{ accepted: ['just'], display: 'just', width: 'w-sm' }],
+                explanation: 'La pintura está recién puesta («is still wet»), lo que indica que acaba de pintarlo → «just».'
+              },
+              {
+                num: 8,
+                contextType: 'adverbs',
+                parts: ['Don\'t buy any milk; Noah has ', ' bought two cartons this morning.'],
+                gaps: [{ accepted: ['already'], display: 'already', width: 'w-sm' }],
+                explanation: 'Oración afirmativa indicando que algo se hizo antes de lo esperado («ya ha comprado») → «already».'
+              },
+              {
+                num: 9,
+                contextType: 'adverbs',
+                parts: ['Have Paula and Hugo booked the hotel ', '?'],
+                gaps: [{ accepted: ['yet'], display: 'yet', width: 'w-sm' }],
+                explanation: 'Hueco al final de una pregunta («¿ya han reservado...?») → «yet».'
+              },
+              {
+                num: 10,
+                contextType: 'adverbs',
+                parts: ['It\'s almost midnight and Oliver ', " hasn't arrived home!"],
+                gaps: [{ accepted: ['still'], display: 'still', width: 'w-sm' }],
+                explanation: 'Hueco delante de «hasn\'t» expresando impaciencia/énfasis («todavía no ha llegado») → «still».'
+              },
+              {
+                num: 11,
+                contextType: 'adverbs',
+                parts: ['Maya hasn\'t read the final chapter ', ', so please don\'t spoil the ending.'],
+                gaps: [{ accepted: ['yet'], display: 'yet', width: 'w-sm' }],
+                explanation: 'Hueco al final de una cláusula negativa («todavía no ha leído») → «yet».'
+              },
+              {
+                num: 12,
+                contextType: 'adverbs',
+                parts: ['Thanks for the offer, Claire, but I have ', ' had lunch.'],
+                gaps: [{ accepted: ['already'], display: 'already', width: 'w-sm' }],
+                explanation: 'Rechazar comida porque ya comiste antes: afirmativa entre «have» y «had» → «already».'
+              }
+            ]
+          },
+          {
+            id: 't3-build',
+            type: 'build',
+            letter: 'Bloque 3',
+            title: 'Ordenar frases desordenadas (Ejercicios 13 al 16)',
+            instruction: 'Construye frases correctas colocando <strong>just</strong>, <strong>already</strong>, <strong>yet</strong> y <strong>still</strong> en su posición exacta.',
+            items: [
+              {
+                num: 13,
+                words: ['left', 'has', 'train', 'The', 'just', 'station.', 'the'],
+                accepted: ['The train has just left the station'],
+                display: 'The train has just left the station.',
+                explanation: 'Orden con «just»: The train + has + just + left + the station.'
+              },
+              {
+                num: 14,
+                words: ['already', 'seen', 'We', 'film.', 'have', 'that'],
+                accepted: ['We have already seen that film'],
+                display: 'We have already seen that film.',
+                explanation: 'Orden con «already»: We + have + already + seen + that film.'
+              },
+              {
+                num: 15,
+                words: ['yet?', 'Mateo', 'dinner', 'Has', 'cooked'],
+                accepted: ['Has Mateo cooked dinner yet'],
+                display: 'Has Mateo cooked dinner yet?',
+                explanation: 'Pregunta con «yet» al final: Has + Mateo + cooked + dinner + yet?'
+              },
+              {
+                num: 16,
+                words: ['found', 'still', "hasn't", 'keys.', 'her', 'Sarah'],
+                accepted: ["Sarah still hasn't found her keys"],
+                display: "Sarah still hasn't found her keys.",
+                explanation: 'Negativa con «still» ANTES de «hasn\'t»: Sarah + still + hasn\'t + found + her keys.'
+              }
+            ]
+          },
+          {
+            id: 't3-error',
+            type: 'error',
+            letter: 'Bloque 4',
+            title: 'Detecta y corrige el error (Ejercicios 17 al 20)',
+            instruction: 'Identifica el bloque con el error típico de examen y escribe la forma correcta.',
+            items: [
+              {
+                num: 17,
+                segments: ['They', "haven't still", 'received', 'the parcel.'],
+                wrongIndex: 1,
+                accepted: ["still haven't", 'still have not'],
+                display: "still haven't",
+                explanation: '«Still» siempre va DELANTE del auxiliar negativo: «They still haven\'t received the parcel.»'
+              },
+              {
+                num: 18,
+                segments: ['Liam', 'has finished', 'his report', 'yet.'],
+                wrongIndex: 3,
+                accepted: ['already'],
+                display: 'has already finished (en lugar de «yet»)',
+                explanation: '«Yet» NUNCA se usa en oraciones afirmativas. En afirmativa debemos usar «already» («Liam has already finished his report.»).'
+              },
+              {
+                num: 19,
+                segments: ['Elena', "hasn't yet", 'called', 'her grandmother.'],
+                wrongIndex: 1,
+                accepted: ["hasn't called her grandmother yet", "hasn't", "still hasn't"],
+                display: "still hasn't (o colocar «yet» al final)",
+                explanation: 'En inglés cotidiano de examen, «yet» va al FINAL de la frase («Elena hasn\'t called her grandmother yet»). Si quieres dejar el adverbio antes del verbo, usa «still hasn\'t».'
+              },
+              {
+                num: 20,
+                segments: ['Marco', 'has arrived', 'at the station', 'just.'],
+                wrongIndex: 3,
+                accepted: ['has just arrived', 'just'],
+                display: 'has just arrived (colocar «just» entre has y arrived)',
+                explanation: '«Just» nunca va al final de la frase; debe ir entre «has» y el participio: «Marco has just arrived at the station.»'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 4: SIMULACRO DE EXAMEN + DESAFÍO B1 (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab4: {
+        id: 'tab4',
+        isExam: true,
+        title: '4. Simulacro de Examen + Desafío B1',
+        subtitle: '20 ejercicios de nivel examen real: Texto Cloze Test, Key Word Transformation tipo Cambridge B1 y traducción completa.',
+        total: 20,
+        accentClass: 'exam-hero',
+        blocks: [
+          {
+            id: 't4-cloze',
+            type: 'cloze',
+            letter: 'Bloque 1 · Cloze Test',
+            title: 'Texto en contexto: «A Dream Trip to Japan» (Ejercicios 1 al 8)',
+            instruction: 'Completa los 8 huecos del relato usando <strong>Present Perfect Simple</strong>, <strong>for / since</strong>, <strong>already / yet / still / just</strong>, <strong>ever / never</strong> o <strong>been / gone</strong> según las pistas.',
+            storyTitle: 'A Dream Trip to Japan',
+            paragraphs: [
+              [
+                { text: 'Paula and Noah have dreamed of visiting Japan ' },
+                {
+                  num: 1,
+                  verb: 'for / since',
+                  contextType: 'for_since',
+                  accepted: ['for'],
+                  display: 'for',
+                  width: 'w-xs',
+                  explanation: 'Hueco 1: «five years» es una duración, por lo que usamos «for».'
+                },
+                { text: ' five years, and next week they are finally flying to Tokyo! Paula ' },
+                {
+                  num: 2,
+                  verb: 'already / book',
+                  contextType: 'pps',
+                  accepted: ['has already booked', "'s already booked"],
+                  display: 'has already booked',
+                  width: 'w-lg',
+                  explanation: 'Hueco 2: Afirmativa con «already» en medio: «Paula has already booked».'
+                },
+                { text: ' all the train passes, and Noah has ' },
+                {
+                  num: 3,
+                  verb: 'just / yet / still',
+                  contextType: 'adverbs',
+                  accepted: ['just'],
+                  display: 'just',
+                  width: 'w-xs',
+                  explanation: 'Hueco 3: Entre «has» y el participio «finished» para algo recién hecho («a few minutes ago») → «just».'
+                },
+                { text: ' finished making a list of street-food markets a few minutes ago.' }
+              ],
+              [
+                { text: 'Neither of them has ' },
+                {
+                  num: 4,
+                  verb: 'ever / never',
+                  contextType: 'pps',
+                  accepted: ['ever'],
+                  display: 'ever',
+                  width: 'w-xs',
+                  explanation: 'Hueco 4: «Neither of them» ya es negativo, así que usamos «ever» (no «never» para evitar doble negación).'
+                },
+                { text: ' travelled to Asia before, although Paula\'s cousin Hugo has ' },
+                {
+                  num: 5,
+                  verb: 'been / gone',
+                  contextType: 'been_gone',
+                  accepted: ['been'],
+                  display: 'been',
+                  width: 'w-xs',
+                  explanation: 'Hueco 5: Hugo fue a Kioto dos veces y volvió (experiencia), por lo que corresponde «been».'
+                },
+                { text: ' to Kyoto twice and gave them great tips. They have studied basic Japanese phrases ' },
+                {
+                  num: 6,
+                  verb: 'for / since',
+                  contextType: 'for_since',
+                  accepted: ['since'],
+                  display: 'since',
+                  width: 'w-xs',
+                  explanation: 'Hueco 6: «Last January» es un punto exacto de inicio → «since».'
+                },
+                { text: ' last January. However, Noah ' },
+                {
+                  num: 7,
+                  verb: 'still / not / find',
+                  contextType: 'adverbs',
+                  accepted: ["still hasn't found", 'still has not found'],
+                  display: "still hasn't found",
+                  width: 'w-lg',
+                  explanation: 'Hueco 7: «Still» siempre va antes del auxiliar negativo + participio irregular de «find»: «still hasn\'t found».'
+                },
+                { text: ' his travel adapter, and they haven\'t exchanged their money ' },
+                {
+                  num: 8,
+                  verb: 'already / yet / still',
+                  contextType: 'adverbs',
+                  accepted: ['yet'],
+                  display: 'yet',
+                  width: 'w-xs',
+                  explanation: 'Hueco 8: Al final de una oración negativa («todavía no han cambiado dinero») → «yet».'
+                },
+                { text: '.' }
+              ]
+            ]
+          },
+          {
+            id: 't4-kwt',
+            type: 'kwt',
+            letter: 'Bloque 2 · Cambridge B1',
+            title: 'Key Word Transformation (Ejercicios 9 al 14)',
+            instruction: 'Completa la segunda oración de modo que signifique lo mismo que la primera, usando entre <strong>2 y 5 palabras</strong> e incluyendo la <strong>palabra clave en mayúsculas sin cambiarla</strong>.',
+            items: [
+              {
+                num: 9,
+                original: 'Sarah started working at this clinic in 2020.',
+                keyword: 'SINCE',
+                before: 'Sarah ',
+                after: ' 2020.',
+                accepted: ['has worked at this clinic since', 'has worked here since'],
+                display: 'has worked at this clinic since',
+                explanation: 'Transformamos «started working in 2020» en Present Perfect Simple + «since»: «has worked at this clinic since 2020».'
+              },
+              {
+                num: 10,
+                original: 'Oliver finished his exam a moment ago.',
+                keyword: 'JUST',
+                before: 'Oliver ',
+                after: ' his exam.',
+                accepted: ['has just finished', "'s just finished"],
+                display: 'has just finished',
+                explanation: '«A moment ago» equivale a «just» entre «has» y el participio: «has just finished».'
+              },
+              {
+                num: 11,
+                original: 'This is the first time Elena has eaten sushi.',
+                keyword: 'NEVER',
+                before: 'Elena ',
+                after: ' before.',
+                accepted: ['has never eaten sushi', "'s never eaten sushi", 'has never had sushi', "'s never had sushi"],
+                display: 'has never eaten sushi',
+                explanation: '«This is the first time...» se transforma con «never»: «Elena has never eaten sushi before.»'
+              },
+              {
+                num: 12,
+                original: 'Marco hasn\'t finished painting the bedroom.',
+                keyword: 'YET',
+                before: 'Marco ',
+                after: ' .',
+                accepted: [
+                  "hasn't finished painting the bedroom yet",
+                  'has not finished painting the bedroom yet',
+                  "hasn't painted the bedroom yet",
+                  'has not painted the bedroom yet'
+                ],
+                display: "hasn't painted the bedroom yet",
+                explanation: 'Añadimos «yet» al final de la oración negativa en Present Perfect Simple.'
+              },
+              {
+                num: 13,
+                original: 'Claire hasn\'t replied to my invitation, and I am surprised.',
+                keyword: 'STILL',
+                before: 'Claire ',
+                after: ' to my invitation.',
+                accepted: ["still hasn't replied", 'still has not replied'],
+                display: "still hasn't replied",
+                explanation: 'Expresamos el énfasis de «todavía no» colocando «still» antes de «hasn\'t»: «still hasn\'t replied».'
+              },
+              {
+                num: 14,
+                original: 'Liam watched that film last week, so he doesn\'t want to see it again.',
+                keyword: 'ALREADY',
+                before: 'Liam ',
+                after: ' that film.',
+                accepted: ['has already seen', "'s already seen", 'has already watched', "'s already watched"],
+                display: 'has already seen',
+                explanation: 'Para indicar que ya la vio antes: «has already seen / watched» (con «already» en medio).'
+              }
+            ]
+          },
+          {
+            id: 't4-translate',
+            type: 'translate',
+            letter: 'Bloque 3 · Traducción de Examen',
+            title: 'Traducción ES → EN (Ejercicios 15 al 20)',
+            instruction: 'Traduce estas frases completas al inglés aplicando <strong>Present Perfect Simple</strong> y el marcador temporal correcto.',
+            items: [
+              {
+                num: 15,
+                contextType: 'for_since',
+                prompt: 'Conozco a Mateo desde hace cinco años.',
+                accepted: [
+                  'I have known Mateo for five years',
+                  "I've known Mateo for five years",
+                  'I have known Mateo for 5 years',
+                  "I've known Mateo for 5 years"
+                ],
+                display: 'I have known Mateo for five years.',
+                explanation: '«Desde hace cinco años» indica duración → «for five years», con Present Perfect Simple («have known»).'
+              },
+              {
+                num: 16,
+                contextType: 'pps',
+                prompt: 'Chloe acaba de comprar un billete de tren.',
+                accepted: [
+                  'Chloe has just bought a train ticket',
+                  "Chloe's just bought a train ticket"
+                ],
+                display: 'Chloe has just bought a train ticket.',
+                explanation: '«Acaba de» = «has just» + participio irregular de «buy» («bought»).'
+              },
+              {
+                num: 17,
+                contextType: 'adverbs',
+                prompt: 'Hugo todavía no ha limpiado su habitación.',
+                accepted: [
+                  "Hugo hasn't cleaned his room yet",
+                  "Hugo hasn't tidied his room yet",
+                  "Hugo still hasn't cleaned his room",
+                  "Hugo still hasn't tidied his room",
+                  "Hugo hasn't cleaned his bedroom yet",
+                  "Hugo still hasn't cleaned his bedroom"
+                ],
+                display: "Hugo hasn't cleaned his room yet. / Hugo still hasn't cleaned his room.",
+                explanation: 'Ambas opciones son excelentes: «hasn\'t cleaned his room yet» (con «yet» al final) o «still hasn\'t cleaned his room» (con «still» antes de «hasn\'t»).'
+              },
+              {
+                num: 18,
+                contextType: 'adverbs',
+                prompt: '¿Ya has terminado tus deberes?',
+                accepted: [
+                  'Have you finished your homework yet',
+                  'Have you already finished your homework'
+                ],
+                display: 'Have you finished your homework yet?',
+                explanation: 'En pregunta neutra usamos «yet» al final: «Have you finished your homework yet?» (también se admite «already» si expresa sorpresa).'
+              },
+              {
+                num: 19,
+                contextType: 'for_since',
+                prompt: 'Vivimos en esta casa desde 2018.',
+                accepted: [
+                  'We have lived in this house since 2018',
+                  "We've lived in this house since 2018"
+                ],
+                display: 'We have lived in this house since 2018.',
+                explanation: 'En español usamos presente («Vivimos»), pero en inglés con «since 2018» es obligatorio el Present Perfect Simple: «We have lived in this house since 2018.»'
+              },
+              {
+                num: 20,
+                contextType: 'adverbs',
+                prompt: 'Maya ya ha leído este libro dos veces.',
+                accepted: [
+                  'Maya has already read this book twice',
+                  "Maya's already read this book twice",
+                  'Maya has already read this book two times'
+                ],
+                display: 'Maya has already read this book twice.',
+                explanation: 'Afirmativa con «already» entre «has» y el participio «read»: «Maya has already read this book twice.»'
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       3. ESTADO GLOBAL DE LA APLICACIÓN
+       ========================================================================= */
+    const appState = {
+      activeTab: 'theory',
+      scores: {
+        tab1: null,
+        tab2: null,
+        tab3: null,
+        tab4: null
+      },
+      matches: {},   // { blockId: { selectedLeft, links: {}, graded, results: {} } }
+      builds: {},    // { key: { placed: [] } }
+      errors: {},    // { key: { selectedSeg: null | number } }
+      classify: {},  // { key: null | 'for' | 'since' }
+      places: {},    // { key: null | slotIndex }
+      pendingReset: null
+    };
+
+    const resizeObservers = [];
+
+    /* =========================================================================
+       4. RENDERIZADO DINÁMICO DE LAS 4 PESTAÑAS DE PRÁCTICA
+       ========================================================================= */
+    function renderSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      const container = document.getElementById(`panel-${sectionId}`);
+      if (!sec || !container) return;
+
+      const headerBadge = sec.isExam
+        ? `<span class="gold-badge">★ Examen Final · Nivel B1</span>`
+        : '';
+
+      let html = `
+        <div class="card ${sec.accentClass}">
+          <div class="section-header-row">
+            <div>
+              ${headerBadge}
+              <h2 class="section-title">${sec.title}</h2>
+              <p class="lead-text" style="margin-top: 0.35rem;">${sec.subtitle}</p>
+            </div>
+            <div class="count-pill">📝 ${sec.total} ejercicios</div>
+          </div>
+        </div>
+      `;
+
+      sec.blocks.forEach(block => {
+        html += renderBlock(sectionId, block);
+      });
+
+      html += `
+        <div class="card action-bar">
+          <div class="action-bar-top">
+            <div style="font-size: 0.88rem; color: var(--muted);">
+              <strong style="color: var(--navy);">¿Has completado los ${sec.total} ejercicios?</strong> Pulsa para corregir y ver tu nota sobre 10 y las explicaciones.
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn btn-secondary" onclick="openResetModal('${sectionId}')">↺ Reiniciar sección</button>
+              <button type="button" class="btn btn-primary" onclick="gradeSection('${sectionId}')">✓ Corregir esta sección</button>
+            </div>
+          </div>
+          <div id="summary-${sectionId}" class="summary-card hidden"></div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      // Inicializar estados interactivos de cada bloque
+      sec.blocks.forEach(block => {
+        if (block.type === 'match') {
+          initMatchBlock(block);
+        } else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            appState.builds[key] = { placed: [] };
+            renderBuildExercise(sectionId, item);
+          });
+        } else if (block.type === 'error') {
+          block.items.forEach(item => {
+            appState.errors[`${sectionId}-err-${item.num}`] = { selectedSeg: null };
+          });
+        } else if (block.type === 'classify') {
+          block.items.forEach(item => {
+            appState.classify[`${sectionId}-cls-${item.num}`] = null;
+          });
+        } else if (block.type === 'place') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-place-${item.num}`;
+            appState.places[key] = null;
+            renderPlaceExercise(sectionId, item);
+          });
+        }
+      });
+    }
+
+    function renderBlock(sectionId, block) {
+      let bodyHtml = '';
+
+      /* --- FILL (simple, doble hueco y transformación) --- */
+      if (block.type === 'fill') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          let sentenceHtml = '';
+          item.parts.forEach((part, idx) => {
+            sentenceHtml += `<span>${part}</span>`;
+            if (idx < item.gaps.length) {
+              const w = item.gaps[idx].width || 'w-md';
+              sentenceHtml += `<input type="text" id="${exId}-gap-${idx}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input ${w}" aria-label="Ejercicio ${item.num} hueco ${idx + 1}" />`;
+            }
+          });
+
+          const origHtml = item.original
+            ? `<div class="transform-orig"><strong>Frase original:</strong> ${item.original}</div>`
+            : '';
+
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  ${origHtml}
+                  <div class="sentence-line">${sentenceHtml}</div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- CLASSIFY (FOR vs SINCE) --- */
+      else if (block.type === 'classify') {
+        bodyHtml = `<div class="classify-grid">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="classify-card">
+              <div class="classify-top">
+                <span class="ex-num">${item.num}</span>
+                <span class="classify-expr">${item.expr}</span>
+              </div>
+              <div class="classify-btns">
+                <button type="button" id="${exId}-btn-for" class="choice-btn" onclick="selectClassify('${sectionId}', ${item.num}, 'for')">FOR</button>
+                <button type="button" id="${exId}-btn-since" class="choice-btn" onclick="selectClassify('${sectionId}', ${item.num}, 'since')">SINCE</button>
+              </div>
+              <div id="${exId}-feedback" class="feedback-slot hidden" style="margin-top: 0;"></div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- PLACE (Colocar palabra en [ + ]) --- */
+      else if (block.type === 'place') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  <div class="place-target-bar">
+                    <span>Coloca la palabra:</span>
+                    <span class="target-word-pill">${item.word}</span>
+                  </div>
+                  <div id="${sectionId}-place-box-${item.num}" class="place-sentence-box"></div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- BUILD (Word Tiles) --- */
+      else if (block.type === 'build') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  <div class="build-header">
+                    <span class="build-label">Tu oración:</span>
+                    <button type="button" class="btn-link" onclick="clearBuildExercise('${sectionId}', ${item.num})">Limpiar frase</button>
+                  </div>
+                  <div id="${sectionId}-build-zone-${item.num}" class="build-zone"></div>
+                  <div id="${sectionId}-build-bank-${item.num}" class="build-bank"></div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- MATCH (Flechas SVG) --- */
+      else if (block.type === 'match') {
+        const rightMap = {};
+        block.pairs.forEach(p => { rightMap[p.rightId] = p; });
+        const orderedRight = block.rightOrder.map(id => rightMap[id]);
+
+        bodyHtml = `
+          <div class="stack-md">
+            <div class="match-toolbar">
+              <span>💡 Pulsa una tarjeta de la <strong>izquierda</strong> y luego su resultado a la <strong>derecha</strong>. Pulsa de nuevo una tarjeta unida para cambiar la flecha.</span>
+              <button type="button" class="btn-link" onclick="clearMatchBlock('${block.id}')">Limpiar flechas</button>
+            </div>
+
+            <div id="match-wrap-${block.id}" class="match-wrap">
+              <svg id="match-svg-${block.id}" class="match-svg">
+                <defs>
+                  <marker id="arrow-pending-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C59B27" />
+                  </marker>
+                  <marker id="arrow-ok-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#1E8449" />
+                  </marker>
+                  <marker id="arrow-err-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C0392B" />
+                  </marker>
+                </defs>
+                <g id="match-lines-${block.id}"></g>
+              </svg>
+
+              <div class="match-columns">
+                <div class="match-col">
+                  ${block.pairs.map(p => `
+                    <button type="button" id="left-${block.id}-${p.leftId}" data-left="${p.leftId}"
+                      class="match-card left-card" onclick="handleMatchLeftClick('${block.id}', '${p.leftId}')">
+                      <span class="match-badge">${p.num}</span>
+                      <span class="match-text">${p.left}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                <div class="match-col">
+                  ${orderedRight.map((p, idx) => `
+                    <button type="button" id="right-${block.id}-${p.rightId}" data-right="${p.rightId}"
+                      class="match-card right-card" onclick="handleMatchRightClick('${block.id}', '${p.rightId}')">
+                      <span class="match-badge">${String.fromCharCode(65 + idx)}</span>
+                      <span class="match-text">${p.right}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div id="match-feedback-${block.id}" class="feedback-slot hidden stack-sm"></div>
+          </div>
+        `;
+      }
+
+      /* --- ERROR DETECTION (Clic segmento + Corrección) --- */
+      else if (block.type === 'error') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          const segBtns = item.segments.map((seg, idx) => `
+            <button type="button" id="${exId}-seg-${idx}" class="err-seg-btn" onclick="selectErrorSegment('${sectionId}', ${item.num}, ${idx})">${seg}</button>
+          `).join('');
+
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  <div class="error-segments">${segBtns}</div>
+                  <div class="error-fix-row">
+                    <label for="${exId}-fix"><strong>Corrección del bloque marcado:</strong></label>
+                    <input type="text" id="${exId}-fix" autocomplete="off" spellcheck="false" placeholder="Escribe la forma correcta..." class="gap-input w-lg" />
+                  </div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- CLOZE TEST --- */
+      else if (block.type === 'cloze') {
+        const paraHtml = block.paragraphs.map(para => {
+          const inner = para.map(seg => {
+            if (seg.text) return `<span>${seg.text}</span>`;
+            const w = seg.width || 'w-md';
+            return `
+              <span class="cloze-unit">
+                <span class="cloze-num">${seg.num}</span>
+                <input type="text" id="${sectionId}-cloze-${seg.num}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input ${w}" aria-label="Hueco ${seg.num} (${seg.verb})" />
+                <span class="verb-hint">(${seg.verb})</span>
+              </span>
+            `;
+          }).join('');
+          return `<p class="cloze-paragraph">${inner}</p>`;
+        }).join('');
+
+        bodyHtml = `
+          <div class="stack-md">
+            <div class="cloze-paper">
+              <h4 class="cloze-title"><span>✈️</span><span>${block.storyTitle}</span></h4>
+              ${paraHtml}
+            </div>
+            <div id="${sectionId}-cloze-feedback" class="feedback-slot hidden stack-sm"></div>
+          </div>
+        `;
+      }
+
+      /* --- KEY WORD TRANSFORMATION (Cambridge B1) --- */
+      else if (block.type === 'kwt') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  <p class="kwt-orig">${item.original}</p>
+                  <div class="kwt-key-row"><span class="kwt-key">${item.keyword}</span></div>
+                  <div class="sentence-line">
+                    <span>${item.before}</span>
+                    <input type="text" id="${exId}-input" autocomplete="off" spellcheck="false" placeholder="2–5 palabras con ${item.keyword}..." class="gap-input w-xl" />
+                    <span>${item.after}</span>
+                  </div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      /* --- TRANSLATE --- */
+      else if (block.type === 'translate') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body stack-sm">
+                  <p style="margin: 0; font-size: 0.94rem; font-weight: 600; color: var(--navy);">«${item.prompt}»</p>
+                  <input type="text" id="${exId}-input" autocomplete="off" spellcheck="false" placeholder="Escribe la traducción en inglés..." class="gap-input w-full" />
+                  <div id="${exId}-feedback" class="feedback-slot hidden" style="margin-top: 0.25rem;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      return `
+        <div class="card">
+          <div class="block-divider">
+            <span class="eyebrow-pill" style="margin-bottom: 0.45rem;">${block.letter}</span>
+            <h3 class="card-title">${block.title}</h3>
+            <p style="margin: 0.35rem 0 0; font-size: 0.86rem; color: var(--muted);">${block.instruction}</p>
+          </div>
+          ${bodyHtml}
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       5. INTERACTIVIDAD: CLASIFICADOR, COLOCAR PALABRA, ERRORES, FLECHAS, TILES
+       ========================================================================= */
+
+    /* --- 5A. Clasificador FOR vs SINCE --- */
+    function selectClassify(sectionId, num, val) {
+      const key = `${sectionId}-cls-${num}`;
+      appState.classify[key] = val;
+      const exId = `${sectionId}-ex-${num}`;
+      const btnFor = document.getElementById(`${exId}-btn-for`);
+      const btnSince = document.getElementById(`${exId}-btn-since`);
+      if (btnFor && btnSince) {
+        btnFor.classList.remove('selected', 'graded-ok', 'graded-err');
+        btnSince.classList.remove('selected', 'graded-ok', 'graded-err');
+        if (val === 'for') btnFor.classList.add('selected');
+        if (val === 'since') btnSince.classList.add('selected');
+      }
+    }
+
+    /* --- 5B. Colocar palabra en posición exacta ([ + ]) --- */
+    function renderPlaceExercise(sectionId, item, gradedState = null) {
+      const key = `${sectionId}-place-${item.num}`;
+      const chosen = appState.places[key];
+      const box = document.getElementById(`${sectionId}-place-box-${item.num}`);
+      if (!box) return;
+
+      let html = '';
+      // Render slots and chunks: slot i appears before chunks[i]; slot chunks.length appears at the end
+      for (let i = 0; i <= item.chunks.length; i++) {
+        if (item.slots.includes(i)) {
+          const isPlaced = chosen === i;
+          let cls = 'place-slot-btn';
+          let label = '[ + ]';
+          if (isPlaced) {
+            cls += ' placed';
+            label = item.word;
+          }
+          if (gradedState) {
+            if (isPlaced && i === item.correctSlot) {
+              cls = 'place-slot-btn placed graded-ok';
+            } else if (isPlaced && i !== item.correctSlot) {
+              cls = 'place-slot-btn placed graded-err';
+            } else if (!isPlaced && i === item.correctSlot) {
+              cls = 'place-slot-btn placed graded-ok';
+              label = item.word;
+            }
+          }
+          html += `<button type="button" class="${cls}" onclick="selectPlaceSlot('${sectionId}', ${item.num}, ${i})">${label}</button>`;
+        }
+        if (i < item.chunks.length) {
+          html += `<span>${item.chunks[i]}</span>`;
+        }
+      }
+      box.innerHTML = html;
+    }
+
+    function findPlaceItem(sectionId, num) {
+      const sec = SECTIONS_DATA[sectionId];
+      for (const b of sec.blocks) {
+        if (b.type === 'place') {
+          const f = b.items.find(i => i.num === num);
+          if (f) return f;
+        }
+      }
+      return null;
+    }
+
+    function selectPlaceSlot(sectionId, num, slotIdx) {
+      const key = `${sectionId}-place-${num}`;
+      const item = findPlaceItem(sectionId, num);
+      if (!item) return;
+      appState.places[key] = appState.places[key] === slotIdx ? null : slotIdx;
+      renderPlaceExercise(sectionId, item);
+    }
+
+    /* --- 5C. Detecta y corrige el error --- */
+    function selectErrorSegment(sectionId, num, segIdx) {
+      const key = `${sectionId}-err-${num}`;
+      appState.errors[key] = { selectedSeg: segIdx };
+      const exId = `${sectionId}-ex-${num}`;
+      const card = document.getElementById(exId);
+      if (!card) return;
+      card.querySelectorAll('.err-seg-btn').forEach((btn, idx) => {
+        btn.classList.remove('selected', 'graded-ok', 'graded-err');
+        if (idx === segIdx) btn.classList.add('selected');
+      });
+    }
+
+    /* --- 5D. Flechas SVG --- */
+    function initMatchBlock(block) {
+      appState.matches[block.id] = {
+        selectedLeft: null,
+        links: {},
+        graded: false,
+        results: {}
+      };
+      const wrap = document.getElementById(`match-wrap-${block.id}`);
+      if (wrap && typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => drawMatchLines(block.id));
+        ro.observe(wrap);
+        resizeObservers.push(ro);
+      }
+    }
+
+    function handleMatchLeftClick(blockId, leftId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      if (st.selectedLeft === leftId) {
+        st.selectedLeft = null;
+      } else if (st.links[leftId] && !st.selectedLeft) {
+        delete st.links[leftId];
+        st.selectedLeft = leftId;
+      } else {
+        st.selectedLeft = leftId;
+      }
+      st.graded = false;
+      updateMatchVisuals(blockId);
+    }
+
+    function handleMatchRightClick(blockId, rightId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      if (st.selectedLeft) {
+        Object.keys(st.links).forEach(lId => {
+          if (st.links[lId] === rightId) delete st.links[lId];
+        });
+        st.links[st.selectedLeft] = rightId;
+        st.selectedLeft = null;
+        st.graded = false;
+        updateMatchVisuals(blockId);
+      } else {
+        const connectedLeft = Object.keys(st.links).find(lId => st.links[lId] === rightId);
+        if (connectedLeft) {
+          delete st.links[connectedLeft];
+          st.graded = false;
+          updateMatchVisuals(blockId);
+        }
+      }
+    }
+
+    function clearMatchBlock(blockId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      st.selectedLeft = null;
+      st.links = {};
+      st.graded = false;
+      st.results = {};
+      const fb = document.getElementById(`match-feedback-${blockId}`);
+      if (fb) {
+        fb.innerHTML = '';
+        fb.classList.add('hidden');
+      }
+      updateMatchVisuals(blockId);
+    }
+
+    function updateMatchVisuals(blockId) {
+      const st = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      if (!st || !wrap) return;
+      const usedRights = new Set(Object.values(st.links));
+
+      wrap.querySelectorAll('.left-card').forEach(btn => {
+        const lId = btn.dataset.left;
+        btn.classList.remove('selected', 'linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          btn.classList.add(st.results[lId] ? 'graded-ok' : 'graded-err');
+        } else if (st.selectedLeft === lId) {
+          btn.classList.add('selected');
+        } else if (st.links[lId]) {
+          btn.classList.add('linked');
+        }
+      });
+
+      wrap.querySelectorAll('.right-card').forEach(btn => {
+        const rId = btn.dataset.right;
+        btn.classList.remove('linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          const linkedLeft = Object.keys(st.links).find(lId => st.links[lId] === rId);
+          if (linkedLeft) {
+            btn.classList.add(st.results[linkedLeft] ? 'graded-ok' : 'graded-err');
+          }
+        } else if (usedRights.has(rId)) {
+          btn.classList.add('linked');
+        }
+      });
+
+      drawMatchLines(blockId);
+    }
+
+    function drawMatchLines(blockId) {
+      const st = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      const group = document.getElementById(`match-lines-${blockId}`);
+      if (!st || !wrap || !group) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      if (wrapRect.width === 0 || wrapRect.height === 0) return;
+
+      group.innerHTML = '';
+
+      Object.entries(st.links).forEach(([leftId, rightId]) => {
+        const leftEl = document.getElementById(`left-${blockId}-${leftId}`);
+        const rightEl = document.getElementById(`right-${blockId}-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left - wrapRect.left - 3;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+
+        const dx = Math.max(22, (x2 - x1) * 0.45);
+        const pathData = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        let color = '#C59B27';
+        let marker = `arrow-pending-${blockId}`;
+        if (st.graded) {
+          if (st.results[leftId]) {
+            color = '#1E8449';
+            marker = `arrow-ok-${blockId}`;
+          } else {
+            color = '#C0392B';
+            marker = `arrow-err-${blockId}`;
+          }
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('marker-end', `url(#${marker})`);
+        group.appendChild(path);
+
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x1);
+        dot.setAttribute('cy', y1);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', color);
+        group.appendChild(dot);
+      });
+    }
+
+    function redrawAllMatches() {
+      Object.keys(appState.matches).forEach(drawMatchLines);
+    }
+
+    /* --- 5E. Word Tiles --- */
+    function renderBuildExercise(sectionId, item) {
+      const key = `${sectionId}-build-${item.num}`;
+      const st = appState.builds[key];
+      const zone = document.getElementById(`${sectionId}-build-zone-${item.num}`);
+      const bank = document.getElementById(`${sectionId}-build-bank-${item.num}`);
+      if (!st || !zone || !bank) return;
+
+      if (st.placed.length === 0) {
+        zone.innerHTML = `<span class="build-placeholder">Haz clic en las palabras de abajo para construir la frase...</span>`;
+      } else {
+        zone.innerHTML = st.placed.map((wordIdx, pos) => `
+          <button type="button" class="word-tile tile-placed" onclick="removeWordTile('${sectionId}', ${item.num}, ${pos})">
+            ${item.words[wordIdx]}
+          </button>
+        `).join('');
+      }
+
+      bank.innerHTML = item.words.map((word, idx) => {
+        const used = st.placed.includes(idx);
+        return `
+          <button type="button" class="word-tile tile-bank" ${used ? 'disabled' : ''} onclick="addWordTile('${sectionId}', ${item.num}, ${idx})">
+            ${word}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function findBuildItem(sectionId, num) {
+      const sec = SECTIONS_DATA[sectionId];
+      for (const b of sec.blocks) {
+        if (b.type === 'build') {
+          const found = b.items.find(i => i.num === num);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+
+    function addWordTile(sectionId, num, wordIdx) {
+      const key = `${sectionId}-build-${num}`;
+      const st = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!st || !item || st.placed.includes(wordIdx)) return;
+      st.placed.push(wordIdx);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function removeWordTile(sectionId, num, pos) {
+      const key = `${sectionId}-build-${num}`;
+      const st = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!st || !item) return;
+      st.placed.splice(pos, 1);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function clearBuildExercise(sectionId, num) {
+      const key = `${sectionId}-build-${num}`;
+      const item = findBuildItem(sectionId, num);
+      if (!appState.builds[key] || !item) return;
+      appState.builds[key].placed = [];
+      renderBuildExercise(sectionId, item);
+    }
+
+    /* =========================================================================
+       6. CORRECCIÓN INTELIGENTE BAJO DEMANDA
+       ========================================================================= */
+    function renderFeedbackBox(isCorrect, correctDisplay, explanation, extraTip = '', gapBreakdown = null, prefix = '') {
+      if (isCorrect) {
+        return `
+          <div class="fb-ok">
+            <span class="fb-icon fb-icon-ok">✓</span>
+            <span>${prefix ? `<strong>${prefix}:</strong> ` : ''}¡Correcto! ${correctDisplay ? `(${correctDisplay})` : 'Muy bien hecho.'}</span>
+          </div>
+        `;
+      }
+
+      let breakdownHtml = '';
+      if (Array.isArray(gapBreakdown) && gapBreakdown.length > 1) {
+        breakdownHtml = `
+          <div class="fb-gap-list">
+            ${gapBreakdown.map(g => `
+              <span class="fb-gap-pill ${g.ok ? 'ok' : 'err'}">
+                ${g.label}: ${g.ok ? '✓ correcto' : `✕ esperado «${g.display}»`}
+              </span>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="fb-err">
+          <div class="fb-err-head">
+            <span class="fb-icon fb-icon-err">✕</span>
+            <div>
+              ${prefix ? `<strong>${prefix} — </strong>` : ''}Respuesta correcta: <span class="fb-answer">${correctDisplay}</span>
+            </div>
+          </div>
+          ${breakdownHtml}
+          ${extraTip ? `<div class="fb-tip">${extraTip}</div>` : ''}
+          <div class="fb-expl"><strong>Explicación:</strong> ${explanation}</div>
+        </div>
+      `;
+    }
+
+    function setCardStatus(el, isCorrect) {
+      if (!el) return;
+      el.classList.remove('is-correct', 'is-wrong');
+      el.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+    }
+
+    function gradeSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      if (!sec) return;
+
+      let score = 0;
+      const total = sec.total;
+
+      sec.blocks.forEach(block => {
+        /* --- FILL --- */
+        if (block.type === 'fill') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            let allOk = true;
+            let combined = '';
+            const breakdown = [];
+
+            item.gaps.forEach((gap, idx) => {
+              const input = document.getElementById(`${exId}-gap-${idx}`);
+              const val = input ? input.value : '';
+              combined += ' ' + val;
+              const ok = isMatchAny(val, gap.accepted);
+              if (!ok) allOk = false;
+              breakdown.push({ label: `Hueco ${idx + 1}`, ok, display: gap.display });
+              if (input) {
+                input.classList.remove('input-ok', 'input-err');
+                input.classList.add(ok ? 'input-ok' : 'input-err');
+              }
+            });
+
+            if (allOk) score++;
+            setCardStatus(card, allOk);
+            const displayAns = item.gaps.map(g => g.display).join(' / ');
+            const tip = allOk ? '' : getDiagnosticTip(combined.trim(), item.contextType);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(allOk, displayAns, item.explanation, tip, breakdown);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- CLASSIFY (FOR vs SINCE) --- */
+        else if (block.type === 'classify') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-cls-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const chosen = appState.classify[key];
+            const ok = chosen === item.answer;
+
+            const btnFor = document.getElementById(`${exId}-btn-for`);
+            const btnSince = document.getElementById(`${exId}-btn-since`);
+            [btnFor, btnSince].forEach(b => b && b.classList.remove('selected', 'graded-ok', 'graded-err'));
+
+            if (chosen) {
+              const chosenBtn = chosen === 'for' ? btnFor : btnSince;
+              if (chosenBtn) chosenBtn.classList.add(ok ? 'graded-ok' : 'graded-err');
+            }
+            if (!ok) {
+              const correctBtn = item.answer === 'for' ? btnFor : btnSince;
+              if (correctBtn) correctBtn.classList.add('graded-ok');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = chosen ? '' : 'No has seleccionado ninguna opción.';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.answer.toUpperCase(), item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- PLACE ([ + ]) --- */
+        else if (block.type === 'place') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-place-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const chosen = appState.places[key];
+            const ok = chosen === item.correctSlot;
+
+            renderPlaceExercise(sectionId, item, true);
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = chosen === null ? `Haz clic en uno de los botones [ + ] para colocar «${item.word}».` : '';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- BUILD --- */
+        else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const placed = appState.builds[key]?.placed || [];
+            const sentence = placed.map(idx => item.words[idx]).join(' ');
+            const ok = isMatchAny(sentence, item.accepted);
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = ok || placed.length > 0 ? '' : 'Has dejado la frase sin ordenar.';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- MATCH --- */
+        else if (block.type === 'match') {
+          const st = appState.matches[block.id];
+          const fb = document.getElementById(`match-feedback-${block.id}`);
+          st.selectedLeft = null;
+          st.graded = true;
+          st.results = {};
+
+          let fbHtml = '';
+          block.pairs.forEach(pair => {
+            const chosen = st.links[pair.leftId];
+            const ok = chosen === pair.rightId;
+            st.results[pair.leftId] = ok;
+            if (ok) score++;
+
+            if (ok) {
+              fbHtml += renderFeedbackBox(true, '', '', '', null, `Ej. ${pair.num}`);
+            } else {
+              const tip = chosen ? '' : 'No has unido esta tarjeta con ninguna opción de la derecha.';
+              fbHtml += renderFeedbackBox(false, `${pair.left} ${pair.right}`, pair.explanation, tip, null, `Ej. ${pair.num}`);
+            }
+          });
+
+          updateMatchVisuals(block.id);
+          if (fb) {
+            fb.innerHTML = fbHtml;
+            fb.classList.remove('hidden');
+          }
+        }
+
+        /* --- ERROR DETECTION --- */
+        else if (block.type === 'error') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-err-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const input = document.getElementById(`${exId}-fix`);
+            const fb = document.getElementById(`${exId}-feedback`);
+
+            const chosenSeg = appState.errors[key]?.selectedSeg;
+            const segOk = chosenSeg === item.wrongIndex;
+            const fixVal = input ? input.value : '';
+            const fixOk = isMatchAny(fixVal, item.accepted);
+            const bothOk = segOk && fixOk;
+
+            // Marcar bloques visualmente
+            card.querySelectorAll('.err-seg-btn').forEach((btn, idx) => {
+              btn.classList.remove('selected', 'graded-ok', 'graded-err');
+              if (idx === item.wrongIndex) {
+                btn.classList.add('graded-ok');
+              } else if (idx === chosenSeg && !segOk) {
+                btn.classList.add('graded-err');
+              }
+            });
+
+            if (input) {
+              input.classList.remove('input-ok', 'input-err');
+              input.classList.add(fixOk ? 'input-ok' : 'input-err');
+            }
+
+            if (bothOk) score++;
+            setCardStatus(card, bothOk);
+
+            const breakdown = [
+              { label: 'Paso 1 (Bloque erróneo)', ok: segOk, display: item.segments[item.wrongIndex] },
+              { label: 'Paso 2 (Corrección)', ok: fixOk, display: item.display }
+            ];
+            let tip = '';
+            if (chosenSeg === null || chosenSeg === undefined) {
+              tip = 'Recuerda hacer clic primero en el bloque que contiene el error.';
+            } else if (!fixVal.trim()) {
+              tip = 'Has identificado el bloque, pero te falta escribir la corrección en el campo de texto.';
+            }
+
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(bothOk, `«${item.segments[item.wrongIndex]}» → ${item.display}`, item.explanation, tip, breakdown);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- CLOZE --- */
+        else if (block.type === 'cloze') {
+          const fbContainer = document.getElementById(`${sectionId}-cloze-feedback`);
+          let fbHtml = '';
+
+          block.paragraphs.forEach(para => {
+            para.forEach(seg => {
+              if (!seg.num) return;
+              const input = document.getElementById(`${sectionId}-cloze-${seg.num}`);
+              const val = input ? input.value : '';
+              const ok = isMatchAny(val, seg.accepted);
+
+              if (input) {
+                input.classList.remove('input-ok', 'input-err');
+                input.classList.add(ok ? 'input-ok' : 'input-err');
+              }
+
+              if (ok) {
+                score++;
+                fbHtml += renderFeedbackBox(true, seg.display, '', '', null, `Hueco ${seg.num}`);
+              } else {
+                const tip = getDiagnosticTip(val, seg.contextType);
+                fbHtml += renderFeedbackBox(false, seg.display, seg.explanation, tip, null, `Hueco ${seg.num} (${seg.verb})`);
+              }
+            });
+          });
+
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+
+        /* --- KEY WORD TRANSFORMATION --- */
+        else if (block.type === 'kwt') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const input = document.getElementById(`${exId}-input`);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const val = input ? input.value : '';
+            const normVal = normalizeText(val);
+            const hasKey = normVal.split(' ').includes(item.keyword.toLowerCase());
+            const ok = isMatchAny(val, item.accepted);
+
+            if (input) {
+              input.classList.remove('input-ok', 'input-err');
+              input.classList.add(ok ? 'input-ok' : 'input-err');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            let tip = '';
+            if (!ok) {
+              if (!normVal) tip = 'Has dejado el hueco en blanco.';
+              else if (!hasKey) tip = `Recuerda que debes incluir obligatoriamente la palabra clave «${item.keyword}» sin modificarla.`;
+            }
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        /* --- TRANSLATE --- */
+        else if (block.type === 'translate') {
+          block.items.forEach(item => {
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const input = document.getElementById(`${exId}-input`);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const val = input ? input.value : '';
+            const ok = isMatchAny(val, item.accepted);
+
+            if (input) {
+              input.classList.remove('input-ok', 'input-err');
+              input.classList.add(ok ? 'input-ok' : 'input-err');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = ok ? '' : getDiagnosticTip(val, item.contextType);
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+      });
+
+      appState.scores[sectionId] = score;
+      showSectionSummary(sectionId, score, total);
+      updateGlobalProgress();
+
+      const summaryEl = document.getElementById(`summary-${sectionId}`);
+      if (summaryEl) {
+        summaryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function showSectionSummary(sectionId, score, total) {
+      const el = document.getElementById(`summary-${sectionId}`);
+      if (!el) return;
+
+      const pct = Math.round((score / total) * 100);
+      const grade10 = ((score / total) * 10).toFixed(1).replace('.0', '');
+      let cls = 'lvl-mid';
+      let barBg = 'linear-gradient(90deg, #C59B27, #E3C565)';
+      let message = '¡Buen intento! Revisa las explicaciones en rojo y vuelve a probar para afianzar todas las reglas.';
+
+      if (pct >= 90) {
+        cls = 'lvl-high';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #1E8449)';
+        message = '¡Sobresaliente, nivel Wisdom Corner Academy! Dominas este bloque con total precisión.';
+      } else if (pct >= 70) {
+        cls = 'lvl-good';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #3C7362)';
+        message = '¡Muy buen resultado! Repasa los pequeños fallos para conseguir un 10 perfecto.';
+      } else if (pct < 50) {
+        cls = 'lvl-low';
+        barBg = 'linear-gradient(90deg, #C0392B, #C59B27)';
+        message = 'Te aconsejamos consultar la «Guía de Teoría» (tabla de posiciones y for/since) antes de reintentarlo.';
+      }
+
+      el.className = `summary-card ${cls}`;
+      el.innerHTML = `
+        <div class="summary-top">
+          <div>
+            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85;">Resultado de la sección</div>
+            <div class="summary-score">
+              ${score} / ${total} aciertos
+              <span class="summary-grade-pill">Nota: ${grade10} / 10 (${pct}%)</span>
+            </div>
+          </div>
+          <p class="summary-msg">${message}</p>
+        </div>
+        <div class="summary-bar-track">
+          <div class="summary-bar-fill" style="width: ${pct}%; background: ${barBg};"></div>
+        </div>
+      `;
+    }
+
+    function updateGlobalProgress() {
+      const ids = ['tab1', 'tab2', 'tab3', 'tab4'];
+      const grandTotal = 80;
+      let totalCorrect = 0;
+
+      ids.forEach(id => {
+        const sc = appState.scores[id];
+        const max = SECTIONS_DATA[id].total;
+        const badge = document.getElementById(`badge-${id}`);
+
+        if (sc !== null) {
+          totalCorrect += sc;
+          if (badge) {
+            badge.textContent = `${sc}/${max}`;
+            badge.classList.remove('graded-high', 'graded-mid');
+            badge.classList.add(sc / max >= 0.7 ? 'graded-high' : 'graded-mid');
+          }
+        } else if (badge) {
+          badge.textContent = `0/${max}`;
+          badge.classList.remove('graded-high', 'graded-mid');
+        }
+      });
+
+      const pct = Math.round((totalCorrect / grandTotal) * 100);
+      document.getElementById('global-score-text').textContent = `${totalCorrect} / ${grandTotal}`;
+      document.getElementById('global-percent').textContent = `${pct}%`;
+      document.getElementById('global-progress-bar').style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       7. MODAL DE REINICIO Y NAVEGACIÓN POR PESTAÑAS
+       ========================================================================= */
+    function openResetModal(sectionId) {
+      appState.pendingReset = sectionId;
+      document.getElementById('reset-modal').classList.add('open');
+    }
+
+    function closeResetModal() {
+      appState.pendingReset = null;
+      document.getElementById('reset-modal').classList.remove('open');
+    }
+
+    function confirmResetSection() {
+      const id = appState.pendingReset;
+      closeResetModal();
+      if (!id) return;
+
+      appState.scores[id] = null;
+      renderSection(id);
+      updateGlobalProgress();
+      requestAnimationFrame(redrawAllMatches);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `panel-${tabId}`);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      requestAnimationFrame(() => {
+        redrawAllMatches();
+        setTimeout(redrawAllMatches, 120);
+      });
+    }
+
+    /* =========================================================================
+       8. INICIALIZACIÓN
+       ========================================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSection('tab1');
+      renderSection('tab2');
+      renderSection('tab3');
+      renderSection('tab4');
+      updateGlobalProgress();
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('modal-cancel').addEventListener('click', closeResetModal);
+      document.getElementById('modal-confirm').addEventListener('click', confirmResetSection);
+      document.getElementById('reset-modal').addEventListener('click', e => {
+        if (e.target.id === 'reset-modal') closeResetModal();
+      });
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(redrawAllMatches);
+      });
+    });
+  </script>
+</body>
+</html>
