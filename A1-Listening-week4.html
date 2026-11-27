@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Corner Academy - Week 4: Vocabulario & Listening</title>
+    <style>
+        :root {
+            --primary: #1b365d;
+            --primary-light: #2c4d7e;
+            --gold: #c59b27;
+            --gold-light: #dfb743;
+            --bg-grad: linear-gradient(135deg, #f0f4f9 0%, #e5edf7 100%);
+            --card-bg: #ffffff;
+            --text-dark: #222b45;
+            --text-muted: #5e6c84;
+            --error: #c62828;
+            --success: #2e7d32;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-grad);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(27,54,93,0.12);
+            overflow: hidden;
+            padding: 30px;
+        }
+        .academy-logo {
+            display: block;
+            margin: 0 auto 15px auto;
+            max-width: 150px;
+            height: auto;
+        }
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+        h2 {
+            font-size: 16px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        h3 {
+            color: var(--primary);
+            margin-bottom: 18px;
+            font-size: 20px;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 10px;
+        }
+        h4.section-subtitle {
+            color: var(--primary);
+            background: #eef3f9;
+            padding: 10px 14px;
+            border-left: 4px solid var(--gold);
+            border-radius: 6px;
+            margin: 22px 0 14px 0;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .screen { display: none; animation: fadeIn 0.35s ease; }
+        .active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dce4ec;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: 0.25s;
+        }
+        input[type="text"]:focus, select:focus { border-color: var(--primary); outline: none; }
+        input:disabled, select:disabled { opacity: 0.92; cursor: not-allowed; }
+
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 13px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+        .btn:hover:not(:disabled) { background: var(--primary-light); }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-gold { background: var(--gold); }
+        .btn-gold:hover:not(:disabled) { background: var(--gold-light); }
+        .btn-gray { background: #94a3b8; }
+        .btn-gray:hover:not(:disabled) { background: #64748b; }
+        .btn-group { display: flex; gap: 10px; }
+
+        /* Controles de audio */
+        .audio-panel {
+            background: #f0f4f9;
+            border: 2px solid #d5e0ee;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+        }
+        .audio-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .badge-attempts {
+            background: var(--primary);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .badge-attempts.low { background: var(--error); }
+        .audio-controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .audio-controls-row select {
+            width: auto;
+            padding: 8px 10px;
+            font-size: 14px;
+            background: #fff;
+        }
+        .btn-play {
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-play:hover:not(:disabled) { background: var(--gold-light); }
+        .btn-play:disabled { background: #b0bec5; cursor: not-allowed; }
+        .audio-status {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Fase de estudio */
+        .timer-alert {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--error);
+            text-align: center;
+            margin: 12px 0 18px 0;
+            font-variant-numeric: tabular-nums;
+        }
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 10px;
+        }
+        .vocab-item {
+            background: #f8fafc;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #dce4ec;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .vocab-en { font-weight: 700; color: var(--primary); }
+        .speak-btn {
+            background: #e8eef6;
+            color: var(--primary);
+            border: 1px solid #cbd7e6;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .speak-btn:hover {
+            background: var(--gold);
+            color: #fff;
+            border-color: var(--gold);
+        }
+
+        /* Rondas de Vocabulario */
+        .match-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dce4ec;
+        }
+        .match-word { font-weight: 700; font-size: 17px; color: var(--primary); width: 42%; }
+        .match-select { width: 55%; }
+
+        .blank-row {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            line-height: 2.2;
+            border: 1px solid #dce4ec;
+        }
+        .blank-input {
+            width: 155px !important;
+            display: inline-block;
+            padding: 8px !important;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .photo-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #dce4ec;
+        }
+        .emoji { font-size: 56px; margin-bottom: 12px; }
+
+        /* Actividades de Listening */
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 14px;
+            transition: 0.25s;
+        }
+        .question-card.correct-card {
+            border-color: var(--success);
+            background: #f6ffed;
+        }
+        .question-card.wrong-card {
+            border-color: var(--error);
+            background: #fff1f0;
+        }
+        .q-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        .radio-option:hover { background: #eef3f9; }
+        .radio-option input { width: 18px; height: 18px; cursor: pointer; }
+
+        .tf-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .tf-buttons {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .tf-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid #cbd7e6;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Feedback y Resultados */
+        .feedback-box {
+            background: #fff1f0;
+            border-left: 5px solid var(--error);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .feedback-item {
+            margin-bottom: 12px;
+            color: #333;
+            line-height: 1.5;
+            border-bottom: 1px solid #f7d9d7;
+            padding-bottom: 8px;
+        }
+        .feedback-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .correct-answer { color: var(--success); font-weight: 700; }
+        .wrong-answer { color: var(--error); font-weight: 700; text-decoration: line-through; }
+        .perfect-score {
+            background: #f6ffed;
+            border-left: 5px solid var(--success);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: var(--success);
+            font-weight: 700;
+            text-align: center;
+            font-size: 19px;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .summary-box {
+            background: #f8fafc;
+            border: 2px solid #dce4ec;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .summary-box span { display: block; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .summary-box strong { display: block; font-size: 24px; color: var(--primary); margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            .photo-grid, .summary-grid { grid-template-columns: 1fr; }
+            .match-row { flex-direction: column; align-items: stretch; gap: 8px; }
+            .match-word, .match-select { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="logo.png" alt="Wisdom Corner Academy Logo" class="academy-logo" onerror="this.style.display='none'">
+
+    <h1>Wisdom Corner Academy</h1>
+    <h2>Week 4: Free Time & Hobbies</h2>
+
+    <!-- PANTALLA 1: IDENTIFICACIÓN -->
+    <div id="screen-login" class="screen active">
+        <h3>Identificación del Alumno/a</h3>
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="fname" placeholder="Ej: Lucía">
+        </div>
+        <div class="form-group">
+            <label>Apellidos:</label>
+            <input type="text" id="lname" placeholder="Ej: Gómez Pérez">
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px;">
+            Primero tendrás <b>2 minutos</b> para estudiar el vocabulario, después harás los juegos y, al terminar, se desbloqueará el <b>Listening</b>.
+        </p>
+        <button class="btn btn-gold" onclick="startStudyPhase()">Comenzar Fase de Estudio</button>
+    </div>
+
+    <!-- PANTALLA 2: FASE DE ESTUDIO TEMPORIZADA -->
+    <div id="screen-study" class="screen">
+        <h3 style="text-align: center;">Fase de Estudio (Vocabulario)</h3>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">
+            Memoriza el vocabulario y pulsa <b>🔊</b> para escuchar su pronunciación. Cuando acabe el tiempo comenzará el reto automáticamente y no podrás volver atrás.
+        </p>
+
+        <div class="timer-alert" id="study-timer">02:00</div>
+
+        <div class="vocab-grid" id="vocab-list"></div>
+
+        <button class="btn" style="margin-top: 25px;" onclick="forceStartGame()">¡Ya me lo sé! Empezar Juegos ➔</button>
+    </div>
+
+    <!-- RONDA 1: SELECCIONAR SIGNIFICADO -->
+    <div id="screen-r1" class="screen">
+        <h3>Vocabulario - Ronda 1: Selecciona el significado</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Elige la traducción correcta al español para cada palabra.</p>
+
+        <div class="match-row">
+            <div class="match-word">Free time</div>
+            <select class="match-select" id="r1_1">
+                <option value="">-- Elige --</option>
+                <option value="Tiempo libre">Tiempo libre</option>
+                <option value="Aburrido/a">Aburrido/a</option>
+                <option value="Gimnasio">Gimnasio</option>
+                <option value="A veces">A veces</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Boring</div>
+            <select class="match-select" id="r1_2">
+                <option value="">-- Elige --</option>
+                <option value="Emocionante">Emocionante</option>
+                <option value="Aburrido/a">Aburrido/a</option>
+                <option value="Relajarse">Relajarse</option>
+                <option value="Nunca">Nunca</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Exciting</div>
+            <select class="match-select" id="r1_3">
+                <option value="">-- Elige --</option>
+                <option value="Aburrido/a">Aburrido/a</option>
+                <option value="Pasatiempo">Pasatiempo</option>
+                <option value="Emocionante">Emocionante</option>
+                <option value="Piscina">Piscina</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Sometimes</div>
+            <select class="match-select" id="r1_4">
+                <option value="">-- Elige --</option>
+                <option value="Nunca">Nunca</option>
+                <option value="A veces">A veces</option>
+                <option value="Nadar">Nadar</option>
+                <option value="Cocinar">Cocinar</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Never</div>
+            <select class="match-select" id="r1_5">
+                <option value="">-- Elige --</option>
+                <option value="A veces">A veces</option>
+                <option value="Tiempo libre">Tiempo libre</option>
+                <option value="Nunca">Nunca</option>
+                <option value="Relajarse">Relajarse</option>
+            </select>
+        </div>
+        <div class="match-row">
+            <div class="match-word">Relax</div>
+            <select class="match-select" id="r1_6">
+                <option value="">-- Elige --</option>
+                <option value="Relajarse">Relajarse</option>
+                <option value="Cocinar">Cocinar</option>
+                <option value="Dibujar">Dibujar</option>
+                <option value="Gimnasio">Gimnasio</option>
+            </select>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" onclick="switchScreen('screen-r1', 'screen-r2')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 2: RELLENAR HUECOS -->
+    <div id="screen-r2" class="screen">
+        <h3>Vocabulario - Ronda 2: Completa las frases</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la palabra o expresión en <b>inglés</b> según la pista entre paréntesis.</p>
+
+        <div class="blank-row">
+            1. On Saturday morning, I go to the <input type="text" id="r2_1" class="blank-input" placeholder="(gimnasio)">.
+        </div>
+        <div class="blank-row">
+            2. In summer, I go to the <input type="text" id="r2_2" class="blank-input" placeholder="(piscina)"> because I can <input type="text" id="r2_3" class="blank-input" placeholder="(nadar)"> very fast.
+        </div>
+        <div class="blank-row">
+            3. I often <input type="text" id="r2_4" class="blank-input" placeholder="(escucho música)"> in the afternoon.
+        </div>
+        <div class="blank-row">
+            4. On Sunday, I like to <input type="text" id="r2_5" class="blank-input" placeholder="(cocinar)"> for my family.
+        </div>
+        <div class="blank-row">
+            5. My favourite <input type="text" id="r2_6" class="blank-input" placeholder="(pasatiempo)"> is football.
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r2', 'screen-r1')">⬅ Anterior</button>
+            <button class="btn" onclick="switchScreen('screen-r2', 'screen-r3')">Siguiente Ronda ➔</button>
+        </div>
+    </div>
+
+    <!-- RONDA 3: IMÁGENES -->
+    <div id="screen-r3" class="screen">
+        <h3>Vocabulario - Ronda 3: ¿Qué es esto?</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Escribe la palabra o expresión en <b>inglés</b> basándote en el emoji.</p>
+
+        <div class="photo-grid">
+            <div class="photo-card">
+                <div class="emoji">🎮</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Jugar a videojuegos)</p>
+                <input type="text" id="r3_1" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">🎬</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Ir al cine)</p>
+                <input type="text" id="r3_2" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">🚴</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Montar en bici)</p>
+                <input type="text" id="r3_3" placeholder="Escribe en inglés...">
+            </div>
+            <div class="photo-card">
+                <div class="emoji">🎨</div>
+                <p style="font-size: 12px; color: gray; margin-bottom: 5px;">(Dibujar o Pintar)</p>
+                <input type="text" id="r3_4" placeholder="Escribe en inglés...">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-gray" onclick="switchScreen('screen-r3', 'screen-r2')">⬅ Anterior</button>
+            <button class="btn btn-gold" id="btn-submit-vocab" onclick="finishVocabGame()">Corregir Vocabulario ➔</button>
+            <button class="btn btn-gold" id="btn-back-vocab-results" style="display:none;" onclick="switchScreen('screen-r3', 'screen-vocab-results')">Ver Resultados Vocabulario ➔</button>
+        </div>
+    </div>
+
+    <!-- RESULTADOS VOCABULARIO (PUERTA AL LISTENING) -->
+    <div id="screen-vocab-results" class="screen">
+        <h3 id="vocab-result-title" style="text-align: center;">Resultados de Vocabulario</h3>
+        <div class="score-display" id="vocab-final-score"></div>
+        <div id="vocab-feedback-container"></div>
+
+        <button class="btn btn-gold" style="margin-top: 25px;" onclick="switchScreen('screen-vocab-results', 'screen-listening')">
+            🎧 Desbloquear Listening Week 4 ➔
+        </button>
+        <button class="btn btn-gray" onclick="reviewVocabTest()">⬅ Revisar mis respuestas de vocabulario</button>
+    </div>
+
+    <!-- PANTALLA DE LISTENING (SOLO ACCESIBLE TRAS TERMINAR VOCABULARIO) -->
+    <div id="screen-listening" class="screen">
+        <h3>🎧 Listening Activity: Free Time & Hobbies</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">
+            Escucha atentamente el audio y responde a las actividades de abajo. <b>Solo puedes reproducir el audio un máximo de 3 veces.</b>
+        </p>
+
+        <!-- REPRODUCTOR CON LÍMITE DE 3 ESCUCHAS -->
+        <div class="audio-panel">
+            <div class="audio-header">
+                <strong style="color: var(--primary); font-size: 16px;">Reproductor de Audio (Week 4)</strong>
+                <span class="badge-attempts" id="attempts-badge">Intentos restantes: 3 / 3</span>
+            </div>
+            <div class="audio-controls-row">
+                <button type="button" class="btn-play" id="btn-play-listening" onclick="playListeningAudio()">▶ Escuchar Audio</button>
+                <select id="voice-speed" title="Velocidad">
+                    <option value="0.82" selected>Velocidad: Lenta (A1)</option>
+                    <option value="0.95">Velocidad: Normal</option>
+                </select>
+                <select id="voice-selector" title="Voz en inglés" style="max-width: 240px;">
+                    <option value="">Cargando voces naturales...</option>
+                </select>
+            </div>
+            <div class="audio-status" id="audio-status">Pulsa "Escuchar Audio" cuando estés listo/a.</div>
+        </div>
+
+        <!-- PARTE 1: OPCIÓN MÚLTIPLE -->
+        <h4 class="section-subtitle">Part 1: Choose the correct answer (Multiple Choice)</h4>
+
+        <div class="question-card" id="card-l1">
+            <div class="q-title">1. Why does the speaker love the weekend?</div>
+            <label class="radio-option"><input type="radio" name="l1" value="a"> a) Because he doesn't like sports.</label>
+            <label class="radio-option"><input type="radio" name="l1" value="b"> b) Because during the week he is very busy.</label>
+            <label class="radio-option"><input type="radio" name="l1" value="c"> c) Because he loves going shopping.</label>
+        </div>
+
+        <div class="question-card" id="card-l2">
+            <div class="q-title">2. What does he usually do on Saturday morning?</div>
+            <label class="radio-option"><input type="radio" name="l2" value="a"> a) He goes to the gym or rides his bike.</label>
+            <label class="radio-option"><input type="radio" name="l2" value="b"> b) He watches action films with his friends.</label>
+            <label class="radio-option"><input type="radio" name="l2" value="c"> c) He cooks a big meal for his family.</label>
+        </div>
+
+        <div class="question-card" id="card-l3">
+            <div class="q-title">3. What kind of films do he and his friends love?</div>
+            <label class="radio-option"><input type="radio" name="l3" value="a"> a) Comedy films.</label>
+            <label class="radio-option"><input type="radio" name="l3" value="b"> b) Boring films.</label>
+            <label class="radio-option"><input type="radio" name="l3" value="c"> c) Action films.</label>
+        </div>
+
+        <!-- PARTE 2: COMPLETAR FRASES / RESPUESTA CORTA -->
+        <h4 class="section-subtitle">Part 2: Complete the sentences (Write in English)</h4>
+
+        <div class="question-card" id="card-l4">
+            <div class="q-title">4. In summer, he goes to the <input type="text" id="l4" class="blank-input" placeholder="2 palabras"> because he can swim very fast.</div>
+        </div>
+
+        <div class="question-card" id="card-l5">
+            <div class="q-title">5. He often plays video games with his brother, <input type="text" id="l5" class="blank-input" placeholder="Nombre">.</div>
+        </div>
+
+        <div class="question-card" id="card-l6">
+            <div class="q-title">6. On Sunday, he enjoys <input type="text" id="l6" class="blank-input" placeholder="verbo -ing"> a big meal for his family.</div>
+        </div>
+
+        <div class="question-card" id="card-l7">
+            <div class="q-title">7. He never goes <input type="text" id="l7" class="blank-input" placeholder="actividad"> at the weekend because he thinks it is very boring.</div>
+        </div>
+
+        <!-- PARTE 3: VERDADERO O FALSO -->
+        <h4 class="section-subtitle">Part 3: True or False (Nivel A1)</h4>
+
+        <div class="question-card" id="card-l8">
+            <div class="tf-row">
+                <div class="q-title" style="margin:0;">8. The speaker can swim very fast.</div>
+                <div class="tf-buttons">
+                    <label class="tf-label"><input type="radio" name="l8" value="true"> True</label>
+                    <label class="tf-label"><input type="radio" name="l8" value="false"> False</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-l9">
+            <div class="tf-row">
+                <div class="q-title" style="margin:0;">9. His brother Ben plays video games only on Sundays.</div>
+                <div class="tf-buttons">
+                    <label class="tf-label"><input type="radio" name="l9" value="true"> True</label>
+                    <label class="tf-label"><input type="radio" name="l9" value="false"> False</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-l10">
+            <div class="tf-row">
+                <div class="q-title" style="margin:0;">10. The speaker thinks action films are very exciting.</div>
+                <div class="tf-buttons">
+                    <label class="tf-label"><input type="radio" name="l10" value="true"> True</label>
+                    <label class="tf-label"><input type="radio" name="l10" value="false"> False</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-l11">
+            <div class="tf-row">
+                <div class="q-title" style="margin:0;">11. He likes to draw and paint in the afternoon.</div>
+                <div class="tf-buttons">
+                    <label class="tf-label"><input type="radio" name="l11" value="true"> True</label>
+                    <label class="tf-label"><input type="radio" name="l11" value="false"> False</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-l12">
+            <div class="tf-row">
+                <div class="q-title" style="margin:0;">12. The speaker loves going shopping at the weekend.</div>
+                <div class="tf-buttons">
+                    <label class="tf-label"><input type="radio" name="l12" value="true"> True</label>
+                    <label class="tf-label"><input type="radio" name="l12" value="false"> False</label>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-gold" id="btn-submit-listening" onclick="finishListening()">¡Corregir Listening y Ver Nota Final!</button>
+
+        <!-- RESULTADOS FINALES DEL LISTENING Y GLOBAL -->
+        <div id="listening-results-area" style="display:none; margin-top: 25px;">
+            <h3 id="final-global-title" style="text-align:center;">Informe Final</h3>
+            <div class="summary-grid">
+                <div class="summary-box">
+                    <span>Vocabulario</span>
+                    <strong id="sum-vocab">0 / 16</strong>
+                </div>
+                <div class="summary-box">
+                    <span>Listening</span>
+                    <strong id="sum-listening">0 / 12</strong>
+                </div>
+                <div class="summary-box" style="border-color: var(--gold); background: #fffdf5;">
+                    <span>Nota Total</span>
+                    <strong id="sum-total" style="color: var(--gold);">0 / 28</strong>
+                </div>
+            </div>
+            <div id="listening-feedback-container"></div>
+            <button class="btn btn-gray" onclick="location.reload()">Reiniciar actividad completa</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let player = "";
+    let countdownInterval;
+    let timeRemaining = 120; // 2 minutos de estudio
+
+    // Puntuaciones
+    let vocabScore = 0;
+    let vocabTotal = 16;
+
+    // Control del Listening (máximo 3 escuchas)
+    let listensLeft = 3;
+    let isPlayingScript = false;
+    let availableEnglishVoices = [];
+
+    const vocabulary = [
+        { en: "Free time", es: "Tiempo libre" },
+        { en: "Hobby", es: "Pasatiempo / Afición" },
+        { en: "Listen to music", es: "Escuchar música" },
+        { en: "Play video games", es: "Jugar a videojuegos" },
+        { en: "Go to the cinema", es: "Ir al cine" },
+        { en: "Draw", es: "Dibujar" },
+        { en: "Paint", es: "Pintar" },
+        { en: "Cook", es: "Cocinar" },
+        { en: "Ride a bike", es: "Montar en bici" },
+        { en: "Swim", es: "Nadar" },
+        { en: "Swimming pool", es: "Piscina" },
+        { en: "Gym", es: "Gimnasio" },
+        { en: "Relax", es: "Relajarse" },
+        { en: "Boring", es: "Aburrido/a" },
+        { en: "Exciting", es: "Emocionante" },
+        { en: "Sometimes", es: "A veces" },
+        { en: "Never", es: "Nunca" }
+    ];
+
+    const listeningScript = [
+        "Hello! It is great to see you again.",
+        "Today, I want to talk about my free time and my hobbies.",
+        "During the week, I am very busy, so I love the weekend.",
+        "On Saturday morning, I usually go to the gym or ride my bike in the park.",
+        "I love sports! In summer, I also go to the swimming pool because I can swim very fast.",
+        "In the afternoon, I like to relax at home. I often listen to music or play video games with my brother, Ben.",
+        "My brother loves video games, and he plays every day.",
+        "On Saturday evening, I sometimes go to the cinema with my friends. We love action films because they are very exciting.",
+        "On Sunday, I enjoy cooking a big meal for my family. I really like cooking, and I think it is very fun.",
+        "I also like to draw and paint, so I sometimes make pictures in the afternoon.",
+        "However, I never go shopping at the weekend. I think shopping is very boring!",
+        "What about you? What do you like doing in your free time?"
+    ];
+
+    // Renderizar vocabulario con botón de audio
+    function renderVocab() {
+        const container = document.getElementById('vocab-list');
+        container.innerHTML = vocabulary.map(item => `
+            <div class="vocab-item">
+                <div><span class="vocab-en">${item.en}:</span> ${item.es}</div>
+                <button type="button" class="speak-btn" title="Escuchar pronunciación" onclick="speakWord('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+            </div>
+        `).join('');
+    }
+    renderVocab();
+
+    // Selección inteligente de voces más realistas/naturales
+    function loadVoices() {
+        if (!('speechSynthesis' in window)) return;
+        const voices = window.speechSynthesis.getVoices();
+        const enVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+
+        // Puntuar voces para priorizar las neuronales/naturales (Edge Natural, Google UK/US, Siri/Daniel/Samantha)
+        function scoreVoice(v) {
+            const name = v.name.toLowerCase();
+            let score = 0;
+            if (name.includes('natural') || name.includes('online')) score += 100;
+            if (name.includes('neural')) score += 90;
+            if (name.includes('google uk english')) score += 85;
+            if (name.includes('google us english')) score += 80;
+            if (name.includes('libby') || name.includes('sonia') || name.includes('ryan') || name.includes('aria')) score += 75;
+            if (name.includes('daniel') || name.includes('samantha') || name.includes('serena')) score += 60;
+            if (v.lang === 'en-GB') score += 15;
+            return score;
+        }
+
+        enVoices.sort((a, b) => scoreVoice(b) - scoreVoice(a));
+        availableEnglishVoices = enVoices;
+
+        const selector = document.getElementById('voice-selector');
+        if (enVoices.length > 0) {
+            selector.innerHTML = enVoices.map((v, idx) =>
+                `<option value="${idx}">${v.name} (${v.lang})</option>`
+            ).join('');
+        } else {
+            selector.innerHTML = `<option value="">Voz en inglés predeterminada</option>`;
+        }
+    }
+
+    if ('speechSynthesis' in window) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function getSelectedVoice() {
+        const selector = document.getElementById('voice-selector');
+        const idx = selector ? selector.value : "";
+        if (idx !== "" && availableEnglishVoices[idx]) {
+            return availableEnglishVoices[idx];
+        }
+        return availableEnglishVoices[0] || null;
+    }
+
+    function speakWord(text) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-GB';
+        u.rate = 0.88;
+        const voice = getSelectedVoice();
+        if (voice) u.voice = voice;
+        window.speechSynthesis.speak(u);
+    }
+
+    // Reproducción del Listening con pausas reales entre párrafos y límite de 3 veces
+    function playListeningAudio() {
+        if (!('speechSynthesis' in window)) {
+            alert("Tu navegador no soporta la reproducción de voz.");
+            return;
+        }
+        if (listensLeft <= 0 || isPlayingScript) return;
+
+        listensLeft--;
+        isPlayingScript = true;
+
+        const badge = document.getElementById('attempts-badge');
+        const btnPlay = document.getElementById('btn-play-listening');
+        const status = document.getElementById('audio-status');
+        const speed = parseFloat(document.getElementById('voice-speed').value);
+        const voice = getSelectedVoice();
+
+        badge.textContent = `Intentos restantes: ${listensLeft} / 3`;
+        if (listensLeft === 0) badge.classList.add('low');
+
+        btnPlay.disabled = true;
+        btnPlay.textContent = "🔊 Reproduciendo...";
+        status.textContent = "Escucha atentamente el audio...";
+
+        window.speechSynthesis.cancel();
+        let index = 0;
+
+        function speakNextParagraph() {
+            if (index >= listeningScript.length) {
+                isPlayingScript = false;
+                if (listensLeft > 0) {
+                    btnPlay.disabled = false;
+                    btnPlay.textContent = "▶ Escuchar Audio";
+                    status.textContent = `Audio finalizado. Te quedan ${listensLeft} intento(s).`;
+                } else {
+                    btnPlay.disabled = true;
+                    btnPlay.textContent = "🔒 Límite alcanzado (0/3)";
+                    status.textContent = "Has utilizado las 3 escuchas permitidas. Completa las actividades y corrige.";
+                }
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(listeningScript[index]);
+            utterance.lang = voice ? voice.lang : 'en-GB';
+            utterance.rate = speed;
+            utterance.pitch = 1.0;
+            if (voice) utterance.voice = voice;
+
+            utterance.onend = () => {
+                index++;
+                // Pausa natural de 800 ms entre párrafos
+                setTimeout(speakNextParagraph, 800);
+            };
+            utterance.onerror = () => {
+                isPlayingScript = false;
+                if (listensLeft > 0) {
+                    btnPlay.disabled = false;
+                    btnPlay.textContent = "▶ Escuchar Audio";
+                }
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        speakNextParagraph();
+    }
+
+    // Navegación
+    function switchScreen(current, next) {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        document.getElementById(current).classList.remove('active');
+        document.getElementById(next).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startStudyPhase() {
+        const fname = document.getElementById('fname').value.trim();
+        const lname = document.getElementById('lname').value.trim();
+        if (!fname || !lname) {
+            alert("Por favor, introduce tu nombre y apellidos para continuar.");
+            return;
+        }
+        player = fname + " " + lname;
+        switchScreen('screen-login', 'screen-study');
+
+        const timerDisplay = document.getElementById('study-timer');
+        countdownInterval = setInterval(() => {
+            timeRemaining--;
+            let minutes = Math.floor(timeRemaining / 60);
+            let seconds = timeRemaining % 60;
+            timerDisplay.textContent =
+                (minutes < 10 ? "0" : "") + minutes + ":" +
+                (seconds < 10 ? "0" : "") + seconds;
+
+            if (timeRemaining <= 0) {
+                clearInterval(countdownInterval);
+                forceStartGame();
+            }
+        }, 1000);
+    }
+
+    function forceStartGame() {
+        clearInterval(countdownInterval);
+        switchScreen('screen-study', 'screen-r1');
+    }
+
+    function normalize(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    // Corrección del Vocabulario
+    function finishVocabGame() {
+        const answers = {
+            r1_1: { expected: ["tiempo libre"], label: "Ronda 1 (Free time)" },
+            r1_2: { expected: ["aburrido/a"], label: "Ronda 1 (Boring)" },
+            r1_3: { expected: ["emocionante"], label: "Ronda 1 (Exciting)" },
+            r1_4: { expected: ["a veces"], label: "Ronda 1 (Sometimes)" },
+            r1_5: { expected: ["nunca"], label: "Ronda 1 (Never)" },
+            r1_6: { expected: ["relajarse"], label: "Ronda 1 (Relax)" },
+            r2_1: { expected: ["gym"], label: "Ronda 2 (gimnasio)" },
+            r2_2: { expected: ["swimming pool", "pool"], label: "Ronda 2 (piscina)" },
+            r2_3: { expected: ["swim"], label: "Ronda 2 (nadar)" },
+            r2_4: { expected: ["listen to music"], label: "Ronda 2 (escucho música)" },
+            r2_5: { expected: ["cook"], label: "Ronda 2 (cocinar)" },
+            r2_6: { expected: ["hobby"], label: "Ronda 2 (pasatiempo)" },
+            r3_1: { expected: ["play video games", "video games"], label: "Ronda 3 (🎮)" },
+            r3_2: { expected: ["go to the cinema", "cinema"], label: "Ronda 3 (🎬)" },
+            r3_3: { expected: ["ride a bike", "ride my bike"], label: "Ronda 3 (🚴)" },
+            r3_4: { expected: ["draw", "paint", "draw and paint", "draw / paint"], label: "Ronda 3 (🎨)" }
+        };
+
+        let correct = 0;
+        vocabTotal = Object.keys(answers).length;
+        let errorsHTML = "";
+
+        for (let key in answers) {
+            const inputEl = document.getElementById(key);
+            const userVal = normalize(inputEl.value);
+            inputEl.disabled = true;
+
+            if (answers[key].expected.includes(userVal)) {
+                correct++;
+                inputEl.style.borderColor = "var(--success)";
+                inputEl.style.backgroundColor = "#f6ffed";
+            } else {
+                const displayUser = inputEl.value.trim() ? inputEl.value.trim() : "en blanco";
+                inputEl.style.borderColor = "var(--error)";
+                inputEl.style.backgroundColor = "#fff1f0";
+                errorsHTML += `
+                    <div class="feedback-item">
+                        En <b>${answers[key].label}</b>, pusiste <span class="wrong-answer">"${displayUser}"</span>.
+                        Correcto: <span class="correct-answer">${answers[key].expected[0].toUpperCase()}</span>.
+                    </div>
+                `;
+            }
+        }
+
+        vocabScore = correct;
+        switchScreen('screen-r3', 'screen-vocab-results');
+        document.getElementById('vocab-result-title').textContent = "Vocabulario de " + player;
+        document.getElementById('vocab-final-score').textContent = `${correct} / ${vocabTotal} Aciertos`;
+
+        const container = document.getElementById('vocab-feedback-container');
+        if (correct === vocabTotal) {
+            container.innerHTML = `<div class="perfect-score">¡Perfecto! Ahora ya puedes pasar al Listening. 🎉</div>`;
+        } else {
+            container.innerHTML = `
+                <div class="feedback-box">
+                    <h4 style="margin-bottom: 12px; color: var(--error);">Errores en Vocabulario:</h4>
+                    ${errorsHTML}
+                </div>
+            `;
+        }
+    }
+
+    function reviewVocabTest() {
+        switchScreen('screen-vocab-results', 'screen-r1');
+        document.getElementById('btn-submit-vocab').style.display = 'none';
+        document.getElementById('btn-back-vocab-results').style.display = 'block';
+    }
+
+    // Corrección del Listening
+    function finishListening() {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+        const listeningAnswers = [
+            { id: "l1", type: "radio", expected: "b", display: "b) Because during the week he is very busy." },
+            { id: "l2", type: "radio", expected: "a", display: "a) He goes to the gym or rides his bike." },
+            { id: "l3", type: "radio", expected: "c", display: "c) Action films." },
+            { id: "l4", type: "text", expected: ["swimming pool", "pool"], display: "swimming pool" },
+            { id: "l5", type: "text", expected: ["ben"], display: "Ben" },
+            { id: "l6", type: "text", expected: ["cooking"], display: "cooking" },
+            { id: "l7", type: "text", expected: ["shopping"], display: "shopping" },
+            { id: "l8", type: "radio", expected: "true", display: "True" },
+            { id: "l9", type: "radio", expected: "false", display: "False (He plays every day)" },
+            { id: "l10", type: "radio", expected: "true", display: "True" },
+            { id: "l11", type: "radio", expected: "true", display: "True" },
+            { id: "l12", type: "radio", expected: "false", display: "False (He never goes shopping)" }
+        ];
+
+        let lCorrect = 0;
+        let lTotal = listeningAnswers.length;
+        let errorsHTML = "";
+
+        listeningAnswers.forEach((q, i) => {
+            const card = document.getElementById(`card-${q.id}`);
+            let isRight = false;
+            let userAnswerDisplay = "en blanco";
+
+            if (q.type === "radio") {
+                const radios = document.querySelectorAll(`input[name="${q.id}"]`);
+                radios.forEach(r => {
+                    r.disabled = true;
+                    if (r.checked) {
+                        userAnswerDisplay = r.value.toUpperCase();
+                        if (r.value === q.expected) isRight = true;
+                    }
+                });
+            } else {
+                const input = document.getElementById(q.id);
+                input.disabled = true;
+                const val = normalize(input.value);
+                if (input.value.trim()) userAnswerDisplay = input.value.trim();
+                if (q.expected.includes(val)) isRight = true;
+            }
+
+            if (isRight) {
+                lCorrect++;
+                card.classList.add('correct-card');
+            } else {
+                card.classList.add('wrong-card');
+                errorsHTML += `
+                    <div class="feedback-item">
+                        <b>Pregunta ${i + 1}:</b> Pusiste <span class="wrong-answer">"${userAnswerDisplay}"</span>.<br>
+                        Respuesta correcta: <span class="correct-answer">${q.display}</span>.
+                    </div>
+                `;
+            }
+        });
+
+        document.getElementById('btn-submit-listening').style.display = 'none';
+        document.getElementById('btn-play-listening').disabled = true;
+
+        const resultsArea = document.getElementById('listening-results-area');
+        resultsArea.style.display = 'block';
+        document.getElementById('final-global-title').textContent = `Informe Final de ${player}`;
+        document.getElementById('sum-vocab').textContent = `${vocabScore} / ${vocabTotal}`;
+        document.getElementById('sum-listening').textContent = `${lCorrect} / ${lTotal}`;
+        document.getElementById('sum-total').textContent = `${vocabScore + lCorrect} / ${vocabTotal + lTotal}`;
+
+        const fbContainer = document.getElementById('listening-feedback-container');
+        if (lCorrect === lTotal) {
+            fbContainer.innerHTML = `<div class="perfect-score">¡Enhorabuena! Has acertado todas las preguntas del Listening. 🎉</div>`;
+        } else {
+            fbContainer.innerHTML = `
+                <div class="feedback-box">
+                    <h4 style="margin-bottom: 12px; color: var(--error);">Corrección de fallos del Listening:</h4>
+                    ${errorsHTML}
+                </div>
+            `;
+        }
+
+        resultsArea.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
