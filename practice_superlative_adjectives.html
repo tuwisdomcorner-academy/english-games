@@ -1,0 +1,3972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisdom Corner Academy — Superlative Adjectives (Nivel A2–B1)</title>
+
+  <!-- Google Fonts: Playfair Display (títulos académicos) + Plus Jakarta Sans (interfaz y lectura) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS — IDENTIDAD WISDOM CORNER ACADEMY
+       ========================================================================= */
+    :root {
+      --parchment: #FAF8F5;
+      --cream: #F3EFE6;
+      --white: #FFFFFF;
+      --ink: #1E293B;
+      --muted: #526074;
+      --navy: #1B365D;
+      --navy-dark: #122644;
+      --navy-light: #2A4E82;
+      --forest: #2D5A4C;
+      --forest-light: #3C7362;
+      --forest-soft: #EBF4F0;
+      --gold: #C59B27;
+      --gold-dark: #8A6914;
+      --gold-light: #E3C565;
+      --gold-soft: #FBF5E6;
+      --border: #E8E2D6;
+      --ok: #1E8449;
+      --ok-soft: #EAF7EE;
+      --ok-border: #A3D9B1;
+      --err: #C0392B;
+      --err-soft: #FDEDEC;
+      --err-border: #F2B8B5;
+      --shadow-card: 0 4px 20px -2px rgba(27, 54, 93, 0.06), 0 1px 4px rgba(27, 54, 93, 0.04);
+      --shadow-soft: 0 2px 10px rgba(27, 54, 93, 0.05);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--gold-soft);
+      color: var(--navy);
+    }
+
+    .container {
+      max-width: 1060px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    /* =========================================================================
+       2. CABECERA INSTITUCIONAL Y MARCADOR GLOBAL
+       ========================================================================= */
+    .site-header {
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 4px 18px rgba(18, 38, 68, 0.22);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-inner {
+      padding: 0.9rem 0 0.75rem;
+    }
+
+    .header-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 820px) {
+      .header-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .logo-frame {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: rgba(18, 38, 68, 0.85);
+      border: 1px solid rgba(197, 155, 39, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+    }
+
+    .logo-fallback {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+    }
+
+    .logo-fallback.visible {
+      display: flex;
+    }
+
+    .brand-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .academy-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--gold-light);
+    }
+
+    .level-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(197, 155, 39, 0.22);
+      color: var(--gold-light);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+    }
+
+    .brand-title {
+      margin: 0.15rem 0 0;
+      font-family: var(--font-serif);
+      font-size: 1.38rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+    }
+
+    @media (min-width: 640px) {
+      .brand-title {
+        font-size: 1.62rem;
+      }
+    }
+
+    .brand-subtitle {
+      margin: 0.2rem 0 0;
+      font-size: 0.81rem;
+      color: #CBD5E1;
+    }
+
+    /* Marcador Global (80 ejercicios) */
+    .scoreboard {
+      background: rgba(18, 38, 68, 0.86);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-width: 265px;
+    }
+
+    .scoreboard-left {
+      flex: 1;
+    }
+
+    .scoreboard-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      color: #CBD5E1;
+      margin-bottom: 0.4rem;
+    }
+
+    .scoreboard-score {
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 999px;
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .scoreboard-pct {
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      padding-left: 0.8rem;
+      text-align: right;
+    }
+
+    .scoreboard-pct-val {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .scoreboard-pct-lbl {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #CBD5E1;
+      margin-top: 0.2rem;
+    }
+
+    /* Navegación por 5 Pestañas */
+    .tabs-nav {
+      margin-top: 0.85rem;
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.11);
+      color: #E2E8F0;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    }
+
+    .tab-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #E2E8F0;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: var(--cream);
+      color: var(--navy);
+    }
+
+    .tab-badge.graded-high {
+      background: rgba(30, 132, 73, 0.3);
+      color: #A7F3D0;
+    }
+
+    .tab-btn.active .tab-badge.graded-high {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .tab-badge.graded-mid {
+      background: rgba(197, 155, 39, 0.32);
+      color: var(--gold-light);
+    }
+
+    .tab-btn.active .tab-badge.graded-mid {
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+    }
+
+    /* =========================================================================
+       3. LAYOUT PRINCIPAL Y TARJETAS
+       ========================================================================= */
+    main {
+      flex: 1;
+      padding: 1.75rem 0 2.5rem;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stack-lg > * + * { margin-top: 1.5rem; }
+    .stack-md > * + * { margin-top: 1rem; }
+    .stack-sm > * + * { margin-top: 0.65rem; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 1.35rem;
+    }
+
+    @media (min-width: 640px) {
+      .card {
+        padding: 1.7rem;
+      }
+    }
+
+    .card-top-navy { border-top: 4px solid var(--navy); }
+    .card-top-forest { border-top: 4px solid var(--forest); }
+    .card-top-gold { border-top: 4px solid var(--gold); }
+
+    .challenge-card {
+      background: linear-gradient(180deg, #FFFCF5 0%, #FFFFFF 140px);
+      border: 1.5px solid rgba(197, 155, 39, 0.58);
+      border-top: 5px solid var(--gold);
+      box-shadow: 0 8px 26px -4px rgba(197, 155, 39, 0.16), var(--shadow-card);
+    }
+
+    .gold-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #C59B27 0%, #DFB94C 100%);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(197, 155, 39, 0.35);
+      margin-bottom: 0.55rem;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-accent {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 180px;
+      height: 180px;
+      background: var(--gold-soft);
+      border-bottom-left-radius: 100%;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      background: var(--gold-soft);
+      border: 1px solid rgba(197, 155, 39, 0.42);
+      padding: 0.25rem 0.72rem;
+      border-radius: 999px;
+      margin-bottom: 0.6rem;
+    }
+
+    h2.section-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+
+    @media (min-width: 640px) {
+      h2.section-title {
+        font-size: 1.82rem;
+      }
+    }
+
+    h3.card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .lead-text {
+      margin: 0.5rem 0 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+      max-width: 820px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* =========================================================================
+       4. ESTILOS DE LA GUÍA DE TEORÍA
+       ========================================================================= */
+    .formula-banner {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      border-left: 5px solid var(--gold);
+      margin-top: 1rem;
+    }
+
+    .formula-banner span.hl {
+      color: var(--gold-light);
+      font-weight: 800;
+    }
+
+    .rule-box {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1.05rem;
+      font-size: 0.87rem;
+    }
+
+    .table-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 1.05rem 1.45rem;
+      background: rgba(243, 239, 230, 0.78);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table.grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    table.grammar-table th {
+      background: var(--parchment);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.15rem;
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    table.grammar-table td {
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    table.grammar-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pill-mini {
+      display: inline-block;
+      padding: 0.14rem 0.52rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .pill-navy { background: rgba(27, 54, 93, 0.1); color: var(--navy); }
+    .pill-forest { background: var(--forest-soft); color: var(--forest); }
+    .pill-gold { background: var(--gold-soft); color: var(--gold-dark); border: 1px solid rgba(197, 155, 39, 0.4); }
+
+    .warning-banner {
+      background: rgba(251, 245, 230, 0.86);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem;
+    }
+
+    .mistake-card {
+      background: var(--white);
+      border: 1px solid rgba(197, 155, 39, 0.35);
+      border-radius: var(--radius-md);
+      padding: 0.95rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.85rem;
+    }
+
+    .mistake-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--err);
+      margin-bottom: 0.3rem;
+    }
+
+    .strike {
+      text-decoration: line-through;
+      color: #64748B;
+      margin: 0.12rem 0;
+    }
+
+    .correct-line {
+      color: var(--ok);
+      font-weight: 600;
+      margin: 0.12rem 0;
+    }
+
+    /* =========================================================================
+       5. BOTONES
+       ========================================================================= */
+    .btn {
+      appearance: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.68rem 1.2rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 0.87rem;
+      font-weight: 600;
+      transition: background 0.18s ease, transform 0.14s ease, border-color 0.18s ease;
+    }
+
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(27, 54, 93, 0.22);
+    }
+
+    .btn-primary:hover { background: var(--navy-dark); }
+
+    .btn-forest {
+      background: var(--forest);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(45, 90, 76, 0.22);
+    }
+
+    .btn-forest:hover { background: var(--forest-light); }
+
+    .btn-secondary {
+      background: var(--parchment);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover { background: var(--cream); }
+
+    .btn-danger {
+      background: var(--err);
+      color: var(--white);
+    }
+
+    .btn-danger:hover { background: #A93226; }
+
+    .btn-link {
+      background: none;
+      border: none;
+      padding: 0.2rem 0.35rem;
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-link:hover { text-decoration: underline; }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+      padding-top: 0.4rem;
+    }
+
+    /* =========================================================================
+       6. EJERCICIOS — ESTILOS GENERALES E INPUTS
+       ========================================================================= */
+    .section-header-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .section-header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy);
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    .block-divider {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.9rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .subblock-title {
+      margin: 1.3rem 0 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .subblock-title:first-child {
+      margin-top: 0;
+    }
+
+    .exercise-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      padding: 1rem 1.1rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .exercise-item.challenge-item {
+      border-color: rgba(197, 155, 39, 0.38);
+      background: rgba(255, 253, 247, 0.75);
+    }
+
+    .exercise-item.is-correct {
+      border-color: var(--ok-border);
+      background: rgba(234, 247, 238, 0.5);
+    }
+
+    .exercise-item.is-wrong {
+      border-color: var(--err-border);
+      background: rgba(253, 237, 236, 0.5);
+    }
+
+    .exercise-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .ex-num {
+      width: 29px;
+      height: 29px;
+      border-radius: 8px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ex-num.gold-num {
+      background: var(--gold-soft);
+      border-color: rgba(197, 155, 39, 0.52);
+      color: var(--gold-dark);
+    }
+
+    .ex-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sentence-line {
+      font-size: 0.94rem;
+      line-height: 2.25;
+      color: var(--ink);
+    }
+
+    .verb-hint {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--forest);
+      background: var(--forest-soft);
+      padding: 0.12rem 0.45rem;
+      border-radius: 6px;
+      margin-left: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .answer-clue {
+      display: inline-block;
+      margin-left: 0.35rem;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--forest);
+      background: var(--forest-soft);
+      border: 1px solid rgba(45, 90, 76, 0.22);
+      padding: 0.12rem 0.55rem;
+      border-radius: 7px;
+    }
+
+    .gap-input {
+      font-family: var(--font-sans);
+      font-size: 0.89rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: rgba(250, 248, 245, 0.92);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 0.28rem 0.6rem;
+      margin: 0 0.18rem;
+      width: 165px;
+      max-width: 100%;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .gap-input.w-xs { width: 105px; }
+    .gap-input.w-sm { width: 135px; }
+    .gap-input.w-md { width: 175px; }
+    .gap-input.w-lg { width: 225px; }
+    .gap-input.w-full { width: 100%; margin: 0; padding: 0.58rem 0.8rem; }
+
+    .gap-input:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.14);
+      background: var(--white);
+    }
+
+    .gap-input.input-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .gap-input.input-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+      color: var(--err);
+    }
+
+    /* =========================================================================
+       7. MECÁNICAS INTERACTIVAS: CLASIFICADOR, FLECHAS, TILES, ERRORES, CLOZE
+       ========================================================================= */
+
+    /* --- 7A. Clasificador / Selector de botones --- */
+    .classify-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 680px) {
+      .classify-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .classify-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      padding: 0.95rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.72rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .classify-card.is-correct {
+      border-color: var(--ok-border);
+      background: rgba(234, 247, 238, 0.5);
+    }
+
+    .classify-card.is-wrong {
+      border-color: var(--err-border);
+      background: rgba(253, 237, 236, 0.5);
+    }
+
+    .classify-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .classify-expr {
+      font-family: var(--font-serif);
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+
+    .classify-prompt {
+      font-size: 0.93rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .classify-btns {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .classify-btns.btn-cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .classify-btns.btn-cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 520px) {
+      .classify-btns.btn-cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .choice-btn {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.52rem 0.55rem;
+      border-radius: 9px;
+      border: 2px solid var(--border);
+      background: var(--parchment);
+      color: var(--navy);
+      transition: all 0.16s ease;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .choice-btn.selected {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(27, 54, 93, 0.22);
+    }
+
+    .choice-btn.graded-ok {
+      background: var(--ok);
+      border-color: var(--ok);
+      color: var(--white);
+    }
+
+    .choice-btn.graded-err {
+      background: var(--err);
+      border-color: var(--err);
+      color: var(--white);
+    }
+
+    /* --- 7B. Detecta y Corrige el Error --- */
+    .error-segments {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: var(--radius-md);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .err-seg-btn {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.91rem;
+      font-weight: 500;
+      padding: 0.34rem 0.65rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .err-seg-btn:hover {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .err-seg-btn.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(197, 155, 39, 0.28);
+    }
+
+    .err-seg-btn.graded-ok {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: var(--ok);
+      font-weight: 700;
+    }
+
+    .err-seg-btn.graded-err {
+      border-color: var(--err);
+      background: var(--err-soft);
+      color: var(--err);
+      font-weight: 700;
+    }
+
+    .error-fix-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* --- 7C. Unir con Flechas SVG --- */
+    .match-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .match-wrap {
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .match-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.3rem;
+      position: relative;
+      z-index: 20;
+    }
+
+    @media (min-width: 640px) { .match-columns { gap: 3.5rem; } }
+    @media (min-width: 900px) { .match-columns { gap: 5rem; } }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .match-card {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 0.72rem 0.85rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .match-card.right-card { background: rgba(250, 248, 245, 0.78); }
+    .match-card:hover { border-color: var(--gold); }
+    .match-card.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.25);
+    }
+    .match-card.linked {
+      border-color: var(--navy);
+      background: rgba(27, 54, 93, 0.05);
+    }
+    .match-card.graded-ok { border-color: var(--ok); background: var(--ok-soft); }
+    .match-card.graded-err { border-color: var(--err); background: var(--err-soft); }
+
+    .match-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.73rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .match-card.right-card .match-badge { background: var(--white); color: var(--muted); }
+    .match-text { font-size: 0.82rem; line-height: 1.4; font-weight: 500; }
+    @media (min-width: 640px) { .match-text { font-size: 0.89rem; } }
+
+    /* --- 7D. Word Tiles --- */
+    .build-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .build-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .build-zone {
+      min-height: 48px;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 2px dashed var(--border);
+      background: rgba(250, 248, 245, 0.85);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .build-placeholder {
+      font-size: 0.8rem;
+      color: #94A3B8;
+      font-style: italic;
+      user-select: none;
+    }
+
+    .build-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .word-tile {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 9px;
+      transition: transform 0.14s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .word-tile:hover:not(:disabled) { transform: translateY(-1px); }
+
+    .word-tile.tile-bank {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .word-tile.tile-bank:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .word-tile.tile-bank:disabled {
+      background: #F1F5F9;
+      color: #CBD5E1;
+      border-color: #E2E8F0;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .word-tile.tile-placed {
+      background: var(--navy);
+      color: var(--white);
+      border: 1.5px solid var(--navy);
+      box-shadow: 0 2px 6px rgba(27, 54, 93, 0.18);
+    }
+
+    .word-tile.tile-placed:hover { background: var(--navy-light); }
+
+    /* --- 7E. Cloze Test --- */
+    .cloze-paper {
+      background: rgba(250, 248, 245, 0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      box-shadow: inset 0 2px 6px rgba(27, 54, 93, 0.04);
+    }
+
+    .cloze-title {
+      margin: 0 0 0.95rem;
+      font-family: var(--font-serif);
+      font-size: 1.28rem;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cloze-paragraph {
+      margin: 0 0 0.95rem;
+      font-size: 0.95rem;
+      line-height: 2.38;
+      color: var(--ink);
+    }
+
+    .cloze-paragraph:last-child { margin-bottom: 0; }
+
+    .cloze-unit {
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.22rem;
+      margin: 0 0.14rem;
+    }
+
+    .cloze-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    /* =========================================================================
+       8. FEEDBACK, BARRA DE ACCIÓN, RESUMEN, PIE Y MODAL
+       ========================================================================= */
+    .feedback-slot { margin-top: 0.75rem; }
+    .feedback-slot.hidden { display: none; }
+
+    .fb-ok {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ok);
+      background: var(--ok-soft);
+      border: 1px solid var(--ok-border);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .fb-err {
+      font-size: 0.84rem;
+      background: var(--err-soft);
+      border: 1px solid var(--err-border);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+    }
+
+    .fb-err-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      color: var(--err);
+      font-weight: 600;
+    }
+
+    .fb-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .fb-icon-ok { background: var(--ok); }
+    .fb-icon-err { background: var(--err); }
+
+    .fb-answer {
+      color: #111827;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: rgba(192, 57, 43, 0.35);
+    }
+
+    .fb-gap-list {
+      margin-left: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .fb-gap-pill {
+      font-size: 0.77rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+    }
+
+    .fb-gap-pill.ok { background: var(--ok-soft); border-color: var(--ok-border); color: var(--ok); }
+    .fb-gap-pill.err { background: rgba(192, 57, 43, 0.1); border-color: var(--err-border); color: var(--err); }
+
+    .fb-tip {
+      margin-left: 1.8rem;
+      color: #991B1B;
+      background: rgba(192, 57, 43, 0.08);
+      border-left: 3px solid var(--err);
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .fb-expl {
+      margin-left: 1.8rem;
+      color: #334155;
+    }
+
+    .fb-expl strong { color: var(--navy); }
+
+    /* Barra de acción y resumen */
+    .action-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .action-bar-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 640px) {
+      .action-bar-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .summary-card {
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.3rem;
+      border: 1px solid var(--border);
+    }
+
+    .summary-card.hidden { display: none; }
+    .summary-card.lvl-high { background: var(--ok-soft); border-color: var(--ok-border); color: var(--ok); }
+    .summary-card.lvl-good { background: var(--forest-soft); border-color: rgba(45, 90, 76, 0.35); color: var(--forest); }
+    .summary-card.lvl-mid { background: var(--gold-soft); border-color: rgba(197, 155, 39, 0.45); color: var(--gold-dark); }
+    .summary-card.lvl-low { background: var(--err-soft); border-color: var(--err-border); color: var(--err); }
+
+    .summary-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 0.85rem;
+    }
+
+    @media (min-width: 640px) {
+      .summary-top {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .summary-score {
+      font-family: var(--font-serif);
+      font-size: 1.48rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+
+    .summary-grade-pill {
+      display: inline-block;
+      margin-left: 0.45rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .summary-msg {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 500;
+      max-width: 440px;
+    }
+
+    .summary-bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .summary-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.7s ease;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1.15rem 0;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (min-width: 640px) {
+      .footer-inner { flex-direction: row; }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .footer-logo-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--navy);
+      border: 1px solid rgba(197, 155, 39, 0.5);
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 0.9rem;
+    }
+
+    /* Modal de reinicio */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(18, 38, 68, 0.52);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 45px rgba(18, 38, 68, 0.25);
+      max-width: 420px;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .modal-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: var(--gold-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--navy);
+    }
+
+    .modal-desc {
+      margin: 0.2rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.65rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== CABECERA WISDOM CORNER ACADEMY ==================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="header-top">
+        <!-- Logotipo Oficial + Identidad -->
+        <div class="brand">
+          <div class="logo-frame">
+            <img
+              src="Logo.png"
+              alt="Wisdom Corner Academy"
+              onerror="this.style.display='none'; document.getElementById('header-logo-fallback').classList.add('visible');"
+            />
+            <div id="header-logo-fallback" class="logo-fallback" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 6.5C2 5.4 2.9 4.5 4 4.5h5.5c1.4 0 2.5 1.1 2.5 2.5v12.5c0-1.1-.9-2-2-2H4c-1.1 0-2-.9-2-2V6.5z"/>
+                <path d="M22 6.5c0-1.1-.9-2-2-2h-5.5C13.1 4.5 12 5.6 12 7v12.5c0-1.1.9-2 2-2h6c1.1 0 2-.9 2-2V6.5z"/>
+                <circle cx="12" cy="3" r="1.2" fill="#E3C565" stroke="none"/>
+              </svg>
+              <span style="font-family: var(--font-serif); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; margin-top: 2px;">WCA</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="brand-eyebrow">
+              <span class="academy-tag">Wisdom Corner Academy</span>
+              <span class="level-pill">Nivel A2–B1</span>
+            </div>
+            <h1 class="brand-title">Superlative Adjectives</h1>
+            <p class="brand-subtitle">Short, Long, Irregular &amp; Questions · Nivel A2–B1</p>
+          </div>
+        </div>
+
+        <!-- Marcador Global (80 ejercicios) -->
+        <div class="scoreboard" aria-live="polite">
+          <div class="scoreboard-left">
+            <div class="scoreboard-labels">
+              <span>Puntuación global:</span>
+              <span id="global-score-text" class="scoreboard-score">0 / 80</span>
+            </div>
+            <div class="progress-track">
+              <div id="global-progress-bar" class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="scoreboard-pct">
+            <div id="global-percent" class="scoreboard-pct-val">0%</div>
+            <div class="scoreboard-pct-lbl">Nota</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por 5 Pestañas -->
+      <nav class="tabs-nav" aria-label="Módulos de Superlative Adjectives">
+        <button type="button" class="tab-btn active" data-tab="theory">
+          <span>📖</span>
+          <span>Guía de Teoría</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab1">
+          <span>1. Adjetivos Cortos</span>
+          <span id="badge-tab1" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab2">
+          <span>2. Largos e Irregulares</span>
+          <span id="badge-tab2" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab3">
+          <span>3. Preguntas y Negativas</span>
+          <span id="badge-tab3" class="tab-badge">0/20</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab4">
+          <span>★ 4. Mixto + Desafío B1</span>
+          <span id="badge-tab4" class="tab-badge">0/20</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main>
+    <div class="container">
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑA 0: GUÍA DE TEORÍA VISUAL                           -->
+      <!-- ========================================================== -->
+      <section id="panel-theory" class="tab-panel active stack-lg">
+
+        <!-- Banner Introductorio y Fórmula Principal -->
+        <div class="card hero-card">
+          <div class="hero-accent"></div>
+          <div class="hero-content">
+            <span class="eyebrow-pill">✦ Temario Oficial · Nivel A2–B1</span>
+            <h2 class="section-title"><span style="font-style: italic; color: var(--navy);">Superlative Adjectives</span>: Short, Long &amp; Irregular</h2>
+            <p class="lead-text">
+              Utilizamos los <strong>adjetivos superlativos</strong> para comparar <strong>tres o más</strong> lugares, cosas o personas y destacar que uno de ellos posee una cualidad en su grado máximo (en español: <em>«el más...»</em> o <em>«la más...»</em>).
+            </p>
+            <div class="formula-banner">
+              Sujeto + is / isn't / are / aren't + <span class="hl">THE</span> + Adjetivo Superlativo + Sustantivo + <span class="hl">in the world / on Earth</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dos detalles obligatorios + Consejo de Oro de las sílabas -->
+        <div class="grid-2">
+          <div class="card card-top-navy stack-sm">
+            <h3 class="card-title">1. Dos detalles obligatorios</h3>
+            <div class="rule-box">
+              <strong style="color: var(--navy);">• Siempre llevan «THE» delante:</strong><br />
+              Nunca decimos <span class="strike">is biggest</span>, sino <span class="correct-line">is <u>the</u> biggest</span>.
+            </div>
+            <div class="rule-box">
+              <strong style="color: var(--forest);">• Expresiones de lugar al final:</strong><br />
+              Para decir <em>«del mundo»</em> o <em>«de la Tierra»</em> usamos <span class="correct-line"><u>in</u> the world</span> o <span class="correct-line"><u>on</u> Earth</span> (nunca <span class="strike">of the world</span>).
+            </div>
+          </div>
+
+          <div class="card card-top-gold stack-sm" style="background: linear-gradient(155deg, #FFFFFF 55%, #FBF5E6 100%);">
+            <h3 class="card-title">2. Consejo de Oro: ¿Corto o Largo?</h3>
+            <p style="margin: 0; font-size: 0.86rem; color: var(--muted);">Cuenta sus sílabas en inglés al pronunciarlo:</p>
+            <div class="rule-box" style="background: var(--white);">
+              <div><span class="pill-mini pill-navy">1 sílaba</span> (<em>long, high, big, dry, wet</em>) → <strong>CORTO</strong> (añade <strong>-est</strong>).</div>
+              <div style="margin-top: 0.4rem;"><span class="pill-mini pill-forest">2 sílabas en -y</span> (<em>windy, sunny, happy</em>) → funciona como <strong>CORTO</strong> (cambia <em>-y</em> por <strong>-iest</strong>).</div>
+              <div style="margin-top: 0.4rem;"><span class="pill-mini pill-gold">2+ sílabas sin -y</span> (<em>glacial, extreme, arid, beautiful</em>) → <strong>LARGO</strong> (lleva <strong>the most</strong> delante).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla 3 Reglas Ortográficas de Cortos -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">3. Short Superlative Adjectives (Adjetivos Cortos: the ...-est)</h3>
+            <span class="pill-mini pill-gold">¡Ojo examen!: dry → the driest · wet → the wettest</span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Regla ortográfica</th>
+                  <th>Adjetivo</th>
+                  <th>Superlativo</th>
+                  <th>Significado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Regla general (+ -est)</strong><br /><span style="font-size: 0.78rem; color: var(--muted);">(Si acaba en -e, solo añade -st)</span></td>
+                  <td>long · high · large · cold · deep</td>
+                  <td><strong style="color: var(--navy);">the longest · the highest · the largest · the coldest · the deepest</strong></td>
+                  <td>el/la más largo/a, alto/a, grande, frío/a, profundo/a</td>
+                </tr>
+                <tr>
+                  <td><strong>2. Consonante + Vocal + Consonante</strong><br /><span style="font-size: 0.78rem; color: var(--muted);">(Dobla la última consonante + -est)</span></td>
+                  <td>big · wet · hot · thin</td>
+                  <td><strong style="color: var(--navy);">the biggest · the wettest · the hottest · the thinnest</strong></td>
+                  <td>el/la más grande, húmedo/a, caluroso/a, delgado/a</td>
+                </tr>
+                <tr>
+                  <td><strong>3. Consonante + -y</strong><br /><span style="font-size: 0.78rem; color: var(--muted);">(Cambia la -y por -i + -est)</span></td>
+                  <td>dry · windy · sunny · happy · heavy</td>
+                  <td><strong style="color: var(--navy);">the driest · the windiest · the sunniest · the happiest · the heaviest</strong></td>
+                  <td>el/la más seco/a, ventoso/a, soleado/a, feliz, pesado/a</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabla Afirmativa y Negativa -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">4. Estructura en Afirmativa (+) y Negativa (−)</h3>
+            <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">is / isn't (singular) · are / aren't (plural)</span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Sujeto</th>
+                  <th>Verbo</th>
+                  <th>Superlativo</th>
+                  <th>Sustantivo</th>
+                  <th>Complemento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>The Atacama</strong></td>
+                  <td style="color: var(--ok); font-weight: 700;">is</td>
+                  <td><strong>the driest</strong></td>
+                  <td>desert</td>
+                  <td>in the world.</td>
+                </tr>
+                <tr>
+                  <td><strong>The Amazon</strong></td>
+                  <td style="color: var(--ok); font-weight: 700;">is</td>
+                  <td><strong>the biggest</strong></td>
+                  <td>rainforest</td>
+                  <td>in the world.</td>
+                </tr>
+                <tr>
+                  <td><strong>Angel Falls</strong></td>
+                  <td style="color: var(--ok); font-weight: 700;">is</td>
+                  <td><strong>the highest</strong></td>
+                  <td>waterfall</td>
+                  <td>on Earth.</td>
+                </tr>
+                <tr>
+                  <td><strong>Antarctica</strong></td>
+                  <td style="color: var(--err); font-weight: 700;">isn't</td>
+                  <td><strong>the wettest</strong></td>
+                  <td>desert</td>
+                  <td>on Earth.</td>
+                </tr>
+                <tr>
+                  <td><strong>The Alps</strong></td>
+                  <td style="color: var(--err); font-weight: 700;">aren't</td>
+                  <td><strong>the longest</strong></td>
+                  <td>mountains</td>
+                  <td>in the world.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabla Largos e Irregulares + El Secreto -->
+        <div class="grid-2">
+          <div class="card table-card">
+            <div class="table-header">
+              <h3 class="card-title">5. Long &amp; Irregular Adjectives</h3>
+            </div>
+            <div class="table-wrap">
+              <table class="grammar-table">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Adjetivo</th>
+                    <th>Superlativo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="pill-mini pill-forest">Largo</span></td>
+                    <td>glacial · extreme · arid · beautiful · dangerous · expensive · famous · interesting</td>
+                    <td><strong style="color: var(--forest);">the most glacial · the most extreme · the most arid · the most beautiful...</strong></td>
+                  </tr>
+                  <tr>
+                    <td rowspan="3"><span class="pill-mini pill-gold">Irregular</span></td>
+                    <td><strong>good</strong> (bueno)</td>
+                    <td><strong style="color: var(--navy);">the best</strong> (el/la mejor)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>bad</strong> (malo)</td>
+                    <td><strong style="color: var(--navy);">the worst</strong> (el/la peor)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>far</strong> (lejano)</td>
+                    <td><strong style="color: var(--navy);">the furthest / the farthest</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card card-top-gold stack-sm" style="background: linear-gradient(155deg, #FFFFFF 50%, #FBF5E6 100%);">
+            <h3 class="card-title">🔑 El secreto para no mezclar «the most» con «-est»</h3>
+            <div class="rule-box" style="background: var(--white);">
+              <strong>1. Nunca uses <em>the most</em> y <em>-est</em> juntos:</strong><br />
+              <span class="strike">the most biggest ❌</span> → <span class="correct-line">the biggest ✅</span>
+            </div>
+            <div class="rule-box" style="background: var(--white);">
+              <strong>2. Prohibido regularizar <em>good</em> y <em>bad</em>:</strong><br />
+              <span class="strike">the most good / the goodest / the most bad ❌</span><br />
+              <span class="correct-line">the best / the worst ✅</span>
+            </div>
+            <div class="rule-box" style="background: var(--white);">
+              <strong>3. Ojo con <em>windy</em>:</strong><br />
+              Tiene 2 sílabas pero acaba en <strong>-y</strong>, así que lleva <strong>-iest</strong> → <span class="correct-line">the windiest ✅</span> (NO <span class="strike">the most windy</span>).
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla Preguntas What / Where + is / are -->
+        <div class="card table-card">
+          <div class="table-header">
+            <h3 class="card-title">6. Preguntas con Superlativos (What / Where + is / are)</h3>
+            <span class="pill-mini pill-navy">Singular → IS · Plural → ARE</span>
+          </div>
+          <div class="table-wrap">
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Wh-word</th>
+                  <th>Verbo</th>
+                  <th>Superlativo + Sustantivo</th>
+                  <th>Ejemplo de respuesta</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>What</strong> (¿Cuál?)</td>
+                  <td><span class="pill-mini pill-navy">is</span></td>
+                  <td>the most arid <u>country</u>? (sing.)</td>
+                  <td><em>Chile (The Atacama) is the most arid.</em></td>
+                </tr>
+                <tr>
+                  <td><strong>Where</strong> (¿Dónde?)</td>
+                  <td><span class="pill-mini pill-navy">is</span></td>
+                  <td>the most glacial <u>climate</u>? (sing.)</td>
+                  <td><em>It's in Antarctica.</em></td>
+                </tr>
+                <tr>
+                  <td><strong>Where</strong> (¿Dónde?)</td>
+                  <td><span class="pill-mini pill-forest">are</span></td>
+                  <td>the most extreme <u>regions</u>? (plur.)</td>
+                  <td><em>They are near the poles and deserts.</em></td>
+                </tr>
+                <tr>
+                  <td><strong>Where</strong> (¿Dónde?)</td>
+                  <td><span class="pill-mini pill-forest">are</span></td>
+                  <td>the windiest <u>storms</u>? (plur.)</td>
+                  <td><em>The windiest storms are in Antarctica.</em></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Trampas típicas de examen -->
+        <div class="warning-banner stack-md">
+          <h3 class="card-title" style="display: flex; align-items: center; gap: 0.45rem;">
+            <span>⚠️</span> Trampas típicas de examen
+          </h3>
+          <div class="grid-3">
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 1: «dryest / wetest» y «of»</div>
+              <p class="strike">The Atacama is the dryest desert of the world. ❌</p>
+              <p class="correct-line">The Atacama is <u>the driest</u> desert <u>in</u> the world. ✅</p>
+            </div>
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 2: Olvidar «the»</div>
+              <p class="strike">Mount Everest is highest mountain on Earth. ❌</p>
+              <p class="correct-line">Mount Everest is <u>the highest</u> mountain on Earth. ✅</p>
+            </div>
+            <div class="mistake-card">
+              <div class="mistake-label">Trampa 3: «is» con plural</div>
+              <p class="strike">Where is the windiest storms on Earth? ❌</p>
+              <p class="correct-line">Where <u>are</u> the windiest storms on Earth? ✅</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="quick-nav">
+          <button type="button" class="btn btn-primary" onclick="switchTab('tab1')">1. Adjetivos Cortos →</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('tab2')">2. Largos e Irregulares</button>
+          <button type="button" class="btn btn-secondary" onclick="switchTab('tab3')">3. Preguntas y Negativas</button>
+          <button type="button" class="btn btn-forest" onclick="switchTab('tab4')">★ 4. Mixto + Desafío B1</button>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- PESTAÑAS DE PRÁCTICA (RENDERIZADAS POR JAVASCRIPT)         -->
+      <!-- ========================================================== -->
+      <section id="panel-tab1" class="tab-panel stack-lg"></section>
+      <section id="panel-tab2" class="tab-panel stack-lg"></section>
+      <section id="panel-tab3" class="tab-panel stack-lg"></section>
+      <section id="panel-tab4" class="tab-panel stack-lg"></section>
+
+    </div>
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo-box">
+          <img
+            src="Logo.png"
+            alt="Wisdom Corner Academy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+          />
+          <span style="display: none; font-family: var(--font-serif); font-size: 9px; font-weight: 700; color: var(--gold-light);">WCA</span>
+        </div>
+        <span><strong class="footer-brand-name">Wisdom Corner Academy</strong> · English Grammar · Nivel A2–B1</span>
+      </div>
+      <div>80 ejercicios interactivos · Superlative Adjectives</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL DE REINICIO ==================== -->
+  <div id="reset-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-icon">↺</div>
+        <div>
+          <h3 id="modal-title-text" class="modal-title">¿Reiniciar esta sección?</h3>
+          <p class="modal-desc">Se borrarán tus respuestas y la corrección actual de esta pestaña.</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn btn-secondary">Cancelar</button>
+        <button id="modal-confirm" type="button" class="btn btn-danger">Sí, reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. NORMALIZACIÓN, VALIDACIÓN FLEXIBLE Y DIAGNÓSTICO PEDAGÓGICO
+       ========================================================================= */
+    function normalizeText(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/[’‘`´]/g, "'")
+        .toLowerCase()
+        .replace(/\bis not\b/g, "isn't")
+        .replace(/\bare not\b/g, "aren't")
+        .replace(/\bwhat's\b/g, 'what is')
+        .replace(/\bwhere's\b/g, 'where is')
+        .replace(/\bit's\b/g, 'it is')
+        .replace(/\bi've\b/g, 'i have')
+        .replace(/[.,?!;:"()]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function isMatchAny(userVal, acceptedArray) {
+      const normUser = normalizeText(userVal);
+      if (!normUser) return false;
+      return acceptedArray.some(acc => normalizeText(acc) === normUser);
+    }
+
+    /* Diagnósticos inteligentes específicos de Superlative Adjectives */
+    function getDiagnosticTip(userVal, expectedDisplay = '', contextType = '') {
+      const norm = normalizeText(userVal);
+      if (!norm) return 'Has dejado algún campo sin responder.';
+
+      // 1. Mezclar "the most" con "-est"
+      if (/\bmost\s+[a-z]+est\b/.test(norm)) {
+        return '¡Regla de oro! Nunca mezcles «the most» con la terminación «-est» (por ejemplo, es «the biggest», no «the most biggest»).';
+      }
+
+      // 2. Errores ortográficos clásicos: dryest / wetest / bigest / hotest / windyest
+      if (/\bdryest\b/.test(norm)) {
+        return '¡Ojo ortografía de examen! «Dry» termina en consonante + «-y», así que cambia la «y» por «i»: se escribe «the driest» (NO «dryest»).';
+      }
+      if (/\bwetest\b/.test(norm)) {
+        return '¡Ojo ortografía de examen! «Wet» es C-V-C y dobla la «t» final: se escribe «the wettest» (NO «wetest»).';
+      }
+      if (/\bbigest\b|\bhotest\b/.test(norm)) {
+        return 'Recuerda la regla C-V-C: «big» y «hot» doblan la última consonante («the biggest», «the hottest»).';
+      }
+      if (/\bwindyest\b|\bsunnyest\b|\bmost windy\b/.test(norm)) {
+        return 'Los adjetivos de 2 sílabas acabados en «-y» («windy», «sunny») cambian la «-y» por «-iest»: «the windiest», «the sunniest».';
+      }
+
+      // 3. Regularizar good / bad / far
+      if (/\b(most good|goodest|most bad|baddest|badest|most far|farest)\b/.test(norm)) {
+        return '¡Adjetivo irregular! Nunca regularices «good», «bad» o «far»: son siempre «the best», «the worst» y «the furthest / farthest».';
+      }
+
+      // 4. "of the world" en lugar de "in the world"
+      if (/\bof the world\b|\bof earth\b/.test(norm)) {
+        return 'Con lugares y el mundo usamos «in the world» o «on Earth», NUNCA «of the world».';
+      }
+
+      // 5. Olvidar "the" delante del superlativo
+      const expectsThe = /\bthe\b/i.test(expectedDisplay);
+      if (expectsThe && !/\bthe\b/.test(norm) && (contextType === 'sup' || contextType === 'short' || contextType === 'long' || contextType === 'irreg')) {
+        return '¡Te falta «THE»! Los adjetivos superlativos siempre llevan «the» delante (ej. «the longest», «the most extreme», «the best»).';
+      }
+
+      // 6. Confundir is / are en preguntas
+      if (contextType === 'question') {
+        if (/\b(what|where) is\b/.test(norm) && /\bare\b/i.test(expectedDisplay)) {
+          return 'Fíjate en el sustantivo al final de la pregunta: está en plural, así que debes usar «are» en lugar de «is».';
+        }
+        if (/\b(what|where) are\b/.test(norm) && /\bis\b/i.test(expectedDisplay)) {
+          return 'Fíjate en el sustantivo de la pregunta: está en singular, así que debes usar «is» en lugar de «are».';
+        }
+      }
+
+      return '';
+    }
+
+    /* =========================================================================
+       2. BANCO COMPLETO DE 80 EJERCICIOS (20 × 4 PESTAÑAS)
+       ========================================================================= */
+    const SECTIONS_DATA = {
+      /* -----------------------------------------------------------------------
+         PESTAÑA 1: ADJETIVOS CORTOS (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab1: {
+        id: 'tab1',
+        title: '1. Adjetivos Cortos (the ...-est)',
+        subtitle: '20 ejercicios para dominar las 3 reglas ortográficas de los superlativos cortos (-est, doble consonante e -iest).',
+        total: 20,
+        accentClass: 'card-top-navy',
+        blocks: [
+          {
+            id: 't1-transform',
+            type: 'fill',
+            letter: 'Bloque 1',
+            title: 'Transforma al superlativo (Ejercicios 1 al 6)',
+            instruction: 'Escribe la forma superlativa correcta de cada adjetivo corto. <strong>Incluye siempre «the» delante</strong>.',
+            items: [
+              {
+                num: 1,
+                contextType: 'short',
+                parts: ['long → ', ''],
+                gaps: [{ accepted: ['the longest'], display: 'the longest', width: 'w-md' }],
+                explanation: '«Long» es un adjetivo corto de 1 sílaba (regla general): añadimos «the» + «-est» → «the longest».'
+              },
+              {
+                num: 2,
+                contextType: 'short',
+                parts: ['dry → ', ''],
+                gaps: [{ accepted: ['the driest'], display: 'the driest', width: 'w-md' }],
+                explanation: '«Dry» termina en consonante + «-y»: cambia la «y» por «i» y añade «-est» → «the driest» (NUNCA «dryest»).'
+              },
+              {
+                num: 3,
+                contextType: 'short',
+                parts: ['wet → ', ''],
+                gaps: [{ accepted: ['the wettest'], display: 'the wettest', width: 'w-md' }],
+                explanation: '«Wet» cumple la regla C-V-C: dobla la «t» final antes de «-est» → «the wettest» (NUNCA «wetest»).'
+              },
+              {
+                num: 4,
+                contextType: 'short',
+                parts: ['large → ', ''],
+                gaps: [{ accepted: ['the largest'], display: 'the largest', width: 'w-md' }],
+                explanation: '«Large» ya termina en «-e», así que solo añadimos «-st» → «the largest».'
+              },
+              {
+                num: 5,
+                contextType: 'short',
+                parts: ['hot → ', ''],
+                gaps: [{ accepted: ['the hottest'], display: 'the hottest', width: 'w-md' }],
+                explanation: '«Hot» es C-V-C (1 sílaba): dobla la «t» final → «the hottest».'
+              },
+              {
+                num: 6,
+                contextType: 'short',
+                parts: ['windy → ', ''],
+                gaps: [{ accepted: ['the windiest'], display: 'the windiest', width: 'w-md' }],
+                explanation: '«Windy» tiene 2 sílabas y acaba en «-y», por lo que funciona como corto y cambia «-y» por «-iest» → «the windiest».'
+              }
+            ]
+          },
+          {
+            id: 't1-context',
+            type: 'fill',
+            letter: 'Bloque 2',
+            title: 'Rellena los huecos en contexto (Ejercicios 7 al 11)',
+            instruction: 'Completa las frases sobre geografía y clima con el superlativo del adjetivo entre paréntesis (recuerda escribir <strong>the</strong>).',
+            items: [
+              {
+                num: 7,
+                contextType: 'short',
+                parts: ['The Amazon is ', ' (big) rainforest in the world.'],
+                gaps: [{ accepted: ['the biggest'], display: 'the biggest', width: 'w-md' }],
+                explanation: '«Big» cumple C-V-C, dobla la «g» y lleva «the» delante: «the biggest».'
+              },
+              {
+                num: 8,
+                contextType: 'short',
+                parts: ['Angel Falls in Venezuela is ', ' (high) waterfall on Earth.'],
+                gaps: [{ accepted: ['the highest'], display: 'the highest', width: 'w-md' }],
+                explanation: '«High» es corto de 1 sílaba (regla general): «the highest».'
+              },
+              {
+                num: 9,
+                contextType: 'short',
+                parts: ['The Atacama is ', ' (dry) non-polar desert in the world.'],
+                gaps: [{ accepted: ['the driest'], display: 'the driest', width: 'w-md' }],
+                explanation: '«Dry» cambia la «-y» por «-iest»: «the driest».'
+              },
+              {
+                num: 10,
+                contextType: 'short',
+                parts: ['Yuma in Arizona is one of ', ' (sunny) cities on Earth.'],
+                gaps: [{ accepted: ['the sunniest'], display: 'the sunniest', width: 'w-md' }],
+                explanation: '«Sunny» (2 sílabas acabado en «-y») cambia la «y» por «-iest»: «the sunniest».'
+              },
+              {
+                num: 11,
+                contextType: 'short',
+                parts: ['Antarctica is ', ' (cold) continent on our planet.'],
+                gaps: [{ accepted: ['the coldest'], display: 'the coldest', width: 'w-md' }],
+                explanation: '«Cold» es un adjetivo corto de 1 sílaba (regla general): «the coldest».'
+              }
+            ]
+          },
+          {
+            id: 't1-match',
+            type: 'match',
+            letter: 'Bloque 3',
+            title: 'Unir con flechas: Geografía y Superlativos (Ejercicios 12 al 15)',
+            instruction: 'Haz clic en un lugar de la columna izquierda y después en su definición superlativa correcta en la columna derecha.',
+            pairs: [
+              {
+                num: 12,
+                leftId: 't1l12',
+                left: 'The Andes',
+                rightId: 't1r1',
+                right: 'is the longest mountain range in the world.',
+                explanation: 'Los Andes («The Andes») constituyen la cordillera más larga del mundo («the longest mountain range»).'
+              },
+              {
+                num: 13,
+                leftId: 't1l13',
+                left: 'The Pacific Ocean',
+                rightId: 't1r2',
+                right: 'is the deepest ocean on Earth.',
+                explanation: 'El océano Pacífico es el más profundo de la Tierra («the deepest ocean on Earth»).'
+              },
+              {
+                num: 14,
+                leftId: 't1l14',
+                left: 'Mount Everest',
+                rightId: 't1r3',
+                right: 'is the highest mountain in the world.',
+                explanation: 'El Monte Everest es la montaña más alta del mundo («the highest mountain in the world»).'
+              },
+              {
+                num: 15,
+                leftId: 't1l15',
+                left: 'Mawsynram (India)',
+                rightId: 't1r4',
+                right: 'is the wettest inhabited place on Earth.',
+                explanation: 'Mawsynram es el lugar habitado más húmedo/lluvioso de la Tierra («the wettest»).'
+              }
+            ],
+            rightOrder: ['t1r3', 't1r1', 't1r4', 't1r2']
+          },
+          {
+            id: 't1-build',
+            type: 'build',
+            letter: 'Bloque 4',
+            title: 'Ordena la frase con fichas (Ejercicios 16 al 18)',
+            instruction: 'Haz clic en las fichas del banco en el orden correcto para construir oraciones afirmativas y negativas.',
+            items: [
+              {
+                num: 16,
+                words: ['desert', 'the', 'Sahara', 'in', 'is', 'The', 'world.', 'hottest', 'the'],
+                accepted: ['The Sahara is the hottest desert in the world'],
+                display: 'The Sahara is the hottest desert in the world.',
+                explanation: 'Orden: Sujeto (The Sahara) + is + the hottest + desert + in the world.'
+              },
+              {
+                num: 17,
+                words: ['on', 'wettest', 'Antarctica', "isn't", 'desert', 'Earth.', 'the'],
+                accepted: ["Antarctica isn't the wettest desert on Earth"],
+                display: "Antarctica isn't the wettest desert on Earth.",
+                explanation: 'Negativa: Sujeto (Antarctica) + isn\'t + the wettest + desert + on Earth.'
+              },
+              {
+                num: 18,
+                words: ['continent', 'the', 'Earth.', 'is', 'on', 'windiest', 'Antarctica'],
+                accepted: ['Antarctica is the windiest continent on Earth'],
+                display: 'Antarctica is the windiest continent on Earth.',
+                explanation: 'Afirmativa: Antarctica + is + the windiest + continent + on Earth.'
+              }
+            ]
+          },
+          {
+            id: 't1-error',
+            type: 'error',
+            letter: 'Bloque 5',
+            title: 'Detecta y corrige el error (Ejercicios 19 al 20)',
+            instruction: 'Paso 1: haz clic en el bloque que contiene el error. Paso 2: escribe la corrección correcta de ese bloque.',
+            items: [
+              {
+                num: 19,
+                segments: ['The Atacama', 'is', 'the dryest desert', 'in the world.'],
+                wrongIndex: 2,
+                accepted: ['the driest desert', 'the driest'],
+                display: 'the driest desert',
+                explanation: '«Dry» cambia la «-y» por «-i» antes de «-est»: se escribe «the driest desert» (NO «dryest»).'
+              },
+              {
+                num: 20,
+                segments: ['This island', 'has', 'the wetest climate', 'on Earth.'],
+                wrongIndex: 2,
+                accepted: ['the wettest climate', 'the wettest'],
+                display: 'the wettest climate',
+                explanation: '«Wet» (C-V-C) dobla la «t» final: «the wettest climate» (NO «wetest»).'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 2: LARGOS E IRREGULARES (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab2: {
+        id: 'tab2',
+        title: '2. Largos e Irregulares',
+        subtitle: '20 ejercicios para distinguir adjetivos cortos, largos (the most ...) e irregulares (the best, the worst, the furthest/farthest).',
+        total: 20,
+        accentClass: 'card-top-gold',
+        blocks: [
+          {
+            id: 't2-classify',
+            type: 'classify',
+            letter: 'Bloque 1 · Clasificador Rápido',
+            title: '¿Cómo forma el superlativo cada adjetivo? (Ejercicios 1 al 6)',
+            instruction: 'Elige si cada adjetivo forma su superlativo con <strong>-EST / -IEST</strong>, <strong>THE MOST</strong> o si es <strong>IRREGULAR</strong>.',
+            options: [
+              { value: 'short', label: '-EST / -IEST' },
+              { value: 'long', label: 'THE MOST' },
+              { value: 'irreg', label: 'IRREGULAR' }
+            ],
+            items: [
+              { num: 1, expr: 'glacial', answer: 'long', explanation: '«Glacial» tiene 2 sílabas y NO acaba en -y → largo: «the most glacial».' },
+              { num: 2, expr: 'windy', answer: 'short', explanation: '¡Ojo! «Windy» tiene 2 sílabas pero acaba en «-y», así que lleva -iest → «the windiest».' },
+              { num: 3, expr: 'bad', answer: 'irreg', explanation: '«Bad» es irregular (cambia por completo) → «the worst».' },
+              { num: 4, expr: 'arid', answer: 'long', explanation: '«Arid» tiene 2 sílabas y NO acaba en -y → largo: «the most arid».' },
+              { num: 5, expr: 'good', answer: 'irreg', explanation: '«Good» es irregular → «the best».' },
+              { num: 6, expr: 'extreme', answer: 'long', explanation: '«Extreme» tiene 2 sílabas y NO acaba en -y → largo: «the most extreme».' }
+            ]
+          },
+          {
+            id: 't2-fill',
+            type: 'fill',
+            letter: 'Bloque 2',
+            title: 'Rellena los huecos: Largos e Irregulares (Ejercicios 7 al 11)',
+            instruction: 'Escribe el superlativo correcto (recuerda incluir <strong>the</strong>). Con <em>far</em> se aceptan las dos formas válidas.',
+            items: [
+              {
+                num: 7,
+                contextType: 'long',
+                parts: ['Death Valley has one of ', ' (extreme) climates on Earth.'],
+                gaps: [{ accepted: ['the most extreme'], display: 'the most extreme', width: 'w-lg' }],
+                explanation: '«Extreme» es un adjetivo largo (2 sílabas sin -y): «the most extreme».'
+              },
+              {
+                num: 8,
+                contextType: 'irreg',
+                parts: ['That was ', ' (good) documentary about nature I have ever seen!'],
+                gaps: [{ accepted: ['the best'], display: 'the best', width: 'w-sm' }],
+                explanation: '«Good» es un adjetivo irregular: su superlativo es siempre «the best».'
+              },
+              {
+                num: 9,
+                contextType: 'irreg',
+                parts: ['Yesterday we had ', ' (bad) storm of the whole winter.'],
+                gaps: [{ accepted: ['the worst'], display: 'the worst', width: 'w-sm' }],
+                explanation: '«Bad» es irregular: su superlativo es «the worst» (nunca «the most bad»).'
+              },
+              {
+                num: 10,
+                contextType: 'long',
+                parts: ['Many travellers say Banff National Park is ', ' (beautiful) place in Canada.'],
+                gaps: [{ accepted: ['the most beautiful'], display: 'the most beautiful', width: 'w-lg' }],
+                explanation: '«Beautiful» tiene 3 sílabas → adjetivo largo: «the most beautiful».'
+              },
+              {
+                num: 11,
+                contextType: 'irreg',
+                parts: ['Neptune is ', ' (far) planet from the Sun in our solar system.'],
+                gaps: [{ accepted: ['the furthest', 'the farthest'], display: 'the furthest / the farthest', width: 'w-md' }],
+                explanation: '«Far» es irregular y admite dos superlativos correctos: «the furthest» y «the farthest».'
+              }
+            ]
+          },
+          {
+            id: 't2-match',
+            type: 'match',
+            letter: 'Bloque 3',
+            title: 'Unir con flechas: Pistas y Oraciones (Ejercicios 12 al 15)',
+            instruction: 'Une cada adjetivo o pista de la izquierda con la oración superlativa correcta de la derecha.',
+            pairs: [
+              {
+                num: 12,
+                leftId: 't2l12',
+                left: 'glacial (largo)',
+                rightId: 't2r1',
+                right: 'Antarctica has the most glacial landscape on Earth.',
+                explanation: '«Glacial» forma el superlativo con «the most glacial».'
+              },
+              {
+                num: 13,
+                leftId: 't2l13',
+                left: 'arid (largo)',
+                rightId: 't2r2',
+                right: 'Northern Chile contains the most arid desert in the world.',
+                explanation: '«Arid» es un adjetivo largo de 2 sílabas sin -y → «the most arid».'
+              },
+              {
+                num: 14,
+                leftId: 't2l14',
+                left: 'dangerous (largo)',
+                rightId: 't2r3',
+                right: 'K2 is considered the most dangerous mountain to climb.',
+                explanation: '«Dangerous» tiene 3 sílabas → «the most dangerous».'
+              },
+              {
+                num: 15,
+                leftId: 't2l15',
+                left: 'good (irregular)',
+                rightId: 't2r4',
+                right: 'Spring is the best season to visit the valley.',
+                explanation: 'El superlativo irregular de «good» es «the best».'
+              }
+            ],
+            rightOrder: ['t2r3', 't2r4', 't2r1', 't2r2']
+          },
+          {
+            id: 't2-build',
+            type: 'build',
+            letter: 'Bloque 4',
+            title: 'Ordena la frase con fichas (Ejercicios 16 al 18)',
+            instruction: 'Construye oraciones correctas usando adjetivos largos e irregulares.',
+            items: [
+              {
+                num: 16,
+                words: ['most', 'is', 'the', 'This', 'book', 'in', 'interesting', 'library.', 'the'],
+                accepted: ['This is the most interesting book in the library'],
+                display: 'This is the most interesting book in the library.',
+                explanation: 'Orden: This is + the most interesting + book + in the library.'
+              },
+              {
+                num: 17,
+                words: ['worst', 'is', 'weather', 'the', 'year.', 'of', 'Today', 'the'],
+                accepted: ['Today is the worst weather of the year'],
+                display: 'Today is the worst weather of the year.',
+                explanation: 'Con «bad» usamos el irregular «the worst»: «Today is the worst weather of the year.»'
+              },
+              {
+                num: 18,
+                words: ['famous', 'most', 'world.', 'of', 'one', 'waterfalls', 'in', 'the', 'Niagara', 'is', 'the'],
+                accepted: ['Niagara is one of the most famous waterfalls in the world'],
+                display: 'Niagara is one of the most famous waterfalls in the world.',
+                explanation: 'Estructura «one of the most + adjetivo largo + sustantivo plural»: «Niagara is one of the most famous waterfalls in the world.»'
+              }
+            ]
+          },
+          {
+            id: 't2-translate',
+            type: 'translate',
+            letter: 'Bloque 5',
+            title: 'Traduce al inglés ES → EN (Ejercicios 19 al 20)',
+            instruction: 'Traduce estas frases usando adjetivos largos/irregulares y <strong>in the world / on Earth</strong>.',
+            items: [
+              {
+                num: 19,
+                contextType: 'long',
+                prompt: 'La Antártida tiene el clima más glacial de la Tierra.',
+                accepted: [
+                  'Antarctica has the most glacial climate on Earth',
+                  'Antarctica has got the most glacial climate on Earth'
+                ],
+                display: 'Antarctica has the most glacial climate on Earth.',
+                explanation: '«Glacial» es largo → «the most glacial climate» + «on Earth».'
+              },
+              {
+                num: 20,
+                contextType: 'irreg',
+                prompt: 'Este es el mejor restaurante del mundo.',
+                accepted: [
+                  'This is the best restaurant in the world'
+                ],
+                display: 'This is the best restaurant in the world.',
+                explanation: 'Superlativo irregular de «good» («the best») + «in the world» (nunca «of the world»).'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 3: PREGUNTAS (WHAT/WHERE + IS/ARE) Y NEGATIVAS (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab3: {
+        id: 'tab3',
+        title: '3. Preguntas y Negativas',
+        subtitle: '20 ejercicios para dominar What/Where + is/are (singular vs. plural) y oraciones negativas con isn\'t / aren\'t.',
+        total: 20,
+        accentClass: 'card-top-forest',
+        blocks: [
+          {
+            id: 't3-selector',
+            type: 'classify',
+            letter: 'Bloque 1 · Selector Rápido de Examen',
+            title: 'Elige: What is / Where is / What are / Where are (Ejercicios 1 al 6)',
+            instruction: 'Fíjate en la <strong>respuesta</strong> (¿pide un nombre o un lugar?) y en si el sustantivo es <strong>singular</strong> o <strong>plural</strong>.',
+            btnCols: 4,
+            options: [
+              { value: 'what is', label: 'What is' },
+              { value: 'where is', label: 'Where is' },
+              { value: 'what are', label: 'What are' },
+              { value: 'where are', label: 'Where are' }
+            ],
+            items: [
+              {
+                num: 1,
+                prompt: '______ the longest mountain range in the world? <span class="answer-clue">→ The Andes.</span>',
+                answer: 'what is',
+                explanation: 'Pregunta «¿Cuál...?» (What) y «mountain range» es singular → «What is».'
+              },
+              {
+                num: 2,
+                prompt: '______ the most glacial climate on Earth? <span class="answer-clue">→ In Antarctica.</span>',
+                answer: 'where is',
+                explanation: 'La respuesta indica un lugar («In Antarctica» → Where) y «climate» es singular → «Where is».'
+              },
+              {
+                num: 3,
+                prompt: '______ the most arid regions on our planet? <span class="answer-clue">→ In Chile and North Africa.</span>',
+                answer: 'where are',
+                explanation: 'Pide un lugar («Where») y «regions» está en plural → «Where are».'
+              },
+              {
+                num: 4,
+                prompt: '______ the largest desert in the world? <span class="answer-clue">→ Antarctica.</span>',
+                answer: 'what is',
+                explanation: 'Pregunta «¿Cuál es...?» (What) y «desert» es singular → «What is».'
+              },
+              {
+                num: 5,
+                prompt: '______ the windiest storms on Earth? <span class="answer-clue">→ Near the South Pole.</span>',
+                answer: 'where are',
+                explanation: 'Pregunta por un lugar («Where») y «storms» es plural → «Where are».'
+              },
+              {
+                num: 6,
+                prompt: '______ the most dangerous animals in Australia? <span class="answer-clue">→ Box jellyfish and certain snakes.</span>',
+                answer: 'what are',
+                explanation: 'Pregunta «¿Cuáles son...?» (What) y «animals» está en plural → «What are».'
+              }
+            ]
+          },
+          {
+            id: 't3-fill',
+            type: 'fill',
+            letter: 'Bloque 2',
+            title: 'Completa preguntas y negativas (Ejercicios 7 al 11)',
+            instruction: 'Escribe <strong>isn\'t / aren\'t + superlativo</strong> en las negativas, o <strong>What / Where + is / are</strong> en las preguntas.',
+            items: [
+              {
+                num: 7,
+                contextType: 'short',
+                parts: ['The Sahara ', ' (not be / wet) desert in the world.'],
+                gaps: [{ accepted: ["isn't the wettest", 'is not the wettest'], display: "isn't the wettest", width: 'w-lg' }],
+                explanation: 'Sujeto singular («The Sahara») en negativa → «isn\'t» + superlativo de «wet» doblando la «t»: «isn\'t the wettest».'
+              },
+              {
+                num: 8,
+                contextType: 'short',
+                parts: ['The Pyrenees ', ' (not be / high) mountains on Earth.'],
+                gaps: [{ accepted: ["aren't the highest", 'are not the highest'], display: "aren't the highest", width: 'w-lg' }],
+                explanation: 'Sujeto plural («The Pyrenees») en negativa → «aren\'t» + «the highest».'
+              },
+              {
+                num: 9,
+                contextType: 'question',
+                parts: ['', ' the highest waterfall on Earth? → In Venezuela.'],
+                gaps: [{ accepted: ['where is', "where's"], display: 'Where is', width: 'w-sm' }],
+                explanation: 'La respuesta es un lugar («In Venezuela» → Where) y «waterfall» es singular → «Where is».'
+              },
+              {
+                num: 10,
+                contextType: 'question',
+                parts: ['', ' the most extreme deserts on Earth? → In Antarctica, Chile and California.'],
+                gaps: [{ accepted: ['where are'], display: 'Where are', width: 'w-sm' }],
+                explanation: 'Indica lugares («Where») y «deserts» está en plural → «Where are».'
+              },
+              {
+                num: 11,
+                contextType: 'long',
+                parts: ['This trail ', ' (not be / dangerous) route in the park.'],
+                gaps: [{ accepted: ["isn't the most dangerous", 'is not the most dangerous'], display: "isn't the most dangerous", width: 'w-lg' }],
+                explanation: 'Negativa singular («isn\'t») + adjetivo largo («the most dangerous»).'
+              }
+            ]
+          },
+          {
+            id: 't3-match',
+            type: 'match',
+            letter: 'Bloque 3',
+            title: 'Unir con flechas: Preguntas y Respuestas (Ejercicios 12 al 15)',
+            instruction: 'Une cada pregunta con superlativo (izquierda) con su respuesta correcta (derecha).',
+            pairs: [
+              {
+                num: 12,
+                leftId: 't3l12',
+                left: 'What is the most arid country in South America?',
+                rightId: 't3r1',
+                right: 'Chile, because of the Atacama Desert.',
+                explanation: '«What is...» pregunta por el nombre del país → «Chile, because of the Atacama Desert».'
+              },
+              {
+                num: 13,
+                leftId: 't3l13',
+                left: 'Where is the biggest rainforest in the world?',
+                rightId: 't3r2',
+                right: 'It is in South America.',
+                explanation: '«Where is...» pregunta por ubicación en singular → «It is in South America».'
+              },
+              {
+                num: 14,
+                leftId: 't3l14',
+                left: 'Where are the coldest temperatures on Earth?',
+                rightId: 't3r3',
+                right: 'They are in East Antarctica.',
+                explanation: '«Where are...» pregunta por ubicación en plural → «They are in East Antarctica».'
+              },
+              {
+                num: 15,
+                leftId: 't3l15',
+                left: 'What are the best months to visit the coast?',
+                rightId: 't3r4',
+                right: 'May and September are ideal.',
+                explanation: '«What are...» pide los nombres de los meses → «May and September are ideal».'
+              }
+            ],
+            rightOrder: ['t3r3', 't3r1', 't3r4', 't3r2']
+          },
+          {
+            id: 't3-build',
+            type: 'build',
+            letter: 'Bloque 4',
+            title: 'Ordena las preguntas y negativas (Ejercicios 16 al 18)',
+            instruction: 'Coloca las fichas en orden correcto respetando la estructura interrogativa y negativa.',
+            items: [
+              {
+                num: 16,
+                words: ['is', 'biggest', 'What', 'the', 'world?', 'ocean', 'the', 'in'],
+                accepted: ['What is the biggest ocean in the world'],
+                display: 'What is the biggest ocean in the world?',
+                explanation: 'Orden interrogativo: What + is + the biggest + ocean + in the world?'
+              },
+              {
+                num: 17,
+                words: ['are', 'extreme', 'the', 'regions?', 'most', 'Where'],
+                accepted: ['Where are the most extreme regions'],
+                display: 'Where are the most extreme regions?',
+                explanation: 'Orden interrogativo plural: Where + are + the most extreme + regions?'
+              },
+              {
+                num: 18,
+                words: ['place', 'the', 'Earth.', 'London', "isn't", 'on', 'sunniest'],
+                accepted: ["London isn't the sunniest place on Earth"],
+                display: "London isn't the sunniest place on Earth.",
+                explanation: 'Negativa: London + isn\'t + the sunniest + place + on Earth.'
+              }
+            ]
+          },
+          {
+            id: 't3-error',
+            type: 'error',
+            letter: 'Bloque 5',
+            title: 'Detecta y corrige el error (Ejercicios 19 al 20)',
+            instruction: 'Haz clic en el bloque erróneo de cada pregunta y escribe su corrección abajo.',
+            items: [
+              {
+                num: 19,
+                segments: ['Where', 'is', 'the most extreme regions', 'on Earth?'],
+                wrongIndex: 1,
+                accepted: ['are'],
+                display: 'are',
+                explanation: 'El sustantivo «regions» está en plural, por lo que el verbo debe ser «are»: «Where are the most extreme regions on Earth?».'
+              },
+              {
+                num: 20,
+                segments: ['What', 'is', 'the highest waterfall?', '— It is in Venezuela.'],
+                wrongIndex: 0,
+                accepted: ['Where'],
+                display: 'Where',
+                explanation: 'La respuesta «It is in Venezuela» indica un lugar, por lo que debemos preguntar con «Where», no con «What».'
+              }
+            ]
+          }
+        ]
+      },
+
+      /* -----------------------------------------------------------------------
+         PESTAÑA 4: ★ MIXTO + DESAFÍO EXAMEN B1 (20 EJERCICIOS)
+         ----------------------------------------------------------------------- */
+      tab4: {
+        id: 'tab4',
+        isExam: true,
+        title: '4. Mixto + Desafío Examen B1',
+        subtitle: '20 ejercicios de nivel examen real: Cloze Test geográfico, doble hueco, corrección de trampas combinadas y traducción.',
+        total: 20,
+        accentClass: 'challenge-card',
+        blocks: [
+          {
+            id: 't4-cloze',
+            type: 'cloze',
+            letter: 'Bloque 1 · Cloze Test',
+            title: 'Texto en contexto: «Exploring the Most Extreme Places on Earth» (Ejercicios 1 al 8)',
+            instruction: 'Completa los 8 huecos del relato con la forma superlativa correcta (incluyendo <strong>the</strong>) de cada adjetivo entre paréntesis.',
+            storyTitle: 'Exploring the Most Extreme Places on Earth',
+            paragraphs: [
+              [
+                { text: 'Last year, geography writer Clara and photographer Daniel travelled around the globe to film a nature series. Their first stop was South America, where they visited the Amazon, ' },
+                {
+                  num: 1,
+                  verb: 'big',
+                  contextType: 'short',
+                  accepted: ['the biggest'],
+                  display: 'the biggest',
+                  width: 'w-sm',
+                  explanation: 'Hueco 1: «Big» (C-V-C) dobla la «g» → «the biggest».'
+                },
+                { text: ' rainforest in the world, and hiked along the Andes, ' },
+                {
+                  num: 2,
+                  verb: 'long',
+                  contextType: 'short',
+                  accepted: ['the longest'],
+                  display: 'the longest',
+                  width: 'w-sm',
+                  explanation: 'Hueco 2: «Long» (1 sílaba) añade «-est» → «the longest».'
+                },
+                { text: ' mountain range on Earth. Next, they drove into the Atacama, ' },
+                {
+                  num: 3,
+                  verb: 'dry',
+                  contextType: 'short',
+                  accepted: ['the driest'],
+                  display: 'the driest',
+                  width: 'w-sm',
+                  explanation: 'Hueco 3: «Dry» cambia la «-y» por «-iest» → «the driest».'
+                },
+                { text: ' desert in the world, where some weather stations have never recorded rain.' }
+              ],
+              [
+                { text: 'In autumn, they flew south to Antarctica, which has ' },
+                {
+                  num: 4,
+                  verb: 'glacial',
+                  contextType: 'long',
+                  accepted: ['the most glacial'],
+                  display: 'the most glacial',
+                  width: 'w-md',
+                  explanation: 'Hueco 4: «Glacial» es un adjetivo largo (2 sílabas sin -y) → «the most glacial».'
+                },
+                { text: ' climate on our planet and ' },
+                {
+                  num: 5,
+                  verb: 'windy',
+                  contextType: 'short',
+                  accepted: ['the windiest'],
+                  display: 'the windiest',
+                  width: 'w-sm',
+                  explanation: 'Hueco 5: «Windy» acaba en «-y», así que lleva «-iest» → «the windiest».'
+                },
+                { text: ' storms Daniel had ever filmed. During a blizzard, they experienced ' },
+                {
+                  num: 6,
+                  verb: 'bad',
+                  contextType: 'irreg',
+                  accepted: ['the worst'],
+                  display: 'the worst',
+                  width: 'w-sm',
+                  explanation: 'Hueco 6: «Bad» es irregular → «the worst».'
+                },
+                { text: ' weather of the entire expedition! Later, they travelled to India to see ' },
+                {
+                  num: 7,
+                  verb: 'wet',
+                  contextType: 'short',
+                  accepted: ['the wettest'],
+                  display: 'the wettest',
+                  width: 'w-sm',
+                  explanation: 'Hueco 7: «Wet» (C-V-C) dobla la «t» → «the wettest».'
+                },
+                { text: ' village on Earth. Despite the challenges, Clara says it was ' },
+                {
+                  num: 8,
+                  verb: 'good',
+                  contextType: 'irreg',
+                  accepted: ['the best'],
+                  display: 'the best',
+                  width: 'w-sm',
+                  explanation: 'Hueco 8: «Good» es irregular → «the best».'
+                },
+                { text: ' adventure of her life.' }
+              ]
+            ]
+          },
+          {
+            id: 't4-challenge',
+            type: 'challenge_group',
+            letter: '★ Desafío B1 · Nivel Examen',
+            title: 'Bloque 2 — Desafío Avanzado · Nivel B1 (Ejercicios 9 al 20)',
+            instruction: 'Combina todo lo aprendido: <strong>doble hueco</strong> (ambos deben ser correctos para sumar el punto), <strong>trampas combinadas de examen</strong> y <strong>traducciones completas</strong>.',
+            doubleGapItems: [
+              {
+                num: 9,
+                contextType: 'question',
+                parts: ['', ' (What/Where + is/are) ', ' (extreme) desert on Earth? → Death Valley in California.'],
+                gaps: [
+                  { accepted: ['what is', "what's"], display: 'What is', width: 'w-xs' },
+                  { accepted: ['the most extreme'], display: 'the most extreme', width: 'w-md' }
+                ],
+                explanation: 'La respuesta nombra el desierto («Death Valley» → What) y «desert» es singular («is»). «Extreme» es largo → «the most extreme».'
+              },
+              {
+                num: 10,
+                contextType: 'question',
+                parts: ['', ' (What/Where + is/are) ', ' (arid) regions on our planet? → In Chile and North Africa.'],
+                gaps: [
+                  { accepted: ['where are'], display: 'Where are', width: 'w-xs' },
+                  { accepted: ['the most arid'], display: 'the most arid', width: 'w-md' }
+                ],
+                explanation: 'Pide ubicación («Where») con sustantivo plural («regions» → «are»). «Arid» es largo → «the most arid».'
+              },
+              {
+                num: 11,
+                contextType: 'short',
+                parts: ['The Nile ', ' (not be / short) river ', ' (in/of) the world!'],
+                gaps: [
+                  { accepted: ["isn't the shortest", 'is not the shortest'], display: "isn't the shortest", width: 'w-md' },
+                  { accepted: ['in'], display: 'in', width: 'w-xs' }
+                ],
+                explanation: 'Negativa singular («isn\'t») + corto («the shortest») + preposición obligatoria «in the world» (NUNCA «of»).'
+              },
+              {
+                num: 12,
+                contextType: 'irreg',
+                parts: ['That village ', ' (not be / far) place from the capital, and it has ', ' (good) mountain views.'],
+                gaps: [
+                  { accepted: ["isn't the furthest", 'is not the furthest', "isn't the farthest", 'is not the farthest'], display: "isn't the furthest / farthest", width: 'w-lg' },
+                  { accepted: ['the best'], display: 'the best', width: 'w-sm' }
+                ],
+                explanation: 'Dos irregulares: «far» → «isn\'t the furthest / farthest» y «good» → «the best».'
+              }
+            ],
+            errorItems: [
+              {
+                num: 13,
+                segments: ['The Amazon', 'is', 'the most biggest rainforest', 'in the world.'],
+                wrongIndex: 2,
+                accepted: ['the biggest rainforest', 'the biggest'],
+                display: 'the biggest rainforest',
+                explanation: '¡Prohibido mezclar «the most» con «-est»! Como «big» es corto (C-V-C), es simplemente «the biggest rainforest».'
+              },
+              {
+                num: 14,
+                segments: ['Today is', 'the most bad', 'weather', 'of the year.'],
+                wrongIndex: 1,
+                accepted: ['the worst'],
+                display: 'the worst',
+                explanation: '«Bad» es un adjetivo irregular: NUNCA se dice «the most bad», sino «the worst».'
+              },
+              {
+                num: 15,
+                segments: ['The Atacama', 'is', 'the dryest desert of the world.'],
+                wrongIndex: 2,
+                accepted: ['the driest desert in the world'],
+                display: 'the driest desert in the world',
+                explanation: '¡Doble trampa de examen! «Dry» se escribe «the driest» (con «i») y «del mundo» es siempre «in the world» (NO «of the world»).'
+              },
+              {
+                num: 16,
+                segments: ['Where is', 'the windiest', 'storms', 'on Earth?'],
+                wrongIndex: 0,
+                accepted: ['Where are', 'are'],
+                display: 'Where are',
+                explanation: '«Storms» es plural, por lo que debemos preguntar con «Where are» en lugar de «Where is».'
+              }
+            ],
+            translateItems: [
+              {
+                num: 17,
+                contextType: 'short',
+                prompt: 'El Amazonas es la selva tropical más grande del mundo.',
+                accepted: [
+                  'The Amazon is the biggest rainforest in the world',
+                  'The Amazon is the largest rainforest in the world'
+                ],
+                display: 'The Amazon is the biggest rainforest in the world.',
+                explanation: 'Superlativo corto con doble «g» («the biggest», también válido «the largest») + «rainforest» + «in the world».'
+              },
+              {
+                num: 18,
+                contextType: 'question',
+                prompt: '¿Dónde están las tormentas más ventosas de la Tierra?',
+                accepted: [
+                  'Where are the windiest storms on Earth'
+                ],
+                display: 'Where are the windiest storms on Earth?',
+                explanation: '«Where» (lugar) + «are» (plural «storms») + «the windiest» (cambia -y por -iest) + «on Earth».'
+              },
+              {
+                num: 19,
+                contextType: 'short',
+                prompt: 'La Antártida no es el desierto más húmedo del mundo.',
+                accepted: [
+                  "Antarctica isn't the wettest desert in the world",
+                  'Antarctica is not the wettest desert in the world',
+                  "Antarctica isn't the wettest desert on Earth",
+                  'Antarctica is not the wettest desert on Earth'
+                ],
+                display: "Antarctica isn't the wettest desert in the world.",
+                explanation: 'Negativa singular («isn\'t») + «the wettest» (dobla la «t») + «desert in the world» (o «on Earth»).'
+              },
+              {
+                num: 20,
+                contextType: 'irreg',
+                prompt: 'Ese fue el mejor documental sobre la naturaleza que he visto nunca.',
+                accepted: [
+                  'That was the best documentary about nature I have ever seen',
+                  "That was the best documentary about nature I've ever seen",
+                  'That was the best nature documentary I have ever seen',
+                  "That was the best nature documentary I've ever seen",
+                  'That was the best documentary about nature that I have ever seen',
+                  'That was the best nature documentary that I have ever seen'
+                ],
+                display: 'That was the best documentary about nature I have ever seen.',
+                explanation: 'Superlativo irregular de «good» («the best») + estructura habitual con Present Perfect («I have ever seen»).'
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       3. ESTADO GLOBAL DE LA APLICACIÓN
+       ========================================================================= */
+    const appState = {
+      activeTab: 'theory',
+      scores: {
+        tab1: null,
+        tab2: null,
+        tab3: null,
+        tab4: null
+      },
+      matches: {},  // { blockId: { selectedLeft, links: {}, graded, results: {} } }
+      builds: {},   // { key: { placed: [] } }
+      errors: {},   // { key: { selectedSeg: null | number } }
+      classify: {}, // { key: null | string }
+      pendingReset: null
+    };
+
+    const resizeObservers = [];
+
+    /* =========================================================================
+       4. RENDERIZADO DINÁMICO DE LAS 4 PESTAÑAS DE PRÁCTICA
+       ========================================================================= */
+    function renderSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      const container = document.getElementById(`panel-${sectionId}`);
+      if (!sec || !container) return;
+
+      const headerBadge = sec.isExam
+        ? `<span class="gold-badge">★ Desafío B1 · Nivel Examen</span>`
+        : '';
+
+      let html = `
+        <div class="card ${sec.accentClass}">
+          <div class="section-header-row">
+            <div>
+              ${headerBadge}
+              <h2 class="section-title">${sec.title}</h2>
+              <p class="lead-text" style="margin-top: 0.35rem;">${sec.subtitle}</p>
+            </div>
+            <div class="count-pill">📝 ${sec.total} ejercicios</div>
+          </div>
+        </div>
+      `;
+
+      sec.blocks.forEach(block => {
+        html += renderBlock(sectionId, block);
+      });
+
+      html += `
+        <div class="card action-bar">
+          <div class="action-bar-top">
+            <div style="font-size: 0.88rem; color: var(--muted);">
+              <strong style="color: var(--navy);">¿Has terminado los ${sec.total} ejercicios?</strong> Pulsa para corregir y consultar tu nota sobre 10 y las explicaciones.
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn btn-secondary" onclick="openResetModal('${sectionId}')">↺ Reiniciar sección</button>
+              <button type="button" class="btn btn-primary" onclick="gradeSection('${sectionId}')">✓ Corregir esta sección</button>
+            </div>
+          </div>
+          <div id="summary-${sectionId}" class="summary-card hidden"></div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      // Inicializar estados interactivos
+      sec.blocks.forEach(block => {
+        if (block.type === 'match') {
+          initMatchBlock(block);
+        } else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            appState.builds[key] = { placed: [] };
+            renderBuildExercise(sectionId, item);
+          });
+        } else if (block.type === 'error') {
+          block.items.forEach(item => {
+            appState.errors[`${sectionId}-err-${item.num}`] = { selectedSeg: null };
+          });
+        } else if (block.type === 'classify') {
+          block.items.forEach(item => {
+            appState.classify[`${sectionId}-cls-${item.num}`] = null;
+          });
+        } else if (block.type === 'challenge_group') {
+          block.errorItems.forEach(item => {
+            appState.errors[`${sectionId}-err-${item.num}`] = { selectedSeg: null };
+          });
+        }
+      });
+    }
+
+    function renderFillItemHTML(sectionId, item, isChallenge = false) {
+      const exId = `${sectionId}-ex-${item.num}`;
+      let sentenceHtml = '';
+      item.parts.forEach((part, idx) => {
+        sentenceHtml += `<span>${part}</span>`;
+        if (idx < item.gaps.length) {
+          const w = item.gaps[idx].width || 'w-md';
+          sentenceHtml += `<input type="text" id="${exId}-gap-${idx}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input ${w}" aria-label="Ejercicio ${item.num} hueco ${idx + 1}" />`;
+        }
+      });
+
+      const itemCls = isChallenge ? 'exercise-item challenge-item' : 'exercise-item';
+      const numCls = isChallenge ? 'ex-num gold-num' : 'ex-num';
+
+      return `
+        <div id="${exId}" class="${itemCls}">
+          <div class="exercise-row">
+            <span class="${numCls}">${item.num}</span>
+            <div class="ex-body">
+              <div class="sentence-line">${sentenceHtml}</div>
+              <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderErrorItemHTML(sectionId, item, isChallenge = false) {
+      const exId = `${sectionId}-ex-${item.num}`;
+      const segBtns = item.segments.map((seg, idx) => `
+        <button type="button" id="${exId}-seg-${idx}" class="err-seg-btn" onclick="selectErrorSegment('${sectionId}', ${item.num}, ${idx})">${seg}</button>
+      `).join('');
+
+      const itemCls = isChallenge ? 'exercise-item challenge-item' : 'exercise-item';
+      const numCls = isChallenge ? 'ex-num gold-num' : 'ex-num';
+
+      return `
+        <div id="${exId}" class="${itemCls}">
+          <div class="exercise-row">
+            <span class="${numCls}">${item.num}</span>
+            <div class="ex-body">
+              <div class="error-segments">${segBtns}</div>
+              <div class="error-fix-row">
+                <label for="${exId}-fix"><strong>Corrección del bloque marcado:</strong></label>
+                <input type="text" id="${exId}-fix" autocomplete="off" spellcheck="false" placeholder="Escribe la forma correcta..." class="gap-input w-lg" />
+              </div>
+              <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTranslateItemHTML(sectionId, item, isChallenge = false) {
+      const exId = `${sectionId}-ex-${item.num}`;
+      const itemCls = isChallenge ? 'exercise-item challenge-item' : 'exercise-item';
+      const numCls = isChallenge ? 'ex-num gold-num' : 'ex-num';
+
+      return `
+        <div id="${exId}" class="${itemCls}">
+          <div class="exercise-row">
+            <span class="${numCls}">${item.num}</span>
+            <div class="ex-body stack-sm">
+              <p style="margin: 0; font-size: 0.94rem; font-weight: 600; color: var(--navy);">«${item.prompt}»</p>
+              <input type="text" id="${exId}-input" autocomplete="off" spellcheck="false" placeholder="Escribe la traducción en inglés..." class="gap-input w-full" />
+              <div id="${exId}-feedback" class="feedback-slot hidden" style="margin-top: 0.25rem;"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBlock(sectionId, block) {
+      let bodyHtml = '';
+
+      if (block.type === 'fill') {
+        bodyHtml = `<div class="stack-md">${block.items.map(item => renderFillItemHTML(sectionId, item)).join('')}</div>`;
+      }
+
+      else if (block.type === 'classify') {
+        const isPromptMode = Boolean(block.items[0]?.prompt);
+        const gridCls = isPromptMode ? 'classify-grid' : 'classify-grid cols-2';
+        const btnColsCls = block.btnCols === 4 ? 'btn-cols-4' : 'btn-cols-3';
+
+        bodyHtml = `<div class="${gridCls}">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          const topContent = item.prompt
+            ? `<div class="classify-prompt">${item.prompt}</div>`
+            : `<span class="classify-expr">${item.expr}</span>`;
+
+          const btnsHtml = block.options.map(opt => `
+            <button type="button" id="${exId}-opt-${opt.value.replace(/\s+/g, '_')}" class="choice-btn"
+              onclick="selectClassify('${sectionId}', ${item.num}, '${opt.value}')">${opt.label}</button>
+          `).join('');
+
+          bodyHtml += `
+            <div id="${exId}" class="classify-card">
+              <div class="classify-top">
+                <span class="ex-num">${item.num}</span>
+                <div style="flex: 1; min-width: 0;">${topContent}</div>
+              </div>
+              <div class="classify-btns ${btnColsCls}">${btnsHtml}</div>
+              <div id="${exId}-feedback" class="feedback-slot hidden" style="margin-top: 0;"></div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'match') {
+        const rightMap = {};
+        block.pairs.forEach(p => { rightMap[p.rightId] = p; });
+        const orderedRight = block.rightOrder.map(id => rightMap[id]);
+
+        bodyHtml = `
+          <div class="stack-md">
+            <div class="match-toolbar">
+              <span>💡 Pulsa una tarjeta de la <strong>izquierda</strong> y luego su pareja en la <strong>derecha</strong>. Pulsa una tarjeta ya unida para cambiar la flecha.</span>
+              <button type="button" class="btn-link" onclick="clearMatchBlock('${block.id}')">Limpiar flechas</button>
+            </div>
+
+            <div id="match-wrap-${block.id}" class="match-wrap">
+              <svg id="match-svg-${block.id}" class="match-svg">
+                <defs>
+                  <marker id="arrow-pending-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C59B27" />
+                  </marker>
+                  <marker id="arrow-ok-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#1E8449" />
+                  </marker>
+                  <marker id="arrow-err-${block.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#C0392B" />
+                  </marker>
+                </defs>
+                <g id="match-lines-${block.id}"></g>
+              </svg>
+
+              <div class="match-columns">
+                <div class="match-col">
+                  ${block.pairs.map(p => `
+                    <button type="button" id="left-${block.id}-${p.leftId}" data-left="${p.leftId}"
+                      class="match-card left-card" onclick="handleMatchLeftClick('${block.id}', '${p.leftId}')">
+                      <span class="match-badge">${p.num}</span>
+                      <span class="match-text">${p.left}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                <div class="match-col">
+                  ${orderedRight.map((p, idx) => `
+                    <button type="button" id="right-${block.id}-${p.rightId}" data-right="${p.rightId}"
+                      class="match-card right-card" onclick="handleMatchRightClick('${block.id}', '${p.rightId}')">
+                      <span class="match-badge">${String.fromCharCode(65 + idx)}</span>
+                      <span class="match-text">${p.right}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div id="match-feedback-${block.id}" class="feedback-slot hidden stack-sm"></div>
+          </div>
+        `;
+      }
+
+      else if (block.type === 'build') {
+        bodyHtml = `<div class="stack-md">`;
+        block.items.forEach(item => {
+          const exId = `${sectionId}-ex-${item.num}`;
+          bodyHtml += `
+            <div id="${exId}" class="exercise-item">
+              <div class="exercise-row">
+                <span class="ex-num">${item.num}</span>
+                <div class="ex-body">
+                  <div class="build-header">
+                    <span class="build-label">Tu oración:</span>
+                    <button type="button" class="btn-link" onclick="clearBuildExercise('${sectionId}', ${item.num})">Limpiar frase</button>
+                  </div>
+                  <div id="${sectionId}-build-zone-${item.num}" class="build-zone"></div>
+                  <div id="${sectionId}-build-bank-${item.num}" class="build-bank"></div>
+                  <div id="${exId}-feedback" class="feedback-slot hidden"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        bodyHtml += `</div>`;
+      }
+
+      else if (block.type === 'error') {
+        bodyHtml = `<div class="stack-md">${block.items.map(item => renderErrorItemHTML(sectionId, item)).join('')}</div>`;
+      }
+
+      else if (block.type === 'translate') {
+        bodyHtml = `<div class="stack-md">${block.items.map(item => renderTranslateItemHTML(sectionId, item)).join('')}</div>`;
+      }
+
+      else if (block.type === 'cloze') {
+        const paraHtml = block.paragraphs.map(para => {
+          const inner = para.map(seg => {
+            if (seg.text) return `<span>${seg.text}</span>`;
+            const w = seg.width || 'w-md';
+            return `
+              <span class="cloze-unit">
+                <span class="cloze-num">${seg.num}</span>
+                <input type="text" id="${sectionId}-cloze-${seg.num}" autocomplete="off" spellcheck="false" placeholder="..." class="gap-input ${w}" aria-label="Hueco ${seg.num} (${seg.verb})" />
+                <span class="verb-hint">(${seg.verb})</span>
+              </span>
+            `;
+          }).join('');
+          return `<p class="cloze-paragraph">${inner}</p>`;
+        }).join('');
+
+        bodyHtml = `
+          <div class="stack-md">
+            <div class="cloze-paper">
+              <h4 class="cloze-title"><span>🌍</span><span>${block.storyTitle}</span></h4>
+              ${paraHtml}
+            </div>
+            <div id="${sectionId}-cloze-feedback" class="feedback-slot hidden stack-sm"></div>
+          </div>
+        `;
+      }
+
+      else if (block.type === 'challenge_group') {
+        bodyHtml = `
+          <div class="stack-md">
+            <div class="subblock-title">✦ Parte A · Doble hueco combinado (Ejercicios 9 al 12)</div>
+            <div class="stack-md">${block.doubleGapItems.map(item => renderFillItemHTML(sectionId, item, true)).join('')}</div>
+
+            <div class="subblock-title">✦ Parte B · Trampas de examen: Detecta y corrige el error (Ejercicios 13 al 16)</div>
+            <div class="stack-md">${block.errorItems.map(item => renderErrorItemHTML(sectionId, item, true)).join('')}</div>
+
+            <div class="subblock-title">✦ Parte C · Traducción de examen ES → EN (Ejercicios 17 al 20)</div>
+            <div class="stack-md">${block.translateItems.map(item => renderTranslateItemHTML(sectionId, item, true)).join('')}</div>
+          </div>
+        `;
+      }
+
+      const isChallengeCard = block.type === 'challenge_group';
+      const wrapperCls = isChallengeCard ? 'card challenge-card' : 'card';
+      const pillHtml = isChallengeCard
+        ? `<span class="gold-badge">${block.letter}</span>`
+        : `<span class="eyebrow-pill" style="margin-bottom: 0.45rem;">${block.letter}</span>`;
+
+      return `
+        <div class="${wrapperCls}">
+          <div class="block-divider">
+            ${pillHtml}
+            <h3 class="card-title">${block.title}</h3>
+            <p style="margin: 0.35rem 0 0; font-size: 0.86rem; color: var(--muted);">${block.instruction}</p>
+          </div>
+          ${bodyHtml}
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       5. INTERACTIVIDAD: CLASIFICADOR, ERRORES, FLECHAS SVG Y WORD TILES
+       ========================================================================= */
+    function selectClassify(sectionId, num, val) {
+      const key = `${sectionId}-cls-${num}`;
+      appState.classify[key] = val;
+      const exId = `${sectionId}-ex-${num}`;
+      const card = document.getElementById(exId);
+      if (!card) return;
+      card.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.classList.remove('selected', 'graded-ok', 'graded-err');
+      });
+      const activeBtn = document.getElementById(`${exId}-opt-${val.replace(/\s+/g, '_')}`);
+      if (activeBtn) activeBtn.classList.add('selected');
+    }
+
+    function selectErrorSegment(sectionId, num, segIdx) {
+      const key = `${sectionId}-err-${num}`;
+      appState.errors[key] = { selectedSeg: segIdx };
+      const exId = `${sectionId}-ex-${num}`;
+      const card = document.getElementById(exId);
+      if (!card) return;
+      card.querySelectorAll('.err-seg-btn').forEach((btn, idx) => {
+        btn.classList.remove('selected', 'graded-ok', 'graded-err');
+        if (idx === segIdx) btn.classList.add('selected');
+      });
+    }
+
+    /* --- Flechas SVG --- */
+    function initMatchBlock(block) {
+      appState.matches[block.id] = {
+        selectedLeft: null,
+        links: {},
+        graded: false,
+        results: {}
+      };
+      const wrap = document.getElementById(`match-wrap-${block.id}`);
+      if (wrap && typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => drawMatchLines(block.id));
+        ro.observe(wrap);
+        resizeObservers.push(ro);
+      }
+    }
+
+    function handleMatchLeftClick(blockId, leftId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      if (st.selectedLeft === leftId) {
+        st.selectedLeft = null;
+      } else if (st.links[leftId] && !st.selectedLeft) {
+        delete st.links[leftId];
+        st.selectedLeft = leftId;
+      } else {
+        st.selectedLeft = leftId;
+      }
+      st.graded = false;
+      updateMatchVisuals(blockId);
+    }
+
+    function handleMatchRightClick(blockId, rightId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      if (st.selectedLeft) {
+        Object.keys(st.links).forEach(lId => {
+          if (st.links[lId] === rightId) delete st.links[lId];
+        });
+        st.links[st.selectedLeft] = rightId;
+        st.selectedLeft = null;
+        st.graded = false;
+        updateMatchVisuals(blockId);
+      } else {
+        const connectedLeft = Object.keys(st.links).find(lId => st.links[lId] === rightId);
+        if (connectedLeft) {
+          delete st.links[connectedLeft];
+          st.graded = false;
+          updateMatchVisuals(blockId);
+        }
+      }
+    }
+
+    function clearMatchBlock(blockId) {
+      const st = appState.matches[blockId];
+      if (!st) return;
+      st.selectedLeft = null;
+      st.links = {};
+      st.graded = false;
+      st.results = {};
+      const fb = document.getElementById(`match-feedback-${blockId}`);
+      if (fb) {
+        fb.innerHTML = '';
+        fb.classList.add('hidden');
+      }
+      updateMatchVisuals(blockId);
+    }
+
+    function updateMatchVisuals(blockId) {
+      const st = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      if (!st || !wrap) return;
+      const usedRights = new Set(Object.values(st.links));
+
+      wrap.querySelectorAll('.left-card').forEach(btn => {
+        const lId = btn.dataset.left;
+        btn.classList.remove('selected', 'linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          btn.classList.add(st.results[lId] ? 'graded-ok' : 'graded-err');
+        } else if (st.selectedLeft === lId) {
+          btn.classList.add('selected');
+        } else if (st.links[lId]) {
+          btn.classList.add('linked');
+        }
+      });
+
+      wrap.querySelectorAll('.right-card').forEach(btn => {
+        const rId = btn.dataset.right;
+        btn.classList.remove('linked', 'graded-ok', 'graded-err');
+        if (st.graded) {
+          const linkedLeft = Object.keys(st.links).find(lId => st.links[lId] === rId);
+          if (linkedLeft) {
+            btn.classList.add(st.results[linkedLeft] ? 'graded-ok' : 'graded-err');
+          }
+        } else if (usedRights.has(rId)) {
+          btn.classList.add('linked');
+        }
+      });
+
+      drawMatchLines(blockId);
+    }
+
+    function drawMatchLines(blockId) {
+      const st = appState.matches[blockId];
+      const wrap = document.getElementById(`match-wrap-${blockId}`);
+      const group = document.getElementById(`match-lines-${blockId}`);
+      if (!st || !wrap || !group) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      if (wrapRect.width === 0 || wrapRect.height === 0) return;
+
+      group.innerHTML = '';
+
+      Object.entries(st.links).forEach(([leftId, rightId]) => {
+        const leftEl = document.getElementById(`left-${blockId}-${leftId}`);
+        const rightEl = document.getElementById(`right-${blockId}-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left - wrapRect.left - 3;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+
+        const dx = Math.max(22, (x2 - x1) * 0.45);
+        const pathData = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        let color = '#C59B27';
+        let marker = `arrow-pending-${blockId}`;
+        if (st.graded) {
+          if (st.results[leftId]) {
+            color = '#1E8449';
+            marker = `arrow-ok-${blockId}`;
+          } else {
+            color = '#C0392B';
+            marker = `arrow-err-${blockId}`;
+          }
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('marker-end', `url(#${marker})`);
+        group.appendChild(path);
+
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x1);
+        dot.setAttribute('cy', y1);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', color);
+        group.appendChild(dot);
+      });
+    }
+
+    function redrawAllMatches() {
+      Object.keys(appState.matches).forEach(drawMatchLines);
+    }
+
+    /* --- Word Tiles --- */
+    function renderBuildExercise(sectionId, item) {
+      const key = `${sectionId}-build-${item.num}`;
+      const st = appState.builds[key];
+      const zone = document.getElementById(`${sectionId}-build-zone-${item.num}`);
+      const bank = document.getElementById(`${sectionId}-build-bank-${item.num}`);
+      if (!st || !zone || !bank) return;
+
+      if (st.placed.length === 0) {
+        zone.innerHTML = `<span class="build-placeholder">Haz clic en las palabras de abajo para construir la frase...</span>`;
+      } else {
+        zone.innerHTML = st.placed.map((wordIdx, pos) => `
+          <button type="button" class="word-tile tile-placed" onclick="removeWordTile('${sectionId}', ${item.num}, ${pos})">
+            ${item.words[wordIdx]}
+          </button>
+        `).join('');
+      }
+
+      bank.innerHTML = item.words.map((word, idx) => {
+        const used = st.placed.includes(idx);
+        return `
+          <button type="button" class="word-tile tile-bank" ${used ? 'disabled' : ''} onclick="addWordTile('${sectionId}', ${item.num}, ${idx})">
+            ${word}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function findBuildItem(sectionId, num) {
+      const sec = SECTIONS_DATA[sectionId];
+      for (const b of sec.blocks) {
+        if (b.type === 'build') {
+          const found = b.items.find(i => i.num === num);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+
+    function addWordTile(sectionId, num, wordIdx) {
+      const key = `${sectionId}-build-${num}`;
+      const st = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!st || !item || st.placed.includes(wordIdx)) return;
+      st.placed.push(wordIdx);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function removeWordTile(sectionId, num, pos) {
+      const key = `${sectionId}-build-${num}`;
+      const st = appState.builds[key];
+      const item = findBuildItem(sectionId, num);
+      if (!st || !item) return;
+      st.placed.splice(pos, 1);
+      renderBuildExercise(sectionId, item);
+    }
+
+    function clearBuildExercise(sectionId, num) {
+      const key = `${sectionId}-build-${num}`;
+      const item = findBuildItem(sectionId, num);
+      if (!appState.builds[key] || !item) return;
+      appState.builds[key].placed = [];
+      renderBuildExercise(sectionId, item);
+    }
+
+    /* =========================================================================
+       6. CORRECCIÓN INTELIGENTE BAJO DEMANDA
+       ========================================================================= */
+    function renderFeedbackBox(isCorrect, correctDisplay, explanation, extraTip = '', gapBreakdown = null, prefix = '') {
+      if (isCorrect) {
+        return `
+          <div class="fb-ok">
+            <span class="fb-icon fb-icon-ok">✓</span>
+            <span>${prefix ? `<strong>${prefix}:</strong> ` : ''}¡Correcto! ${correctDisplay ? `(${correctDisplay})` : 'Muy bien hecho.'}</span>
+          </div>
+        `;
+      }
+
+      let breakdownHtml = '';
+      if (Array.isArray(gapBreakdown) && gapBreakdown.length > 1) {
+        breakdownHtml = `
+          <div class="fb-gap-list">
+            ${gapBreakdown.map(g => `
+              <span class="fb-gap-pill ${g.ok ? 'ok' : 'err'}">
+                ${g.label}: ${g.ok ? '✓ correcto' : `✕ esperado «${g.display}»`}
+              </span>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="fb-err">
+          <div class="fb-err-head">
+            <span class="fb-icon fb-icon-err">✕</span>
+            <div>
+              ${prefix ? `<strong>${prefix} — </strong>` : ''}Respuesta correcta: <span class="fb-answer">${correctDisplay}</span>
+            </div>
+          </div>
+          ${breakdownHtml}
+          ${extraTip ? `<div class="fb-tip">${extraTip}</div>` : ''}
+          <div class="fb-expl"><strong>Explicación:</strong> ${explanation}</div>
+        </div>
+      `;
+    }
+
+    function setCardStatus(el, isCorrect) {
+      if (!el) return;
+      el.classList.remove('is-correct', 'is-wrong');
+      el.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+    }
+
+    function gradeFillItem(sectionId, item) {
+      const exId = `${sectionId}-ex-${item.num}`;
+      const card = document.getElementById(exId);
+      const fb = document.getElementById(`${exId}-feedback`);
+      let allOk = true;
+      let combined = '';
+      const breakdown = [];
+
+      item.gaps.forEach((gap, idx) => {
+        const input = document.getElementById(`${exId}-gap-${idx}`);
+        const val = input ? input.value : '';
+        combined += ' ' + val;
+        const ok = isMatchAny(val, gap.accepted);
+        if (!ok) allOk = false;
+        breakdown.push({ label: `Hueco ${idx + 1}`, ok, display: gap.display });
+        if (input) {
+          input.classList.remove('input-ok', 'input-err');
+          input.classList.add(ok ? 'input-ok' : 'input-err');
+        }
+      });
+
+      setCardStatus(card, allOk);
+      const displayAns = item.gaps.map(g => g.display).join(' / ');
+      const tip = allOk ? '' : getDiagnosticTip(combined.trim(), displayAns, item.contextType);
+      if (fb) {
+        fb.innerHTML = renderFeedbackBox(allOk, displayAns, item.explanation, tip, breakdown);
+        fb.classList.remove('hidden');
+      }
+      return allOk ? 1 : 0;
+    }
+
+    function gradeErrorItem(sectionId, item) {
+      const key = `${sectionId}-err-${item.num}`;
+      const exId = `${sectionId}-ex-${item.num}`;
+      const card = document.getElementById(exId);
+      const input = document.getElementById(`${exId}-fix`);
+      const fb = document.getElementById(`${exId}-feedback`);
+
+      const chosenSeg = appState.errors[key]?.selectedSeg;
+      const segOk = chosenSeg === item.wrongIndex;
+      const fixVal = input ? input.value : '';
+      const fixOk = isMatchAny(fixVal, item.accepted);
+      const bothOk = segOk && fixOk;
+
+      card.querySelectorAll('.err-seg-btn').forEach((btn, idx) => {
+        btn.classList.remove('selected', 'graded-ok', 'graded-err');
+        if (idx === item.wrongIndex) {
+          btn.classList.add('graded-ok');
+        } else if (idx === chosenSeg && !segOk) {
+          btn.classList.add('graded-err');
+        }
+      });
+
+      if (input) {
+        input.classList.remove('input-ok', 'input-err');
+        input.classList.add(fixOk ? 'input-ok' : 'input-err');
+      }
+
+      setCardStatus(card, bothOk);
+
+      const breakdown = [
+        { label: 'Paso 1 (Bloque erróneo)', ok: segOk, display: item.segments[item.wrongIndex] },
+        { label: 'Paso 2 (Corrección)', ok: fixOk, display: item.display }
+      ];
+      let tip = '';
+      if (chosenSeg === null || chosenSeg === undefined) {
+        tip = 'Haz clic primero en el bloque de la frase que contiene el error.';
+      } else if (!fixVal.trim()) {
+        tip = 'Has marcado el bloque, pero te falta escribir la corrección en el campo de texto.';
+      } else if (!fixOk) {
+        tip = getDiagnosticTip(fixVal, item.display, 'sup');
+      }
+
+      if (fb) {
+        fb.innerHTML = renderFeedbackBox(bothOk, `«${item.segments[item.wrongIndex]}» → ${item.display}`, item.explanation, tip, breakdown);
+        fb.classList.remove('hidden');
+      }
+      return bothOk ? 1 : 0;
+    }
+
+    function gradeTranslateItem(sectionId, item) {
+      const exId = `${sectionId}-ex-${item.num}`;
+      const card = document.getElementById(exId);
+      const input = document.getElementById(`${exId}-input`);
+      const fb = document.getElementById(`${exId}-feedback`);
+      const val = input ? input.value : '';
+      const ok = isMatchAny(val, item.accepted);
+
+      if (input) {
+        input.classList.remove('input-ok', 'input-err');
+        input.classList.add(ok ? 'input-ok' : 'input-err');
+      }
+
+      setCardStatus(card, ok);
+      const tip = ok ? '' : getDiagnosticTip(val, item.display, item.contextType);
+      if (fb) {
+        fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+        fb.classList.remove('hidden');
+      }
+      return ok ? 1 : 0;
+    }
+
+    function gradeSection(sectionId) {
+      const sec = SECTIONS_DATA[sectionId];
+      if (!sec) return;
+
+      let score = 0;
+      const total = sec.total;
+
+      sec.blocks.forEach(block => {
+        if (block.type === 'fill') {
+          block.items.forEach(item => { score += gradeFillItem(sectionId, item); });
+        }
+
+        else if (block.type === 'classify') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-cls-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const chosen = appState.classify[key];
+            const ok = chosen === item.answer;
+
+            card.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected', 'graded-ok', 'graded-err'));
+
+            if (chosen) {
+              const chosenBtn = document.getElementById(`${exId}-opt-${chosen.replace(/\s+/g, '_')}`);
+              if (chosenBtn) chosenBtn.classList.add(ok ? 'graded-ok' : 'graded-err');
+            }
+            if (!ok) {
+              const correctBtn = document.getElementById(`${exId}-opt-${item.answer.replace(/\s+/g, '_')}`);
+              if (correctBtn) correctBtn.classList.add('graded-ok');
+            }
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const optObj = block.options.find(o => o.value === item.answer);
+            const displayLbl = optObj ? optObj.label : item.answer;
+            const tip = chosen ? '' : 'No has seleccionado ninguna opción.';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, displayLbl, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        else if (block.type === 'match') {
+          const st = appState.matches[block.id];
+          const fb = document.getElementById(`match-feedback-${block.id}`);
+          st.selectedLeft = null;
+          st.graded = true;
+          st.results = {};
+
+          let fbHtml = '';
+          block.pairs.forEach(pair => {
+            const chosen = st.links[pair.leftId];
+            const ok = chosen === pair.rightId;
+            st.results[pair.leftId] = ok;
+            if (ok) score++;
+
+            if (ok) {
+              fbHtml += renderFeedbackBox(true, '', '', '', null, `Ej. ${pair.num}`);
+            } else {
+              const tip = chosen ? '' : 'No has unido esta tarjeta con ninguna opción de la derecha.';
+              fbHtml += renderFeedbackBox(false, `${pair.left} → ${pair.right}`, pair.explanation, tip, null, `Ej. ${pair.num}`);
+            }
+          });
+
+          updateMatchVisuals(block.id);
+          if (fb) {
+            fb.innerHTML = fbHtml;
+            fb.classList.remove('hidden');
+          }
+        }
+
+        else if (block.type === 'build') {
+          block.items.forEach(item => {
+            const key = `${sectionId}-build-${item.num}`;
+            const exId = `${sectionId}-ex-${item.num}`;
+            const card = document.getElementById(exId);
+            const fb = document.getElementById(`${exId}-feedback`);
+            const placed = appState.builds[key]?.placed || [];
+            const sentence = placed.map(idx => item.words[idx]).join(' ');
+            const ok = isMatchAny(sentence, item.accepted);
+
+            if (ok) score++;
+            setCardStatus(card, ok);
+            const tip = ok || placed.length > 0 ? '' : 'Has dejado la frase sin ordenar.';
+            if (fb) {
+              fb.innerHTML = renderFeedbackBox(ok, item.display, item.explanation, tip);
+              fb.classList.remove('hidden');
+            }
+          });
+        }
+
+        else if (block.type === 'error') {
+          block.items.forEach(item => { score += gradeErrorItem(sectionId, item); });
+        }
+
+        else if (block.type === 'translate') {
+          block.items.forEach(item => { score += gradeTranslateItem(sectionId, item); });
+        }
+
+        else if (block.type === 'cloze') {
+          const fbContainer = document.getElementById(`${sectionId}-cloze-feedback`);
+          let fbHtml = '';
+
+          block.paragraphs.forEach(para => {
+            para.forEach(seg => {
+              if (!seg.num) return;
+              const input = document.getElementById(`${sectionId}-cloze-${seg.num}`);
+              const val = input ? input.value : '';
+              const ok = isMatchAny(val, seg.accepted);
+
+              if (input) {
+                input.classList.remove('input-ok', 'input-err');
+                input.classList.add(ok ? 'input-ok' : 'input-err');
+              }
+
+              if (ok) {
+                score++;
+                fbHtml += renderFeedbackBox(true, seg.display, '', '', null, `Hueco ${seg.num} (${seg.verb})`);
+              } else {
+                const tip = getDiagnosticTip(val, seg.display, seg.contextType);
+                fbHtml += renderFeedbackBox(false, seg.display, seg.explanation, tip, null, `Hueco ${seg.num} (${seg.verb})`);
+              }
+            });
+          });
+
+          if (fbContainer) {
+            fbContainer.innerHTML = fbHtml;
+            fbContainer.classList.remove('hidden');
+          }
+        }
+
+        else if (block.type === 'challenge_group') {
+          block.doubleGapItems.forEach(item => { score += gradeFillItem(sectionId, item); });
+          block.errorItems.forEach(item => { score += gradeErrorItem(sectionId, item); });
+          block.translateItems.forEach(item => { score += gradeTranslateItem(sectionId, item); });
+        }
+      });
+
+      appState.scores[sectionId] = score;
+      showSectionSummary(sectionId, score, total);
+      updateGlobalProgress();
+
+      const summaryEl = document.getElementById(`summary-${sectionId}`);
+      if (summaryEl) {
+        summaryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function showSectionSummary(sectionId, score, total) {
+      const el = document.getElementById(`summary-${sectionId}`);
+      if (!el) return;
+
+      const pct = Math.round((score / total) * 100);
+      const grade10 = ((score / total) * 10).toFixed(1).replace('.0', '');
+      let cls = 'lvl-mid';
+      let barBg = 'linear-gradient(90deg, #C59B27, #E3C565)';
+      let message = '¡Buen progreso! Revisa las explicaciones en rojo (especialmente driest, wettest y the) y vuelve a intentarlo.';
+
+      if (pct >= 90) {
+        cls = 'lvl-high';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #1E8449)';
+        message = '¡Sobresaliente, nivel Wisdom Corner Academy! Dominas los superlativos cortos, largos e irregulares.';
+      } else if (pct >= 70) {
+        cls = 'lvl-good';
+        barBg = 'linear-gradient(90deg, #2D5A4C, #3C7362)';
+        message = '¡Muy buen resultado! Repasa los pequeños fallos señalados para ir a por el 10.';
+      } else if (pct < 50) {
+        cls = 'lvl-low';
+        barBg = 'linear-gradient(90deg, #C0392B, #C59B27)';
+        message = 'Te recomendamos consultar la «Guía de Teoría» (reglas ortográficas, the most y preguntas is/are) antes de repetirlo.';
+      }
+
+      el.className = `summary-card ${cls}`;
+      el.innerHTML = `
+        <div class="summary-top">
+          <div>
+            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85;">Resultado de la sección</div>
+            <div class="summary-score">
+              ${score} / ${total} aciertos
+              <span class="summary-grade-pill">Nota: ${grade10} / 10 (${pct}%)</span>
+            </div>
+          </div>
+          <p class="summary-msg">${message}</p>
+        </div>
+        <div class="summary-bar-track">
+          <div class="summary-bar-fill" style="width: ${pct}%; background: ${barBg};"></div>
+        </div>
+      `;
+    }
+
+    function updateGlobalProgress() {
+      const ids = ['tab1', 'tab2', 'tab3', 'tab4'];
+      const grandTotal = 80;
+      let totalCorrect = 0;
+
+      ids.forEach(id => {
+        const sc = appState.scores[id];
+        const max = SECTIONS_DATA[id].total;
+        const badge = document.getElementById(`badge-${id}`);
+
+        if (sc !== null) {
+          totalCorrect += sc;
+          if (badge) {
+            badge.textContent = `${sc}/${max}`;
+            badge.classList.remove('graded-high', 'graded-mid');
+            badge.classList.add(sc / max >= 0.7 ? 'graded-high' : 'graded-mid');
+          }
+        } else if (badge) {
+          badge.textContent = `0/${max}`;
+          badge.classList.remove('graded-high', 'graded-mid');
+        }
+      });
+
+      const pct = Math.round((totalCorrect / grandTotal) * 100);
+      document.getElementById('global-score-text').textContent = `${totalCorrect} / ${grandTotal}`;
+      document.getElementById('global-percent').textContent = `${pct}%`;
+      document.getElementById('global-progress-bar').style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       7. MODAL DE REINICIO Y NAVEGACIÓN POR PESTAÑAS
+       ========================================================================= */
+    function openResetModal(sectionId) {
+      appState.pendingReset = sectionId;
+      document.getElementById('reset-modal').classList.add('open');
+    }
+
+    function closeResetModal() {
+      appState.pendingReset = null;
+      document.getElementById('reset-modal').classList.remove('open');
+    }
+
+    function confirmResetSection() {
+      const id = appState.pendingReset;
+      closeResetModal();
+      if (!id) return;
+
+      appState.scores[id] = null;
+      renderSection(id);
+      updateGlobalProgress();
+      requestAnimationFrame(redrawAllMatches);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `panel-${tabId}`);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      requestAnimationFrame(() => {
+        redrawAllMatches();
+        setTimeout(redrawAllMatches, 120);
+      });
+    }
+
+    /* =========================================================================
+       8. INICIALIZACIÓN
+       ========================================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSection('tab1');
+      renderSection('tab2');
+      renderSection('tab3');
+      renderSection('tab4');
+      updateGlobalProgress();
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('modal-cancel').addEventListener('click', closeResetModal);
+      document.getElementById('modal-confirm').addEventListener('click', confirmResetSection);
+      document.getElementById('reset-modal').addEventListener('click', e => {
+        if (e.target.id === 'reset-modal') closeResetModal();
+      });
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(redrawAllMatches);
+      });
+    });
+  </script>
+</body>
+</html>
